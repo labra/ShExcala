@@ -1,0 +1,27 @@
+#BASE <http://base.example/#>
+PREFIX ex: <http://ex.example/#>
+PREFIX foaf: <http://foaf.example/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<Issue1>
+    ex:state        ex:unassigned ;
+    ex:reportedBy   <User2> ;
+    ex:reportedOn   "2013-01-23T10:18:00"^^xsd:dateTime ;
+    ex:reproducedBy <Thompson.J> ;
+    ex:reproducedOn "2013-01-23T11:00:00"^^xsd:dateTime ;
+    ex:related      <Issue1>
+.
+
+<User2>
+    foaf:givenName "Bob" ;
+    foaf:familyName "Smith" ;
+    foaf:mbox <mailto:bob@example.org>
+.
+
+<Thompson.J>
+    foaf:givenName "Joe", "Joseph" ;
+    foaf:familyName "Thompson" ;
+    foaf:phone <tel:+456> ;
+    foaf:phone <tel:+345> ;
+    foaf:mbox <mailto:joe@example.org>
+.
