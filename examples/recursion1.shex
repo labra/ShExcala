@@ -1,3 +1,3 @@
 prefix : <http://example.org/> 
 
-<a> { :p @<a> }
+<a> { :p @<a>? }
