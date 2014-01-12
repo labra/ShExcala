@@ -3,6 +3,28 @@
   <classpathentry kind="src" path="src\main\java" output="target\scala-2.10\classes"/>
   <classpathentry kind="src" path="src\test\scala" output="target\scala-2.10\test-classes"/>
   <classpathentry kind="src" path="src\test\java" output="target\scala-2.10\test-classes"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\commons-configuration\commons-configuration\jars\commons-configuration-1.7.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\commons-collections\commons-collections\jars\commons-collections-3.2.1.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\commons-lang\commons-lang\jars\commons-lang-2.6.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\commons-logging\commons-logging\jars\commons-logging-1.1.1.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\commons-digester\commons-digester\jars\commons-digester-1.8.1.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\commons-beanutils\commons-beanutils\jars\commons-beanutils-1.8.3.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.rogach\scallop_2.10\jars\scallop_2.10-0.9.1.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\com.typesafe\config\bundles\config-1.0.1.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\com.assembla.scala-incubator\graph-core_2.10\jars\graph-core_2.10-1.6.2.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.scala-lang\scala-actors\jars\scala-actors-2.10.1.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.apache.jena\jena-arq\jars\jena-arq-2.10.1.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.apache.jena\jena-core\jars\jena-core-2.10.1.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.apache.jena\jena-iri\jars\jena-iri-0.9.6.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.slf4j\slf4j-api\jars\slf4j-api-1.6.4.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.slf4j\slf4j-log4j12\jars\slf4j-log4j12-1.6.4.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\log4j\log4j\bundles\log4j-1.2.16.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\xerces\xercesImpl\jars\xercesImpl-2.11.0.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\xml-apis\xml-apis\jars\xml-apis-1.4.01.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.apache.httpcomponents\httpclient\jars\httpclient-4.2.3.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.apache.httpcomponents\httpcore\jars\httpcore-4.2.2.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\commons-codec\commons-codec\jars\commons-codec-1.6.jar"/>
+  <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.slf4j\jcl-over-slf4j\jars\jcl-over-slf4j-1.6.4.jar"/>
   <classpathentry kind="lib" path="C:\Users\Labra\.ivy2\cache\org.specs2\specs2_2.10\jars\specs2_2.10-2.3.7.jar"/>
   <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_COMPILER_CONTAINER"/>
   <classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
