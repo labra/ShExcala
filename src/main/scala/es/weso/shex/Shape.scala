@@ -1,12 +1,13 @@
 package es.weso.shex
 
 import es.weso.rdfNode.IRI
+import es.weso.parser.PrefixMap
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
  * */
 
-object AbstractSyntax {
+object ShapeSyntax {
 
   
 case class Shape(label: Label, rule: Rule)
@@ -44,7 +45,10 @@ case class ValueStem(s: IRI) extends ValueClass
 case class ValueReference(l: Label) extends ValueClass
 
 case class Action(label: Label, code: String)
-case class Schema(rules: Set[(Label,Rule)])
+
+
+
+// Utility definitions 
 
 case class Cardinality(min: Integer,max: Either[Integer,Unbound])
 case class Unbound()

@@ -1,11 +1,12 @@
 package es.weso.shex
 
-import es.weso.shex.AbstractSyntax._
-import es.weso.shex.PrettyPrint._
+import es.weso.shex.ShapeSyntax._
+import es.weso.shex.ShapeDoc._
 import es.weso.rdfNode._
 import org.scalatest._
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.prop.Checkers
+import es.weso.parser.PrefixMap
 
 class AbstractSyntaxSpec 
 	extends FunSpec 
@@ -21,14 +22,15 @@ class AbstractSyntaxSpec
                            a = NoActions,
                            id = NoId)
      val shape = Shape(IRILabel(IRI("test")),arcRule)
-     info("Shape: " + prettyPrint(shape))
+     val sd = ShapeDoc(pm = PrefixMap.empty)
+     info("Shape: " + sd.shape2String(shape))
   }
 
   it("Should be able to define basic UserShapes") {
      val termFoaf_mbox = NameTerm(t = IRI(foaf + "mbox"))
      val termFoaf_name = NameTerm(t = IRI(foaf + "name"))
      val termFoaf_givenName = NameTerm(t = IRI(foaf + "givenName"))
-     val termFoaf_familyName = NameTerm(t = IRI(foaf + "givenName"))
+     val termFoaf_familyName = NameTerm(t = IRI(foaf + "familyName"))
      
      val nameRule = ArcRule(n = termFoaf_name,
                            v = typeXsdString,
@@ -59,7 +61,8 @@ class AbstractSyntaxSpec
                            id = NoId)
  
      val shape = Shape(IRILabel(IRI("test")),AndRule(conjoints = Seq(or_names,mboxRule)))
-     info("Shape: " + prettyPrint(shape))
+     val sd = ShapeDoc(pm = PrefixMap.empty)
+     info("Shape: " + sd.shape2String(shape))
   }
 
  }   

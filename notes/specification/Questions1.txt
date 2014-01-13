@@ -4,3 +4,5 @@ Some notes on ShEx specification
 - Is it really necessary the "id" label in ArcRule abstract syntax? 
 - Should we have Set[RDFNode] in ValueSet instead of Set[IRI] so we could define, for example: 
     <a> { :p (1 2) }  ?
+	
+- Substitute Schema definition to Set[Shape] ?

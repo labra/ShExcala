@@ -1,13 +1,17 @@
 package es.weso.shex
 
 import es.weso.rdfNode.IRI
-import es.weso.shex.AbstractSyntax._
+import es.weso.shex.ShapeSyntax._
 import scala.text._
 import Document._
+import es.weso.parser.PrefixMap
 
-object PrettyPrint {
+case class ShapeDoc(pm: PrefixMap) {
   
-  def schemaDoc(schema: Schema) : Document = ???
+  def rulesDoc(rules: Seq[Shape]) : Document = {
+    seqDocWithSep(rules, "\n", shapeDoc)
+  }
+
   def shapeDoc(shape: Shape): Document = {
     labelDoc(shape.label) :: 
     space :: "{" :: space ::
@@ -25,9 +29,14 @@ object PrettyPrint {
   def ruleDoc(rule: Rule) : Document = {
     rule match {
       case r : ArcRule => arcRuleDoc(r)
-      case AndRule(conjoints) => seqDocWithSep(conjoints,",")
-      case OrRule(disjoints) => seqDocWithSep(disjoints,"|")
-      case GroupRule(rule,opt,a) => ???
+      case AndRule(conjoints) => seqDocWithSep(conjoints,",",ruleDoc)
+      case OrRule(disjoints) => seqDocWithSep(disjoints,"|",ruleDoc)
+      case GroupRule(rule,opt,a) => 
+          text("(") :: space :: 
+    	  nest(3,ruleDoc(rule)) :: space :: 
+    	  text(")") :: 
+    	  (if(opt) text("?") else empty) :: space :: 
+    	  actionDoc(a)
     }
   }
 
@@ -49,7 +58,7 @@ object PrettyPrint {
   def valueClassDoc(v: ValueClass) : Document = {
     v match {
       case ValueType(vtype) => iriDoc(vtype)
-      case ValueSet(s) => "(" :/: nest(3,seqDocWithSep(s," ")) :/: text(")")
+      case ValueSet(s) => "(" :/: nest(3,seqDocWithSep(s," ",iriDoc)) :/: text(")")
       case ValueAny(stem) => ???
       case ValueStem(stem) => ???
       case ValueReference(l) => "@" :: labelDoc(l)
@@ -84,11 +93,14 @@ object PrettyPrint {
 
   def space : Document = text(" ")
   
-  def seqDocWithSep[A](s : Seq[A], sep: String) : Document = {
+  def seqDocWithSep[A](s : Seq[A], 
+      sep: String,
+      toDoc : A => Document) : Document = {
     if (s.isEmpty) empty
-    else {
-      ??? // s.fold
-    }
+    else
+      s.tail.foldLeft(toDoc(s.head))(
+          (d:Document, x:A) => d :: sep :/: toDoc(x) 
+      )
   }
 
   def prettyPrint(d: Document) : String = {
@@ -97,8 +109,13 @@ object PrettyPrint {
 	  writer.toString
   }
 
-  
-  def prettyPrint(shape: Shape) : String = 
+  def shape2String(shape: Shape) : String = 
     prettyPrint(shapeDoc(shape))
-    
+
+  def rules2String(rs: Seq[Shape]): String = {
+    prettyPrint(rulesDoc(rs))
+  }
+
 }
+
+
