@@ -1,0 +1,6 @@
+Some notes on ShEx specification
+
+- If actions are to be executed sequentially, then we should replace all Set's by sequences
+- Is it really necessary the "id" label in ArcRule abstract syntax? 
+- Should we have Set[RDFNode] in ValueSet instead of Set[IRI] so we could define, for example: 
+    <a> { :p (1 2) }  ?
