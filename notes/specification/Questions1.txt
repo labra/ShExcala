@@ -6,3 +6,5 @@ Some notes on ShEx specification
     <a> { :p (1 2) }  ?
 	
 - Substitute Schema definition to Set[Shape] ?
+- Should we add "start" to Schema abstract syntax...such as Schema = (shapes: Set[Shape], start = Label) ?
+

@@ -8,18 +8,19 @@ import es.weso.parser.PrefixMap
  * */
 
 object ShapeSyntax {
-
   
+case class ShEx(rules:Seq[Shape], start: Option[Label])
+
 case class Shape(label: Label, rule: Rule)
 
 sealed trait Rule
 
 case class ArcRule(
+    id: Label,
     n: NameClass,
     v: ValueClass,
     c: Cardinality,
-    a: Seq[Action],
-    id: Label
+    a: Seq[Action]
     ) extends Rule
     
 case class AndRule(conjoints: Seq[Rule]) extends Rule

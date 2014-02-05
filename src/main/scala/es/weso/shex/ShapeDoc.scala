@@ -1,5 +1,6 @@
 package es.weso.shex
 
+import scala.collection.immutable.StringOps
 import es.weso.rdfNode.IRI
 import es.weso.shex.ShapeSyntax._
 import scala.text._
@@ -7,6 +8,18 @@ import Document._
 import es.weso.parser.PrefixMap
 
 case class ShapeDoc(pm: PrefixMap) {
+  
+  def schemaDoc(s: Schema) : Document = {
+    pmDoc(s.pm) :/:
+    rulesDoc(s.rules)
+  }
+
+  def pmDoc(pm: PrefixMap) : Document = {
+    pm.map.foldLeft(empty: Document)(
+        (d, x) => d :/: text("prefix ") :: x._1 :: space :: 
+        		  text("<") :: text(x._2.str) :: text(">") 
+    )  
+  }
   
   def rulesDoc(rules: Seq[Shape]) : Document = {
     seqDocWithSep(rules, "\n", shapeDoc)
@@ -21,7 +34,7 @@ case class ShapeDoc(pm: PrefixMap) {
 
   def labelDoc(label: Label): Document = {
     label match {
-      case IRILabel(iri) => text(iri.toString)
+      case IRILabel(iri) => iriDoc(iri)
       case BNodeLabel(id) => text(id.toString)
     }
   }
@@ -83,7 +96,7 @@ case class ShapeDoc(pm: PrefixMap) {
   }
 
   def iriDoc(i : IRI): Document = {
-    text("<") :: text(i.str) :: text(">")  
+    text(iri2String(i))  
   }
   
   def actionDoc(a : Seq[Action]) : Document = empty
@@ -103,11 +116,6 @@ case class ShapeDoc(pm: PrefixMap) {
       )
   }
 
-  def prettyPrint(d: Document) : String = {
-	  val writer = new java.io.StringWriter
-	  d.format(1, writer)
-	  writer.toString
-  }
 
   def shape2String(shape: Shape) : String = 
     prettyPrint(shapeDoc(shape))
@@ -115,6 +123,33 @@ case class ShapeDoc(pm: PrefixMap) {
   def rules2String(rs: Seq[Shape]): String = {
     prettyPrint(rulesDoc(rs))
   }
+  
+  def schema2String(s: Schema): String = {
+    prettyPrint(schemaDoc(s))
+  }
+
+  def iri2String(iri: IRI): String = {
+ 
+    def startsWithPredicate(p:(String, IRI)): Boolean = {
+      iri.str.startsWith(p._2.str)
+    }
+    
+    pm.map.find(startsWithPredicate) match {
+      case None => "<" ++ iri.str ++ ">"
+      case Some(p) => p._1 ++ ":" ++ iri.str.stripPrefix(p._2.str) 
+    }
+  }
+
+  /**
+   * Generic function for pretty printing 
+   */
+  def prettyPrint(d: Document) : String = {
+	  val writer = new java.io.StringWriter
+	  d.format(1, writer)
+	  writer.toString
+  }
+
+  
 
 }
 

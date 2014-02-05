@@ -2,6 +2,7 @@ package es.weso.shex
 
 import es.weso.rdfNode.IRI
 import es.weso.parser.PrefixMap
+import es.weso.rdfGraph.RDFGraph
 import es.weso.shex.ShapeSyntax._
 
 /**
@@ -11,13 +12,14 @@ import es.weso.shex.ShapeSyntax._
 
 case class Schema(pm: PrefixMap, rules: Seq[Shape]) {
 
-  def toString(s:Schema): String = {
+  override def toString(): String = {
     val sd = ShapeDoc(pm)
-    sd.rules2String(rules)
+    sd.schema2String(this)
   }
 
 }
 
 object Schema {
   
+  def matchShape(schema: Schema, graph: RDFGraph) : ShExResult = ???
 }

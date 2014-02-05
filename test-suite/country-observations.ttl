@@ -1,0 +1,10 @@
+PREFIX : <http://example.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+:c1 a :Country ; 
+      rdfs:label "Spain" ;
+      :observation :o1 , :o2.
+
+:o1 :value 23  .
+:o2 :value 34  .

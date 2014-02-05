@@ -8,12 +8,12 @@ import org.scalatest.prop.PropertyChecks
 import org.scalatest.prop.Checkers
 import es.weso.parser.PrefixMap
 
-class AbstractSyntaxSpec 
+class ShapeDocSpec 
 	extends FunSpec 
 	with Matchers 
 	with Checkers {
 
- describe("Abstract syntax") {
+ describe("Shape Doc") {
    it("Should be able to define basic mbox") {
      val termFoafmbox = NameTerm(t = IRI(foaf + "mbox"))
      val arcRule = ArcRule(n = termFoafmbox,
@@ -61,10 +61,12 @@ class AbstractSyntaxSpec
                            id = NoId)
  
      val shape = Shape(IRILabel(IRI("test")),AndRule(conjoints = Seq(or_names,mboxRule)))
-     val sd = ShapeDoc(pm = PrefixMap.empty)
-     info("Shape: " + sd.shape2String(shape))
+     val pm = PrefixMaps.commonShex
+     val schema = Schema(pm = pm, rules = Seq(shape))
+     info("Schema: " + schema.toString)
   }
 
+  
  }   
     
   
