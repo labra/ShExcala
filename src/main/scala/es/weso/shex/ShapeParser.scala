@@ -79,11 +79,36 @@ trait ShapeParser
     arc(s)
     // TODO add: include and Group with OrExpression
   }
-    
+   
+ // TODO: Add not and reverse
+ // TODO: add repeatCount and CODE
  def arc(s:ShapeParserState): Parser[Rule] = {
-   ???
+   nameClassAndValue(s) ^^ 
+      { 
+        case ((n,v)) => ArcRule(None, n, v, Default, NoActions)
+      } 
+ }
+ 
+ // TODO: add Any, Stem
+ def nameClassAndValue(s: ShapeParserState): Parser[(NameClass,ValueClass)] = {
+   iri(s.namespaces) ~ fixedValues(s) ^^ { case i ~ v => (NameTerm(i),v)}  
+ } 
+
+ // TODO: add typeSpec ?
+ def fixedValues(s: ShapeParserState): Parser[ValueClass] = {
+  ( token("@") ~> label(s) ^^ { case l => ValueReference(l)}
+  | valueSet(s) 
+  | valueObject(s) 
+  )
  }
 
+ def valueSet(s: ShapeParserState): Parser[ValueSet] = ???
+ 
+ // 
+ def valueObject(s: ShapeParserState): Parser[ValueClass] = {
+   iri(s.namespaces) ^^ { case iri => ValueType(iri)}
+ }
+ 
 }
 
 object ShapeParser extends ShapeParser {

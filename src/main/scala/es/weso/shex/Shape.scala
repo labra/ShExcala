@@ -2,6 +2,7 @@ package es.weso.shex
 
 import es.weso.rdfNode.IRI
 import es.weso.parser.PrefixMap
+import es.weso.rdfNode.RDFNode
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
@@ -16,7 +17,7 @@ case class Shape(label: Label, rule: Rule)
 sealed trait Rule
 
 case class ArcRule(
-    id: Label,
+    id: Option[Label],
     n: NameClass,
     v: ValueClass,
     c: Cardinality,
@@ -39,8 +40,8 @@ case class NameAny(excl: Set[IRIStem]) extends NameClass
 case class NameStem(s: IRI) extends NameClass
 
 sealed trait ValueClass
-case class ValueType(vtype: IRI) extends ValueClass
-case class ValueSet(s: Seq[IRI]) extends ValueClass
+case class ValueType(v: RDFNode) extends ValueClass
+case class ValueSet(s: Seq[RDFNode]) extends ValueClass
 case class ValueAny(stem: IRIStem) extends ValueClass
 case class ValueStem(s: IRI) extends ValueClass
 case class ValueReference(l: Label) extends ValueClass
@@ -61,7 +62,7 @@ lazy val Star = Cardinality(min = 0, max=Right(unbound))
 lazy val Opt  = Cardinality(min = 0, max=Left(1))
 
 lazy val NoActions : Seq[Action] = Seq()
-lazy val NoId : Label = IRILabel(iri = IRI(""))
+// lazy val NoId : Label = IRILabel(iri = IRI(""))
 
 def range(m: Integer, n: Integer): Cardinality = {
   require(n > m)

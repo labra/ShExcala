@@ -20,7 +20,7 @@ class ShapeDocSpec
                            v = typeShexIRI,
                            c = Default,
                            a = NoActions,
-                           id = NoId)
+                           id = None)
      val shape = Shape(IRILabel(IRI("test")),arcRule)
      val sd = ShapeDoc(pm = PrefixMap.empty)
      info("Shape: " + sd.shape2String(shape))
@@ -36,19 +36,19 @@ class ShapeDocSpec
                            v = typeXsdString,
                            c = Default,
                            a = NoActions,
-                           id = NoId)
+                           id = None)
                            
      val givenNameRule = ArcRule(n = termFoaf_givenName,
                            v = typeXsdString,
                            c = Plus,
                            a = NoActions,
-                           id = NoId)
+                           id = None)
                            
      val familyNameRule = ArcRule(n = termFoaf_familyName,
                            v = typeXsdString,
                            c = Default,
                            a = NoActions,
-                           id = NoId)
+                           id = None)
                            
      val givenName_and_familyName = AndRule(conjoints=Seq(givenNameRule,familyNameRule))                      
      
@@ -58,7 +58,7 @@ class ShapeDocSpec
                            v = typeShexIRI,
                            c = Default,
                            a = NoActions,
-                           id = NoId)
+                           id = None)
  
      val shape = Shape(IRILabel(IRI("test")),AndRule(conjoints = Seq(or_names,mboxRule)))
      val pm = PrefixMaps.commonShex
