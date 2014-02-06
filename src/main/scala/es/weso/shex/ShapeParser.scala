@@ -1,7 +1,6 @@
 package es.weso.shex
 
 import es.weso.shex.ShapeSyntax._
-
 import es.weso.rdfNode.IRI
 import es.weso.parser.PrefixMap
 import es.weso.parser.TurtleParser
@@ -18,6 +17,7 @@ import scala.collection.mutable.ListBuffer
 import scala.annotation.tailrec
 import es.weso.parser.W3cTokens
 import es.weso.parser.TurtleParserState
+import es.weso.rdfNode.RDFNode
 
 
 trait ShapeParser 
@@ -65,49 +65,55 @@ trait ShapeParser
     repState(s,shape) ^^ { case (ss,s1) => (ss,s1)}
     
   def shape(s:ShapeParserState): Parser[(Shape,ShapeParserState)] = 
-    label(s) ~ ruleSpec(s) ^^ { case (l ~ r) => (Shape(l,r),s) }
+    label(s) ~ ruleSpec(s) ^^ { case (l ~ r) => (Shape(l,r._1),r._2) }
     
   def label(s:ShapeParserState): Parser[Label] = {
     iri(s.namespaces) ^^ { case iri => IRILabel(iri)}
     // TODO: Add possibility of BNode
   }
 
-  def ruleSpec(s:ShapeParserState): Parser[Rule] = 
+  def ruleSpec(s:ShapeParserState): Parser[(Rule,ShapeParserState)] = 
     opt(WS) ~> token("{") ~> opt(WS) ~> typeSpec(s) <~ opt(WS) <~ token("}") 
     
-  def typeSpec(s:ShapeParserState): Parser[Rule] = {
+  def typeSpec(s:ShapeParserState): Parser[(Rule,ShapeParserState)] = {
     arc(s)
     // TODO add: include and Group with OrExpression
   }
    
  // TODO: Add not and reverse
  // TODO: add repeatCount and CODE
- def arc(s:ShapeParserState): Parser[Rule] = {
+ def arc(s:ShapeParserState): Parser[(Rule,ShapeParserState)] = {
    nameClassAndValue(s) ^^ 
       { 
-        case ((n,v)) => ArcRule(None, n, v, Default, NoActions)
+        case ((n,v),s1) => (ArcRule(None, n, v, Default, NoActions),s1)
       } 
  }
  
  // TODO: add Any, Stem
- def nameClassAndValue(s: ShapeParserState): Parser[(NameClass,ValueClass)] = {
-   iri(s.namespaces) ~ fixedValues(s) ^^ { case i ~ v => (NameTerm(i),v)}  
+ def nameClassAndValue(s: ShapeParserState): Parser[((NameClass,ValueClass), ShapeParserState)] = {
+   iri(s.namespaces) ~ fixedValues(s) ^^ { case (i ~ v) => ((NameTerm(i),v._1),v._2) }  
  } 
 
  // TODO: add typeSpec ?
- def fixedValues(s: ShapeParserState): Parser[ValueClass] = {
-  ( token("@") ~> label(s) ^^ { case l => ValueReference(l)}
+ def fixedValues(s: ShapeParserState): Parser[(ValueClass,ShapeParserState)] = {
+  ( token("@") ~> label(s) ^^ { case l => (ValueReference(l),s)}
   | valueSet(s) 
-  | valueObject(s) 
+  | valueObject(s) ^^ { case (o,s) => (ValueType(o),s)}
   )
  }
 
- def valueSet(s: ShapeParserState): Parser[ValueSet] = ???
+ def valueSet(s: ShapeParserState): Parser[(ValueSet,ShapeParserState)] = 
+   rep1sepState(s, valueObject,token(",")) ^^ { case (ls,s) => (ValueSet(ls),s)}
  
- // 
- def valueObject(s: ShapeParserState): Parser[ValueClass] = {
-   iri(s.namespaces) ^^ { case iri => ValueType(iri)}
- }
+ 
+ // It corresponds to object rule in grammar
+ def valueObject(s: ShapeParserState): Parser[(RDFNode, ShapeParserState)] = 
+  opt(WS) ~>
+  ( iri(s.namespaces) ^^ { case iri => (iri,s)}
+  | BlankNode(s.bNodeLabels) ^^ { case (id,table) => (id,s.newTable(table)) }
+  | literal(s.namespaces) ^^ { case l => (l,s) }
+  ) <~ opt(WS)
+ 
  
 }
 

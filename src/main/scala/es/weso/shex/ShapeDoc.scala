@@ -1,11 +1,13 @@
 package es.weso.shex
 
 import scala.collection.immutable.StringOps
-import es.weso.rdfNode.IRI
+import es.weso.rdfNode._
 import es.weso.shex.ShapeSyntax._
 import scala.text._
 import Document._
 import es.weso.parser.PrefixMap
+import es.weso.rdfNode.RDFNode
+import arq.iri
 
 case class ShapeDoc(pm: PrefixMap) {
   
@@ -70,8 +72,8 @@ case class ShapeDoc(pm: PrefixMap) {
 
   def valueClassDoc(v: ValueClass) : Document = {
     v match {
-      case ValueType(vtype) => iriDoc(vtype)
-      case ValueSet(s) => "(" :/: nest(3,seqDocWithSep(s," ",iriDoc)) :/: text(")")
+      case ValueType(v) => rdfNodeDoc(v)
+      case ValueSet(s) => "(" :/: nest(3,seqDocWithSep(s," ",rdfNodeDoc)) :/: text(")")
       case ValueAny(stem) => ???
       case ValueStem(stem) => ???
       case ValueReference(l) => "@" :: labelDoc(l)
@@ -93,6 +95,10 @@ case class ShapeDoc(pm: PrefixMap) {
       case Left(n) => text(n.toString)
       case Right(_) => text("") // Todo: check specification how to express ranges of type (m,unbound)
     }
+  }
+
+  def rdfNodeDoc(n : RDFNode): Document = {
+    text(rdfNode2String(n))  
   }
 
   def iriDoc(i : IRI): Document = {
@@ -128,6 +134,14 @@ case class ShapeDoc(pm: PrefixMap) {
     prettyPrint(schemaDoc(s))
   }
 
+  def rdfNode2String(n: RDFNode): String = {
+    n match {
+      case BNodeId(id) => "_:" + id
+      case iri: IRI => iri2String(iri)
+      case l:Literal => l.toString
+    }
+  }
+  
   def iri2String(iri: IRI): String = {
  
     def startsWithPredicate(p:(String, IRI)): Boolean = {

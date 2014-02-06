@@ -72,10 +72,10 @@ def range(m: Integer, n: Integer): Cardinality = {
 lazy val foaf = "http://xmlns.com/foaf/0.1/"
 lazy val xsd  = "http://www.w3.org/2001/XMLSchema#"
 lazy val shex = "http://www.w3.org/2013/ShEx/ns#"
-lazy val typeShexLiteral  	= ValueType(vtype = IRI(shex + "Literal"))
-lazy val typeShexIRI  		= ValueType(vtype = IRI(shex + "IRI"))
-lazy val typeShexBNode  	= ValueType(vtype = IRI(shex + "BNode"))
-lazy val typeShexNonLiteral	= ValueType(vtype = IRI(shex + "NonLiteral"))
-lazy val typeXsdString		= ValueType(vtype = IRI(xsd  + "string"))
+lazy val typeShexLiteral  	= ValueType(v = IRI(shex + "Literal"))
+lazy val typeShexIRI  		= ValueType(v = IRI(shex + "IRI"))
+lazy val typeShexBNode  	= ValueType(v = IRI(shex + "BNode"))
+lazy val typeShexNonLiteral	= ValueType(v = IRI(shex + "NonLiteral"))
+lazy val typeXsdString		= ValueType(v = IRI(xsd  + "string"))
 
 }
