@@ -1,0 +1,61 @@
+# Representation of ShEx example in OWL
+#
+#PREFIX : <http://example.org/#>
+#PREFIX foaf: <http://foaf.example/#>
+#PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+#PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+#
+#start = <person>
+#
+#<person> {
+# foaf:name xsd:string,
+# :hasAge xsd:integer,
+# :hasFriend @<person>+
+#}
+
+@prefix : 		<http://example.org#> .
+@prefix foaf: 	<http://xmlns.com/foaf/0.1/> .
+@prefix owl: 	<http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: 	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:	<http://www.w3.org/2001/XMLSchema#> .
+
+:Person a owl:Class ;
+   owl:equivalentClass [ 
+	 a owl:Class ;
+	 owl:intersectionOf (
+	   [ a 				owl:Restriction ;
+	     owl:minCardinality  "1"^^xsd:nonNegativeInteger ;
+	     owl:onProperty    foaf:name ;
+	   ]
+	   [ a 				 owl:Restriction ;
+	     owl:qualifiedCardinality  "1"^^xsd:nonNegativeInteger ;
+	     owl:onProperty    :hasAge ;
+	     owl:onClass       :Age
+	   ]
+	   [ a				 owl:Restriction ;
+	     owl:onProperty    :hasFriend ;
+	     owl:allValuesFrom :Person
+	   ]
+	   [ a				 owl:Restriction ;
+	     owl:onProperty    :hasFriend ;
+	     owl:someValuesFrom :Person
+	   ]
+	 )
+ ] .
+   
+:Age rdf:type             rdfs:Datatype ;
+     owl:onDatatype       xsd:integer ;
+     owl:withRestrictions (  [ xsd:minExclusive     "12"^^xsd:integer ]
+                             [ xsd:maxInclusive     "19"^^xsd:integer ]
+    ) .
+
+	
+#--------------------
+
+:mary foaf:name "Mary" ;
+      :hasAge 23 ;
+      :hasFriend :john .
+
+:john foaf:name "John" ;
+      :hasAge 34 .

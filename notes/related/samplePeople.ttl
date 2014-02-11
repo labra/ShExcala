@@ -1,0 +1,12 @@
+PREFIX : <http://example.org/#>
+PREFIX foaf: <http://foaf.example/#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+:mary foaf:name "Mary" ;
+      :hasAge 23 ;
+      :hasFriend :john .
+
+	  
+:john foaf:name "John" ;
+      :hasAge 34 .
