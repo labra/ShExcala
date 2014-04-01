@@ -33,7 +33,12 @@ case class ShapeParserState (
    ShapeParserState(namespaces.addPrefix(prefix, iri),bNodeLabels,baseIRI)
 
  def newBNode : (BNodeId,ShapeParserState) = { 
-   val (id,t) = bNodeLabels.newBNode ; 
+   val (id,t) = bNodeLabels.newBNode 
+   (id,ShapeParserState(namespaces,t,baseIRI))
+ }
+ 
+ def newBNode(name: String) : (BNodeId,ShapeParserState) = {
+   val (id,t) = bNodeLabels.getOrAddBNode(name)  
    (id,ShapeParserState(namespaces,t,baseIRI))
  }
  
@@ -45,6 +50,7 @@ case class ShapeParserState (
 object ShapeParserState {
   
   def initial : ShapeParserState = initial(IRI(""))
-  def initial(baseIRI : IRI) = ShapeParserState(PrefixMap.empty,BNodeTable.empty,baseIRI)
+  def initial(baseIRI : IRI) = 
+    ShapeParserState(PrefixMap.empty,BNodeTable.empty,baseIRI)
   
 }

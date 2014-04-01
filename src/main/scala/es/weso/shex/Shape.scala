@@ -48,8 +48,6 @@ case class ValueReference(l: Label) extends ValueClass
 
 case class Action(label: Label, code: String)
 
-
-
 // Utility definitions 
 
 case class Cardinality(min: Integer,max: Either[Integer,Unbound])
