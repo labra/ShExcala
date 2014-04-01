@@ -72,7 +72,28 @@ class ShapeParserSuite
 
  describe("Prefix directives") {
 
-     ignore("Should be able to parse default prefix") {
+   it("should parse prefixes") {
+     val state = ShapeParserState.initial
+     val str = "prefix a: <http://example.org/a/> " 
+     val result = ShapeParser.parse(ShapeParser.directive(state),str)
+     val expected = state.addPrefix("a",IRI("http://example.org/a/"))
+     result.get should be (expected)
+   }
+    
+   it("should parse statement with prefixes") {
+     val state = ShapeParserState.initial
+     val str = "prefix a: <http://example.org/a/> \n" +
+               "prefix b: <http://example.org/b/> \n" 
+     
+     val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
+     val expected = state.
+     				addPrefix("a",IRI("http://example.org/a/")).
+     				addPrefix("b",IRI("http://example.org/b/"))
+     result.get._1 should be (List(List()))
+     result.get._2 should be (expected)
+   }
+
+   ignore("Should be able to parse default prefix") {
       val ex = "http://example.org/"
       val str = "PREFIX : <" + ex + ">\n" + 
                 "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +

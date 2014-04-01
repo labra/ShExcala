@@ -29,9 +29,12 @@ trait ShapeParser
 
 	def shExDoc(implicit s: ShapeParserState) : 
 	  		Parser[ResultParser[ShEx,ShapeParserState]] = 
-     positioned ( opt(WS) ~> repState(s,statement) ^^ 
+     positioned ( shExParser(s) ^^ 
      	{ case (lss,s) => ResultParser(shEx(lss.flatten),s) }
      )
+     
+     def shExParser(s: ShapeParserState) : Parser[(List[List[Shape]],ShapeParserState)] =
+       opt(WS) ~> repState(s,statement)
 
     def shEx(ls: List[Shape]): ShEx = {
 	  ShEx(ls,None)
