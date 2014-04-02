@@ -19,7 +19,13 @@ import es.weso.parser.W3cTokens
 import es.weso.parser.TurtleParserState
 import es.weso.rdfNode.RDFNode
 
-
+/**
+ * Shape parser. This parser follows 
+ *  [[http://www.w3.org/2013/ShEx/ShEx.bnf this grammar]]
+ *  
+ *  More info: [[http://www.w3.org/2013/ShEx/Definition.html ShEx Definition]]
+ * 
+ * */
 trait ShapeParser 
 	extends Positional 
 	with RegexParsers 
@@ -27,13 +33,18 @@ trait ShapeParser
 	with W3cTokens 
 	with TurtleParser {
 
+    /**
+     * Main entry point for parser
+     * 
+     * */
 	def shExDoc(implicit s: ShapeParserState) : 
 	  		Parser[ResultParser[ShEx,ShapeParserState]] = 
      positioned ( shExParser(s) ^^ 
      	{ case (lss,s) => ResultParser(shEx(lss.flatten),s) }
      )
+    
      
-     def shExParser(s: ShapeParserState) : Parser[(List[List[Shape]],ShapeParserState)] =
+    def shExParser(s: ShapeParserState) : Parser[(List[List[Shape]],ShapeParserState)] =
        opt(WS) ~> repState(s,statement)
 
     def shEx(ls: List[Shape]): ShEx = {
@@ -99,17 +110,26 @@ trait ShapeParser
 
  // TODO: add typeSpec ?
  def fixedValues(s: ShapeParserState): Parser[(ValueClass,ShapeParserState)] = {
+  opt(WS) ~>
   ( token("@") ~> label(s) ^^ { case l => (ValueReference(l),s)}
   | valueSet(s) 
   | valueObject(s) ^^ { case (o,s) => (ValueType(o),s)}
-  )
+  ) <~ opt(WS)
  }
 
  def valueSet(s: ShapeParserState): Parser[(ValueSet,ShapeParserState)] = 
-   rep1sepState(s, valueObject,token(",")) ^^ { case (ls,s) => (ValueSet(ls),s)}
+   ( openParen ~> 
+     rep1sepState(s, valueObject,WS) 
+     <~ closeParen 
+   ) ^^ { case (ls,s) => (ValueSet(ls),s)}
+   
+
+ def openParen : Parser[String] = opt(WS) ~> "(" <~ opt(WS)
+ def closeParen : Parser[String] = opt(WS) ~> ")" <~ opt(WS)
  
- 
- // It corresponds to object rule in grammar
+ /** It corresponds to object rule in 
+  *  [[http://www.w3.org/2013/ShEx/ShEx.bnf grammar]]
+  */
  def valueObject(s: ShapeParserState): Parser[(RDFNode, ShapeParserState)] = 
   opt(WS) ~>
   ( iri(s.namespaces) ^^ { case iri => (iri,s)}
