@@ -76,4 +76,7 @@ lazy val typeShexBNode  	= ValueType(v = IRI(shex + "BNode"))
 lazy val typeShexNonLiteral	= ValueType(v = IRI(shex + "NonLiteral"))
 lazy val typeXsdString		= ValueType(v = IRI(xsd  + "string"))
 
+/** Utility to generate rules from arcs */
+def envolve(s: ArcRule): Rule = OrRule(List(AndRule(List(s))))                          
+
 }

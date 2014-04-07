@@ -13,37 +13,39 @@ import scala.io.Codec
 import scala.util.matching.Regex
 import scala.collection.immutable.Map
 import scala.language.postfixOps
-import es.weso.parser.PrefixMap
-import es.weso.parser.BNodeTable
-import es.weso.rdfNode.IRI
-import es.weso.rdfNode.BNodeId
-
+import es.weso.parser._
+import es.weso.rdfNode._
+import es.weso.shex.ShapeSyntax.Label
 
 
 case class ShapeParserState (
   val namespaces : PrefixMap ,
   val bNodeLabels : BNodeTable,
+  val starts: List[Label],
   val baseIRI: IRI
   ) {
  
  def newTable (table: BNodeTable) : ShapeParserState = 
-   ShapeParserState(namespaces,table,baseIRI)
+   ShapeParserState(namespaces,table,starts,baseIRI)
 
  def addPrefix(prefix: String, iri: IRI) : ShapeParserState = 
-   ShapeParserState(namespaces.addPrefix(prefix, iri),bNodeLabels,baseIRI)
+   ShapeParserState(namespaces.addPrefix(prefix, iri),bNodeLabels,starts,baseIRI)
 
  def newBNode : (BNodeId,ShapeParserState) = { 
    val (id,t) = bNodeLabels.newBNode 
-   (id,ShapeParserState(namespaces,t,baseIRI))
+   (id,ShapeParserState(namespaces,t,starts,baseIRI))
  }
  
  def newBNode(name: String) : (BNodeId,ShapeParserState) = {
    val (id,t) = bNodeLabels.getOrAddBNode(name)  
-   (id,ShapeParserState(namespaces,t,baseIRI))
+   (id,ShapeParserState(namespaces,t,starts,baseIRI))
  }
  
  def newBase(newIRI:IRI) =
-   ShapeParserState(namespaces,bNodeLabels,newIRI)
+   ShapeParserState(namespaces,bNodeLabels,starts,newIRI)
+
+ def addStart(label: Label) = 
+   ShapeParserState(namespaces,bNodeLabels,starts :+ label,baseIRI)
 
 }
 
@@ -51,6 +53,6 @@ object ShapeParserState {
   
   def initial : ShapeParserState = initial(IRI(""))
   def initial(baseIRI : IRI) = 
-    ShapeParserState(PrefixMap.empty,BNodeTable.empty,baseIRI)
+    ShapeParserState(PrefixMap.empty,BNodeTable.empty,List(),baseIRI)
   
 }

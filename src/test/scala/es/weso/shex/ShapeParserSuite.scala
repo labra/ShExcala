@@ -80,7 +80,7 @@ class ShapeParserSuite extends FunSpec
    }
    
        
-   ignore("should parse statement with prefixes") {
+   it("should parse statement with prefixes") {
      val state = ShapeParserState.initial
      val str = "prefix a: <http://example.org/a/> \n" +
                "prefix b: <http://example.org/b/> \n" 
@@ -89,13 +89,13 @@ class ShapeParserSuite extends FunSpec
      val expected = state.
      				addPrefix("a",IRI("http://example.org/a/")).
      				addPrefix("b",IRI("http://example.org/b/"))
-     val noShapes : List[List[Shape]] = List(List())
+     val noShapes : List[List[Shape]] = List()
      result.get._1 should be (noShapes)
      result.get._2 should be (expected)
       
    }  
 
-   ignore("Should be able to parse default prefix") {
+   it("Should be able to parse default prefix") {
       val ex = "http://example.org/"
       val str = "PREFIX : <" + ex + ">\n" + 
                 "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
@@ -111,11 +111,12 @@ class ShapeParserSuite extends FunSpec
           	  a = NoActions)
           	  
       val expected : ShEx = ShEx(
-           rules = Seq(Shape(label=IRILabel(IRI("http://example.org/s")), 
-        		   	         rule= shape)), 
+           rules = Seq(Shape(label= IRILabel(IRI("http://example.org/s")), 
+        		   	         rule = envolve(shape)
+        		   	        )), 
            start = None)
         
-       // result should be (Left(expected))
+      result should be (Left(expected))
      }
        
    }
@@ -196,7 +197,172 @@ class ShapeParserSuite extends FunSpec
        result.get._1._1 should be (NameTerm(IRI(prefix + a)))
        result.get._1._2 should be (ValueType(IRI(prefix + b)))
      }
+
+     it("Should parse arc - single iris ") {
+       val prefix = "http://example.org/"
+       val a = "a"
+       val b = "b"
+       val alias = "ex"
+       val str = alias + ":" + a + " " + alias + ":" + b    
+       val state = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
+       val result = ShapeParser.parse(ShapeParser.arc(state),str)
+       val expected : ArcRule = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + a)),
+                           v  = ValueType(IRI(prefix + b)),
+                           c  = Default,
+                           a  = NoActions
+                          )
+       result.get._1 should be (expected)
+     }
+
+     it("Should parse ruleSpec single") {
+       val prefix = "http://example.org/"
+       val a = "a"
+       val b = "b"
+       val alias = "ex"
+       val str = "{ " + alias + ":" + a + " " + alias + ":" + b + " }"    
+       val state  = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
+       val result = ShapeParser.parse(ShapeParser.typeSpec(state),str)
+       val expected : ArcRule = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + a)),
+                           v  = ValueType(IRI(prefix + b)),
+                           c  = Default,
+                           a  = NoActions
+                          )
+       result.get._1 should be (envolve(expected))
+     }
+
+     it("Should parse a single shape") {
+       val prefix = "http://example.org/"
+       val a = "a"
+       val b = "b"
+       val c = "c"
+       val alias = "ex"
+       val str = alias + ":" + a + " { " + alias + ":" + b + " " + alias + ":" + c + " }"    
+       val state = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
+       val result = ShapeParser.parse(ShapeParser.shape(state),str)
+       val expected : Shape = 
+         Shape(label = IRILabel(IRI(prefix + a)),
+               rule  = envolve(ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + b)),
+                           v  = ValueType(IRI(prefix + c)),
+                           c  = Default,
+                           a  = NoActions
+                          ))
+              )
+       result.get._1 should be (expected)
+     }
+   
+     it("Should parse several shapes") {
+       val prefix = "http://example.org/"
+       val a = "a"
+       val b = "b"
+       val c = "c"
+       val alias = "ex"
+       val str = alias + ":" + a + " { " + alias + ":" + b + " " + alias + ":" + c + " }\n" +
+                 alias + ":" + b + " { " + alias + ":" + b + " " + alias + ":" + c + " } "
+                 
+       val state = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
+       val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
+       val labelA = IRILabel(IRI(prefix + a))
+       val labelB = IRILabel(IRI(prefix + b))
+       val ruleBC = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + b)),
+                           v  = ValueType(IRI(prefix + c)),
+                           c  = Default,
+                           a  = NoActions
+                          )
+       val shape1 : Shape = Shape(label = labelA, rule = envolve(ruleBC) )
+       val shape2 : Shape = Shape(label = labelB, rule = envolve(ruleBC) )
+       val expected : List[Shape] = List(shape1, shape2)
+       result.get._1 should be (expected)
+     }
+
+    it("Should parse directive with shape") {
+      val prefix = "http://example.org/"
+      val xsd = "http://www.w3.org/2001/XMLSchema#"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+                ":a { :b :c }"
+      val state = ShapeParserState.initial
+      val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
+      val ruleBC = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "c")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+       val labelA = IRILabel(IRI(prefix + "a"))
+       val shape1 : Shape = Shape(label = labelA, rule = envolve(ruleBC) )
+       result.get._1 should be(List(shape1))
+    }
+
+     it("Should parse empty rule") {
+      val prefix = "http://example.org/"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+                ":a { }"
+      val state = ShapeParserState.initial
+      val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
+      val rule = OrRule(Seq())
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape1 : Shape = Shape(label = labelA, rule = rule )
+      result.get._1 should be(List(shape1))
+    }
+
+    /* 
+    it("Should parse or simple") {
+      val prefix = "http://example.org/"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+                ":a { :b :c|:b :d }"
+      val state = ShapeParserState.initial
+      val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
+      val ruleBC = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "c")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+      val ruleBD = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "d")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+
+      val rule = OrRule(List(AndRule(List(ruleBC)),AndRule(List(ruleBD))))
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape1 : Shape = Shape(label = labelA, rule = rule )
+      info(result.get._1.toString)
+      info(List(shape1).toString)
+      result.get._1 should be(List(shape1))
+    }
+
+    it("Should parse and simple") {
+      val prefix = "http://example.org/"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+                ":a { :b :c,:b :d }"
+      val state = ShapeParserState.initial
+      val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
+      val ruleBC = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "c")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+      val ruleBD = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "d")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+
+      val rule = OrRule(Seq(AndRule(Seq(ruleBC,ruleBD))))
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape1 : Shape = Shape(label = labelA, rule = rule )
+      result.get._1 should be(List(shape1))
+    }
+*/
    }
+   
  }   
     
   
