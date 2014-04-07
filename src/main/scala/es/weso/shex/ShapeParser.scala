@@ -79,7 +79,7 @@ trait ShapeParser
 
   def typeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
     opt(WS) ~> "{" ~> opt(WS) ~> opt(orExpression(s)) <~ opt(WS) <~ "}" ^^ 
-      { case None => (OrRule(disjoints = Seq()),s) 
+      { case None           => (NoRule,s) 
         case Some((ors,s1)) => (ors,s1) 
       }
   }
@@ -89,20 +89,20 @@ trait ShapeParser
              (s:S): Parser[(List[T],S)] = 
 	  repState(s,p)
 
-  def orExpression(s: ShapeParserState): Parser[(OrRule, ShapeParserState)] = {
-    seqState(andExpression,repS(arrowState(orExpression,"|")))(s) ^^ 
-      { case (p,s1) => (OrRule(disjoints = (Seq(p._1) ++ p._2)),s1)}
+  def orExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+    seqState(andExpression,repS(arrowState(orExpression,symbol("|"))))(s) ^^ 
+      { case (p,s1) => (p._2.foldLeft(p._1){case (x, r) => OrRule(x,r)},s1) }
   }
   
-  def andExpression(s: ShapeParserState): Parser[(AndRule, ShapeParserState)] = {
-	seqState(unaryExpression,repS(arrowState(andExpression,",")))(s) ^^ 
-      { case (p,s1) => (AndRule(conjoints = (Seq(p._1) ++ p._2)),s1)}
+ 
+  def andExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+	seqState(unaryExpression,repS(arrowState(andExpression,symbol(","))))(s) ^^ 
+      { case (p,s1) => (p._2.foldLeft(p._1){case (x, r) => AndRule(x,r)}, s1) }
   }
   
   def unaryExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
     ( arc(s) 
-    | "(" ~> orExpression(s) <~ ")" ^^ 
-        { case (r,s1) => (GroupRule(rule=r, opt=false, a = NoActions),s1) }
+    | symbol("(") ~> orExpression(s) <~ symbol(")") 
     )
   }
 
@@ -114,12 +114,20 @@ trait ShapeParser
   // TODO: Add not and reverse
   // TODO: add repeatCount and CODE
   def arc(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    nameClassAndValue(s) ^^
+    nameClassAndValue(s) ~ opt(repeatCount) ^^
       {
-        case ((n, v), s1) => (ArcRule(None, n, v, Default, NoActions), s1)
+        case ((n, v), s1) ~ Some(c) => (ArcRule(None, n, v, c, NoActions), s1)
+        case ((n, v), s1) ~ None    => (ArcRule(None, n, v, Default, NoActions), s1)
       }
   }
-
+  
+  def repeatCount: Parser[Cardinality] = {
+   ( symbol("*") ^^^ Star
+   | symbol("+") ^^^ Plus
+   | symbol("?") ^^^ Opt
+   )
+    // TODO: integer ranges 
+  }
   // TODO: add Any, Stem
   def nameClassAndValue(s: ShapeParserState): Parser[((NameClass, ValueClass), ShapeParserState)] = {
     iri(s.namespaces) ~ fixedValues(s) ^^ { case (i ~ v) => ((NameTerm(i), v._1), v._2) }
@@ -138,8 +146,8 @@ trait ShapeParser
       rep1sepState(s, valueObject, WS)
       <~ closeParen) ^^ { case (ls, s) => (ValueSet(ls), s) }
 
-  def openParen: Parser[String] = opt(WS) ~> "(" <~ opt(WS)
-  def closeParen: Parser[String] = opt(WS) ~> ")" <~ opt(WS)
+  def openParen: Parser[String] = symbol("(") // opt(WS) ~> "(" <~ opt(WS)
+  def closeParen: Parser[String] = symbol(")")
 
   /**
    * It corresponds to object rule in
@@ -150,6 +158,12 @@ trait ShapeParser
       (iri(s.namespaces) ^^ { case iri => (iri, s) }
         | BlankNode(s.bNodeLabels) ^^ { case (id, table) => (id, s.newTable(table)) }
         | literal(s.namespaces) ^^ { case l => (l, s) }) <~ opt(WS)
+
+  // Parsing symbols skipping spaces...
+  // TODO: should refactor to other file 
+  def symbol(str: Parser[String]): Parser[String] = {
+    opt(WS) ~> str <~ opt(WS)
+  }
 
 }
 
@@ -172,5 +186,6 @@ object ShapeParser extends ShapeParser {
       case e: Exception => Right("Exception during parsing: " + e)
     }
   }
+
 
 }

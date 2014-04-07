@@ -44,14 +44,15 @@ case class ShapeDoc(pm: PrefixMap) {
   def ruleDoc(rule: Rule) : Document = {
     rule match {
       case r : ArcRule => arcRuleDoc(r)
-      case AndRule(conjoints) => seqDocWithSep(conjoints,",",ruleDoc)
-      case OrRule(disjoints) => seqDocWithSep(disjoints,"|",ruleDoc)
-      case GroupRule(rule,opt,a) => 
+      case AndRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text(",") :/: ruleDoc(e2) :/: text(")")
+      case OrRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text("|") :/: ruleDoc(e2) :/: text(")")
+      case NoRule => text(" ")
+      /*case GroupRule(rule,opt,a) => 
           text("(") :: space :: 
     	  nest(3,ruleDoc(rule)) :: space :: 
     	  text(")") :: 
     	  (if(opt) text("?") else empty) :: space :: 
-    	  actionDoc(a)
+    	  actionDoc(a) */
     }
   }
 

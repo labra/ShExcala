@@ -50,9 +50,9 @@ class ShapeDocSpec
                            a = NoActions,
                            id = None)
                            
-     val givenName_and_familyName = AndRule(conjoints=Seq(givenNameRule,familyNameRule))                      
+     val givenName_and_familyName = AndRule(e1 = givenNameRule,e2 = familyNameRule)                      
      
-     val or_names = GroupRule(OrRule(disjoints=Seq(nameRule,givenName_and_familyName)), opt=false, a = NoActions)
+     val or_names = OrRule(e1 = nameRule,e2 = givenName_and_familyName)
                            
      val mboxRule = ArcRule(n = termFoaf_mbox,
                            v = typeShexIRI,
@@ -60,7 +60,7 @@ class ShapeDocSpec
                            a = NoActions,
                            id = None)
  
-     val shape = Shape(IRILabel(IRI("test")),AndRule(conjoints = Seq(or_names,mboxRule)))
+     val shape = Shape(IRILabel(IRI("test")),AndRule(or_names,mboxRule))
      val pm = PrefixMaps.commonShex
      val schema = Schema(pm = pm, rules = Seq(shape))
      info("Schema: " + schema.toString)

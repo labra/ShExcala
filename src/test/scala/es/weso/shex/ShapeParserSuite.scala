@@ -8,7 +8,8 @@ import es.weso.shex.ShapeDoc._
 import es.weso.shex.ShapeSyntax._
 import scala.Either._
 
-class ShapeParserSuite extends FunSpec 
+class ShapeParserSuite extends ShapeParser 
+    with FunSpecLike 
 	with Matchers 
 	with Checkers {
 
@@ -112,7 +113,7 @@ class ShapeParserSuite extends FunSpec
           	  
       val expected : ShEx = ShEx(
            rules = Seq(Shape(label= IRILabel(IRI("http://example.org/s")), 
-        		   	         rule = envolve(shape)
+        		   	         rule = shape
         		   	        )), 
            start = None)
         
@@ -229,7 +230,7 @@ class ShapeParserSuite extends FunSpec
                            c  = Default,
                            a  = NoActions
                           )
-       result.get._1 should be (envolve(expected))
+       result.get._1 should be (expected)
      }
 
      it("Should parse a single shape") {
@@ -243,12 +244,12 @@ class ShapeParserSuite extends FunSpec
        val result = ShapeParser.parse(ShapeParser.shape(state),str)
        val expected : Shape = 
          Shape(label = IRILabel(IRI(prefix + a)),
-               rule  = envolve(ArcRule(id = None,
+               rule  = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + b)),
                            v  = ValueType(IRI(prefix + c)),
                            c  = Default,
                            a  = NoActions
-                          ))
+                          )
               )
        result.get._1 should be (expected)
      }
@@ -272,8 +273,8 @@ class ShapeParserSuite extends FunSpec
                            c  = Default,
                            a  = NoActions
                           )
-       val shape1 : Shape = Shape(label = labelA, rule = envolve(ruleBC) )
-       val shape2 : Shape = Shape(label = labelB, rule = envolve(ruleBC) )
+       val shape1 : Shape = Shape(label = labelA, rule = ruleBC )
+       val shape2 : Shape = Shape(label = labelB, rule = ruleBC )
        val expected : List[Shape] = List(shape1, shape2)
        result.get._1 should be (expected)
      }
@@ -292,7 +293,7 @@ class ShapeParserSuite extends FunSpec
                            a  = NoActions
                           )
        val labelA = IRILabel(IRI(prefix + "a"))
-       val shape1 : Shape = Shape(label = labelA, rule = envolve(ruleBC) )
+       val shape1 : Shape = Shape(label = labelA, rule = ruleBC )
        result.get._1 should be(List(shape1))
     }
 
@@ -302,19 +303,18 @@ class ShapeParserSuite extends FunSpec
                 ":a { }"
       val state = ShapeParserState.initial
       val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
-      val rule = OrRule(Seq())
+      val rule = NoRule
       val labelA = IRILabel(IRI(prefix + "a"))
       val shape1 : Shape = Shape(label = labelA, rule = rule )
       result.get._1 should be(List(shape1))
     }
 
-    /* 
+    
     it("Should parse or simple") {
       val prefix = "http://example.org/"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { :b :c|:b :d }"
+                ":a { :b :c | :b :d }"
       val state = ShapeParserState.initial
-      val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
                            v  = ValueType(IRI(prefix + "c")),
@@ -328,20 +328,17 @@ class ShapeParserSuite extends FunSpec
                            a  = NoActions
                           )
 
-      val rule = OrRule(List(AndRule(List(ruleBC)),AndRule(List(ruleBD))))
+      val rule = OrRule(ruleBC,ruleBD)
       val labelA = IRILabel(IRI(prefix + "a"))
       val shape1 : Shape = Shape(label = labelA, rule = rule )
-      info(result.get._1.toString)
-      info(List(shape1).toString)
-      result.get._1 should be(List(shape1))
+      shouldParseIgnoreState(shExParser,state, str,List(shape1))
     }
 
     it("Should parse and simple") {
       val prefix = "http://example.org/"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { :b :c,:b :d }"
+                ":a { :b :c , :b :d }"
       val state = ShapeParserState.initial
-      val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
                            v  = ValueType(IRI(prefix + "c")),
@@ -355,15 +352,120 @@ class ShapeParserSuite extends FunSpec
                            a  = NoActions
                           )
 
-      val rule = OrRule(Seq(AndRule(Seq(ruleBC,ruleBD))))
+      val rule = AndRule(ruleBC,ruleBD)
       val labelA = IRILabel(IRI(prefix + "a"))
       val shape1 : Shape = Shape(label = labelA, rule = rule )
-      result.get._1 should be(List(shape1))
+      shouldParseIgnoreState(shExParser, state, str,List(shape1))
     }
-*/
    }
    
+    it("Should parse and/or simple") {
+      val prefix = "http://example.org/"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+                ":a { :b :c , (:b :d | :b :e) }"
+      val state = ShapeParserState.initial
+      val ruleBC = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "c")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+      val ruleBD = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "d")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+      val ruleBE = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "e")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+
+      val rule = AndRule(ruleBC,OrRule(ruleBD,ruleBE))
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = rule )
+      shouldParseIgnoreState(shExParser, state, str,List(shape))
+    }
+ 
+    it("Should parse and/or simple withour paren") {
+      val prefix = "http://example.org/"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+                ":a { :b :c , :b :d | :b :e }"
+      val state = ShapeParserState.initial
+      val ruleBC = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "c")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+      val ruleBD = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "d")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+      val ruleBE = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "e")),
+                           c  = Default,
+                           a  = NoActions
+                          )
+
+      val rule = OrRule(AndRule(ruleBC,ruleBD),ruleBE)
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = rule )
+      shouldParseIgnoreState(shExParser, state, str,List(shape))
+    }
+
+    it("Should parse arc with star") {
+      val prefix = "http://example.org/"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+                ":a { :b :c* }"
+      val state = ShapeParserState.initial
+      val ruleBC = ArcRule(id = None,
+                           n  = NameTerm(IRI(prefix + "b")),
+                           v  = ValueType(IRI(prefix + "c")),
+                           c  = Star,
+                           a  = NoActions)
+      val rule = ruleBC
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = rule )
+      shouldParseIgnoreState(shExParser, state, str,List(shape))
+    }
+ 
+ 
  }   
-    
+
+def shouldParse[A](p:Parser[A], s : String, a : A) {
+      val result = parseAll(p,s) match {
+        case Success(x,_) => x 
+        case NoSuccess(msg,_) => fail(msg)
+      }
+      result should be(a)
+   }
+
+  def shouldParseState[A,State](p:State => Parser[(A,State)], 
+      initial: State, 
+      s : String, 
+      expected : (A,State)) {
+      val result = parseAll(p(initial),s) match {
+        case Success(x,_) => x 
+        case NoSuccess(msg,_) => fail(msg)
+      }
+      result should be(expected)
+   }
   
+  def shouldParseIgnoreState[A,State](p:State => Parser[(A,State)],
+      initial: State, 
+      s : String,
+      expected : A) {
+      val result = parseAll(p(initial),s) match {
+        case Success(x,_) => x._1 
+        case NoSuccess(msg,_) => fail(msg)
+      }
+      result should be(expected)
+   }
+
 }

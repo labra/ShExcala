@@ -3,6 +3,7 @@ package es.weso.shex
 import es.weso.rdfNode.IRI
 import es.weso.parser.PrefixMap
 import es.weso.rdfNode.RDFNode
+import scala.util.parsing.input.Positional
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
@@ -14,7 +15,9 @@ case class ShEx(rules:Seq[Shape], start: Option[Label])
 
 case class Shape(label: Label, rule: Rule)
 
-sealed trait Rule
+
+sealed trait Rule 
+	   extends Positional  // Positional help Parser Combinators to show positions
 
 case class ArcRule(
     id: Option[Label],
@@ -24,9 +27,12 @@ case class ArcRule(
     a: Seq[Action]
     ) extends Rule
     
-case class AndRule(conjoints: Seq[Rule]) extends Rule
-case class OrRule(disjoints: Seq[Rule]) extends Rule
-case class GroupRule(rule: Rule, opt: Boolean, a: Seq[Action]) extends Rule
+case class AndRule(e1: Rule, e2: Rule) extends Rule
+case class OrRule(e1: Rule, e2: Rule) extends Rule
+case object NoRule extends Rule
+
+// Using recursive syntax trees we don't need GroupRule 
+//case class GroupRule(rule: Rule, opt: Boolean, a: Seq[Action]) extends Rule
 
 sealed trait Label
 case class IRILabel(iri: IRI) extends Label
@@ -76,7 +82,5 @@ lazy val typeShexBNode  	= ValueType(v = IRI(shex + "BNode"))
 lazy val typeShexNonLiteral	= ValueType(v = IRI(shex + "NonLiteral"))
 lazy val typeXsdString		= ValueType(v = IRI(xsd  + "string"))
 
-/** Utility to generate rules from arcs */
-def envolve(s: ArcRule): Rule = OrRule(List(AndRule(List(s))))                          
 
 }
