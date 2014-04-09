@@ -13,6 +13,7 @@ import scala.util.matching.Regex
 import scala.collection.mutable.ListBuffer
 import scala.annotation.tailrec
 import es.weso.rdfNode._
+import scala.util.Try
 
 /**
  * Shape parser. This parser follows
@@ -32,13 +33,18 @@ trait ShapeParser
    * Main entry point for parser
    *
    */
-  def shExDoc(implicit s: ShapeParserState): Parser[ResultParser[ShEx, ShapeParserState]] =
-    positioned(shExParser(s) ^^
-      { case (lss, s) => ResultParser(shEx(lss), s) })
+  def schemaParser(s: ShapeParserState): Parser[(Schema, ShapeParserState)] =
+    shExParser(s) ^^
+      { case (shEx, s) => (Schema(s.namespaces,shEx), s) }
 
-  def shExParser(s: ShapeParserState): Parser[(List[Shape], ShapeParserState)] =
+
+  def shExParser(s: ShapeParserState): Parser[(ShEx, ShapeParserState)] =
     opt(WS) ~> repState(s, statement) ^^ {
-      case (lsOpt, s1) => (lsOpt.flatten, s1)
+      case (lsOpt, s1) => {
+        val startLabel = if (s1.starts.isEmpty) None
+        			     else Some(s1.starts.last)
+        (ShEx(rules= lsOpt.flatten, start=startLabel), s1)
+      }
     }
 
   def shEx(ls: List[Shape]): ShEx = {
@@ -176,14 +182,15 @@ object ShapeParser extends ShapeParser {
    * @return Left(rs) = list of shapes successfully parsed
    *         Right(msg) = Error msg
    */
-  def parse(s: String, baseIRI: IRI = IRI("")): Either[ShEx, String] = {
+  def parse(s: CharSequence, baseIRI: IRI = IRI("")): Try[(Schema, PrefixMap)] = {
     try {
-      parseAll(shExDoc(ShapeParserState.initial.newBase(baseIRI)), s) match {
-        case Success(ResultParser(x, _), _) => Left(x)
-        case NoSuccess(msg, _) => Right(msg)
+      val state = ShapeParserState.initial.newBase(baseIRI)
+      parseAll(schemaParser(state), new CharSequenceReader(s)) match {
+        case Success(x, _) => scala.util.Success((x._1,x._2.namespaces))
+        case NoSuccess(msg, _) => scala.util.Failure(new Exception(msg))
       }
     } catch {
-      case e: Exception => Right("Exception during parsing: " + e)
+      case e: Exception => scala.util.Failure(e)
     }
   }
 

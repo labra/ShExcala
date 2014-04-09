@@ -8,12 +8,17 @@ import Document._
 import es.weso.parser.PrefixMap
 import es.weso.rdfNode.RDFNode
 import arq.iri
+import org.slf4j.LoggerFactory
 
 case class ShapeDoc(pm: PrefixMap) {
-  
+
   def schemaDoc(s: Schema) : Document = {
     pmDoc(s.pm) :/:
-    rulesDoc(s.rules)
+    shExDoc(s.shEx) 
+  }
+
+  def shExDoc(sh: ShEx) : Document = {
+    rulesDoc(sh.rules) // TODO: start
   }
 
   def pmDoc(pm: PrefixMap) : Document = {
@@ -124,16 +129,11 @@ case class ShapeDoc(pm: PrefixMap) {
   }
 
 
-  def shape2String(shape: Shape) : String = 
-    prettyPrint(shapeDoc(shape))
 
   def rules2String(rs: Seq[Shape]): String = {
     prettyPrint(rulesDoc(rs))
   }
   
-  def schema2String(s: Schema): String = {
-    prettyPrint(schemaDoc(s))
-  }
 
   def rdfNode2String(n: RDFNode): String = {
     n match {
@@ -164,8 +164,18 @@ case class ShapeDoc(pm: PrefixMap) {
 	  writer.toString
   }
 
-  
+  def schema2String(s: Schema): String = {
+    prettyPrint(schemaDoc(s))
+  }
 
+  def shape2String(shape: Shape) : String = 
+    prettyPrint(shapeDoc(shape))
+
+  def schema2String(shEx: ShEx) : String = 
+    prettyPrint(shExDoc(shEx))
+}
+
+object ShapeDoc {
 }
 
 

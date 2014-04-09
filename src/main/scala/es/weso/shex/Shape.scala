@@ -11,13 +11,15 @@ import scala.util.parsing.input.Positional
 
 object ShapeSyntax {
   
-case class ShEx(rules:Seq[Shape], start: Option[Label])
+case class ShEx(rules:Seq[Shape], start: Option[Label]) 
+	 extends Positional // Positional helps Parser Combinators to show positions
 
 case class Shape(label: Label, rule: Rule)
+	 extends Positional
 
 
 sealed trait Rule 
-	   extends Positional  // Positional help Parser Combinators to show positions
+	   extends Positional  
 
 case class ArcRule(
     id: Option[Label],
