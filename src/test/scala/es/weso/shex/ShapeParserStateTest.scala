@@ -3,7 +3,8 @@ package es.weso.shex
 import org.scalatest._
 import org.scalatest.prop._
 
-import es.weso.rdfNode._
+import es.weso.rdfgraph.nodes._
+import es.weso.rdfgraph._
 import es.weso.shex.ShapeDoc._
 import es.weso.shex.ShapeSyntax._
 import scala.Either._

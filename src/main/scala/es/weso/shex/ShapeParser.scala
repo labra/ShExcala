@@ -12,7 +12,8 @@ import scala.io.Codec
 import scala.util.matching.Regex
 import scala.collection.mutable.ListBuffer
 import scala.annotation.tailrec
-import es.weso.rdfNode._
+import es.weso.rdfgraph.nodes._
+import es.weso.rdfgraph._
 import scala.util.Try
 
 /**
@@ -90,11 +91,6 @@ trait ShapeParser
       }
   }
 
-  // Curried repState --- TODO: move to library
-  def repS[T,S](p: S => Parser[(T,S)])
-             (s:S): Parser[(List[T],S)] = 
-	  repState(s,p)
-
   def orExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
     seqState(andExpression,repS(arrowState(orExpression,symbol("|"))))(s) ^^ 
       { case (p,s1) => (p._2.foldLeft(p._1){case (x, r) => OrRule(x,r)},s1) }
@@ -142,9 +138,10 @@ trait ShapeParser
   // TODO: add typeSpec ?
   def fixedValues(s: ShapeParserState): Parser[(ValueClass, ShapeParserState)] = {
     opt(WS) ~>
-      (token("@") ~> label(s) ^^ { case l => (ValueReference(l), s) }
-        | valueSet(s)
-        | valueObject(s) ^^ { case (o, s) => (ValueType(o), s) }) <~ opt(WS)
+      ( token("@") ~> label(s) ^^ { case l => (ValueReference(l), s) }
+      | valueSet(s)
+      | valueObject(s) ^^ { case (o, s) => (ValueType(o), s) }
+      ) <~ opt(WS)
   }
 
   def valueSet(s: ShapeParserState): Parser[(ValueSet, ShapeParserState)] =
@@ -161,9 +158,16 @@ trait ShapeParser
    */
   def valueObject(s: ShapeParserState): Parser[(RDFNode, ShapeParserState)] =
     opt(WS) ~>
-      (iri(s.namespaces) ^^ { case iri => (iri, s) }
-        | BlankNode(s.bNodeLabels) ^^ { case (id, table) => (id, s.newTable(table)) }
-        | literal(s.namespaces) ^^ { case l => (l, s) }) <~ opt(WS)
+      ( iri(s.namespaces) ^^ { case iri => (iri, s) }
+      | BlankNode(s.bNodeLabels) ^^ { 
+          case (id, table) => {
+             println("id: " + id)
+             println("table: " + table)
+             (id, s.newTable(table)) 
+          }
+        }
+      | literal(s.namespaces) ^^ { case l => (l, s) }
+      ) <~ opt(WS)
 
   // Parsing symbols skipping spaces...
   // TODO: should refactor to other file 

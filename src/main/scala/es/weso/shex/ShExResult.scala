@@ -1,7 +1,7 @@
 package es.weso.shex
 
-import es.weso.rdfNode.IRI
-import es.weso.rdfNode.RDFNode
+import es.weso.rdfgraph.nodes._
+import es.weso.rdfgraph._
 
 trait ShExResult
 

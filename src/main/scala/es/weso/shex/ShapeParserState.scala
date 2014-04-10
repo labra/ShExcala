@@ -14,7 +14,8 @@ import scala.util.matching.Regex
 import scala.collection.immutable.Map
 import scala.language.postfixOps
 import es.weso.parser._
-import es.weso.rdfNode._
+import es.weso.rdfgraph.nodes._
+import es.weso.rdfgraph._
 import es.weso.shex.ShapeSyntax.Label
 
 
@@ -25,27 +26,27 @@ case class ShapeParserState (
   val baseIRI: IRI
   ) {
  
- def newTable (table: BNodeTable) : ShapeParserState = 
-   ShapeParserState(namespaces,table,starts,baseIRI)
+ def newTable(table: BNodeTable) : ShapeParserState = 
+   copy(bNodeLabels=table)
 
  def addPrefix(prefix: String, iri: IRI) : ShapeParserState = 
-   ShapeParserState(namespaces.addPrefix(prefix, iri),bNodeLabels,starts,baseIRI)
+   copy(namespaces = namespaces.addPrefix(prefix, iri))
 
  def newBNode : (BNodeId,ShapeParserState) = { 
    val (id,t) = bNodeLabels.newBNode 
-   (id,ShapeParserState(namespaces,t,starts,baseIRI))
+   (id,copy(bNodeLabels=t))
  }
  
  def newBNode(name: String) : (BNodeId,ShapeParserState) = {
    val (id,t) = bNodeLabels.getOrAddBNode(name)  
-   (id,ShapeParserState(namespaces,t,starts,baseIRI))
+   (id,copy(bNodeLabels = t))
  }
  
  def newBase(newIRI:IRI) =
-   ShapeParserState(namespaces,bNodeLabels,starts,newIRI)
+   copy(baseIRI=newIRI)
 
  def addStart(label: Label) = 
-   ShapeParserState(namespaces,bNodeLabels,starts :+ label,baseIRI)
+   copy(starts = starts :+ label)
 
 }
 

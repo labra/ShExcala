@@ -1,8 +1,9 @@
 package es.weso.shex
 
-import es.weso.rdfNode.IRI
+import es.weso.rdfgraph.nodes._
+import es.weso.rdfgraph._
+
 import es.weso.parser.PrefixMap
-import es.weso.rdfNode.RDFNode
 import scala.util.parsing.input.Positional
 
 /**

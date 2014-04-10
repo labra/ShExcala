@@ -2,7 +2,8 @@ package es.weso.shex
 
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.ShapeDoc._
-import es.weso.rdfNode._
+import es.weso.rdfgraph.nodes._
+import es.weso.rdfgraph._
 import org.scalatest._
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.prop.Checkers
@@ -62,7 +63,7 @@ class ShapeDocSpec
  
      val shape = Shape(IRILabel(IRI("test")),AndRule(or_names,mboxRule))
      val pm = PrefixMaps.commonShex
-     val schema = Schema(pm = pm, rules = Seq(shape))
+     val schema = Schema(pm = pm, shEx = ShEx(rules = Seq(shape), start = None))
      info("Schema: " + schema.toString)
   }
 

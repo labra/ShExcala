@@ -1,12 +1,12 @@
 package es.weso.shex
 
+import es.weso.rdfgraph.nodes._
+import es.weso.rdfgraph._
 import scala.collection.immutable.StringOps
-import es.weso.rdfNode._
 import es.weso.shex.ShapeSyntax._
 import scala.text._
 import Document._
 import es.weso.parser.PrefixMap
-import es.weso.rdfNode.RDFNode
 import arq.iri
 import org.slf4j.LoggerFactory
 

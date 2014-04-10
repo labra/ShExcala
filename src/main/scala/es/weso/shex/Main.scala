@@ -10,6 +10,7 @@ import scala.util.parsing.input.CharSequenceReader
 import java.io.IOException
 import java.io.FileNotFoundException
 import scala.util._
+import es.weso.utils.IO._
 
 class Opts(
     arguments: Array[String],
@@ -96,35 +97,6 @@ object Main extends App {
    } */
  }
 
- /**
-  * Ensures to close a file
-  * [[https://wiki.scala-lang.org/display/SYGN/Loan Loan pattern]]
-  */
- def using[A <: { def close(): Unit }, B](resource: A)(f: A => B): B = {
-   try {
-	 f(resource)
-   } finally {
-	 resource.close()
-   }
- }
-  
-
- def getContents(fileName: String): Try[CharSequence] = {
-  try {
-    using(io.Source.fromFile(fileName)){ source => 
-      Success(source.getLines.mkString("\n"))
-     }
-  } catch {
-  	case e: FileNotFoundException => { 
-  	  Failure(e)
-  	}
-  	case e: IOException => {
-  	  Failure(e)
-  	}
-  }
- }
-
-   
  private def errorDriver(e: Throwable, scallop: Scallop) = e match {
     case Help(s) =>
       println("Help: " + s)
