@@ -11,6 +11,7 @@ import java.io.IOException
 import java.io.FileNotFoundException
 import scala.util._
 import es.weso.utils.IO._
+import es.weso.rdf.RDFModel
 
 class Opts(
     arguments: Array[String],
@@ -36,6 +37,11 @@ class Opts(
     				default = Some(false),
     				descrYes = "show schema", 
         			descrNo = "don't show schema")
+    val showData = toggle("showData", 
+    				prefix = "no-",
+    				default = Some(false),
+    				descrYes = "show data", 
+        			descrNo = "don't show data")
     val verbose    = toggle("verbose", 
     				prefix = "no-",
     				default = Some(false),
@@ -69,32 +75,16 @@ object Main extends App {
     if (opts.showSchema()) {
       println(schema.toString())
     }
-/*    val dataFile = opts.data()
-    if (dataFile != null) {
+   val dataFile = opts.data()
+   if (dataFile != null) {
       for (cs <- getContents(dataFile); 
-          (data,prefixMapData) <- RDF.fromString(cs)) {
-        if (opts.showData()) {
-          println(data.toString())
-        }
-        
-      }  
-    } */
-  }
-/*  getContents(schemaFile) match {
-    case Failure(e) => 
-      println("Exception parsing file " + schemaFile + ": " + e.getLocalizedMessage())
-    case Success(cs) => {
-      log.info("Input string:\n" + cs)
-      Schema.fromString(cs) match {
-        case Success((schema,prefixMap)) => 
-           if (opts.showSchema()) {
-        	 log.info("Schema parsed")
-        	 println(schema.toString())
-    	   }
-        case Failure(e) => println("Exception parsing:" + e)
+          rdfModel <- RDFModel.parse(cs)) {
+      if (opts.showData()) {
+          println(rdfModel.toString())
       }
-    }
-   } */
+    }  
+  } 
+ }
  }
 
  private def errorDriver(e: Throwable, scallop: Scallop) = e match {

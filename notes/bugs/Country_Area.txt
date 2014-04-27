@@ -1,0 +1,69 @@
+The following:
+
+prefix cex: 	      <http://purl.org/weso/computex/ontology#> 
+prefix dcterms:       <http://purl.org/dc/terms/> 
+prefix lb:            <http://purl.org/weso/landbook/ontology#> 
+prefix qb: 	          <http://purl.org/linked-data/cube#> 
+prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix rdfs: 	      <http://www.w3.org/2000/01/rdf-schema#>
+prefix sdmx-concept:  <http://purl.org/linked-data/sdmx/2009/concept#> 
+prefix time:          <http://www.w3.org/2006/time#> 
+prefix xsd:           <http://www.w3.org/2001/XMLSchema#>
+prefix shex:          <http://www.w3.org/2013/ShEx/ns#>
+
+<Area> {
+ rdfs:label xsd:string
+#, a (cex:Area)
+}
+
+<Country> {
+   a ( lb:Country )
+ , lb:faoURI shex:IRI  
+ , lb:iso2 xsd:string 
+ , lb:iso3 xsd:string
+}
+
+--------------
+prefix cex: 	      <http://purl.org/weso/computex/ontology#> 
+prefix dcterms:       <http://purl.org/dc/terms/> 
+prefix lb:            <http://purl.org/weso/landbook/ontology#> 
+prefix qb: 	          <http://purl.org/linked-data/cube#> 
+prefix rdf:           <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix rdfs: 	      <http://www.w3.org/2000/01/rdf-schema#>
+prefix sdmx-concept:  <http://purl.org/linked-data/sdmx/2009/concept#> 
+prefix time:          <http://www.w3.org/2006/time#> 
+prefix xsd:           <http://www.w3.org/2001/XMLSchema#>
+prefix shex:          <http://www.w3.org/2013/ShEx/ns#>
+prefix :             <http://example.org/>
+
+:Spain a cex:Area
+ ; rdfs:label "Spain"@en 
+ .
+
+:France a lb:Country #, cex:Area
+ ; rdfs:label "France"@en
+ ; lb:faoURI <http://www.fao.org/countryprofiles/index/en/?iso3=fra>
+ ; lb:iso2 "FR"
+ ; lb:iso3 "FRA" 
+ .
+ 
+ ---------------------
+ It infers multi-type to France (Area and Country) but if I uncomment the type cex:Area it fails to infer
+  anything for France. I also tried with Virtual:
+  
+VIRTUAL <Area> {
+   rdfs:label xsd:string
+ , a (cex:Area)
+}
+
+and
+
+<Country> &<Area> {
+   a ( lb:Country )
+ , lb:faoURI shex:IRI  
+ , lb:iso2 xsd:string 
+ , lb:iso3 xsd:string
+}
+
+but it also fails...
+
