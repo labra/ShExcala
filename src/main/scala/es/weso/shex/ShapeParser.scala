@@ -101,11 +101,15 @@ trait ShapeParser
 	seqState(unaryExpression,repS(arrowState(andExpression,symbol(","))))(s) ^^ 
       { case (p,s1) => (p._2.foldLeft(p._1){case (x, r) => AndRule(x,r)}, s1) }
   }
-  
+
+  // TODO: Add repeatCount and CODE
   def unaryExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
     ( arc(s) 
     | symbol("(") ~> orExpression(s) <~ symbol(")") 
-    )
+    ) ~ opt(repeatCount) ^^ {
+      case (r,s1) ~ Some(fn) => (fn(r),s1)
+      case (r,s1) ~ None     => (r,s1)
+    }
   }
 
   def label(s: ShapeParserState): Parser[Label] = {
@@ -114,19 +118,16 @@ trait ShapeParser
   }
 
   // TODO: Add not and reverse
-  // TODO: add repeatCount and CODE
   def arc(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    nameClassAndValue(s) ~ opt(repeatCount) ^^
-      {
-        case ((n, v), s1) ~ Some(c) => (ArcRule(None, n, v, c, NoActions), s1)
-        case ((n, v), s1) ~ None    => (ArcRule(None, n, v, Default, NoActions), s1)
-      }
+    nameClassAndValue(s) ^^ {
+        case ((n, v), s1) => (ArcRule(None, n, v), s1)
+    }
   }
   
-  def repeatCount: Parser[Cardinality] = {
-   ( symbol("*") ^^^ Star
-   | symbol("+") ^^^ Plus
-   | symbol("?") ^^^ Opt
+  def repeatCount: Parser[Rule => Rule] = {
+   ( symbol("*") ^^^ star _
+   | symbol("+") ^^^ OneOrMore
+   | symbol("?") ^^^ option _
    )
     // TODO: integer ranges 
   }

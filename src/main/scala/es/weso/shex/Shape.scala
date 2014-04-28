@@ -19,23 +19,14 @@ case class Shape(label: Label, rule: Rule)
 	 extends Positional
 
 
-sealed trait Rule 
-	   extends Positional  
+sealed trait Rule extends Positional  
 
-case class ArcRule(
-    id: Option[Label],
-    n: NameClass,
-    v: ValueClass,
-    c: Cardinality,
-    a: Seq[Action]
-    ) extends Rule
-    
-case class AndRule(e1: Rule, e2: Rule) extends Rule
-case class OrRule(e1: Rule, e2: Rule) extends Rule
+case class ArcRule(id: Option[Label], n: NameClass, v: ValueClass) extends Rule
+case class AndRule(r1: Rule, r2: Rule) extends Rule
+case class OrRule(r1: Rule, r2: Rule) extends Rule
+case class OneOrMore(r: Rule) extends Rule
+case class ActionRule(r: Rule, a: Seq[Action]) extends Rule
 case object NoRule extends Rule
-
-// Using recursive syntax trees we don't need GroupRule 
-//case class GroupRule(rule: Rule, opt: Boolean, a: Seq[Action]) extends Rule
 
 sealed trait Label
 case class IRILabel(iri: IRI) extends Label
@@ -57,7 +48,7 @@ case class ValueReference(l: Label) extends ValueClass
 
 case class Action(label: Label, code: String)
 
-// Utility definitions 
+// TODO: We could safely remove these definitions
 
 case class Cardinality(min: Integer,max: Either[Integer,Unbound])
 case class Unbound()
@@ -67,6 +58,26 @@ lazy val Default = Cardinality(min = 1, max=Left(1))
 lazy val Plus = Cardinality(min = 1, max=Right(unbound))
 lazy val Star = Cardinality(min = 0, max=Right(unbound))
 lazy val Opt  = Cardinality(min = 0, max=Left(1))
+
+//----------
+def option(r: Rule): Rule = {
+ OrRule(r,NoRule)  
+}
+
+def star(r: Rule): Rule = {
+ OrRule(OneOrMore(r),NoRule)  
+}
+
+def range(m:Int,n:Int,r:Rule):Rule = {
+  require(m > 0, "range: m must be positive")
+  require(n >= m,"range: n(" + n + ") must be bigger than m (" + m + ")")
+  if (m == 0) {
+    if (n == 0) NoRule
+    else OrRule(r,range(m,n - 1,r))
+  } else {
+    AndRule(r,range(m-1,n,r))
+  }   
+}
 
 lazy val NoActions : Seq[Action] = Seq()
 // lazy val NoId : Label = IRILabel(iri = IRI(""))

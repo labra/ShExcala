@@ -33,6 +33,10 @@ case class Typing(map:Map[IRI,Set[IRI]]) {
    else Set()
  }
  
+ def combine(other: Typing): Typing = {
+   Typing(map ++ other.map)
+ }
+
 }
 
 object Typing {

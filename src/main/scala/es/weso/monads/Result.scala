@@ -29,6 +29,13 @@ sealed abstract class Result[+A] {
     else appendResult(rs.head,concatResults(rs.tail))
   }
 
+  def filter(p: A => Boolean): Result[A] = {
+    this match {
+      case Passed(rs) => Passed(rs.filter(p))
+      case Failure(msg) => Failure(msg)
+    }
+  }
+
   def flatMap[B](f: A => Result[B]): Result[B] = {
     this match {
       case Passed(rs) => concatResults(rs.map(f))

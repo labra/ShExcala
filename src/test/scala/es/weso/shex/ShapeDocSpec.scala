@@ -19,8 +19,6 @@ class ShapeDocSpec
      val termFoafmbox = NameTerm(t = IRI(foaf + "mbox"))
      val arcRule = ArcRule(n = termFoafmbox,
                            v = typeShexIRI,
-                           c = Default,
-                           a = NoActions,
                            id = None)
      val shape = Shape(IRILabel(IRI("test")),arcRule)
      val sd = ShapeDoc(pm = PrefixMap.empty)
@@ -35,30 +33,22 @@ class ShapeDocSpec
      
      val nameRule = ArcRule(n = termFoaf_name,
                            v = typeXsdString,
-                           c = Default,
-                           a = NoActions,
                            id = None)
                            
      val givenNameRule = ArcRule(n = termFoaf_givenName,
                            v = typeXsdString,
-                           c = Plus,
-                           a = NoActions,
                            id = None)
                            
      val familyNameRule = ArcRule(n = termFoaf_familyName,
                            v = typeXsdString,
-                           c = Default,
-                           a = NoActions,
                            id = None)
                            
-     val givenName_and_familyName = AndRule(e1 = givenNameRule,e2 = familyNameRule)                      
+     val givenName_and_familyName = AndRule(r1 = givenNameRule,r2 = familyNameRule)                      
      
-     val or_names = OrRule(e1 = nameRule,e2 = givenName_and_familyName)
+     val or_names = OrRule(r1 = nameRule,r2 = givenName_and_familyName)
                            
      val mboxRule = ArcRule(n = termFoaf_mbox,
                            v = typeShexIRI,
-                           c = Default,
-                           a = NoActions,
                            id = None)
  
      val shape = Shape(IRILabel(IRI("test")),AndRule(or_names,mboxRule))

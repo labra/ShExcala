@@ -51,6 +51,8 @@ case class ShapeDoc(pm: PrefixMap) {
       case r : ArcRule => arcRuleDoc(r)
       case AndRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text(",") :/: ruleDoc(e2) :/: text(")")
       case OrRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text("|") :/: ruleDoc(e2) :/: text(")")
+      case OneOrMore(r) => "(" :/: ruleDoc(r) :/: text(")+")
+      case ActionRule(r,a) => "(" :/: ruleDoc(r) :/: text(") %") :/: actionDoc(a)
       case NoRule => text(" ")
       /*case GroupRule(rule,opt,a) => 
           text("(") :: space :: 
@@ -63,9 +65,9 @@ case class ShapeDoc(pm: PrefixMap) {
 
   def arcRuleDoc(arc: ArcRule) : Document = {
     nameClassDoc(arc.n) :: space ::
-    valueClassDoc(arc.v) :: space ::
-    cardinalityDoc(arc.c) :: space ::
-    actionDoc(arc.a)
+    valueClassDoc(arc.v) 
+//    cardinalityDoc(arc.c) :: space ::
+//    actionDoc(arc.a)
   }
 
   def nameClassDoc(n : NameClass) : Document = {
@@ -111,7 +113,8 @@ case class ShapeDoc(pm: PrefixMap) {
     text(iri2String(i))  
   }
   
-  def actionDoc(a : Seq[Action]) : Document = empty
+  def actionDoc(a : Seq[Action]) : Document = 
+    ???
   
   def pairDoc(d1: Document, d2: Document) : Document = 
     "(" :: d1 :: "," :: d2 :: ")" :: empty
@@ -129,12 +132,10 @@ case class ShapeDoc(pm: PrefixMap) {
   }
 
 
-
   def rules2String(rs: Seq[Shape]): String = {
     prettyPrint(rulesDoc(rs))
   }
   
-
   def rdfNode2String(n: RDFNode): String = {
     n match {
       case BNodeId(id) => "_:" + id

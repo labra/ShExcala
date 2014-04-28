@@ -131,9 +131,7 @@ class ShapeParserSuite extends ShapeParser
      val shape : ArcRule = ArcRule(
     		  id = None, 
           	  n = NameTerm(IRI(ex + "a")),
-          	  v = ValueType(IRI(xsd + "string")),
-          	  c = Default,
-          	  a = NoActions)
+          	  v = ValueType(IRI(xsd + "string")))
           	  
      val expected : ShEx = ShEx(
            rules = Seq(Shape(label= IRILabel(IRI("http://example.org/s")), 
@@ -233,10 +231,7 @@ class ShapeParserSuite extends ShapeParser
        val result = ShapeParser.parse(ShapeParser.arc(state),str)
        val expected : ArcRule = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + a)),
-                           v  = ValueType(IRI(prefix + b)),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + b)))
        result.get._1 should be (expected)
      }
 
@@ -250,10 +245,7 @@ class ShapeParserSuite extends ShapeParser
        val result = ShapeParser.parse(ShapeParser.typeSpec(state),str)
        val expected : ArcRule = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + a)),
-                           v  = ValueType(IRI(prefix + b)),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + b)))
        result.get._1 should be (expected)
      }
 
@@ -270,10 +262,7 @@ class ShapeParserSuite extends ShapeParser
          Shape(label = IRILabel(IRI(prefix + a)),
                rule  = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + b)),
-                           v  = ValueType(IRI(prefix + c)),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + c)))
               )
        result.get._1 should be (expected)
      }
@@ -293,10 +282,7 @@ class ShapeParserSuite extends ShapeParser
        val labelB = IRILabel(IRI(prefix + b))
        val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + b)),
-                           v  = ValueType(IRI(prefix + c)),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + c)))
        val shape1 : Shape = Shape(label = labelA, rule = ruleBC )
        val shape2 : Shape = Shape(label = labelB, rule = ruleBC )
        val expected : ShEx = ShEx(rules=List(shape1, shape2),start=None)
@@ -312,10 +298,7 @@ class ShapeParserSuite extends ShapeParser
       val result = parse(shExParser(state),str)
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "c")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "c")))
        val labelA = IRILabel(IRI(prefix + "a"))
        val shape1 : Shape = Shape(label = labelA, rule = ruleBC )
        val shex : ShEx = ShEx(rules=List(shape1),start=None)
@@ -343,16 +326,10 @@ class ShapeParserSuite extends ShapeParser
       val state = ShapeParserState.initial
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "c")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "c")))
       val ruleBD = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "d")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "d")))
 
       val rule = OrRule(ruleBC,ruleBD)
       val labelA = IRILabel(IRI(prefix + "a"))
@@ -368,16 +345,10 @@ class ShapeParserSuite extends ShapeParser
       val state = ShapeParserState.initial
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "c")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "c")))
       val ruleBD = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "d")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "d")))
 
       val rule = AndRule(ruleBC,ruleBD)
       val labelA = IRILabel(IRI(prefix + "a"))
@@ -394,22 +365,13 @@ class ShapeParserSuite extends ShapeParser
       val state = ShapeParserState.initial
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "c")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "c")))
       val ruleBD = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "d")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "d")))
       val ruleBE = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "e")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "e")))
 
       val rule = AndRule(ruleBC,OrRule(ruleBD,ruleBE))
       val labelA = IRILabel(IRI(prefix + "a"))
@@ -425,22 +387,13 @@ class ShapeParserSuite extends ShapeParser
       val state = ShapeParserState.initial
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "c")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "c")))
       val ruleBD = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "d")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "d")))
       val ruleBE = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "e")),
-                           c  = Default,
-                           a  = NoActions
-                          )
+                           v  = ValueType(IRI(prefix + "e")))
 
       val rule = OrRule(AndRule(ruleBC,ruleBD),ruleBE)
       val labelA = IRILabel(IRI(prefix + "a"))
@@ -454,11 +407,9 @@ class ShapeParserSuite extends ShapeParser
       val str = "PREFIX : <" + prefix + ">\n" + 
                 ":a { :b :c* }"
       val state = ShapeParserState.initial
-      val ruleBC = ArcRule(id = None,
+      val ruleBC = star(ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
-                           v  = ValueType(IRI(prefix + "c")),
-                           c  = Star,
-                           a  = NoActions)
+                           v  = ValueType(IRI(prefix + "c"))))
       val rule = ruleBC
       val labelA = IRILabel(IRI(prefix + "a"))
       val shape : Shape = Shape(label = labelA, rule = rule )
