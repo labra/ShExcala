@@ -79,30 +79,26 @@ object Result {
   def failure(msg:String):Result[Nothing] = Failure(msg)
 
   def parts[A](set: Set[A]): Result[(Set[A],Set[A])] = {
-    ???
+    Passed(pSet(set))
   }
   
-  /* pSet s generates the power set of s, pairing each subset
-     with its complement.
+  /* pSet s generates the power set of s, pairing each subset with its complement.
      e.g. pSet [1,2] = [([1,2],[]),([1],[2]),([2],[1]),([],[1,2])].
-     This piece of code has been inspired from: Brent Yorgey: Generating Multiset Partitions
-     http://www.haskell.org/wikiupload/d/dd/TMR-Issue8.pdf
 */
-  def pSet[A](ls:List[A]):List[(List[A],List[A])] = {
-   // def mapx[A]()= 
-   def first[A,B,C](f: A => C, pair: (A,B)):(C,B) = (f(pair._1),pair._2)
-   def second[A,B,C](f: B => C, pair: (A,B)):(A,C) = (pair._1,f(pair._2))
-   
-   ls match {
-     case Nil => List((List(),List()))
-     case x :: xs => ??? // mapx first ++ mapx second
-   }  
+  def pSet[A](set:Set[A]):Stream[(Set[A],Set[A])] = {
+   if (set.isEmpty) Stream((Set(),Set()))
+   else { 
+     val sets = pSet(set.tail)
+     val x = set.head
+     sets.map(addFirst(x)) ++ sets.map(addSecond(x))
+   }
   }
-  /*
-    pSet [] = [([],[])]
-    pSet (x:xs) = mapx first ++ mapx second where
-      mapx which = map (which (x:)) $ pSet xs
-      first f  (x,y) = (f x, y)
-      second f (x,y) = (x, f y)
-  */
+  
+  def addFirst[A](x:A)(pair:(Set[A],Set[A])):(Set[A],Set[A]) = {
+    (pair._1 + x, pair._2)
+  }
+
+  def addSecond[A](x:A)(pair:(Set[A],Set[A])):(Set[A],Set[A]) = {
+    (pair._1, pair._2 + x)
+  }
 }
