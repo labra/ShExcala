@@ -88,6 +88,7 @@ case class ShapeDoc(pm: PrefixMap) {
     }    
   }
   
+  /*
   def cardinalityDoc(c : Cardinality): Document = {
     c match {
       case Star => text("*")
@@ -103,7 +104,7 @@ case class ShapeDoc(pm: PrefixMap) {
       case Left(n) => text(n.toString)
       case Right(_) => text("") // Todo: check specification how to express ranges of type (m,unbound)
     }
-  }
+  } */
 
   def rdfNodeDoc(n : RDFNode): Document = {
     text(rdfNode2String(n))  

@@ -10,13 +10,21 @@ import es.weso.monads.Result
 import es.weso.parser.PrefixMap
 import scala.util.parsing.input.Positional
 
-case class Context() {
-  
+case class Context(graph: RDFGraph) {
+  def triplesFrom(iri:IRI) : Set[RDFTriple] = { 
+    ??? // graph.triplesFrom(iri)
+  }
 }
 
 object ShapeValidator {
-  
-def combineTypings(x:Typing,y:Typing):Typing = ???
+
+/*
+def matchShape(ctx:Context, iri: IRI, shape: Shape): Result[Typing] = {
+ val triples = ctx.triplesFrom(iri)
+ for (
+   t <- matchRule(ctx,triples,shape.rule)
+ ) yield (t.addType(iri,shape.label.iri)) 
+} */
 
 def matchRule (
     ctx: Context, 
@@ -33,26 +41,72 @@ def matchRule (
 
   case OrRule(r1,r2) => 
     matchRule(ctx,g,r1) orelse 
-    matchRule(ctx,g,r1)
+    matchRule(ctx,g,r2)
   
   case OneOrMore(r) => {
     matchRule(ctx,g,r) orelse
     ( for (
         (g1,g2) <- parts(g)
       ; t1 <- matchRule(ctx,g1,r)
-      ; t2 <- matchRule(ctx,g2,r)
+      ; t2 <- matchRule(ctx,g2,rule)
       ) yield t1 combine t2
     )
   }
 
-  case NoRule => if (g.isEmpty) unit(emptyTyping)
-  else failure("EmptyRule: graph non empty")
+  case NoRule => 
+    if (g.isEmpty) unit(emptyTyping)
+    else failure("EmptyRule: graph non empty")
 
   case ActionRule(r,a) => failure("Action not implemented yet")
-  case ArcRule(id,n,v) => failure("Arc not implemented yet")
-
-  case _ => failure("Not implemented yet")
+  case ArcRule(id,n,v) =>
+    if (g.size == 1) {
+      val t = g.head
+      for ( b <- matchName(ctx,t.pred,n)
+          ; t <- matchValue(ctx,t.obj,v)
+          ) yield t
+    } else 
+       failure("Arc expected but more zero or more than one triple found in graph")
 
  }
  
+
+ def matchName(ctx: Context, pred: IRI, n: NameClass): Result[Boolean] =
+   n match {
+   case NameTerm(t) => {
+     if (pred == t) unit(true)
+     else failure("matchName: iri=" + pred + " does not match name=" + t)
+   }
+   case NameAny(excl) => {
+     if (matchStems(excl, pred)) failure("matchName: iri= " + pred + " appears in excl= " + excl)
+     else unit(true)
+   }
+   case NameStem(s) => {
+     if (s.matchStem(pred)) unit(true) 
+     else failure("matchName: iri= " + pred + " does not match stem= " + s)
+   } 
+ }
+   
+   
+ def matchValue(ctx: Context, obj: RDFNode, v: ValueClass): Result[Typing] = { 
+  v match {
+    case ValueType(v) => 
+      for ( b <- matchType(obj,v); if (b)) yield emptyTyping
+    case ValueSet(s) => 
+      if (s contains(obj)) unit(emptyTyping)
+      else failure("matchValue: obj" + obj + " is not in set " + s)
+    case ValueAny(stem) => ???
+    case ValueStem(s) => ???
+    case ValueReference(l) => ???
+  }
+ }
+   
+ def matchType(obj: RDFNode, vtype: RDFNode): Result[Boolean] = {
+   obj match {
+     case lit:Literal => if (lit.dataType == vtype) unit(true)
+                         else unit(false)
+     case _ => failure ("matchType: obj " + obj + " must is not a literal")
+   }
+ }
+ 
+ def emptyContext : Context = Context()
 }

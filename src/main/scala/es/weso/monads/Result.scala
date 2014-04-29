@@ -10,6 +10,7 @@ sealed abstract class Result[+A] {
   }
   
   def isFailure: Boolean
+  def isValid: Boolean = !isFailure
 
   def noResult[B]: Result[B] = Passed(Stream())
   
@@ -23,11 +24,16 @@ sealed abstract class Result[+A] {
   }
   
 
+  
   def concatResults[B](rs: Stream[Result[B]]): Result[B] = {
     // TODO: substitute by foldLeft
     if (rs.isEmpty) noResult
     else appendResult(rs.head,concatResults(rs.tail))
   }
+
+  // TODO: I added this declaration to avoid warning...
+  // check if there is a better way to define withFilter
+  def withFilter = filter _
 
   def filter(p: A => Boolean): Result[A] = {
     this match {
@@ -64,16 +70,11 @@ sealed abstract class Result[+A] {
 }
 
 case class Passed[+A](passed: Stream[A]) extends Result[A] {
-
   def isFailure = passed.isEmpty
-  
 }
   
 case class Failure(msg: String) extends Result[Nothing] {
-
-
   def isFailure = true
-
 }
 
 case class ResultException(msg: String) extends RuntimeException(msg)
@@ -84,7 +85,7 @@ object Result {
   def unit[A](x:A) : Result[A] = Passed(Stream(x))
 
   def failure(msg:String):Result[Nothing] = Failure(msg)
-
+  
   def parts[A](set: Set[A]): Result[(Set[A],Set[A])] = {
     Passed(pSet(set))
   }

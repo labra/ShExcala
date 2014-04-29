@@ -32,12 +32,10 @@ sealed trait Label
 case class IRILabel(iri: IRI) extends Label
 case class BNodeLabel(bnodeId: Int) extends Label
 
-case class IRIStem(iri: IRI, isStem: Boolean)
-
 sealed trait NameClass
 case class NameTerm(t: IRI) extends NameClass
 case class NameAny(excl: Set[IRIStem]) extends NameClass
-case class NameStem(s: IRI) extends NameClass
+case class NameStem(s: IRIStem) extends NameClass
 
 sealed trait ValueClass
 case class ValueType(v: RDFNode) extends ValueClass
@@ -49,7 +47,7 @@ case class ValueReference(l: Label) extends ValueClass
 case class Action(label: Label, code: String)
 
 // TODO: We could safely remove these definitions
-
+/*
 case class Cardinality(min: Integer,max: Either[Integer,Unbound])
 case class Unbound()
 
@@ -58,6 +56,12 @@ lazy val Default = Cardinality(min = 1, max=Left(1))
 lazy val Plus = Cardinality(min = 1, max=Right(unbound))
 lazy val Star = Cardinality(min = 0, max=Right(unbound))
 lazy val Opt  = Cardinality(min = 0, max=Left(1))
+
+def range(m: Integer, n: Integer): Cardinality = {
+  require(n > m)
+  Cardinality(min = m, max = Left(n))
+}
+*/
 
 //----------
 def option(r: Rule): Rule = {
@@ -82,9 +86,11 @@ def range(m:Int,n:Int,r:Rule):Rule = {
 lazy val NoActions : Seq[Action] = Seq()
 // lazy val NoId : Label = IRILabel(iri = IRI(""))
 
-def range(m: Integer, n: Integer): Cardinality = {
-  require(n > m)
-  Cardinality(min = m, max = Left(n))
+
+case class IRIStem(iri: IRI, isStem: Boolean) {
+  def matchStem(other: IRI): Boolean = {
+    other.str.startsWith(iri.str)
+  }
 }
 
 lazy val foaf = "http://xmlns.com/foaf/0.1/"
@@ -96,5 +102,8 @@ lazy val typeShexBNode  	= ValueType(v = IRI(shex + "BNode"))
 lazy val typeShexNonLiteral	= ValueType(v = IRI(shex + "NonLiteral"))
 lazy val typeXsdString		= ValueType(v = IRI(xsd  + "string"))
 
+def matchStems(stems:Set[IRIStem], iri:IRI): Boolean = {
+  stems.exists(_.matchStem(iri)) 
+}
 
 }
