@@ -23,8 +23,6 @@ sealed abstract class Result[+A] {
     }
   }
   
-
-  
   def concatResults[B](rs: Stream[Result[B]]): Result[B] = {
     // TODO: substitute by foldLeft
     if (rs.isEmpty) noResult
@@ -85,10 +83,32 @@ object Result {
   def unit[A](x:A) : Result[A] = Passed(Stream(x))
 
   def failure(msg:String):Result[Nothing] = Failure(msg)
+
+  def passSome[A,B](ls:List[A], eval: A => Result[B]): Result[B] = {
+    ls match {
+      case Nil => Passed(Stream())
+      case x :: xs => eval(x) orelse passSome(xs,eval)
+    }
+  }
+
+  def passAll[A,B](ls:List[A], current: B, eval: (A,B) => Result[B]): Result[B] = {
+    ls match {
+      case Nil => Passed(Stream(current))
+      case x :: xs => eval(x,current).flatMap(next => passAll(xs,next,eval))
+    }
+  }
   
+  def liftOption[A](opt:Option[A]):Result[A] = {
+    opt match {
+      case None => Failure("Option with value None")
+      case Some(v) => Passed(Stream(v))
+    }
+  }
+
   def parts[A](set: Set[A]): Result[(Set[A],Set[A])] = {
     Passed(pSet(set))
   }
+ 
   
   /* pSet s generates the power set of s, pairing each subset with its complement.
      e.g. pSet [1,2] = [([1,2],[]),([1],[2]),([2],[1]),([],[1,2])].

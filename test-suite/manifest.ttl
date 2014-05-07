@@ -12,18 +12,18 @@
     <#a-string-syntax>
     <#simple-star>
     <#a-string-valid>
-	<#country-observations-valid>
+#	<#country-observations-valid>
 	<#a-string-no-valid>
     ) .
 
-<#a-string-syntax> rdf:type shext:ShexSyntax ;
+<#a-string-syntax> rdf:type shext:PositiveSyntax ;
    mf:name      "a-string-syntax" ;
    rdfs:comment "Shex Expression with an single arc rule" ;
    shext:status mf:proposed ;
    shext:schema <a-string.shex> ;
    .
 
-<#simple-star> rdf:type shext:ShexSyntax ;
+<#simple-star> rdf:type shext:PositiveSyntax ;
    mf:name      "simple-star" ;
    rdfs:comment "Shex Expression with an single arc rule and a star" ;
    shext:status mf:proposed ;
@@ -38,15 +38,23 @@
    shext:instance <a-string.ttl> ;
    .
 
-<#country-observations-valid> rdf:type shext:Valid ;
-   mf:name      "country-observations-valid" ;
-   rdfs:comment "a country with several observations" ;
-   shext:status mf:proposed ;
-   shext:schema   <country-observations.shex> ;
-   shext:instance <country-observations.ttl> ;
-   .
+#<#country-observations-valid> rdf:type shext:Valid ;
+#   mf:name      "country-observations-valid" ;
+#   rdfs:comment "a country with several observations" ;
+#   shext:status mf:proposed ;
+#   shext:schema   <country-observations.shex> ;
+#   shext:instance <country-observations.ttl> ;
+#   .
 
-<#a-string-no-valid> rdf:type shext:NoValid ;
+<#a-2string-no-valid> rdf:type shext:NonValid ;
+   mf:name      "a-2string-no-valid" ;
+   rdfs:comment "a-2string 2 strings for p" ;
+   shext:status mf:proposed ;
+   shext:schema   <a-string.shex> ;
+   shext:instance <a-2string.ttl> ;
+   .
+   
+<#a-string-no-valid> rdf:type shext:NonValid ;
    mf:name      "a-string-no-valid" ;
    rdfs:comment "a-string with no value for p" ;
    shext:status mf:proposed ;

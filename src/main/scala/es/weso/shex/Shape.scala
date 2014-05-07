@@ -9,11 +9,18 @@ import scala.util.parsing.input.Positional
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
  * */
-
 object ShapeSyntax {
   
 case class ShEx(rules:Seq[Shape], start: Option[Label]) 
-	 extends Positional // Positional helps Parser Combinators to show positions
+	 extends Positional // Positional helps Parser Combinators to show positions 
+	 {
+ 
+  def findShape(label:Label): Option[Shape] = {
+    val rs = rules.filter(r => r.label == label)
+    if (rs.size == 1) Some(rs.head)
+    else None
+  }
+}
 
 case class Shape(label: Label, rule: Rule)
 	 extends Positional
@@ -28,9 +35,17 @@ case class OneOrMore(r: Rule) extends Rule
 case class ActionRule(r: Rule, a: Seq[Action]) extends Rule
 case object NoRule extends Rule
 
-sealed trait Label
-case class IRILabel(iri: IRI) extends Label
-case class BNodeLabel(bnodeId: Int) extends Label
+sealed trait Label {
+  def getIRI():IRI
+}
+
+case class IRILabel(iri: IRI) extends Label {
+  override def getIRI = iri
+}
+
+case class BNodeLabel(bnodeId: Int) extends Label {
+  override def getIRI = ???
+}
 
 sealed trait NameClass
 case class NameTerm(t: IRI) extends NameClass

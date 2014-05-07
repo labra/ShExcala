@@ -11,7 +11,8 @@ import java.io.IOException
 import java.io.FileNotFoundException
 import scala.util._
 import es.weso.utils.IO._
-import es.weso.rdf.RDFModel
+import es.weso.rdf.RDFTriples
+import es.weso.rdf.RDF
 
 class Opts(
     arguments: Array[String],
@@ -23,9 +24,9 @@ class Opts(
               |""".stripMargin)
     footer("Enjoy!")
     version("ShExcala 0.1")
-    val data 	= opt[String]("data",
+    val rdf     = opt[String]("rdf",
     				required=false,
-    				descr = "Data file")
+    				descr = "RDF Data file")
     val schema 	= opt[String]("schema",
     				required=true,
     				descr = "Schema file")
@@ -37,7 +38,7 @@ class Opts(
     				default = Some(false),
     				descrYes = "show schema", 
         			descrNo = "don't show schema")
-    val showData = toggle("showData", 
+    val showRDF   = toggle("showData", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "show data", 
@@ -68,24 +69,40 @@ object Main extends App {
   val conf 		= ConfigFactory.load()
   val opts 		= new Opts(args,errorDriver)
 
-  val schemaFile = opts.schema()
-  for (cs <- getContents(schemaFile); 
-      (schema,prefixMap) <- Schema.fromString(cs) 
-  ) {
-    if (opts.showSchema()) {
+  val result = 
+    for ( schema <- getSchema(opts.schema())
+        ; rdf <- getRDF(opts.rdf())
+        ) yield {
+   if (opts.showSchema()) {
       println(schema.toString())
     }
-   val dataFile = opts.data()
-   if (dataFile != null) {
-      for (cs <- getContents(dataFile); 
-          rdfModel <- RDFModel.parse(cs)) {
-      if (opts.showData()) {
-          println(rdfModel.toString())
-      }
-    }  
-  } 
+   if (opts.showRDF()) {
+     println(rdf.toString())
+   }
+   val ctx = Context(rdf = rdf, shEx = schema.shEx)
+   ShapeValidator.matchAll(ctx)
+  }
+
+  result match {
+    case Success(ts) => println("Success: " + ts.toString)
+    case Failure(f) => println("Failure: " + f.toString)
+  }
  }
+ 
+ private def getSchema(fileName: String) : Try[Schema] = {
+  for (
+        cs <- getContents(fileName) 
+      ; (schema,prefixMap) <- Schema.fromString(cs)
+      ) yield schema
  }
+
+ private def getRDF(fileName: String) : Try[RDF] = {
+  for (
+        cs <- getContents(fileName) 
+      ; triples <- RDFTriples.parse(cs)
+      ) yield triples
+ }
+
 
  private def errorDriver(e: Throwable, scallop: Scallop) = e match {
     case Help(s) =>

@@ -4,27 +4,43 @@ import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import es.weso.rdfgraph.statements._
 import es.weso.shex.ShapeSyntax._
+
 import es.weso.shex.Typing._
 import es.weso.monads.Result._
 import es.weso.monads.Result
 import es.weso.parser.PrefixMap
 import scala.util.parsing.input.Positional
+import es.weso.rdf._
+import es.weso.shex.Context._
 
-case class Context(graph: RDFGraph) {
-  def triplesFrom(iri:IRI) : Set[RDFTriple] = { 
-    ??? // graph.triplesFrom(iri)
-  }
-}
 
 object ShapeValidator {
 
-/*
+def matchAll(ctx:Context): Result[Typing] = {
+
+  def matchWithTyping(iri: IRI, typing: Typing)(shape: Shape): Result[Typing] = {
+    for ( t <- matchShape(ctx,iri,shape)
+        ) 
+    yield typing.combine(t)
+  }
+
+  def matchSomeWithTyping(iri: IRI, typing: Typing): Result[Typing] = {
+    Result.passSome(ctx.getShapes, matchWithTyping(iri, typing)) 
+  }
+
+  Result.passAll(ctx.getIRIs, emptyTyping, matchSomeWithTyping)
+
+}
+
+
+
 def matchShape(ctx:Context, iri: IRI, shape: Shape): Result[Typing] = {
- val triples = ctx.triplesFrom(iri)
+ val triples = ctx.triplesWithSubject(iri)
  for (
    t <- matchRule(ctx,triples,shape.rule)
- ) yield (t.addType(iri,shape.label.iri)) 
-} */
+ ; newT <- Result.liftOption(t.addType(iri,shape.label.getIRI)) 
+ ) yield newT 
+} 
 
 def matchRule (
     ctx: Context, 
@@ -96,7 +112,14 @@ def matchRule (
       else failure("matchValue: obj" + obj + " is not in set " + s)
     case ValueAny(stem) => ???
     case ValueStem(s) => ???
-    case ValueReference(l) => ???
+    case ValueReference(l) => 
+      if (obj.isIRI) {
+      for (
+        shape <- ctx.getShape(l)
+      ; newT <- matchShape(ctx,obj.toIRI,shape)
+      ) yield newT
+      }
+      else failure("ValueReference: object " + obj + " must be an IRI")
   }
  }
    
@@ -108,5 +131,7 @@ def matchRule (
    }
  }
  
- def emptyContext : Context = Context()
+/* def emptyContext : Context = 
+   Context(RDFTriples.noTriples,
+   ) */
 }

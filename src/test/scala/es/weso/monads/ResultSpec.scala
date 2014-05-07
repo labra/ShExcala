@@ -62,6 +62,48 @@ class ResultSpec
     bm.isFailure should be(true)
   }
 
+   it("should pass all...if all pass") {
+    val xs = List(1,2,3)
+    val current = true
+    def eval(x:Int,b:Boolean) = 
+      if (x > 0 && b) unit(true)
+      else failure("x <= 0")        
+    passAll(xs,current,eval).isValid should be(true)
+  }
+
+  it("should not pass all...if one does not pass") {
+    val xs = List(1,-2,3)
+    val current = true
+    def eval(x:Int,b:Boolean) = 
+      if (x > 0 && b) unit(true)
+      else failure("x <= 0")        
+    passAll(xs,current,eval).isFailure should be(true)
+  }
+   
+   it("should pass some...if all pass") {
+    val xs = List(1,2,3)
+    def eval(x:Int) = 
+      if (x > 0 ) unit(true)
+      else failure("x <= 0")        
+    passSome(xs,eval).isValid should be(true)
+  }
+
+  it("should pass some...if one pass") {
+    val xs = List(-1,2,-3)
+    def eval(x:Int) = 
+      if (x > 0) unit(true)
+      else failure("x <= 0")        
+    passSome(xs,eval).isValid should be(true)
+  }
+
+  it("should not pass ...if none pass") {
+    val xs = List(-1,-2,-3)
+    def eval(x:Int) = 
+      if (x > 0) unit(true)
+      else failure("x <= 0")        
+    passSome(xs,eval).isFailure should be(true)
+  }
+
   it("A sequence with a fail and orelse...recovers") {
     val u1 : Result[Int] = unit(1)
     val f : Result[Int] = failure("fail")

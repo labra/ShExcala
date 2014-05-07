@@ -35,7 +35,7 @@ trait ShapeParser
    *
    */
   def schemaParser(s: ShapeParserState): Parser[(Schema, ShapeParserState)] =
-    shExParser(s) ^^
+    shExParser(s) <~ opt(WS) ^^
       { case (shEx, s) => (Schema(s.namespaces,shEx), s) }
 
 
