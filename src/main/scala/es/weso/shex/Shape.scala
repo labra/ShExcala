@@ -55,7 +55,7 @@ case class NameStem(s: IRIStem) extends NameClass
 sealed trait ValueClass
 case class ValueType(v: RDFNode) extends ValueClass
 case class ValueSet(s: Seq[RDFNode]) extends ValueClass
-case class ValueAny(stem: IRIStem) extends ValueClass
+case class ValueAny(excl: Set[IRIStem]) extends ValueClass
 case class ValueStem(s: IRI) extends ValueClass
 case class ValueReference(l: Label) extends ValueClass
 
@@ -103,9 +103,12 @@ lazy val NoActions : Seq[Action] = Seq()
 
 
 case class IRIStem(iri: IRI, isStem: Boolean) {
-  def matchStem(other: IRI): Boolean = {
-    other.str.startsWith(iri.str)
+
+  def matchStem(other: RDFNode): Boolean = {
+    other.isIRI && 
+    other.toIRI.str.startsWith(iri.str)
   }
+
 }
 
 lazy val foaf = "http://xmlns.com/foaf/0.1/"
@@ -117,8 +120,8 @@ lazy val typeShexBNode  	= ValueType(v = IRI(shex + "BNode"))
 lazy val typeShexNonLiteral	= ValueType(v = IRI(shex + "NonLiteral"))
 lazy val typeXsdString		= ValueType(v = IRI(xsd  + "string"))
 
-def matchStems(stems:Set[IRIStem], iri:IRI): Boolean = {
-  stems.exists(_.matchStem(iri)) 
+def matchStems(stems:Set[IRIStem], node:RDFNode): Boolean = {
+  stems.exists(_.matchStem(node)) 
 }
 
 }

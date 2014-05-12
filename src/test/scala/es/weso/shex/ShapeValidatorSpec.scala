@@ -10,6 +10,8 @@ import org.scalatest.prop.Checkers
 import es.weso.shex.ShapeValidator._
 import es.weso.shex.Typing._
 import es.weso.shex.Context._
+import es.weso.parser.PrefixMap
+import es.weso.rdf.RDFTriples
 
 class ShapeValidatorSpec 
 	extends FunSpec 
@@ -181,14 +183,99 @@ class ShapeValidatorSpec
    }
 
  }
- 
- describe("ShapeValidator with parser") {
-   it("should validate empty rule") {
+
+ describe("ShapeValidator of shapes") {
+   
+   it("should validate empty shape") {
      val ctx = emptyContext
-     val shape = "<a> { }"
-     val rdf = "<a> <b> <c> ."
-     // TODO
+     val shape = Shape(label = IRILabel(IRI("a")), rule = NoRule)
+     matchShape(ctx,IRI("a"),shape)
    }
+
+   it("should not validate shape with a triple") {
+     val epm = PrefixMap.empty
+     val g = RDFTriples(triples= Set(RDFTriple(IRI("a"),IRI("p"),StringLiteral("hi"))), pm=epm)
+     val shape = Shape(label = IRILabel(IRI("a")), rule = NoRule)
+     val ctx = Context(rdf=g,shEx = ShEx(rules=Seq(shape),start =None))
+     matchShape(ctx,IRI("a"),shape).isFailure should be(true)
+   } 
+   
+   it("should validate shape with a triple") {
+     val epm = PrefixMap.empty
+     val g = RDFTriples(triples= Set(RDFTriple(IRI("a"),IRI("p"),StringLiteral("hi"))), pm=epm)
+     val shape = Shape(label = IRILabel(IRI("l")), 
+         			   rule = ArcRule(id = None, n = NameTerm(IRI("p")), v = typeXsdString)
+         			  )
+     val ctx = Context(rdf=g, shEx = ShEx(rules=Seq(shape),start =None))
+     val result = matchShape(ctx,IRI("a"),shape)
+     info("Result:\n" + result.toString)
+     result.isValid should be(true)
+   }
+ 
  }
+
+ 
+ describe("ShapeValidator of schema with a single triple - rule") {
+   it("should validate empty rule") {
+     val epm = PrefixMap.empty
+     val g = RDFTriples(triples= Set(RDFTriple(IRI("a"),IRI("p"),StringLiteral("hi"))), pm=epm)
+     val shape = Shape(label = IRILabel(IRI("l")), 
+         			   rule = ArcRule(id = None, n = NameTerm(IRI("p")), v = typeXsdString)
+         			  )
+     val shEx= ShEx(rules=Seq(shape),start =None)
+     val ctx = Context(rdf=g, shEx = shEx)
+     val schema = Schema(pm = epm, shEx = shEx)
+     val result = Schema.matchSchema(IRI("a"), g, schema)
+     info("Result:\n" + result.toString)
+     result.isValid should be(true)
+  }
+ }
+
+ describe("ShapeValidator of schema with a single triple and a rule with 2 shapes repeated ") {
+   it("should validate empty rule") {
+     val epm = PrefixMap.empty
+     val g = RDFTriples(triples= Set(RDFTriple(IRI("a"),IRI("p"),StringLiteral("hi"))), pm=epm)
+     val shape1 = Shape(label = IRILabel(IRI("label1")), 
+         			   rule = ArcRule(id = None, n = NameTerm(IRI("p")), v = typeXsdString)
+         			  )
+     val shape2 = Shape(label = IRILabel(IRI("label2")), 
+         			   rule = ArcRule(id = None, n = NameAny(excl = Set()), v = typeXsdString)
+         			  )         			  
+     val shEx= ShEx(rules=Seq(shape1,shape2),start =None)
+     val ctx = Context(rdf=g, shEx = shEx)
+     val schema = Schema(pm = epm, shEx = shEx)
+     val result = Schema.matchSchema(IRI("a"), g, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+  }
+ }
+
+ describe("ShapeValidator with parser") {
+
+   it("should not validate empty rule") {
+     val ctx = emptyContext
+     val strShape = "<a> { }"
+     val strRDF = "<x> <p> <y> ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(false)
+   }
+   
+    it("should validate single rule") {
+     val ctx = emptyContext
+     val strShape = "<a> { <p> . }"
+     val strRDF = "<x> <p> <y> ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+   
+ }
+ 
+ 
  
 }

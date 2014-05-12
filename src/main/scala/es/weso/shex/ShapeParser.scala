@@ -132,14 +132,18 @@ trait ShapeParser
     // TODO: integer ranges 
   }
   // TODO: add Any, Stem
-  def nameClassAndValue(s: ShapeParserState): Parser[((NameClass, ValueClass), ShapeParserState)] = {
-    iri(s.namespaces) ~ fixedValues(s) ^^ { case (i ~ v) => ((NameTerm(i), v._1), v._2) }
-  }
+  def nameClassAndValue(s: ShapeParserState): Parser[((NameClass, ValueClass), ShapeParserState)] = 
+   ( iri(s.namespaces) ~ fixedValues(s) ^^ { case (i ~ v) => ((NameTerm(i), v._1), v._2) }
+   | dot ~ fixedValues(s) ^^ { case (_ ~ v) => ((NameAny(excl=Set()),v._1), v._2) } 
+   )
+
+  def dot = symbol(".") 
 
   // TODO: add typeSpec ?
   def fixedValues(s: ShapeParserState): Parser[(ValueClass, ShapeParserState)] = {
     opt(WS) ~>
       ( token("@") ~> label(s) ^^ { case l => (ValueReference(l), s) }
+      | dot ^^^ (ValueAny(excl = Set()),s)
       | valueSet(s)
       | valueObject(s) ^^ { case (o, s) => (ValueType(o), s) }
       ) <~ opt(WS)

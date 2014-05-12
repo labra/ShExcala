@@ -5,8 +5,11 @@ import es.weso.rdfgraph._
 import es.weso.parser.PrefixMap
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.ShapeParser._
+import es.weso.shex.ShapeValidator._
 import scala.util.parsing.input.Positional
 import scala.util.{Try, Success, Failure}
+import es.weso.monads.Result
+import es.weso.rdf.RDF
 
 
 /**
@@ -21,6 +24,9 @@ case class Schema(pm: PrefixMap, shEx: ShEx) extends Positional {
     sd.schema2String(this)
   }
   
+  def getLabels(): List[Label] = {
+    shEx.rules.map(_.label).toList
+  }
 
 }
 
@@ -30,5 +36,15 @@ object Schema {
     ShapeParser.parse(cs) 
   }  
 
-  def matchShape(schema: Schema, graph: RDFGraph) : ShExResult = ???
+  def matchSchema(iri:IRI, rdf:RDF, schema: Schema): Result[Typing] = {
+    def ctx = Context(rdf=rdf,shEx=schema.shEx)
+    
+    def matchLabel(lbl: Label): Result[Typing] = {
+      for ( shape <- ctx.getShape(lbl)
+          ; t <- matchShape(ctx,iri,shape)
+          ) yield t
+    }
+    
+    Result.passSome(schema.getLabels,matchLabel)
+  }
 }

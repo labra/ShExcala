@@ -15,8 +15,10 @@ class RunTestsFolderSpec extends FunSpec with Matchers {
  describe("W3c tests report") {
    for ((r,n) <- report.items zip (1 to report.items.length))
    it("Should pass test " + n + ": " + r.name) {
-     if (r.passed) info("Info: " + r)
-     else fail("Test did not pass" + r)
+     if (r.passed) 
+       info("Info: " + r)
+     else 
+       fail("Test did not pass" + r)
    } 
  }
  

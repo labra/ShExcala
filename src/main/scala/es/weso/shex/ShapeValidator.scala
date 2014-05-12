@@ -16,18 +16,24 @@ import es.weso.shex.Context._
 
 object ShapeValidator {
 
-def matchAll(ctx:Context): Result[Typing] = {
+
+ def matchAll(ctx:Context): Result[Typing] = {
 
   def matchWithTyping(iri: IRI, typing: Typing)(shape: Shape): Result[Typing] = {
-    for ( t <- matchShape(ctx,iri,shape)
-        ) 
+    println("matchSome. iri: " + iri.toString + 
+            "\n--typing: " + typing.toString + 
+            "\n--shape: " + shape.toString)
+    for ( t <- matchShape(ctx,iri,shape)) 
     yield typing.combine(t)
   }
 
   def matchSomeWithTyping(iri: IRI, typing: Typing): Result[Typing] = {
+    println("matchSome. iri: " + iri.toString + ". typing: " + typing.toString)
     Result.passSome(ctx.getShapes, matchWithTyping(iri, typing)) 
   }
 
+  println("ctx: " + ctx.toString)
+  println("iris: " + ctx.getIRIs)
   Result.passAll(ctx.getIRIs, emptyTyping, matchSomeWithTyping)
 
 }
@@ -74,6 +80,7 @@ def matchRule (
     else failure("EmptyRule: graph non empty")
 
   case ActionRule(r,a) => failure("Action not implemented yet")
+  
   case ArcRule(id,n,v) =>
     if (g.size == 1) {
       val t = g.head
@@ -81,21 +88,24 @@ def matchRule (
           ; t <- matchValue(ctx,t.obj,v)
           ) yield t
     } else 
-       failure("Arc expected but more zero or more than one triple found in graph")
+       failure("Arc expected but zero or more than one triple found in graph:\n" + g.toString)
 
  }
  
 
  def matchName(ctx: Context, pred: IRI, n: NameClass): Result[Boolean] =
    n match {
+   
    case NameTerm(t) => {
      if (pred == t) unit(true)
      else failure("matchName: iri=" + pred + " does not match name=" + t)
    }
+
    case NameAny(excl) => {
      if (matchStems(excl, pred)) failure("matchName: iri= " + pred + " appears in excl= " + excl)
      else unit(true)
    }
+
    case NameStem(s) => {
      if (s.matchStem(pred)) unit(true) 
      else failure("matchName: iri= " + pred + " does not match stem= " + s)
@@ -105,13 +115,23 @@ def matchRule (
    
  def matchValue(ctx: Context, obj: RDFNode, v: ValueClass): Result[Typing] = { 
   v match {
+
     case ValueType(v) => 
       for ( b <- matchType(obj,v); if (b)) yield emptyTyping
+
     case ValueSet(s) => 
       if (s contains(obj)) unit(emptyTyping)
       else failure("matchValue: obj" + obj + " is not in set " + s)
-    case ValueAny(stem) => ???
-    case ValueStem(s) => ???
+
+    case ValueAny(excl) => {
+      if (matchStems(excl, obj)) failure("matchValue: iri= " + obj + " appears in excl= " + excl)
+      else unit(emptyTyping)
+    }
+
+    case ValueStem(s) => {
+      ???
+    }
+
     case ValueReference(l) => 
       if (obj.isIRI) {
       for (

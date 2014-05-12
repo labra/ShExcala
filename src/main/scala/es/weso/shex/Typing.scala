@@ -37,6 +37,10 @@ case class Typing(map:Map[IRI,Set[IRI]]) {
    Typing(map ++ other.map)
  }
 
+ def hasTypes(iri:IRI, iris:Set[IRI]): Boolean = {
+   hasType(iri) == iris 
+ }
+ 
 }
 
 object Typing {

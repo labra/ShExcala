@@ -80,7 +80,7 @@ class ResultSpec
     passAll(xs,current,eval).isFailure should be(true)
   }
    
-   it("should pass some...if all pass") {
+  it("should pass some...if all pass") {
     val xs = List(1,2,3)
     def eval(x:Int) = 
       if (x > 0 ) unit(true)

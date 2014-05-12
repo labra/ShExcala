@@ -11,6 +11,13 @@ sealed abstract class Result[+A] {
   
   def isFailure: Boolean
   def isValid: Boolean = !isFailure
+  
+  def toList(): List[A] = {
+    this match {
+      case Passed(rs) => rs.toList
+      case Failure(msg) => List()
+    }
+  }
 
   def noResult[B]: Result[B] = Passed(Stream())
   
@@ -84,6 +91,17 @@ object Result {
 
   def failure(msg:String):Result[Nothing] = Failure(msg)
 
+  def combineAll[A,B](
+      ls:List[A], 
+      current: B,
+      eval:(A,B) => Result[B]): Result[B] = {
+    ls match {
+      case Nil => Passed(Stream(current))
+      case x :: xs => eval(x,current).flatMap(next => combineAll(xs,next,eval)) 
+    }
+  }
+
+  
   def passSome[A,B](ls:List[A], eval: A => Result[B]): Result[B] = {
     ls match {
       case Nil => Passed(Stream())
@@ -91,7 +109,10 @@ object Result {
     }
   }
 
-  def passAll[A,B](ls:List[A], current: B, eval: (A,B) => Result[B]): Result[B] = {
+  def passAll[A,B](
+      ls:List[A], 
+      current: B, 
+      eval: (A,B) => Result[B]): Result[B] = {
     ls match {
       case Nil => Passed(Stream(current))
       case x :: xs => eval(x,current).flatMap(next => passAll(xs,next,eval))
