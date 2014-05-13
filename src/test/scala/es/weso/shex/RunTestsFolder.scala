@@ -55,16 +55,18 @@ object RunTestsFolder {
     val positiveSyntaxRs = get_resources(model,shext+"PositiveSyntax")
     val negativeSyntaxRs = get_resources(model,shext+"NegativeSyntax")
     val validRs 		 = get_resources(model,shext+"Valid")
-    val nonValidRs 		 = get_resources(model,shext+"NonValid")
+    val notValidRs 		 = get_resources(model,shext+"NotValid")
       
     val positiveSyntax 	= reportPositiveSyntax(model,positiveSyntaxRs)
     val negativeSyntax 	= reportNegativeSyntax(model,negativeSyntaxRs)
     val valid	   		= reportValid(model,validRs)
+    val notValid	   	= reportNotValid(model,notValidRs)
 
     println("Positive syntax #:" + positiveSyntaxRs.size)
     println("Negative syntax #:" + negativeSyntaxRs.size)
     println("Valid #:" + validRs.size)
-    positiveSyntax concat negativeSyntax concat valid // concat nonValid
+    println("Not Valid #:" + notValidRs.size)
+    positiveSyntax concat negativeSyntax concat valid concat notValid
   }  
 
    def get_resources(m : Model, t:String): List[Resource] = {
@@ -77,11 +79,18 @@ object RunTestsFolder {
      resultSet.toList
    }
    
+   // Todo...refactor this...
    def reportPositiveSyntax(m:Model,rs:List[Resource]) : Report = 
      rs.foldLeft(Report.initial)(positiveSyntax(m))
 
    def reportNegativeSyntax(m:Model,rs:List[Resource]) : Report = 
      rs.foldLeft(Report.initial)(negativeSyntax(m))
+
+   def reportValid(m:Model,rs:List[Resource]) : Report =
+     rs.foldLeft(Report.initial)(valid(m))
+     
+   def reportNotValid(m:Model,rs:List[Resource]) : Report =
+     rs.foldLeft(Report.initial)(notValid(m))
 
    def positiveSyntax(m:Model)(
        currentReport : Report, 
@@ -132,9 +141,7 @@ object RunTestsFolder {
        }
    }
   
-   def reportValid(m:Model,rs:List[Resource]) : Report =
-     rs.foldLeft(Report.initial)(valid(m))
-     
+
    def valid(m:Model)(currentReport : Report,res: Resource): Report = {
      val testType = "Valid"
      val vreport = 
@@ -146,6 +153,30 @@ object RunTestsFolder {
            ) yield {
        val baseIRI = shExTestsURL + name + ".ttl" // Base URI for relative URI resolution. See http://www.w3.org/2013/TurtleTests/
        (valid(name,IRI(baseIRI),schema,instance,iri,shapes),name) 
+       }
+    vreport match {
+    	case Success((r,name)) => {
+    	  r match {
+    	    case Success(msg) => currentReport.addTestReport(true,name, res.getLocalName, testType, msg)
+    	    case Failure(e) => currentReport.addTestReport(false, name, res.getLocalName, testType, e.getMessage())
+    	  }
+    	}
+       	case Failure(e) => {
+       	  currentReport.addTestReport(false, res.getURI, res.getLocalName, testType, e.getMessage())
+       	}
+    }
+   }
+
+   def notValid(m:Model)(currentReport : Report,res: Resource): Report = {
+     val testType = "NotValid"
+     val vreport = 
+       for ( schema   <- getSchema(m,res)
+           ; instance <- getInstance(m,res)
+           ; iri 	  <- getIRI(m,res)
+           ; name     <- getName(m,res) 
+           ) yield {
+       val baseIRI = shExTestsURL + name + ".ttl" // Base URI for relative URI resolution. See http://www.w3.org/2013/TurtleTests/
+       (notValid(name,IRI(baseIRI),schema,instance,iri),name) 
        }
     vreport match {
     	case Success((r,name)) => {
@@ -217,17 +248,12 @@ object RunTestsFolder {
        ; cs_instance <- dereference(instance.str)
        ; rdf <- RDFTriples.parse(cs_instance)
        ) yield {
-    println("...before valid...") 
     val result = Schema.matchSchema(iri, rdf, schema)
-    println("...after matchSchema...") 
     if (result.isValid) {
       val typings = result.toList
-      println("...after isValid..." + typings.toString + ".should contain: " + shapes.toString) 
       if (typings.exists(t => t.hasTypes(iri,shapes))) {
-       println("...exists..." + typings) 
        "Valid: typings = " + typings
       } else {
-        println("....no....")
         throw new Exception("Result with typings: " + typings + "does not contain " + iri + " -> " + shapes)
       }
     }
@@ -236,6 +262,25 @@ object RunTestsFolder {
    }
   }
 
+  def notValid(name:String,
+		    baseIRI: IRI,
+		    schema : IRI, 
+		    instance: IRI,
+		    iri: IRI 
+		    ) : Try[String]= {
+   for ( cs_schema <- dereference(schema.str)  
+       ; (schema,prefixMap) <- Schema.fromString(cs_schema)
+       ; cs_instance <- dereference(instance.str)
+       ; rdf <- RDFTriples.parse(cs_instance)
+       ) yield {
+    val result = Schema.matchSchema(iri, rdf, schema)
+    if (result.isValid) {
+        throw new Exception("Result valid with typings: " + result.toList + " but should not be valid")
+    }
+    else 
+      "Not valid"
+   }
+  }
  /**
   * Convert a String to a Model
   * @param s String

@@ -13,6 +13,7 @@
     <#a-string-syntax>
     <#simple-star>
     <#a-string-valid>
+	<#conjunction1>
 #	<#country-observations-valid>
 	<#a-string-no-valid>
     ) .
@@ -39,6 +40,85 @@
    shext:instance <a-string.ttl> ;
    shext:iri      ex:x ;
    shext:shape 	  ex:a 
+   .
+
+<#conjunction1> rdf:type shext:Valid ;
+   mf:name      "conjunction1" ;
+   rdfs:comment "conjunction 1" ;
+   shext:status mf:proposed ;
+   shext:schema   <conjunction.shex> ;
+   shext:instance <conjunction1.ttl> ;
+   shext:iri      ex:x ;
+   shext:shape 	  ex:a 
+   .
+   
+<#conjunction2> rdf:type shext:NotValid ;
+   mf:name      "conjunction2" ;
+   rdfs:comment "conjunction 2 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <conjunction.shex> ;
+   shext:instance <conjunction2.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
+   .
+
+<#conjunction3> rdf:type shext:NotValid ;
+   mf:name      "conjunction3" ;
+   rdfs:comment "conjunction 3 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <conjunction.shex> ;
+   shext:instance <conjunction3.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
+   .
+
+<#conjunction4> rdf:type shext:NotValid ;
+   mf:name      "conjunction4" ;
+   rdfs:comment "conjunction 4 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <conjunction.shex> ;
+   shext:instance <conjunction4.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
+   .
+
+<#disjunction1> rdf:type shext:NotValid ;
+   mf:name      "disjunction1" ;
+   rdfs:comment "disjunction 1 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <disjunction.shex> ;
+   shext:instance <disjunction1.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
+   .
+
+<#disjunction2> rdf:type shext:Valid ;
+   mf:name      "disjunction2" ;
+   rdfs:comment "disjunction 2 " ;
+   shext:status mf:proposed ;
+   shext:schema   <disjunction.shex> ;
+   shext:instance <disjunction2.ttl> ;
+   shext:iri    ex:x ;
+   shext:shape  ex:a
+   .
+<#disjunction3> rdf:type shext:Valid ;
+   mf:name      "disjunction3" ;
+   rdfs:comment "disjunction 3 " ;
+   shext:status mf:proposed ;
+   shext:schema   <disjunction.shex> ;
+   shext:instance <disjunction3.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#disjunction4> rdf:type shext:NotValid ;
+   mf:name      "disjunction4" ;
+   rdfs:comment "disjunction 4 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <disjunction.shex> ;
+   shext:instance <disjunction4.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
    .
 
 #<#country-observations-valid> rdf:type shext:Valid ;
