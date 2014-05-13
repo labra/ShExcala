@@ -1,7 +1,7 @@
 package es.weso.shex
 
 import es.weso.parser.PrefixMap
-import es.weso.rdfNode.IRI
+import es.weso.rdfgraph.nodes.IRI
 
 object PrefixMaps {
   lazy val rdf 			= "http://www.w3.org/1999/02/22-rdf-syntax-ns#"

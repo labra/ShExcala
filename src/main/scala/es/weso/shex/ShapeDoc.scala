@@ -1,19 +1,24 @@
 package es.weso.shex
 
+import es.weso.rdfgraph.nodes._
+import es.weso.rdfgraph._
 import scala.collection.immutable.StringOps
-import es.weso.rdfNode._
 import es.weso.shex.ShapeSyntax._
 import scala.text._
 import Document._
 import es.weso.parser.PrefixMap
-import es.weso.rdfNode.RDFNode
 import arq.iri
+import org.slf4j.LoggerFactory
 
 case class ShapeDoc(pm: PrefixMap) {
-  
+
   def schemaDoc(s: Schema) : Document = {
     pmDoc(s.pm) :/:
-    rulesDoc(s.rules)
+    shExDoc(s.shEx) 
+  }
+
+  def shExDoc(sh: ShEx) : Document = {
+    rulesDoc(sh.rules) // TODO: start
   }
 
   def pmDoc(pm: PrefixMap) : Document = {
@@ -44,22 +49,25 @@ case class ShapeDoc(pm: PrefixMap) {
   def ruleDoc(rule: Rule) : Document = {
     rule match {
       case r : ArcRule => arcRuleDoc(r)
-      case AndRule(conjoints) => seqDocWithSep(conjoints,",",ruleDoc)
-      case OrRule(disjoints) => seqDocWithSep(disjoints,"|",ruleDoc)
-      case GroupRule(rule,opt,a) => 
+      case AndRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text(",") :/: ruleDoc(e2) :/: text(")")
+      case OrRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text("|") :/: ruleDoc(e2) :/: text(")")
+      case OneOrMore(r) => "(" :/: ruleDoc(r) :/: text(")+")
+      case ActionRule(r,a) => "(" :/: ruleDoc(r) :/: text(") %") :/: actionDoc(a)
+      case NoRule => text(" ")
+      /*case GroupRule(rule,opt,a) => 
           text("(") :: space :: 
     	  nest(3,ruleDoc(rule)) :: space :: 
     	  text(")") :: 
     	  (if(opt) text("?") else empty) :: space :: 
-    	  actionDoc(a)
+    	  actionDoc(a) */
     }
   }
 
   def arcRuleDoc(arc: ArcRule) : Document = {
     nameClassDoc(arc.n) :: space ::
-    valueClassDoc(arc.v) :: space ::
-    cardinalityDoc(arc.c) :: space ::
-    actionDoc(arc.a)
+    valueClassDoc(arc.v) 
+//    cardinalityDoc(arc.c) :: space ::
+//    actionDoc(arc.a)
   }
 
   def nameClassDoc(n : NameClass) : Document = {
@@ -80,6 +88,7 @@ case class ShapeDoc(pm: PrefixMap) {
     }    
   }
   
+  /*
   def cardinalityDoc(c : Cardinality): Document = {
     c match {
       case Star => text("*")
@@ -95,7 +104,7 @@ case class ShapeDoc(pm: PrefixMap) {
       case Left(n) => text(n.toString)
       case Right(_) => text("") // Todo: check specification how to express ranges of type (m,unbound)
     }
-  }
+  } */
 
   def rdfNodeDoc(n : RDFNode): Document = {
     text(rdfNode2String(n))  
@@ -105,7 +114,8 @@ case class ShapeDoc(pm: PrefixMap) {
     text(iri2String(i))  
   }
   
-  def actionDoc(a : Seq[Action]) : Document = empty
+  def actionDoc(a : Seq[Action]) : Document = 
+    ???
   
   def pairDoc(d1: Document, d2: Document) : Document = 
     "(" :: d1 :: "," :: d2 :: ")" :: empty
@@ -123,17 +133,10 @@ case class ShapeDoc(pm: PrefixMap) {
   }
 
 
-  def shape2String(shape: Shape) : String = 
-    prettyPrint(shapeDoc(shape))
-
   def rules2String(rs: Seq[Shape]): String = {
     prettyPrint(rulesDoc(rs))
   }
   
-  def schema2String(s: Schema): String = {
-    prettyPrint(schemaDoc(s))
-  }
-
   def rdfNode2String(n: RDFNode): String = {
     n match {
       case BNodeId(id) => "_:" + id
@@ -163,8 +166,18 @@ case class ShapeDoc(pm: PrefixMap) {
 	  writer.toString
   }
 
-  
+  def schema2String(s: Schema): String = {
+    prettyPrint(schemaDoc(s))
+  }
 
+  def shape2String(shape: Shape) : String = 
+    prettyPrint(shapeDoc(shape))
+
+  def schema2String(shEx: ShEx) : String = 
+    prettyPrint(shExDoc(shEx))
+}
+
+object ShapeDoc {
 }
 
 

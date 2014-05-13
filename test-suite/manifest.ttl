@@ -1,25 +1,39 @@
 @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix mf: <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix mf:     <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#> .
 @prefix qt:     <http://www.w3.org/2001/sw/DataAccess/tests/test-query#> .
-
 @prefix shext:   <http://www.w3.org/ns/shextest#> .
+@prefix ex:     <http://example.org/> .
+
 
 <>  rdf:type mf:Manifest ;
     rdfs:comment "ShEx tests" ;
     mf:entries
     (
     <#a-string-syntax>
+    <#simple-star>
     <#a-string-valid>
-	<#country-observations-valid>
+	<#conjunction1>
+#	<#country-observations-valid>
 	<#a-string-no-valid>
+	<#conjunction1> <#conjunction2> <#conjunction3> <#conjunction4>
+	<#disjunction1> <#disjunction2> <#disjunction3> <#disjunction4>
+	<#star0> <#star1> <#star2> <#star3>
+	<#plus0no> <#plus1> <#plus2> <#plus3>
     ) .
 
-<#a-string-syntax> rdf:type shext:ShexSyntax ;
+<#a-string-syntax> rdf:type shext:PositiveSyntax ;
    mf:name      "a-string-syntax" ;
    rdfs:comment "Shex Expression with an single arc rule" ;
    shext:status mf:proposed ;
    shext:schema <a-string.shex> ;
+   .
+
+<#simple-star> rdf:type shext:PositiveSyntax ;
+   mf:name      "simple-star" ;
+   rdfs:comment "Shex Expression with an single arc rule and a star" ;
+   shext:status mf:proposed ;
+   shext:schema <simple-star.shex> ;
    .
 
 <#a-string-valid> rdf:type shext:Valid ;
@@ -28,6 +42,325 @@
    shext:status mf:proposed ;
    shext:schema   <a-string.shex> ;
    shext:instance <a-string.ttl> ;
+   shext:iri      ex:x ;
+   shext:shape 	  ex:a 
+   .
+
+<#conjunction1> rdf:type shext:Valid ;
+   mf:name      "conjunction1" ;
+   rdfs:comment "conjunction 1" ;
+   shext:status mf:proposed ;
+   shext:schema   <conjunction.shex> ;
+   shext:instance <conjunction1.ttl> ;
+   shext:iri      ex:x ;
+   shext:shape 	  ex:a 
+   .
+   
+<#conjunction2> rdf:type shext:NotValid ;
+   mf:name      "conjunction2" ;
+   rdfs:comment "conjunction 2 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <conjunction.shex> ;
+   shext:instance <conjunction2.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
+   .
+
+<#conjunction3> rdf:type shext:NotValid ;
+   mf:name      "conjunction3" ;
+   rdfs:comment "conjunction 3 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <conjunction.shex> ;
+   shext:instance <conjunction3.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
+   .
+
+<#conjunction4> rdf:type shext:NotValid ;
+   mf:name      "conjunction4" ;
+   rdfs:comment "conjunction 4 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <conjunction.shex> ;
+   shext:instance <conjunction4.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
+   .
+
+<#disjunction1> rdf:type shext:NotValid ;
+   mf:name      "disjunction1" ;
+   rdfs:comment "disjunction 1 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <disjunction.shex> ;
+   shext:instance <disjunction1.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
+   .
+
+<#disjunction2> rdf:type shext:Valid ;
+   mf:name      "disjunction2" ;
+   rdfs:comment "disjunction 2 " ;
+   shext:status mf:proposed ;
+   shext:schema   <disjunction.shex> ;
+   shext:instance <disjunction2.ttl> ;
+   shext:iri    ex:x ;
+   shext:shape  ex:a
+   .
+<#disjunction3> rdf:type shext:Valid ;
+   mf:name      "disjunction3" ;
+   rdfs:comment "disjunction 3 " ;
+   shext:status mf:proposed ;
+   shext:schema   <disjunction.shex> ;
+   shext:instance <disjunction3.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#disjunction4> rdf:type shext:NotValid ;
+   mf:name      "disjunction4" ;
+   rdfs:comment "disjunction 4 (should fail)" ;
+   shext:status mf:proposed ;
+   shext:schema   <disjunction.shex> ;
+   shext:instance <disjunction4.ttl> ;
+   shext:iri      ex:x 
+   # No shape assigned
+   .
+
+<#star0> rdf:type shext:Valid ;
+   mf:name      "star0" ;
+   rdfs:comment "star 0" ;
+   shext:status mf:proposed ;
+   shext:schema   <star.shex> ;
+   shext:instance <star0.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+   
+<#star1> rdf:type shext:Valid ;
+   mf:name      "star1" ;
+   rdfs:comment "star 1" ;
+   shext:status mf:proposed ;
+   shext:schema   <star.shex> ;
+   shext:instance <star1.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#star2> rdf:type shext:Valid ;
+   mf:name      "star2" ;
+   rdfs:comment "star 2" ;
+   shext:status mf:proposed ;
+   shext:schema   <star.shex> ;
+   shext:instance <star2.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#star3> rdf:type shext:Valid ;
+   mf:name      "star3" ;
+   rdfs:comment "star 3" ;
+   shext:status mf:proposed ;
+   shext:schema   <star.shex> ;
+   shext:instance <star3.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#no-star1> rdf:type shext:NotValid ;
+   mf:name      "no-star1" ;
+   rdfs:comment "star 3" ;
+   shext:status mf:proposed ;
+   shext:schema   <star.shex> ;
+   shext:instance <no-star1.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#plus0no> rdf:type shext:NotValid ;
+   mf:name      "plus0no" ;
+   rdfs:comment "plus 0 no" ;
+   shext:status mf:proposed ;
+   shext:schema   <plus.shex> ;
+   shext:instance <plus0-no.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+   
+<#plus1> rdf:type shext:Valid ;
+   mf:name      "plus1" ;
+   rdfs:comment "plus 1" ;
+   shext:status mf:proposed ;
+   shext:schema   <plus.shex> ;
+   shext:instance <plus1.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#plus2> rdf:type shext:Valid ;
+   mf:name      "plus2" ;
+   rdfs:comment "plus 2" ;
+   shext:status mf:proposed ;
+   shext:schema   <plus.shex> ;
+   shext:instance <plus2.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#plus3> rdf:type shext:Valid ;
+   mf:name      "plus3" ;
+   rdfs:comment "plus 3" ;
+   shext:status mf:proposed ;
+   shext:schema   <plus.shex> ;
+   shext:instance <plus3.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#opt0> rdf:type shext:Valid ;
+   mf:name      "opt0" ;
+   rdfs:comment "opt 0" ;
+   shext:status mf:proposed ;
+   shext:schema   <opt.shex> ;
+   shext:instance <opt0.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+   
+<#opt1> rdf:type shext:Valid ;
+   mf:name      "opt1" ;
+   rdfs:comment "opt 1" ;
+   shext:status mf:proposed ;
+   shext:schema   <opt.shex> ;
+   shext:instance <opt1.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#opt2> rdf:type shext:NotValid ;
+   mf:name      "opt2" ;
+   rdfs:comment "opt 2" ;
+   shext:status mf:proposed ;
+   shext:schema   <opt.shex> ;
+   shext:instance <opt2-no.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#optOr1> rdf:type shext:Valid ;
+   mf:name      "optOr1" ;
+   rdfs:comment "optOr 1" ;
+   shext:status mf:proposed ;
+   shext:schema   <optOr.shex> ;
+   shext:instance <optOr1.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#optOr2> rdf:type shext:NotValid ;
+   mf:name      "optOr2" ;
+   rdfs:comment "optOr 2" ;
+   shext:status mf:proposed ;
+   shext:schema   <optOr.shex> ;
+   shext:instance <optOr2.ttl> ;
+   shext:iri    ex:x 
+   .
+
+<#optOr3> rdf:type shext:Valid ;
+   mf:name      "optOr3" ;
+   rdfs:comment "optOr 3" ;
+   shext:status mf:proposed ;
+   shext:schema   <optOr.shex> ;
+   shext:instance <optOr3.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#optAnd1> rdf:type shext:NotValid ;
+   mf:name      "optAnd1" ;
+   rdfs:comment "optAnd 1" ;
+   shext:status mf:proposed ;
+   shext:schema   <optAnd.shex> ;
+   shext:instance <optAnd1.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#optAnd2> rdf:type shext:Valid ;
+   mf:name      "optAnd2" ;
+   rdfs:comment "optAnd 2" ;
+   shext:status mf:proposed ;
+   shext:schema   <optAnd.shex> ;
+   shext:instance <optAnd2.ttl> ;
+   shext:iri    ex:x ;
+   shext:shape  ex:a
+   .
+
+<#optAnd3> rdf:type shext:Valid ;
+   mf:name      "optAnd3" ;
+   rdfs:comment "optAnd 3" ;
+   shext:status mf:proposed ;
+   shext:schema   <optAnd.shex> ;
+   shext:instance <optAnd3.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#groupOptAnd1> rdf:type shext:Valid ;
+   mf:name      "groupOptAnd1" ;
+   rdfs:comment "groupOptAnd 1" ;
+   shext:status mf:proposed ;
+   shext:schema   <groupOptAnd.shex> ;
+   shext:instance <groupOptAnd1.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+   
+<#groupOptAnd2> rdf:type shext:Valid ;
+   mf:name      "groupOptAnd2" ;
+   rdfs:comment "groupOptAnd 2" ;
+   shext:status mf:proposed ;
+   shext:schema   <groupOptAnd.shex> ;
+   shext:instance <groupOptAnd2.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+   
+<#groupOptAnd3> rdf:type shext:NotValid ;
+   mf:name      "groupOptAnd3" ;
+   rdfs:comment "groupOptAnd 3" ;
+   shext:status mf:proposed ;
+   shext:schema   <groupOptAnd.shex> ;
+   shext:instance <groupOptAnd3.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+
+<#groupOptOr1> rdf:type shext:Valid ;
+   mf:name      "groupOptOr1" ;
+   rdfs:comment "groupOptOr 1" ;
+   shext:status mf:proposed ;
+   shext:schema   <groupOptOr.shex> ;
+   shext:instance <groupOptOr1.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
+   .
+   
+<#groupOptOr2> rdf:type shext:NotValid ;
+   mf:name      "groupOptOr2" ;
+   rdfs:comment "groupOptOr 2" ;
+   shext:status mf:proposed ;
+   shext:schema   <groupOptOr.shex> ;
+   shext:instance <groupOptOr2.ttl> ;
+   shext:iri    ex:x 
+   .
+
+<#groupOptOr3> rdf:type shext:Valid ;
+   mf:name      "groupOptOr3" ;
+   rdfs:comment "groupOptOr 3" ;
+   shext:status mf:proposed ;
+   shext:schema   <groupOptOr.shex> ;
+   shext:instance <groupOptOr3.ttl> ;
+   shext:iri    ex:x ; 
+   shext:shape  ex:a
    .
 
 <#country-observations-valid> rdf:type shext:Valid ;
@@ -36,9 +369,19 @@
    shext:status mf:proposed ;
    shext:schema   <country-observations.shex> ;
    shext:instance <country-observations.ttl> ;
+   shext:iri    ex:c1 ; 
+   shext:shape  ex:country
    .
 
-<#a-string-no-valid> rdf:type shext:NoValid ;
+<#a-2string-no-valid> rdf:type shext:NonValid ;
+   mf:name      "a-2string-no-valid" ;
+   rdfs:comment "a-2string 2 strings for p" ;
+   shext:status mf:proposed ;
+   shext:schema   <a-string.shex> ;
+   shext:instance <a-2string.ttl> ;
+   .
+   
+<#a-string-no-valid> rdf:type shext:NonValid ;
    mf:name      "a-string-no-valid" ;
    rdfs:comment "a-string with no value for p" ;
    shext:status mf:proposed ;

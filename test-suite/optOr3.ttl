@@ -1,0 +1,6 @@
+prefix : <http://example.org/> 
+
+:x :q 2 .
+
+
+
