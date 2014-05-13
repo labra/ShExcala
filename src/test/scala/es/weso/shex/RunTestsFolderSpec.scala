@@ -23,8 +23,8 @@ class RunTestsFolderSpec extends FunSpec with Matchers {
  }
  
  describe("Generate W3c EARL report") {
-    val passedCount = 3 // Number of tests that have to be passed
-    it("Should Generate EARL report with " + passedCount + " passed values") {
+
+   it("Should Generate EARL report ") {
       val earlModel = report.generateEARL
       val conf : Config = ConfigFactory.load()
       val outFile = conf.getString("EarlReportFile")
@@ -36,8 +36,10 @@ class RunTestsFolderSpec extends FunSpec with Matchers {
       val earl		= "http://www.w3.org/ns/earl#"
       val earl_outcome = readModel.createProperty(earl + "outcome")
       val earl_passed  = readModel.createResource(earl + "passed")
+      val earl_failed  = readModel.createResource(earl + "failed")
       val passed = readModel.listResourcesWithProperty(earl_outcome, earl_passed).toList.asScala
-      passed.length should be(passedCount)
+      val failed = readModel.listResourcesWithProperty(earl_outcome, earl_failed).toList.asScala
+      info("Generated report " + passed.length + " passed. " + failed.length + " failed. File: " + outFile)
    }
  }
 

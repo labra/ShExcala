@@ -274,6 +274,16 @@ class ShapeValidatorSpec
      result.isValid should be(true)
    }
    
+  it("should validate optOr2") {
+     val ctx = emptyContext
+     val strShape = "<a> { <p> . ? , <q> . }"
+     val strRDF = "<x> <p> 1 ; <q> 2 ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
  }
  
  

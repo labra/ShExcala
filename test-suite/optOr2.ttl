@@ -1,4 +1,7 @@
 prefix : <http://example.org/> 
 
-:x :p 1 .
+:x :p 1 ; 
+   :q 2 .
+
+
 

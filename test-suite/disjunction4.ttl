@@ -1,6 +1,4 @@
 prefix : <http://example.org/> 
 
-:x :p :y; :q :z .
+:x :r :y.
 
-:y :fail "b" .
-:z :fail "c" .
