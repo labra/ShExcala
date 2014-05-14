@@ -1,8 +1,14 @@
-name := "ShExcala"
+import sbt._
+import sbt.Keys._
+import bintray.Plugin.bintraySettings
+import bintray.Keys._
+import scala.scalajs.sbtplugin.ScalaJSPlugin.ScalaJSKeys._
 
-version := "1.0"
+lazy val root = project.in(file("."))//.settings(crossScalaVersions := Seq("2.10.4", "2.11.0"))
 
-scalaVersion := "2.10.2"
+Build.sharedSettings
+
+version := Build.currentVersion
 
 libraryDependencies ++= Seq(
     "org.specs2" %% "specs2" % "2.3.7" % "test" 
@@ -14,11 +20,20 @@ libraryDependencies ++= Seq(
   , "com.assembla.scala-incubator" % "graph-core_2.10" % "1.6.2"
   , "org.apache.jena" % "jena-arq" % "2.10.1" 
   , "org.scalaz" % "scalaz-core_2.10" % "7.0.6" 
- )
+  , "es.weso" % "stateparser_2.10" % "0.0.1"
+  , "es.weso" % "wesin_2.10" % "0.0.1" 
+  )
 
-scalacOptions ++= Seq("-deprecation")
+autoCompilerPlugins := true
 
-scalacOptions in Test ++= Seq("-Yrangepos")
+bintraySettings
+
+Build.publishSettings
+
+resourceGenerators in Test += Def.task {
+  val location = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
+  IO.unzipURL(location, resourceManaged.value / "downloadedTests").toSeq
+}.taskValue
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 

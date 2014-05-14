@@ -1,6 +1,0 @@
-prefix : <http://example.org/> 
-
-:x :p :y; :q :z .
-
-:y :fail "b" .
-:z :fail "c" .

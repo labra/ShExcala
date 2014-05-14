@@ -1,5 +1,0 @@
-prefix : <http://example.org/> 
-
-:y :p :x .
-
-# :x has no out links...
