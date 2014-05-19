@@ -40,7 +40,30 @@ case class Typing(map:Map[IRI,Set[IRI]]) {
  def hasTypes(iri:IRI, iris:Set[IRI]): Boolean = {
    hasType(iri) == iris 
  }
- 
+
+   def showTyping(implicit pm: PrefixMap): String = {
+    val sb = new StringBuilder
+    for (is <- map) {
+      sb ++= (showIRI(is._1) + " -> " + showIRIs(is._2) + "\n")
+    }
+    sb.toString
+  }
+
+  // TODO: Refactor to put these 2 definitions in RDF
+  private def showIRI(iri: IRI)(implicit pm: PrefixMap): String = {
+    "<" + iri.str + ">"
+  }
+  
+  private def showIRIs(iris: Set[IRI])(implicit pm:PrefixMap): String = {
+    val sb = new StringBuilder
+    sb ++= "("
+    for (iri <- iris) {
+      sb ++= (showIRI(iri) + " ")
+    }
+    sb ++= ")"
+    sb.toString
+  }
+
 }
 
 object Typing {

@@ -1,5 +1,6 @@
 import sbt._
 import sbt.Keys._
+import AssemblyKeys._
 import bintray.Plugin.bintraySettings
 import bintray.Keys._
 import scala.scalajs.sbtplugin.ScalaJSPlugin.ScalaJSKeys._
@@ -26,9 +27,17 @@ libraryDependencies ++= Seq(
 
 autoCompilerPlugins := true
 
-bintraySettings
+seq(bintraySettings:_*)
 
 Build.publishSettings
+
+deploymentSettings
+
+publishMavenStyle := true
+
+// publish <<= publish.dependsOn(publish in config("universal"))
+
+packageArchetype.java_application
 
 resourceGenerators in Test += Def.task {
   val location = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
@@ -36,8 +45,6 @@ resourceGenerators in Test += Def.task {
 }.taskValue
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
-
-
 
 
 

@@ -6,6 +6,8 @@ import org.slf4j._
 import com.typesafe.config._
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.ShapeDoc._
+import es.weso.monads.Result._
+import es.weso.shex.Typing._
 import scala.util.parsing.input.CharSequenceReader
 import java.io.IOException
 import java.io.FileNotFoundException
@@ -13,6 +15,8 @@ import scala.util._
 import es.weso.utils.IO._
 import es.weso.rdf.RDFTriples
 import es.weso.rdf.RDF
+import es.weso.rdfgraph.nodes.IRI
+import es.weso.parser.PrefixMap
 
 class Opts(
     arguments: Array[String],
@@ -25,11 +29,14 @@ class Opts(
     footer("Enjoy!")
     version("ShExcala 0.1")
     val rdf     = opt[String]("rdf",
-    				required=false,
+    				required=true,
     				descr = "RDF Data file")
     val schema 	= opt[String]("schema",
     				required=true,
     				descr = "Schema file")
+    val iri 	= opt[String]("iri",
+                    required=true,
+                    descr = "IRI")
     val syntax 	= opt[String]("syntax", 
         			default=Some("ShEx"), 
         			descr = "ShEx")
@@ -38,18 +45,16 @@ class Opts(
     				default = Some(false),
     				descrYes = "show schema", 
         			descrNo = "don't show schema")
-    val showRDF   = toggle("showData", 
+    val showRDF   = toggle("showRDF", 
     				prefix = "no-",
     				default = Some(false),
-    				descrYes = "show data", 
-        			descrNo = "don't show data")
+    				descrYes = "show RDF", 
+        			descrNo = "don't show RDF")
     val verbose    = toggle("verbose", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "Normal output", 
         			descrNo = "Verbose output")
-    val output  = opt[String]("out",
-    				descr = "Output validation typing to file")
     val version = opt[Boolean]("version", 
     				noshort = true, 
     				descr = "Print version")
@@ -70,8 +75,9 @@ object Main extends App {
   val opts 		= new Opts(args,errorDriver)
 
   val result = 
-    for ( schema <- getSchema(opts.schema())
+    for ( (schema,pm) <- getSchema(opts.schema())
         ; rdf <- getRDF(opts.rdf())
+        ; iri <- getIRI(opts.iri())
         ) yield {
    if (opts.showSchema()) {
       println(schema.toString())
@@ -79,21 +85,24 @@ object Main extends App {
    if (opts.showRDF()) {
      println(rdf.toString())
    }
-   val ctx = Context(rdf = rdf, shEx = schema.shEx)
-   ShapeValidator.matchAll(ctx)
+   (Schema.matchSchema(iri,rdf,schema),pm)
   }
 
   result match {
-    case Success(ts) => println("Success: " + ts.toString)
+    case Success((ts,pm)) => {
+      for (typing <- ts.run) {
+        println("Success:\n" + typing.showTyping(pm))
+      } 
+    }
     case Failure(f) => println("Failure: " + f.toString)
   }
  }
  
- private def getSchema(fileName: String) : Try[Schema] = {
+ private def getSchema(fileName: String) : Try[(Schema,PrefixMap)] = {
   for (
         cs <- getContents(fileName) 
       ; (schema,prefixMap) <- Schema.fromString(cs)
-      ) yield schema
+      ) yield (schema,prefixMap)
  }
 
  private def getRDF(fileName: String) : Try[RDF] = {
@@ -103,6 +112,9 @@ object Main extends App {
       ) yield triples
  }
 
+ private def getIRI(str: String) : Try[IRI] = {
+   Success(IRI(str))
+ }
 
  private def errorDriver(e: Throwable, scallop: Scallop) = e match {
     case Help(s) =>
