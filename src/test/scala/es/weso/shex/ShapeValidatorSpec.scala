@@ -17,8 +17,18 @@ class ShapeValidatorSpec
 	extends FunSpec 
 	with Matchers 
 	with Checkers {
+  
 
- describe("Shape Validator") {
+ describe("Shape Validator with Types") {
+   it("Should validate type IRI") {
+     val obj: RDFNode = IRI("a")
+     val vtype : RDFNode = shex_IRI
+     matchType(obj,vtype).run should be(Stream(true))
+   }
+   
+ }
+ 
+ describe("Shape Validator with Rules") {
    it("Should validate empty rule") {
      val ctx = emptyContext
      val g : Set[RDFTriple] = Set()
@@ -286,6 +296,16 @@ class ShapeValidatorSpec
    }
  }
  
- 
- 
+  it("should validate iri") {
+     val ctx = emptyContext
+     val strShape = "<a> { <p> <http://www.w3.org/2013/ShEx/ns#IRI> }"
+     val strRDF = "<x> <p> <i> ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
 }
+ 
+ 

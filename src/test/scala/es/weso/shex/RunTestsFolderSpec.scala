@@ -17,8 +17,8 @@ class RunTestsFolderSpec extends FunSpec with Matchers {
    info("Running tests from " + RunTestsFolder.testsDir)
    info("Manifest file: " + RunTestsFolder.manifestFile)
 
-   for ((r,n) <- report.items zip (1 to report.items.length))
-   it("Should pass test " + n + ": " + r.name) {
+   for ((r,n) <- report.items.sortWith(Report.sortReport) zip (1 to report.items.length))
+   it(r.name + ". " + n) {
      if (r.passed) 
        info("Info: " + r)
      else 

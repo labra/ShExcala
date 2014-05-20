@@ -151,6 +151,10 @@ case class Report(items: List[SingleTestReport]) {
 
 object Report {
   def initial = Report(List())
+  
+  def sortReport(r1: SingleTestReport, r2: SingleTestReport): Boolean = {
+    r1.name < r2.name
+  }
 }
 
 case class SingleTestReport(

@@ -146,19 +146,19 @@ def matchRule (
  def matchType(obj: RDFNode, vtype: RDFNode): Result[Boolean] = {
    obj match {
      case lit:Literal => 
-       if (vtype == typeShexLiteral || 
+       if (vtype == shex_Literal || 
            lit.dataType == vtype) unit(true)
        else unit(false)
                          
-     case iri:IRI => 
-       if ( vtype == typeShexIRI || 
-            vtype == typeShexNonLiteral) unit(true)
-       unit(false)
-     				 
+     case iri:IRI => {
+       if (vtype == shex_IRI || 
+           vtype == shex_NonLiteral) unit(true)
+       else unit(false)
+     }				 
      case bnode:BNodeId => 
-       if (vtype == typeShexBNode || 
-           vtype == typeShexNonLiteral) unit(true)
-       unit(false)
+       if (vtype == shex_BNode || 
+           vtype == shex_NonLiteral) unit(true)
+       else unit(false)
    }
  }
  

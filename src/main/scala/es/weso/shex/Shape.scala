@@ -114,11 +114,17 @@ case class IRIStem(iri: IRI, isStem: Boolean) {
 lazy val foaf = "http://xmlns.com/foaf/0.1/"
 lazy val xsd  = "http://www.w3.org/2001/XMLSchema#"
 lazy val shex = "http://www.w3.org/2013/ShEx/ns#"
-lazy val typeShexLiteral  	= ValueType(v = IRI(shex + "Literal"))
-lazy val typeShexIRI  		= ValueType(v = IRI(shex + "IRI"))
-lazy val typeShexBNode  	= ValueType(v = IRI(shex + "BNode"))
-lazy val typeShexNonLiteral	= ValueType(v = IRI(shex + "NonLiteral"))
-lazy val typeXsdString		= ValueType(v = IRI(xsd  + "string"))
+lazy val shex_IRI = IRI(shex + "IRI")
+lazy val shex_Literal = IRI(shex + "Literal")
+lazy val shex_NonLiteral = IRI(shex + "NonLiteral")
+lazy val shex_BNode = IRI(shex + "BNode")
+lazy val xsd_string = IRI(xsd + "string")
+
+lazy val typeShexLiteral  	= ValueType(v = shex_Literal)
+lazy val typeShexIRI  		= ValueType(v = shex_IRI)
+lazy val typeShexBNode  	= ValueType(v = shex_BNode)
+lazy val typeShexNonLiteral	= ValueType(v = shex_NonLiteral)
+lazy val typeXsdString		= ValueType(v = xsd_string)
 
 def matchStems(stems:Set[IRIStem], node:RDFNode): Boolean = {
   stems.exists(_.matchStem(node)) 
