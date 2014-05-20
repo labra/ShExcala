@@ -12,7 +12,11 @@ import org.scalatest.Matchers
 class RunTestsFolderSpec extends FunSpec with Matchers {
  val report = RunTestsFolder.createReport
  
- describe("W3c tests report") {
+ 
+ describe("test-suite report") {
+   info("Running tests from " + RunTestsFolder.testsDir)
+   info("Manifest file: " + RunTestsFolder.manifestFile)
+
    for ((r,n) <- report.items zip (1 to report.items.length))
    it("Should pass test " + n + ": " + r.name) {
      if (r.passed) 
