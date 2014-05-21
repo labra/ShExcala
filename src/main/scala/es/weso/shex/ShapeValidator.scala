@@ -147,16 +147,20 @@ def matchRule (
    obj match {
      case lit:Literal => 
        if (vtype == shex_Literal || 
+           vtype == shex_NonIRI ||
+           vtype == shex_NonBNode ||
            lit.dataType == vtype) unit(true)
        else unit(false)
                          
      case iri:IRI => {
        if (vtype == shex_IRI || 
-           vtype == shex_NonLiteral) unit(true)
+           vtype == shex_NonLiteral ||
+           vtype == shex_NonBNode) unit(true)
        else unit(false)
      }				 
      case bnode:BNodeId => 
-       if (vtype == shex_BNode || 
+       if (vtype == shex_BNode ||
+           vtype == shex_NonIRI ||
            vtype == shex_NonLiteral) unit(true)
        else unit(false)
    }

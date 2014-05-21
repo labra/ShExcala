@@ -115,14 +115,18 @@ lazy val foaf = "http://xmlns.com/foaf/0.1/"
 lazy val xsd  = "http://www.w3.org/2001/XMLSchema#"
 lazy val shex = "http://www.w3.org/2013/ShEx/ns#"
 lazy val shex_IRI = IRI(shex + "IRI")
+lazy val shex_NonIRI = IRI(shex + "NonIRI")
 lazy val shex_Literal = IRI(shex + "Literal")
 lazy val shex_NonLiteral = IRI(shex + "NonLiteral")
 lazy val shex_BNode = IRI(shex + "BNode")
+lazy val shex_NonBNode = IRI(shex + "NonBNode")
 lazy val xsd_string = IRI(xsd + "string")
 
 lazy val typeShexLiteral  	= ValueType(v = shex_Literal)
 lazy val typeShexIRI  		= ValueType(v = shex_IRI)
+lazy val typeShexNonIRI		= ValueType(v = shex_NonIRI)
 lazy val typeShexBNode  	= ValueType(v = shex_BNode)
+lazy val typeShexNonBNode  	= ValueType(v = shex_NonBNode)
 lazy val typeShexNonLiteral	= ValueType(v = shex_NonLiteral)
 lazy val typeXsdString		= ValueType(v = xsd_string)
 
