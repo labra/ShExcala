@@ -12,10 +12,12 @@ import es.weso.parser.PrefixMap
 import scala.util.parsing.input.Positional
 import es.weso.rdf._
 import es.weso.shex.Context._
+import org.slf4j._
 
 
 object ShapeValidator {
 
+ val log = LoggerFactory.getLogger("ShapeValidator")
 
  def matchAll(ctx:Context): Result[Typing] = {
 
@@ -41,7 +43,10 @@ object ShapeValidator {
 
 
 def matchShape(ctx:Context, iri: IRI, shape: Shape): Result[Typing] = {
+  
+ log.debug("matchShape: " + iri + " shape: " + shape)
  val triples = ctx.triplesWithSubject(iri)
+
  for (
    t <- matchRule(ctx,triples,shape.rule)
  ; newT <- Result.liftOption(t.addType(iri,shape.label.getIRI)) 

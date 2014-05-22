@@ -73,8 +73,12 @@ case class ShapeDoc(pm: PrefixMap) {
   def nameClassDoc(n : NameClass) : Document = {
     n match {
       case NameTerm(t) => iriDoc(t)
-      case NameAny(excl) => ???
-      case NameStem(s) => ???
+      case NameAny(excl) => {
+        if (excl.isEmpty) text(".")
+        else 
+          text("-") :/: nest(3,setDocWithSep(excl," ",iriStemDoc))
+      }
+      case NameStem(s) => iriStemDoc(s)
     }
   }
 
@@ -82,8 +86,12 @@ case class ShapeDoc(pm: PrefixMap) {
     v match {
       case ValueType(v) => rdfNodeDoc(v)
       case ValueSet(s) => "(" :/: nest(3,seqDocWithSep(s," ",rdfNodeDoc)) :/: text(")")
-      case ValueAny(stem) => ???
-      case ValueStem(stem) => ???
+      case ValueAny(stem) => {
+        if (stem.isEmpty) text(".")
+        else 
+          text("-") :/: nest(3,setDocWithSep(stem," ",iriStemDoc))
+      }
+      case ValueStem(stem) => iriDoc(stem)
       case ValueReference(l) => "@" :: labelDoc(l)
     }    
   }
@@ -114,6 +122,10 @@ case class ShapeDoc(pm: PrefixMap) {
     text(iri2String(i))  
   }
   
+  def iriStemDoc(i : IRIStem): Document = {
+    text(iri2String(i.iri))  
+  }
+
   def actionDoc(a : Seq[Action]) : Document = 
     ???
   
@@ -132,6 +144,15 @@ case class ShapeDoc(pm: PrefixMap) {
       )
   }
 
+  def setDocWithSep[A](s : Set[A], 
+      sep: String,
+      toDoc : A => Document) : Document = {
+    if (s.isEmpty) empty
+    else
+      s.tail.foldLeft(toDoc(s.head))(
+          (d:Document, x:A) => d :: sep :/: toDoc(x) 
+      )
+  }
 
   def rules2String(rs: Seq[Shape]): String = {
     prettyPrint(rulesDoc(rs))

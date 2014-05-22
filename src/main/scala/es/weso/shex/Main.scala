@@ -17,52 +17,72 @@ import es.weso.rdf.RDFTriples
 import es.weso.rdf.RDF
 import es.weso.rdfgraph.nodes.IRI
 import es.weso.parser.PrefixMap
+import es.weso.rdf.reader.Endpoint
+import es.weso.rdf.reader.RDFFromWeb
+
 
 class Opts(
     arguments: Array[String],
     onError: (Throwable, Scallop) => Nothing
     ) extends ScallopConf(arguments) {
 
-    banner("""| ShEx validator
+    banner("""| RDF validator using Shape Expressions
               | Options:
               |""".stripMargin)
+    
     footer("Enjoy!")
-    version("ShExcala 0.1")
-    val rdf     = opt[String]("rdf",
-    				required=true,
-    				descr = "RDF Data file")
+    
+    version("ShExcala 0.0.2")
+    
+    val turtle     = opt[String]("turtle",
+    				   required=false,
+    				   descr = "Turtle RDF Data file")
+    				
+    val endpoint   = opt[String]("endpoint",
+                      required=false,
+                      descr = "SPARQL endpoint")
+                    
     val schema 	= opt[String]("schema",
     				required=true,
     				descr = "Schema file")
+    				
     val iri 	= opt[String]("iri",
                     required=true,
                     descr = "IRI")
+                    
     val syntax 	= opt[String]("syntax", 
         			default=Some("ShEx"), 
         			descr = "ShEx")
+        			
     val showSchema = toggle("show", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "show schema", 
         			descrNo = "don't show schema")
+        			
     val showRDF   = toggle("showRDF", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "show RDF", 
         			descrNo = "don't show RDF")
+        			
     val verbose    = toggle("verbose", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "Normal output", 
         			descrNo = "Verbose output")
+        			
     val version = opt[Boolean]("version", 
     				noshort = true, 
     				descr = "Print version")
+    				
     val help 	= opt[Boolean]("help", 
     				noshort = true, 
     				descr = "Show this message")
   
-  override protected def onError(e: Throwable) = onError(e, builder)
+    mutuallyExclusive(turtle,endpoint)
+    
+    override protected def onError(e: Throwable) = onError(e, builder)
 }
 
 object Main extends App {
@@ -74,19 +94,35 @@ object Main extends App {
   val conf 		= ConfigFactory.load()
   val opts 		= new Opts(args,errorDriver)
 
+  val rdf = opts.turtle.get match {
+    case None => opts.endpoint.get match {
+      case None => RDFFromWeb()
+      case Some(endpoint) => Endpoint(endpoint)
+    }
+    case Some(turtleFile) => {
+      getRDFFromTurtle(turtleFile).get
+    } 
+  }
+  
   val result = 
     for ( (schema,pm) <- getSchema(opts.schema())
-        ; rdf <- getRDF(opts.rdf())
         ; iri <- getIRI(opts.iri())
         ) yield {
+   
+   log.debug("Got schema " + schema)
+   log.debug("Got iri " + iri)
    if (opts.showSchema()) {
       println(schema.toString())
     }
+   
    if (opts.showRDF()) {
      println(rdf.toString())
    }
+   log.debug("Before match schema ")
    (Schema.matchSchema(iri,rdf,schema),pm)
   }
+
+  log.debug("Before result " + result)
 
   result match {
     case Success((ts,pm)) => {
@@ -105,7 +141,7 @@ object Main extends App {
       ) yield (schema,prefixMap)
  }
 
- private def getRDF(fileName: String) : Try[RDF] = {
+ private def getRDFFromTurtle(fileName: String) : Try[RDF] = {
   for (
         cs <- getContents(fileName) 
       ; triples <- RDFTriples.parse(cs)

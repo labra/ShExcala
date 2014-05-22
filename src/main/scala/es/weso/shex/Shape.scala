@@ -61,23 +61,6 @@ case class ValueReference(l: Label) extends ValueClass
 
 case class Action(label: Label, code: String)
 
-// TODO: We could safely remove these definitions
-/*
-case class Cardinality(min: Integer,max: Either[Integer,Unbound])
-case class Unbound()
-
-lazy val unbound : Unbound = Unbound()
-lazy val Default = Cardinality(min = 1, max=Left(1))
-lazy val Plus = Cardinality(min = 1, max=Right(unbound))
-lazy val Star = Cardinality(min = 0, max=Right(unbound))
-lazy val Opt  = Cardinality(min = 0, max=Left(1))
-
-def range(m: Integer, n: Integer): Cardinality = {
-  require(n > m)
-  Cardinality(min = m, max = Left(n))
-}
-*/
-
 //----------
 def option(r: Rule): Rule = {
  OrRule(r,NoRule)  
