@@ -306,6 +306,41 @@ class ShapeValidatorSpec
      info("Result:\n" + result.toList.toString)
      result.isValid should be(true)
    }
+
+
+  it("should validate with a negation") {
+     val ctx = emptyContext
+     val strShape = "<a> { ! <p> . }"
+     val strRDF = "<x> <q> 1 ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
+  it("should not validate with a negation that contains a triple") {
+     val ctx = emptyContext
+     val strShape = "<a> { ! <p> . }"
+     val strRDF = "<x> <p> 1 ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(false)
+   }
+
+  it("should validate rev of a triple") {
+     val ctx = emptyContext
+     val strShape = "<a> { ^ <p> . }"
+     val strRDF = "<y> <p> <x> ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
 }
  
  

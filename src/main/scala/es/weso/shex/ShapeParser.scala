@@ -117,10 +117,26 @@ trait ShapeParser
     // TODO: Add possibility of BNode
   }
 
-  // TODO: Add not and reverse
+  private def mkArcRule(nvs: ((NameClass, ValueClass), ShapeParserState)): (Rule,ShapeParserState) = {
+    val ((n,v),s) = nvs 
+    (ArcRule(None, n, v), s)
+  }
+  
+  private def mkRevArcRule(nvs: ((NameClass, ValueClass), ShapeParserState)): (Rule,ShapeParserState) = {
+    val ((n,v),s) = nvs 
+    (RevArcRule(None, n, v), s)
+  }
+
   def arc(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+    opt(symbol("!")) ~ opt(symbol("^")) ~
     nameClassAndValue(s) ^^ {
-        case ((n, v), s1) => (ArcRule(None, n, v), s1)
+        case maybeNot ~ maybeRev ~ nc => 
+          (maybeNot,maybeRev,nc) match {
+            case (None,None,((n,v),s1)) => (ArcRule(None,n,v),s1)
+            case (None,Some(_),((n,v),s1)) => (RevArcRule(None,n,v),s1)
+            case (Some(_),None,((n,v),s1)) => (NotRule(ArcRule(None,n,v)),s1)
+            case (Some(_),Some(_),((n,v),s1)) => (NotRule(RevArcRule(None,n,v)),s1)
+          }
     }
   }
   

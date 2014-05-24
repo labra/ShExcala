@@ -22,7 +22,7 @@ libraryDependencies ++= Seq(
   , "org.apache.jena" % "jena-arq" % "2.10.1" 
   , "org.scalaz" % "scalaz-core_2.10" % "7.0.6" 
   , "es.weso" % "stateparser_2.10" % "0.0.1"
-  , "es.weso" % "wesin_2.10" % "0.0.1" 
+  , "es.weso" % "wesin_2.10" % "0.0.2" 
   )
 
 autoCompilerPlugins := true

@@ -29,9 +29,11 @@ case class Shape(label: Label, rule: Rule)
 sealed trait Rule extends Positional  
 
 case class ArcRule(id: Option[Label], n: NameClass, v: ValueClass) extends Rule
+case class RevArcRule(id: Option[Label], n: NameClass, v: ValueClass) extends Rule
 case class AndRule(r1: Rule, r2: Rule) extends Rule
 case class OrRule(r1: Rule, r2: Rule) extends Rule
 case class OneOrMore(r: Rule) extends Rule
+case class NotRule(r: Rule) extends Rule
 case class ActionRule(r: Rule, a: Seq[Action]) extends Rule
 case object NoRule extends Rule
 

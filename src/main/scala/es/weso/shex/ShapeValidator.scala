@@ -45,7 +45,13 @@ object ShapeValidator {
 def matchShape(ctx:Context, iri: IRI, shape: Shape): Result[Typing] = {
   
  log.debug("matchShape: " + iri + " shape: " + shape)
+ 
  val triples = ctx.triplesWithSubject(iri)
+ // TODO: it should be: triplesAround but then, 
+ // we need to modify the tests with 0 triples because the would
+ // retrieve the non-intended dummy triple
+
+ log.debug("triples around " + iri + " triples: " + triples)
 
  for (
    t <- matchRule(ctx,triples,shape.rule)
@@ -84,17 +90,31 @@ def matchRule (
     if (g.isEmpty) unit(emptyTyping)
     else failure("EmptyRule: graph non empty")
 
-  case ActionRule(r,a) => failure("Action not implemented yet")
-  
-  case ArcRule(id,n,v) =>
+  case NotRule(r) => {
+    if (matchRule(ctx,g,r).isFailure) unit(emptyTyping) 
+    else failure("NotRule: matches") 
+  }
+
+  case RevArcRule(id,name,value) =>
     if (g.size == 1) {
-      val t = g.head
-      for ( b <- matchName(ctx,t.pred,n)
-          ; t <- matchValue(ctx,t.obj,v)
-          ) yield t
+      val triple = g.head
+      for ( b <- matchName(ctx,triple.pred,name)
+          ; typing <- matchValue(ctx,triple.subj,value)
+          ) yield typing
+    } else 
+       failure("RevArc expected one but zero or more than one triple found in graph:\n" + g.toString)
+
+  case ArcRule(id,name,value) =>
+    if (g.size == 1) {
+      val triple = g.head
+      for ( b <- matchName(ctx,triple.pred,name)
+          ; typing <- matchValue(ctx,triple.obj,value)
+          ) yield typing
     } else 
        failure("Arc expected but zero or more than one triple found in graph:\n" + g.toString)
 
+  case ActionRule(r,a) => failure("Action not implemented yet")
+       
  }
  
 

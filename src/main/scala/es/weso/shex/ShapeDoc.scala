@@ -49,9 +49,11 @@ case class ShapeDoc(pm: PrefixMap) {
   def ruleDoc(rule: Rule) : Document = {
     rule match {
       case r : ArcRule => arcRuleDoc(r)
+      case r : RevArcRule => "^" :/: revArcRuleDoc(r)
       case AndRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text(",") :/: ruleDoc(e2) :/: text(")")
       case OrRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text("|") :/: ruleDoc(e2) :/: text(")")
       case OneOrMore(r) => "(" :/: ruleDoc(r) :/: text(")+")
+      case NotRule(r) => "!" :/: ruleDoc(r) 
       case ActionRule(r,a) => "(" :/: ruleDoc(r) :/: text(") %") :/: actionDoc(a)
       case NoRule => text(" ")
       /*case GroupRule(rule,opt,a) => 
@@ -66,8 +68,11 @@ case class ShapeDoc(pm: PrefixMap) {
   def arcRuleDoc(arc: ArcRule) : Document = {
     nameClassDoc(arc.n) :: space ::
     valueClassDoc(arc.v) 
-//    cardinalityDoc(arc.c) :: space ::
-//    actionDoc(arc.a)
+  }
+  
+  def revArcRuleDoc(arc: RevArcRule) : Document = {
+    nameClassDoc(arc.n) :: space ::
+    valueClassDoc(arc.v) 
   }
 
   def nameClassDoc(n : NameClass) : Document = {

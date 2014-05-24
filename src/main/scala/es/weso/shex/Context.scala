@@ -15,6 +15,10 @@ case class Context(
     rdf.triplesWithSubject(iri)
   }
   
+  def triplesAround(iri:IRI) : Set[RDFTriple] = { 
+    rdf.triplesWithSubject(iri) ++ rdf.triplesWithObject(iri)
+  }
+
   def getIRIs(): List[IRI] = {
     rdf.iris().toList
   }
