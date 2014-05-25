@@ -46,10 +46,7 @@ def matchShape(ctx:Context, iri: IRI, shape: Shape): Result[Typing] = {
   
  log.debug("matchShape: " + iri + " shape: " + shape)
  
- val triples = ctx.triplesWithSubject(iri)
- // TODO: it should be: triplesAround but then, 
- // we need to modify the tests with 0 triples because the would
- // retrieve the non-intended dummy triple
+ val triples = ctx.triplesAround(iri)
 
  log.debug("triples around " + iri + " triples: " + triples)
 
@@ -149,12 +146,13 @@ def matchRule (
       else failure("matchValue: obj" + obj + " is not in set " + s)
 
     case ValueAny(excl) => {
-      if (matchStems(excl, obj)) failure("matchValue: iri= " + obj + " appears in excl= " + excl)
+      if (matchStems(excl, obj)) failure("matchValue, value any: iri= " + obj + " appears in excl= " + excl)
       else unit(emptyTyping)
     }
 
     case ValueStem(s) => {
-      ???
+      if (s.matchStem(obj)) unit(emptyTyping)
+      else failure("matchValue, value stem: iri = " + obj + " does not have stem = " + s)
     }
 
     case ValueReference(l) => 
@@ -191,7 +189,4 @@ def matchRule (
    }
  }
  
-/* def emptyContext : Context = 
-   Context(RDFTriples.noTriples,
-   ) */
 }

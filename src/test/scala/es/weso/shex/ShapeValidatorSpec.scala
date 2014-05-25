@@ -331,12 +331,11 @@ class ShapeValidatorSpec
    }
 
   it("should validate rev of a triple") {
-     val ctx = emptyContext
      val strShape = "<a> { ^ <p> . }"
      val strRDF = "<y> <p> <x> ."
      val schema = Schema.fromString(strShape).get._1
      val rdf = RDFTriples.parse(strRDF).get
-     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     val result = Schema.matchSchema(IRI("x"), rdf, schema, true)
      info("Result:\n" + result.toList.toString)
      result.isValid should be(true)
    }

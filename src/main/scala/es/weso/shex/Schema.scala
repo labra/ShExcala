@@ -36,8 +36,8 @@ object Schema {
     ShapeParser.parse(cs) 
   }  
 
-  def matchSchema(iri:IRI, rdf:RDF, schema: Schema): Result[Typing] = {
-    def ctx = Context(rdf=rdf,shEx=schema.shEx)
+  def matchSchema(iri:IRI, rdf:RDF, schema: Schema, validateIncoming: Boolean = false): Result[Typing] = {
+    def ctx = Context(rdf=rdf,shEx=schema.shEx, validateIncoming)
     
     def matchLabel(lbl: Label): Result[Typing] = {
       for ( shape <- ctx.getShape(lbl)

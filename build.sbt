@@ -13,21 +13,24 @@ version := Build.currentVersion
 
 libraryDependencies ++= Seq(
     "org.specs2" %% "specs2" % "2.3.7" % "test" 
+  , "org.slf4j" % "slf4j-simple" % "1.6.4"
   , "org.scalatest" % "scalatest_2.10" % "2.0.1-SNAP" % "test"
   , "commons-configuration" % "commons-configuration" % "1.7"
   , "org.rogach" %% "scallop" % "0.9.5" 
   , "com.typesafe" % "config" % "1.0.1"
   , "org.scala-lang" % "scala-compiler" % "2.10.2" 
   , "com.assembla.scala-incubator" % "graph-core_2.10" % "1.6.2"
-  , "org.apache.jena" % "jena-arq" % "2.10.1" 
+  , "org.apache.jena" % "jena-arq" % "2.10.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.scalaz" % "scalaz-core_2.10" % "7.0.6" 
   , "es.weso" % "stateparser_2.10" % "0.0.1"
-  , "es.weso" % "wesin_2.10" % "0.0.2" 
+  , "es.weso" % "wesin_2.10" % "0.0.2" excludeAll(ExclusionRule(organization = "org.slf4j"))
   )
 
 autoCompilerPlugins := true
 
 seq(bintraySettings:_*)
+
+net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 Build.publishSettings
 

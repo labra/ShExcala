@@ -56,12 +56,6 @@ case class ShapeDoc(pm: PrefixMap) {
       case NotRule(r) => "!" :/: ruleDoc(r) 
       case ActionRule(r,a) => "(" :/: ruleDoc(r) :/: text(") %") :/: actionDoc(a)
       case NoRule => text(" ")
-      /*case GroupRule(rule,opt,a) => 
-          text("(") :: space :: 
-    	  nest(3,ruleDoc(rule)) :: space :: 
-    	  text(")") :: 
-    	  (if(opt) text("?") else empty) :: space :: 
-    	  actionDoc(a) */
     }
   }
 
@@ -96,28 +90,10 @@ case class ShapeDoc(pm: PrefixMap) {
         else 
           text("-") :/: nest(3,setDocWithSep(stem," ",iriStemDoc))
       }
-      case ValueStem(stem) => iriDoc(stem)
+      case ValueStem(stem) => iriStemDoc(stem)
       case ValueReference(l) => "@" :: labelDoc(l)
     }    
   }
-  
-  /*
-  def cardinalityDoc(c : Cardinality): Document = {
-    c match {
-      case Star => text("*")
-      case Plus => text("+")
-      case Opt  => text("?")
-      case Default => empty
-      case _ => pairDoc(text(c.min.toString), maxDoc(c.max)) 
-    }
-  }
-  
-  def maxDoc(m : Either[Integer,Unbound]): Document = {
-    m match {
-      case Left(n) => text(n.toString)
-      case Right(_) => text("") // Todo: check specification how to express ranges of type (m,unbound)
-    }
-  } */
 
   def rdfNodeDoc(n : RDFNode): Document = {
     text(rdfNode2String(n))  

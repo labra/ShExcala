@@ -58,7 +58,7 @@ sealed trait ValueClass
 case class ValueType(v: RDFNode) extends ValueClass
 case class ValueSet(s: Seq[RDFNode]) extends ValueClass
 case class ValueAny(excl: Set[IRIStem]) extends ValueClass
-case class ValueStem(s: IRI) extends ValueClass
+case class ValueStem(s: IRIStem) extends ValueClass
 case class ValueReference(l: Label) extends ValueClass
 
 case class Action(label: Label, code: String)
