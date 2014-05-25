@@ -98,6 +98,7 @@ case class IRIStem(iri: IRI, isStem: Boolean) {
 
 lazy val foaf = "http://xmlns.com/foaf/0.1/"
 lazy val xsd  = "http://www.w3.org/2001/XMLSchema#"
+lazy val rdf  = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 lazy val shex = "http://www.w3.org/2013/ShEx/ns#"
 lazy val shex_IRI = IRI(shex + "IRI")
 lazy val shex_NonIRI = IRI(shex + "NonIRI")
@@ -106,6 +107,7 @@ lazy val shex_NonLiteral = IRI(shex + "NonLiteral")
 lazy val shex_BNode = IRI(shex + "BNode")
 lazy val shex_NonBNode = IRI(shex + "NonBNode")
 lazy val xsd_string = IRI(xsd + "string")
+lazy val rdf_type = IRI(rdf + "type")
 
 lazy val typeShexLiteral  	= ValueType(v = shex_Literal)
 lazy val typeShexIRI  		= ValueType(v = shex_IRI)

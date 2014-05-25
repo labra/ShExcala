@@ -52,11 +52,11 @@ trait ShapeParser
     ShEx(ls, None)
   }
 
-  // TODO: Add start
   def statement(s: ShapeParserState): Parser[(Option[Shape], ShapeParserState)] =
-    (directive(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
-      | shape(s) ^^ { case (sh, s1) => (Some(sh), s1) }
-      | start(s) ^^ { case s1 => (None, s1) })
+    ( directive(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
+    | shape(s) ^^ { case (sh, s1) => (Some(sh), s1) }
+    | start(s) ^^ { case s1 => (None, s1) }
+    )
 
  
   def directive(s: ShapeParserState): Parser[ShapeParserState] =
@@ -147,12 +147,45 @@ trait ShapeParser
    )
     // TODO: integer ranges 
   }
-  // TODO: add Any, Stem
-  def nameClassAndValue(s: ShapeParserState): Parser[((NameClass, ValueClass), ShapeParserState)] = 
-   ( iri(s.namespaces) ~ fixedValues(s) ^^ { case (i ~ v) => ((NameTerm(i), v._1), v._2) }
-   | dot ~ fixedValues(s) ^^ { case (_ ~ v) => ((NameAny(excl=Set()),v._1), v._2) } 
+
+  def nameClassAndValue(s: ShapeParserState): 
+	  Parser[((NameClass, ValueClass), ShapeParserState)] = 
+   ( iri(s.namespaces) ~ fixedValues(s) ^^ { 
+     	case (i ~ ((v,s))) => ((NameTerm(i), v), s) 
+     }
+   | symbol("a") ~> fixedValues(s) ^^ { 
+     	case (v,s) => ((NameTerm(rdf_type),v),s)
+     }
+   | iriStem(s) ~ fixedValues(s) ^^ {
+        case (is ~ ((v,s))) => ((NameStem(is),v),s)
+     }
+   | dot ~ fixedValues(s) ^^ { 
+     	case (_ ~ ((v,s))) => ((NameAny(excl=Set()),v), s) 
+     }
+   | exclusions(s) ~ fixedValues(s) ^^ { 
+     	case excls ~ ((v,s)) => ((NameAny(excls),v), s)
+     	}
    )
 
+  def exclusions(s:ShapeParserState): 
+	  Parser[Set[IRIStem]] = {
+    rep(exclusion(s)) ^^ { 
+      case lsIris => (lsIris.toSet)      
+    }
+  }
+  
+  def exclusion(s:ShapeParserState) : Parser[IRIStem] = {
+    symbol("-") ~> iriStem(s)
+  }
+  
+  def iriStem(s:ShapeParserState): Parser[IRIStem] = {
+    iri(s.namespaces) ~ opt(symbol("~")) ^^ 
+       { 
+         case iri ~ None => IRIStem(iri,false)
+         case iri ~ Some(_) => IRIStem(iri,true)
+       }
+  }
+  
   def dot = symbol(".") 
 
   // TODO: add typeSpec ?

@@ -417,6 +417,20 @@ class ShapeParserSuite extends ShapeParser
       shouldParseIgnoreState(shExParser,state, str,shex)
     }
  
+    it("Should parse arc with stem") {
+      val prefix = "http://example.org/"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+                ":a { - <http://e.org/> ~ :c }"
+      val state = ShapeParserState.initial
+      val ruleBC = ArcRule(id = None,
+                           n  = NameAny(Set(IRIStem(IRI("http://e.org/"),true))),
+                           v  = ValueType(IRI(prefix + "c")))
+      val rule = ruleBC
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = rule )
+      val shex : ShEx = ShEx(rules=List(shape),start=None)
+      shouldParseIgnoreState(shExParser,state, str, shex)
+    }
  
  }   
 
@@ -446,6 +460,10 @@ def shouldParse[A](p:Parser[A], s : String, a : A) {
       val result = parseAll(p(initial),s) match {
         case Success(x,_) => x._1 
         case NoSuccess(msg,_) => fail(msg)
+      }
+      if (result != expected) { 
+        println("\n" + result)
+        println("\n" + expected)
       }
       result should be(expected)
    }

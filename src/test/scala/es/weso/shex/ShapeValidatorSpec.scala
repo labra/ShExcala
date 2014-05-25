@@ -340,6 +340,49 @@ class ShapeValidatorSpec
      result.isValid should be(true)
    }
 
+  it("should validate with a excluded stem ") {
+     val strShape = "<a> { - <http://example.org/>~  . }"
+     val strRDF = "<x> <http://ex.org/p> 1 ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
+  it("should validate with a excluded qualified stem ") {
+     val strShape = "prefix e: <http://example.org/> \n" +
+                    "<a> { - e:~  . }"
+     val strRDF = "<x> <http://ex.org/p> 1 ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
+  it("should validate with a qualified stem ") {
+     val strShape = "prefix e: <http://example.org/> \n" +
+                    "<a> { e:~  . }"
+     val strRDF = "prefix e: <http://example.org/> \n" + 
+                  "<x> e:p 1 ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
+  it("should validate with a stem ") {
+     val strShape = "<a> { <http://example.org/>~  . }"
+     val strRDF = "<x> <http://example.org/p> 1 ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
 }
  
  
