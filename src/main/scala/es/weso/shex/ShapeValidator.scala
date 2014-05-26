@@ -144,7 +144,7 @@ def matchRule (
           ) 
         yield emptyTyping
           
-    case ValueRegex(r,None) =>
+/*    case ValueRegex(r,None) =>
       obj match {
         case lit:Literal => 
           matchRegex(r,lit)
@@ -158,10 +158,12 @@ def matchRule (
               ; t2 <- matchLang(lang,lit)
               ) yield emptyTyping
         case _ => failure("matchValue: regex " + r + " does not match with non literal " + obj)
-      }
+      } */
 
     case ValueSet(s) => 
-      if (s contains(obj)) unit(emptyTyping)
+      if (Result.passSome(s.toList, 
+    		  			  matchValueObject(obj)).isValid) 
+        unit(emptyTyping)
       else failure("matchValue: obj" + obj + " is not in set " + s)
 
     case ValueAny(excl) => {
@@ -209,17 +211,41 @@ def matchRule (
 
  }
  
- def matchRegex(r: Regex, lit: Literal): Result[Typing] = {
+ def matchValueObject(node: RDFNode)(vo: ValueObject) : Result[Boolean] = {
+   vo match {
+     case RDFNodeObject(n) => unit(n == node)
+     case LangObject(lang) => node match {
+       case l:LangLiteral => matchLang(lang,l)
+       case _ => failure("matchVallueObject: value object: " + vo + " does not match " + node)
+     }
+     case RegexObject(r,None) => 
+       node match {
+         case l:StringLiteral => matchRegex(r,l)
+         case _ => failure("matchValueObject: Regex " + r + " does not match node " + node) 
+       }
+     case RegexObject(r,Some(lang)) => 
+       node match {
+         case l:LangLiteral => 
+           for ( _ <- matchRegex(r,l)
+               ; b <- matchLang(lang,l)
+         	   ) yield b
+         case _ => failure("matchValueObject: Regex " + r + " with lang " + lang + " does not match node " + node)
+         }
+   }
+   
+ }
+
+ def matchRegex(r: Regex, lit: Literal): Result[Boolean] = {
    r.findFirstIn(lit.lexicalForm) match {
      case None => failure("matchValue: regex " + r.toString + " does not match literal " + lit.lexicalForm)
-     case Some(_) => unit(emptyTyping)
+     case Some(_) => unit(true)
    }
  }
  
- def matchLang(lang:Lang, lit: LangLiteral): Result[Typing] = {
+ def matchLang(lang:Lang, lit: LangLiteral): Result[Boolean] = {
    // TODO: Improve language matching
    if (lang == lit.lang)
-         unit(emptyTyping)
+         unit(true)
    else failure("Lang " + lang + " does not match lang of literal " + lit)
  }
 

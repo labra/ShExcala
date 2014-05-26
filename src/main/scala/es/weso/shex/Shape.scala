@@ -56,9 +56,7 @@ case class NameStem(s: IRIStem) extends NameClass
 
 sealed trait ValueClass
 case class ValueType(v: RDFNode) extends ValueClass
-case class ValueRegex(regex: Regex, lang:Option[Lang]) extends ValueClass
-case class ValueLang(lang:Lang) extends ValueClass
-case class ValueSet(s: Seq[RDFNode]) extends ValueClass
+case class ValueSet(s: Seq[ValueObject]) extends ValueClass
 case class ValueAny(excl: Set[IRIStem]) extends ValueClass
 case class ValueStem(s: IRIStem) extends ValueClass
 case class ValueReference(l: Label) extends ValueClass

@@ -84,10 +84,7 @@ case class ShapeDoc(pm: PrefixMap) {
   def valueClassDoc(v: ValueClass) : Document = {
     v match {
       case ValueType(v) => rdfNodeDoc(v)
-      case ValueRegex(r,None) => "/" :/: text(r.toString) :/: text("/")
-      case ValueRegex(r,Some(lang)) => "/" :/: text(r.toString) :/: text("/") :/: "@" :/: text(lang.lang)
-      case ValueLang(lang) => "@" :/: text(lang.lang)
-      case ValueSet(s) => "(" :/: nest(3,seqDocWithSep(s," ",rdfNodeDoc)) :/: text(")")
+      case ValueSet(s) => "(" :/: nest(3,seqDocWithSep(s," ",valueObjectDoc)) :/: text(")")
       case ValueAny(stem) => {
         if (stem.isEmpty) text(".")
         else 
@@ -98,7 +95,16 @@ case class ShapeDoc(pm: PrefixMap) {
     }    
   }
 
-  def rdfNodeDoc(n : RDFNode): Document = {
+  def valueObjectDoc(vo: ValueObject): Document = {
+    vo match {
+      case RDFNodeObject(n) => rdfNodeDoc(n)
+      case LangObject(lang) => text("@") :/: text(lang.lang)
+      case RegexObject(r,None) => "/" :/: text(r.toString) :/: text("/")
+      case RegexObject(r,Some(lang)) => "/" :/: text(r.toString) :/: text("/") :/: "@" :/: text(lang.lang)
+    }
+  }
+
+ def rdfNodeDoc(n : RDFNode): Document = {
     text(rdfNode2String(n))  
   }
 

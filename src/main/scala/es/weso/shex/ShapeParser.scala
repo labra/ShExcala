@@ -210,14 +210,22 @@ trait ShapeParser
       ( token("@") ~> label(s) ^^ { case l => (ValueReference(l), s) }
       | dot ^^^ (ValueAny(excl = Set()),s)
       | valueSet(s)
-      | valueObject(s) ^^ { case (o, s) => (ValueType(o), s) }
+      | valueType(s) 
       ) <~ opt(WS)
   }
 
+  def valueType(s: ShapeParserState): Parser[(ValueType,ShapeParserState)] = {
+    opt(WS) ~> iri(s.namespaces) <~opt(WS) ^^ {
+      case iri => (ValueType(iri),s)
+    }
+  }
+  
   def valueSet(s: ShapeParserState): Parser[(ValueSet, ShapeParserState)] =
     (openParen ~>
       rep1sepState(s, valueObject, WS)
-      <~ closeParen) ^^ { case (ls, s) => (ValueSet(ls), s) }
+      <~ closeParen) ^^ { 
+    case (ls, s) => (ValueSet(ls), s) 
+  }
 
   def openParen: Parser[String] = symbol("(") // opt(WS) ~> "(" <~ opt(WS)
   def closeParen: Parser[String] = symbol(")")
@@ -226,17 +234,26 @@ trait ShapeParser
    * It corresponds to object rule in
    *  [[http://www.w3.org/2013/ShEx/ShEx.bnf grammar]]
    */
-  def valueObject(s: ShapeParserState): Parser[(RDFNode, ShapeParserState)] =
+  def valueObject(s: ShapeParserState): Parser[(ValueObject, ShapeParserState)] =
     opt(WS) ~>
-      ( iri(s.namespaces) ^^ { case iri => (iri, s) }
+      ( regexChars ~ opt(LANGTAG) ^^ {
+        case r ~ None 		=> (RegexObject(r,None),s)
+        case r ~ Some(lang) => (RegexObject(r,Some(lang)),s)
+      } 
+      | iri(s.namespaces) ^^ { 
+         case iri => (RDFNodeObject(iri), s) 
+      }
       | BlankNode(s.bNodeLabels) ^^ { 
           case (id, table) => {
-             println("id: " + id)
-             println("table: " + table)
-             (id, s.newTable(table)) 
+             (RDFNodeObject(id), s.newTable(table)) 
           }
         }
-      | literal(s.namespaces) ^^ { case l => (l, s) }
+      | literal(s.namespaces) ^^ { 
+        case l => (RDFNodeObject(l), s) 
+        }
+      | LANGTAG ^^ { 
+        case lang => (LangObject(lang),s) 
+      }
       ) <~ opt(WS)
 
   // Parsing symbols skipping spaces...
@@ -245,6 +262,14 @@ trait ShapeParser
     opt(WS) ~> str <~ opt(WS)
   }
 
+  def regexChars : Parser[Regex] = {
+    "/([A-Za-z0-9\\*\\.\\[\\]\\(\\)]+)/".r ^^ {
+      case str => {
+        println("parser regex: " + str)
+        str.r
+      }
+    } 
+  }
 }
 
 object ShapeParser extends ShapeParser {
