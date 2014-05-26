@@ -4,7 +4,6 @@ import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import es.weso.rdfgraph.statements._
 import es.weso.shex.ShapeSyntax._
-
 import es.weso.shex.Typing._
 import es.weso.monads.Result._
 import es.weso.monads.Result
@@ -13,6 +12,7 @@ import scala.util.parsing.input.Positional
 import es.weso.rdf._
 import es.weso.shex.Context._
 import org.slf4j._
+import scala.util.matching.Regex
 
 
 object ShapeValidator {
@@ -139,7 +139,26 @@ def matchRule (
   v match {
 
     case ValueType(v) => 
-      for ( b <- matchType(obj,v); if (b)) yield emptyTyping
+      for ( b <- matchType(obj,v) 
+          ; if (b)
+          ) 
+        yield emptyTyping
+          
+    case ValueRegex(r,None) =>
+      obj match {
+        case lit:Literal => 
+          matchRegex(r,lit)
+        case _ => failure("matchValue: regex " + r + " does not match with non literal " + obj)
+      }
+      
+    case ValueRegex(r,Some(lang)) =>
+      obj match {
+        case lit:LangLiteral => 
+          for ( t1 <- matchRegex(r,lit)
+              ; t2 <- matchLang(lang,lit)
+              ) yield emptyTyping
+        case _ => failure("matchValue: regex " + r + " does not match with non literal " + obj)
+      }
 
     case ValueSet(s) => 
       if (s contains(obj)) unit(emptyTyping)
@@ -187,6 +206,21 @@ def matchRule (
            vtype == shex_NonLiteral) unit(true)
        else unit(false)
    }
+
  }
  
+ def matchRegex(r: Regex, lit: Literal): Result[Typing] = {
+   r.findFirstIn(lit.lexicalForm) match {
+     case None => failure("matchValue: regex " + r.toString + " does not match literal " + lit.lexicalForm)
+     case Some(_) => unit(emptyTyping)
+   }
+ }
+ 
+ def matchLang(lang:Lang, lit: LangLiteral): Result[Typing] = {
+   // TODO: Improve language matching
+   if (lang == lit.lang)
+         unit(emptyTyping)
+   else failure("Lang " + lang + " does not match lang of literal " + lit)
+ }
+
 }

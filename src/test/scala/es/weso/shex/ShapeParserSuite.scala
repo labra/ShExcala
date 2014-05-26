@@ -16,7 +16,7 @@ class ShapeParserSuite extends ShapeParser
 
  describe("Shape Parser") {
 
-   describe("valueObject") {
+   /*   describe("valueObject") {
 
 	   it ("Should parse a value Object made by <>") {
        val str = "<>"
@@ -432,7 +432,74 @@ class ShapeParserSuite extends ShapeParser
       shouldParseIgnoreState(shExParser,state, str, shex)
     }
  
- }   
+    it("Should parse a|(b)") {
+      val prefix = "http://example.org/"
+      val xsd = "http://www.w3.org/2001/XMLSchema#"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+    		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+                ":a { :a xsd:integer | ( :b xsd:integer ) }"
+      val state = ShapeParserState.initial
+      val ruleA = ArcRule(id = None,
+                          n  = NameTerm(IRI(prefix + "a")),
+                          v  = ValueType(IRI(xsd + "integer")))
+      val ruleB = ArcRule(id = None,
+                          n  = NameTerm(IRI(prefix + "b")),
+                          v  = ValueType(IRI(xsd + "integer")))
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = OrRule(ruleA,ruleB) )
+      val shex : ShEx = ShEx(rules=List(shape),start=None)
+      shouldParseIgnoreState(shExParser,state, str, shex)
+    }
+*/
+    it("Should parse (b)") {
+      val prefix = "http://example.org/"
+      val xsd = "http://www.w3.org/2001/XMLSchema#"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+    		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+                ":a { ( :b xsd:integer ) }"
+      val state = ShapeParserState.initial
+      val ruleB = ArcRule(id = None,
+                          n  = NameTerm(IRI(prefix + "b")),
+                          v  = ValueType(IRI(xsd + "integer")))
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = ruleB )
+      val shex : ShEx = ShEx(rules=List(shape),start=None)
+      shouldParseIgnoreState(shExParser,state, str, shex)
+    }
+
+  /*  it("Should parse (b .)") {
+      val prefix = "http://example.org/"
+      val xsd = "http://www.w3.org/2001/XMLSchema#"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+    		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+                ":a { ( :b . ) }"
+      val state = ShapeParserState.initial
+      val ruleB = ArcRule(id = None,
+                          n  = NameTerm(IRI(prefix + "b")),
+                          v  = ValueAny(Set()))
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = ruleB )
+      val shex : ShEx = ShEx(rules=List(shape),start=None)
+      shouldParseIgnoreState(shExParser,state, str, shex)
+    }
+
+    it("Should parse b") {
+      val prefix = "http://example.org/"
+      val xsd = "http://www.w3.org/2001/XMLSchema#"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+    		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+                ":a {  :b xsd:integer  }"
+      val state = ShapeParserState.initial
+      val ruleB = ArcRule(id = None,
+                          n  = NameTerm(IRI(prefix + "b")),
+                          v  = ValueType(IRI(xsd + "integer")))
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = ruleB )
+      val shex : ShEx = ShEx(rules=List(shape),start=None)
+      shouldParseIgnoreState(shExParser,state, str, shex)
+    }
+ */
+}   
 
 def shouldParse[A](p:Parser[A], s : String, a : A) {
       val result = parseAll(p,s) match {

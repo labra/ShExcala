@@ -383,6 +383,45 @@ class ShapeValidatorSpec
      result.isValid should be(true)
    }
 
+  it("should validate a|(b) -> b = ALL") {
+     val strShape = "prefix :     <http://example.org/>\n" +
+    		 		"prefix xsd:  <http://www.w3.org/2001/XMLSchema#>\n" +
+    		 		"<a> { :a xsd:integer | ( :b xsd:integer ) }"
+     val strRDF = "prefix : <http://example.org/>\n" +
+    		 	  "<x> :b 1 ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
+  it("should validate a|(b,c) -> b,c = ALL") {
+     val strShape = "prefix :     <http://example.org/>\n" +
+    		 		"prefix xsd:  <http://www.w3.org/2001/XMLSchema#>\n" +
+    		 		"<a> { :a xsd:integer | ( :b xsd:integer , :c xsd:integer ) }"
+     val strRDF = "prefix : <http://example.org/>\n" +
+    		 	  "<x> :b 1; :c 2 ."
+     val schema = Schema.fromString(strShape).get._1
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
+  it("should validate a|b -> b = ALL") {
+     val strShape = "prefix :     <http://example.org/>\n" +
+    		 		"prefix xsd:  <http://www.w3.org/2001/XMLSchema#>\n" +
+    		 		"<a> { :a xsd:integer | :b xsd:integer }"
+     val strRDF = "prefix : <http://example.org/>\n" +
+    		 	  "<x> :b 1 ."
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
 }
  
  

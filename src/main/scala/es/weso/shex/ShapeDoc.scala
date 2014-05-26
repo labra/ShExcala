@@ -73,7 +73,7 @@ case class ShapeDoc(pm: PrefixMap) {
     n match {
       case NameTerm(t) => iriDoc(t)
       case NameAny(excl) => {
-        if (excl.isEmpty) text(".")
+        if (excl.isEmpty) text("NameAny.")
         else 
           text("-") :/: nest(3,setDocWithSep(excl," ",iriStemDoc))
       }
@@ -84,6 +84,9 @@ case class ShapeDoc(pm: PrefixMap) {
   def valueClassDoc(v: ValueClass) : Document = {
     v match {
       case ValueType(v) => rdfNodeDoc(v)
+      case ValueRegex(r,None) => "/" :/: text(r.toString) :/: text("/")
+      case ValueRegex(r,Some(lang)) => "/" :/: text(r.toString) :/: text("/") :/: "@" :/: text(lang.lang)
+      case ValueLang(lang) => "@" :/: text(lang.lang)
       case ValueSet(s) => "(" :/: nest(3,seqDocWithSep(s," ",rdfNodeDoc)) :/: text(")")
       case ValueAny(stem) => {
         if (stem.isEmpty) text(".")

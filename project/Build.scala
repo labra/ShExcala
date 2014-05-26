@@ -11,19 +11,19 @@ object Build extends sbt.Build {
  
   def repo = "weso-releases" 
 
-  val shExcalaVersion = "0.0.2"
+  val shExcalaVersion = "0.0.4"
 
-  publishMavenStyle := false
+  publishMavenStyle := true
 
   val currentVersion = shExcalaVersion
 
-  protected val bintrayPublishIvyStyle = settingKey[Boolean]("=== !publishMavenStyle") //workaround for sbt-bintray bug
+  // protected val bintrayPublishIvyStyle = settingKey[Boolean]("=== !publishMavenStyle") //workaround for sbt-bintray bug
   
   lazy val publishSettings = Seq(
     repository in bintray := this.repo,
     bintrayOrganization in bintray := Some("weso"),
-    licenses += ("MPL-2.0", url("http://opensource.org/licenses/MPL-2.0")),
-    bintrayPublishIvyStyle := true
+    licenses += ("MPL-2.0", url("http://opensource.org/licenses/MPL-2.0"))
+    // bintrayPublishIvyStyle := false
   )
 
 

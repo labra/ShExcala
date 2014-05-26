@@ -15,7 +15,7 @@ import scala.annotation.tailrec
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import scala.util.Try
-
+import org.slf4j._
 /**
  * Shape parser. This parser follows
  *  [[http://www.w3.org/2013/ShEx/ShEx.bnf this grammar]]
@@ -30,6 +30,7 @@ trait ShapeParser
   with W3cTokens
   with TurtleParser {
 
+  val log = LoggerFactory.getLogger("ShapeParser")
   /**
    * Main entry point for parser
    *
@@ -92,8 +93,18 @@ trait ShapeParser
   }
 
   def orExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    seqState(andExpression,repS(arrowState(orExpression,symbol("|"))))(s) ^^ 
-      { case (p,s1) => (p._2.foldLeft(p._1){case (x, r) => OrRule(x,r)},s1) }
+    seqState(andExpression,
+             repS(arrowState(orExpression, 
+                             symbol("|")
+                            )
+                 )
+            )(s) ^^ 
+      { case (p,s1) => (
+           p._2.foldLeft(p._1)
+                { case (x, r) => OrRule(x,r) },
+           s1
+          ) 
+      }
   }
   
  
@@ -104,8 +115,11 @@ trait ShapeParser
 
   // TODO: Add repeatCount and CODE
   def unaryExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    ( arc(s) 
-    | symbol("(") ~> orExpression(s) <~ symbol(")") 
+    ( arc(s)
+    | symbol("!") ~> unaryExpression(s) ^^ {
+      case (r,s1) => (NotRule(r),s1)
+      }
+    | symbol("(") ~> orExpression(s) <~ symbol(")")
     ) ~ opt(repeatCount) ^^ {
       case (r,s1) ~ Some(fn) => (fn(r),s1)
       case (r,s1) ~ None     => (r,s1)
@@ -128,14 +142,12 @@ trait ShapeParser
   }
 
   def arc(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    opt(symbol("!")) ~ opt(symbol("^")) ~
+    opt(symbol("^")) ~
     nameClassAndValue(s) ^^ {
-        case maybeNot ~ maybeRev ~ nc => 
-          (maybeNot,maybeRev,nc) match {
-            case (None,None,((n,v),s1)) => (ArcRule(None,n,v),s1)
-            case (None,Some(_),((n,v),s1)) => (RevArcRule(None,n,v),s1)
-            case (Some(_),None,((n,v),s1)) => (NotRule(ArcRule(None,n,v)),s1)
-            case (Some(_),Some(_),((n,v),s1)) => (NotRule(RevArcRule(None,n,v)),s1)
+        case maybeRev ~ nc => 
+          (maybeRev,nc) match {
+            case (None,((n,v),s1)) => (ArcRule(None,n,v),s1)
+            case (Some(_),((n,v),s1)) => (RevArcRule(None,n,v),s1)
           }
     }
   }
@@ -156,30 +168,34 @@ trait ShapeParser
    | symbol("a") ~> fixedValues(s) ^^ { 
      	case (v,s) => ((NameTerm(rdf_type),v),s)
      }
-   | iriStem(s) ~ fixedValues(s) ^^ {
+   | iriStem(s.namespaces) ~ fixedValues(s) ^^ {
         case (is ~ ((v,s))) => ((NameStem(is),v),s)
      }
    | dot ~ fixedValues(s) ^^ { 
      	case (_ ~ ((v,s))) => ((NameAny(excl=Set()),v), s) 
      }
-   | exclusions(s) ~ fixedValues(s) ^^ { 
-     	case excls ~ ((v,s)) => ((NameAny(excls),v), s)
-     	}
+   | exclusions(s) ~ fixedValues(s) ^^ {
+        case excls ~ ((v,s)) => {
+          ((NameAny(excls),v), s)
+        }
+     }
    )
 
   def exclusions(s:ShapeParserState): 
 	  Parser[Set[IRIStem]] = {
-    rep(exclusion(s)) ^^ { 
-      case lsIris => (lsIris.toSet)      
+    rep1(exclusion(s)) ^^ { 
+      case lsIris => {
+        (lsIris.toSet)      
+      }
     }
   }
   
   def exclusion(s:ShapeParserState) : Parser[IRIStem] = {
-    symbol("-") ~> iriStem(s)
+    symbol("-") ~> iriStem(s.namespaces)
   }
   
-  def iriStem(s:ShapeParserState): Parser[IRIStem] = {
-    iri(s.namespaces) ~ opt(symbol("~")) ^^ 
+  def iriStem(ns:PrefixMap): Parser[IRIStem] = {
+    iri(ns) ~ opt(symbol("~")) ^^ 
        { 
          case iri ~ None => IRIStem(iri,false)
          case iri ~ Some(_) => IRIStem(iri,true)

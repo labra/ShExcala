@@ -36,7 +36,7 @@ Build.publishSettings
 
 deploymentSettings
 
-publishMavenStyle := false
+publishMavenStyle := true
 
 // publish <<= publish.dependsOn(publish in config("universal"))
 

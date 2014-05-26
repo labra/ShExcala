@@ -2,9 +2,9 @@ package es.weso.shex
 
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
-
 import es.weso.parser.PrefixMap
 import scala.util.parsing.input.Positional
+import scala.util.matching.Regex
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
@@ -56,10 +56,17 @@ case class NameStem(s: IRIStem) extends NameClass
 
 sealed trait ValueClass
 case class ValueType(v: RDFNode) extends ValueClass
+case class ValueRegex(regex: Regex, lang:Option[Lang]) extends ValueClass
+case class ValueLang(lang:Lang) extends ValueClass
 case class ValueSet(s: Seq[RDFNode]) extends ValueClass
 case class ValueAny(excl: Set[IRIStem]) extends ValueClass
 case class ValueStem(s: IRIStem) extends ValueClass
 case class ValueReference(l: Label) extends ValueClass
+
+sealed trait ValueObject
+case class RDFNodeObject(node: RDFNode) extends ValueObject
+case class LangObject(lang: Lang) extends ValueObject
+case class RegexObject(regex:Regex, lang: Option[Lang]) extends ValueObject
 
 case class Action(label: Label, code: String)
 
