@@ -22,8 +22,7 @@ libraryDependencies ++= Seq(
   , "com.assembla.scala-incubator" % "graph-core_2.10" % "1.6.2"
   , "org.apache.jena" % "jena-arq" % "2.10.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.scalaz" % "scalaz-core_2.10" % "7.0.6" 
-  , "es.weso" % "stateparser_2.10" % "0.0.1"
-  , "es.weso" % "wesin_2.10" % "0.0.2" excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "es.weso" % "wesin_2.10" % "0.1.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
   )
 
 autoCompilerPlugins := true
@@ -42,10 +41,10 @@ publishMavenStyle := true
 
 packageArchetype.java_application
 
-resourceGenerators in Test += Def.task {
-  val location = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
-  IO.unzipURL(location, resourceManaged.value / "downloadedTests").toSeq
-}.taskValue
+//resourceGenerators in Test += Def.task {
+//  val location = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
+//  IO.unzipURL(location, resourceManaged.value / "downloadedTests").toSeq
+//}.taskValue
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 

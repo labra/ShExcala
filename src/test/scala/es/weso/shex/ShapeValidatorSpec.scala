@@ -206,7 +206,10 @@ class ShapeValidatorSpec
      val epm = PrefixMap.empty
      val g = RDFTriples(triples= Set(RDFTriple(IRI("a"),IRI("p"),StringLiteral("hi"))), pm=epm)
      val shape = Shape(label = IRILabel(IRI("a")), rule = NoRule)
-     val ctx = Context(rdf=g,shEx = ShEx(rules=Seq(shape),start =None))
+     val ctx = Context(
+         rdf=g,
+         shEx = ShEx(rules=Seq(shape), start = None), 
+         typing = Typing.emptyTyping)
      matchShape(ctx,IRI("a"),shape).isFailure should be(true)
    } 
    
@@ -216,7 +219,9 @@ class ShapeValidatorSpec
      val shape = Shape(label = IRILabel(IRI("l")), 
          			   rule = ArcRule(id = None, n = NameTerm(IRI("p")), v = typeXsdString)
          			  )
-     val ctx = Context(rdf=g, shEx = ShEx(rules=Seq(shape),start =None))
+     val ctx = Context(rdf=g, 
+         shEx = ShEx(rules=Seq(shape),start =None),
+         typing = Typing.emptyTyping)
      val result = matchShape(ctx,IRI("a"),shape)
      info("Result:\n" + result.toString)
      result.isValid should be(true)
@@ -233,7 +238,9 @@ class ShapeValidatorSpec
          			   rule = ArcRule(id = None, n = NameTerm(IRI("p")), v = typeXsdString)
          			  )
      val shEx= ShEx(rules=Seq(shape),start =None)
-     val ctx = Context(rdf=g, shEx = shEx)
+     val ctx = Context(rdf=g, 
+         shEx = shEx, 
+         typing = Typing.emptyTyping)
      val schema = Schema(pm = epm, shEx = shEx)
      val result = Schema.matchSchema(IRI("a"), g, schema)
      info("Result:\n" + result.toString)
@@ -252,7 +259,7 @@ class ShapeValidatorSpec
          			   rule = ArcRule(id = None, n = NameAny(excl = Set()), v = typeXsdString)
          			  )         			  
      val shEx= ShEx(rules=Seq(shape1,shape2),start =None)
-     val ctx = Context(rdf=g, shEx = shEx)
+     val ctx = Context(rdf=g, shEx = shEx, typing = Typing.emptyTyping)
      val schema = Schema(pm = epm, shEx = shEx)
      val result = Schema.matchSchema(IRI("a"), g, schema)
      info("Result:\n" + result.toList.toString)
@@ -422,6 +429,20 @@ class ShapeValidatorSpec
      info("Result:\n" + result.toList.toString)
      result.isValid should be(true)
    }
+
+  it("should validate recursion") {
+     val strShape = "prefix :     <http://example.org/>\n" +
+    		 		"<a> { :a @<a> }"
+     val strRDF = "prefix : <http://example.org/>\n" +
+    		 	  "<x> :a <x> ."
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
 }
  
  

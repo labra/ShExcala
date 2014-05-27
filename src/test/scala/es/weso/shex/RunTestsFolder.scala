@@ -248,13 +248,14 @@ object RunTestsFolder {
        ; cs_instance <- dereference(instance.str)
        ; rdf <- RDFTriples.parse(cs_instance)
        ) yield {
+    println("validating..." + iri)
     val result = Schema.matchSchema(iri, rdf, schema)
     if (result.isValid) {
       val typings = result.toList
       if (typings.exists(t => t.hasTypes(iri,shapes))) {
-       "Valid: typings = " + typings
+       "Valid typings: " + typings
       } else {
-        throw new Exception("Result with typings: " + typings + "does not contain " + iri + " -> " + shapes)
+        throw new Exception("Result does not contain " + iri + " -> " + shapes + "\nTypings: " + typings)
       }
     }
     else 

@@ -51,9 +51,9 @@ def matchShape(ctx:Context, iri: IRI, shape: Shape): Result[Typing] = {
  log.debug("triples around " + iri + " triples: " + triples)
 
  for (
-   t <- matchRule(ctx,triples,shape.rule)
- ; newT <- Result.liftOption(t.addType(iri,shape.label.getIRI)) 
- ) yield newT 
+   ctx1 <- ctx.addTyping(iri,shape.label.getIRI)
+ ; t <- matchRule(ctx1,triples,shape.rule)
+ ) yield t 
 } 
 
 def matchRule (
@@ -84,11 +84,11 @@ def matchRule (
   }
 
   case NoRule => 
-    if (g.isEmpty) unit(emptyTyping)
+    if (g.isEmpty) unit(ctx.typing)
     else failure("EmptyRule: graph non empty")
 
   case NotRule(r) => {
-    if (matchRule(ctx,g,r).isFailure) unit(emptyTyping) 
+    if (matchRule(ctx,g,r).isFailure) unit(ctx.typing) 
     else failure("NotRule: matches") 
   }
 
@@ -142,46 +142,31 @@ def matchRule (
       for ( b <- matchType(obj,v) 
           ; if (b)
           ) 
-        yield emptyTyping
+        yield ctx.typing
           
-/*    case ValueRegex(r,None) =>
-      obj match {
-        case lit:Literal => 
-          matchRegex(r,lit)
-        case _ => failure("matchValue: regex " + r + " does not match with non literal " + obj)
-      }
-      
-    case ValueRegex(r,Some(lang)) =>
-      obj match {
-        case lit:LangLiteral => 
-          for ( t1 <- matchRegex(r,lit)
-              ; t2 <- matchLang(lang,lit)
-              ) yield emptyTyping
-        case _ => failure("matchValue: regex " + r + " does not match with non literal " + obj)
-      } */
-
     case ValueSet(s) => 
       if (Result.passSome(s.toList, 
     		  			  matchValueObject(obj)).isValid) 
-        unit(emptyTyping)
+        unit(ctx.typing)
       else failure("matchValue: obj" + obj + " is not in set " + s)
 
     case ValueAny(excl) => {
       if (matchStems(excl, obj)) failure("matchValue, value any: iri= " + obj + " appears in excl= " + excl)
-      else unit(emptyTyping)
+      else unit(ctx.typing)
     }
 
     case ValueStem(s) => {
-      if (s.matchStem(obj)) unit(emptyTyping)
+      if (s.matchStem(obj)) unit(ctx.typing)
       else failure("matchValue, value stem: iri = " + obj + " does not have stem = " + s)
     }
 
     case ValueReference(l) => 
       if (obj.isIRI) {
-      for (
-        shape <- ctx.getShape(l)
-      ; newT <- matchShape(ctx,obj.toIRI,shape)
-      ) yield newT
+        if (ctx.containsType(obj.toIRI,l.getIRI)) unit(ctx.typing)
+        else 
+       	for ( shape <- ctx.getShape(l)
+       		; newT <- matchShape(ctx,obj.toIRI,shape)
+       		) yield newT
       }
       else failure("ValueReference: object " + obj + " must be an IRI")
   }

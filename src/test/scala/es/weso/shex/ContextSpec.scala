@@ -28,7 +28,7 @@ class ContextSpec
                  )
            
      val shEx = ShEx(rules=Seq(),start=None)
-     val ctx = Context(rdf=rdf,shEx=shEx)
+     val ctx = Context(rdf=rdf,shEx=shEx, typing = Typing.emptyTyping)
      ctx.getIRIs.toSet should be(Set(IRI("a"),IRI("p"),IRI("q"),IRI("x")))
   }
 
@@ -36,9 +36,11 @@ class ContextSpec
      val epm = PrefixMap.empty
      val g = RDFTriples(triples= Set(RDFTriple(IRI("a"),IRI("p"),StringLiteral("hi"))), pm=epm)
      val shape = Shape(label = IRILabel(IRI("l")), 
-         			   rule = ArcRule(id = None, n = NameTerm(IRI("p")), v = typeXsdString)
+         			   rule = ArcRule(id = None, n = NameTerm(IRI("p")), v = typeXsdString )
          			  )
-     val ctx = Context(rdf=g,shEx = ShEx(rules=Seq(shape),start =None))
+     val ctx = Context(rdf=g,
+         shEx = ShEx(rules=Seq(shape),start =None),
+         typing = Typing.emptyTyping)
      ctx.getIRIs.toSet should be(Set(IRI("a"),IRI("p")))
   }
 

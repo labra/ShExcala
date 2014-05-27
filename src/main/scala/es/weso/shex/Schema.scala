@@ -10,6 +10,8 @@ import scala.util.parsing.input.Positional
 import scala.util.{Try, Success, Failure}
 import es.weso.monads.Result
 import es.weso.rdf.RDF
+import org.slf4j._
+
 
 
 /**
@@ -32,16 +34,21 @@ case class Schema(pm: PrefixMap, shEx: ShEx) extends Positional {
 
 object Schema {
 
+  val log = LoggerFactory.getLogger("Schema")
+  
   def fromString(cs: CharSequence): Try[(Schema,PrefixMap)] = {
     ShapeParser.parse(cs) 
   }  
 
   def matchSchema(iri:IRI, rdf:RDF, schema: Schema, validateIncoming: Boolean = false): Result[Typing] = {
-    def ctx = Context(rdf=rdf,shEx=schema.shEx, validateIncoming)
     
+    val ctx = Context(rdf=rdf,shEx=schema.shEx, Typing.emptyTyping, validateIncoming)
+
     def matchLabel(lbl: Label): Result[Typing] = {
+
       for ( shape <- ctx.getShape(lbl)
-          ; t <- matchShape(ctx,iri,shape)
+          ; ctx1 <- ctx.addTyping(iri,lbl.getIRI)
+          ; t <- matchShape(ctx1,iri,shape)
           ) yield t
     }
     

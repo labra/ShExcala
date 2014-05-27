@@ -12,6 +12,7 @@ import org.slf4j._
 case class Context(
     rdf: RDF,
     shEx: ShEx,
+    typing: Typing,
     validateIncoming:Boolean = false) {
   
   val log = LoggerFactory.getLogger("Context")
@@ -30,6 +31,17 @@ case class Context(
      else Set()) 
   }
 
+  def containsType(node: IRI, maybeType: IRI): Boolean = {
+    typing.hasType(node).contains(maybeType)
+  }
+  
+  def addTyping(node:IRI, t: IRI): Result[Context] = {
+    this.typing.addType(node,t) match {
+      case None => failure("Context: cannot assign type " + t + " to iri " + node + "...current typing: " + this.typing )
+      case Some(newT) => unit(Context(rdf,shEx,newT,validateIncoming))
+    }
+  }
+  
   def getIRIs(): List[IRI] = {
     rdf.iris().toList
   }
@@ -51,6 +63,7 @@ object Context {
     Context(
         RDFTriples.noTriples,
         ShEx(rules = Seq(),start = None),
+        Typing.emptyTyping,
         validateIncoming = false
       )
       
@@ -58,6 +71,7 @@ object Context {
     Context(
         rdf = RDFTriples.noTriples,
         shEx = ShEx(rules = Seq(),start = None),
+        Typing.emptyTyping,
         validateIncoming = true
       )     
       
