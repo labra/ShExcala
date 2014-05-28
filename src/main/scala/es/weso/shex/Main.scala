@@ -19,6 +19,8 @@ import es.weso.rdfgraph.nodes.IRI
 import es.weso.parser.PrefixMap
 import es.weso.rdf.reader.Endpoint
 import es.weso.rdf.reader.RDFFromWeb
+import org.apache.log4j.LogManager
+import org.apache.log4j.Level
 
 
 class Opts(
@@ -66,7 +68,7 @@ class Opts(
     				descrYes = "show RDF", 
         			descrNo = "don't show RDF")
         			
-    val verbose    = toggle("verbose", 
+    val verbose = toggle("verbose", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "Normal output", 
@@ -90,9 +92,12 @@ object Main extends App {
 
  override def main(args: Array[String]) {
 
-  val log 		= LoggerFactory.getLogger("Application")
   val conf 		= ConfigFactory.load()
   val opts 		= new Opts(args,errorDriver)
+  if (opts.verbose()) {
+    LogManager.getRootLogger().setLevel(Level.DEBUG);
+  }
+  val log 		= LoggerFactory.getLogger("Main")
 
   val rdf = opts.turtle.get match {
     case None => opts.endpoint.get match {
@@ -122,13 +127,16 @@ object Main extends App {
    (Schema.matchSchema(iri,rdf,schema),pm)
   }
 
-  log.debug("Before result " + result)
+  log.debug("Before result check, result = " + result)
 
   result match {
     case Success((ts,pm)) => {
-      for (typing <- ts.run) {
-        println("Success:\n" + typing.showTyping(pm))
-      } 
+      if (ts.isFailure) {
+        println("<No shape typings>")
+      } else
+      for ((typing,n) <- (ts.run) zip (1 to 100) ) {
+        println(s"Solution ${n}:\n" + typing.showTyping(pm))
+      }
     }
     case Failure(f) => println("Failure: " + f.toString)
   }

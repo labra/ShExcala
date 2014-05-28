@@ -263,7 +263,7 @@ trait ShapeParser
   }
 
   def regexChars : Parser[Regex] = {
-    "/" ~> acceptRegex("regex","""[a-zA-Z0-9\.\+\*\(\)\[\]]*""".r) <~ "/"^^ {
+    "/" ~> acceptRegex("regex","""[a-zA-Z0-9\.\+\*\(\)\[\]\-\{\}]*""".r) <~ "/"^^ {
       case str => {
         str.r
       }
@@ -285,8 +285,13 @@ object ShapeParser extends ShapeParser {
     try {
       val state = ShapeParserState.initial.newBase(baseIRI)
       parseAll(schemaParser(state), new CharSequenceReader(s)) match {
-        case Success(x, _) => scala.util.Success((x._1,x._2.namespaces))
-        case NoSuccess(msg, _) => scala.util.Failure(new Exception(msg))
+        case Success((schema,s), in1) => 
+          scala.util.Success((schema,s.namespaces))
+        case Error(msg,in1) => 
+          scala.util.Failure(new Exception("Error at " + in1.pos + ": " + msg))
+        case Failure(msg,in1) => {
+          scala.util.Failure(new Exception("Failure at " + in1.pos + ": " + msg))
+        }
       }
     } catch {
       case e: Exception => scala.util.Failure(e)
