@@ -248,7 +248,6 @@ object RunTestsFolder {
        ; cs_instance <- dereference(instance.str)
        ; rdf <- RDFTriples.parse(cs_instance)
        ) yield {
-    println("validating..." + iri)
     val result = Schema.matchSchema(iri, rdf, schema)
     if (result.isValid) {
       val typings = result.toList
