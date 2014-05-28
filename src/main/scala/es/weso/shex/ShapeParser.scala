@@ -263,13 +263,14 @@ trait ShapeParser
   }
 
   def regexChars : Parser[Regex] = {
-    "/([A-Za-z0-9\\*\\.\\[\\]\\(\\)]+)/".r ^^ {
+    "/" ~> acceptRegex("regex","""[a-zA-Z0-9\.\+\*\(\)\[\]]*""".r) <~ "/"^^ {
       case str => {
         println("parser regex: " + str)
         str.r
       }
     } 
   }
+    
 }
 
 object ShapeParser extends ShapeParser {
