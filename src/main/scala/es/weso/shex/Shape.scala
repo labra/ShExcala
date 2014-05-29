@@ -38,15 +38,15 @@ case class ActionRule(r: Rule, a: Seq[Action]) extends Rule
 case object NoRule extends Rule
 
 sealed trait Label {
-  def getIRI():IRI
+  def getNode():RDFNode
 }
 
 case class IRILabel(iri: IRI) extends Label {
-  override def getIRI = iri
+  override def getNode = iri
 }
 
 case class BNodeLabel(bnodeId: Int) extends Label {
-  override def getIRI = ???
+  override def getNode = BNodeId(bnodeId)
 }
 
 sealed trait NameClass
@@ -112,6 +112,8 @@ lazy val shex_NonLiteral = IRI(shex + "NonLiteral")
 lazy val shex_BNode = IRI(shex + "BNode")
 lazy val shex_NonBNode = IRI(shex + "NonBNode")
 lazy val xsd_string = IRI(xsd + "string")
+lazy val xsd_integer = IRI(xsd + "integer")
+lazy val xsd_double = IRI(xsd + "double")
 lazy val rdf_type = IRI(rdf + "type")
 
 lazy val typeShexLiteral  	= ValueType(v = shex_Literal)

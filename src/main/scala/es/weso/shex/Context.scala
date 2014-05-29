@@ -7,6 +7,7 @@ import es.weso.monads.Result
 import es.weso.monads.Result._
 import es.weso.rdfgraph.nodes.IRI
 import org.slf4j._
+import es.weso.rdfgraph.nodes.RDFNode
 
 
 case class Context(
@@ -17,25 +18,25 @@ case class Context(
   
   val log = LoggerFactory.getLogger("Context")
   
-  def triplesWithSubject(iri:IRI) : Set[RDFTriple] = { 
-    rdf.triplesWithSubject(iri)
+  def triplesWithSubject(n:RDFNode) : Set[RDFTriple] = { 
+    rdf.triplesWithSubject(n)
   }
   
-  def triplesWithObject(iri:IRI) : Set[RDFTriple] = { 
-    rdf.triplesWithObject(iri)
+  def triplesWithObject(n:RDFNode) : Set[RDFTriple] = { 
+    rdf.triplesWithObject(n)
   }
 
-  def triplesAround(iri:IRI) : Set[RDFTriple] = { 
-    rdf.triplesWithSubject(iri) ++ 
-    (if (validateIncoming) rdf.triplesWithObject(iri)
+  def triplesAround(n:RDFNode) : Set[RDFTriple] = { 
+    rdf.triplesWithSubject(n) ++ 
+    (if (validateIncoming) rdf.triplesWithObject(n)
      else Set()) 
   }
 
-  def containsType(node: IRI, maybeType: IRI): Boolean = {
+  def containsType(node: RDFNode, maybeType: RDFNode): Boolean = {
     typing.hasType(node).contains(maybeType)
   }
   
-  def addTyping(node:IRI, t: IRI): Result[Context] = {
+  def addTyping(node:RDFNode, t: RDFNode): Result[Context] = {
     this.typing.addType(node,t) match {
       case None => failure("Context: cannot assign type " + t + " to iri " + node + "...current typing: " + this.typing )
       case Some(newT) => unit(Context(rdf,shEx,newT,validateIncoming))

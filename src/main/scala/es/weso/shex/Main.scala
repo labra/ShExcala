@@ -2,7 +2,7 @@ package es.weso.shex
 
 import org.rogach.scallop._
 import org.rogach.scallop.exceptions._
-import org.slf4j._
+import org.apache.log4j._
 import com.typesafe.config._
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.ShapeDoc._
@@ -89,15 +89,19 @@ class Opts(
 
 object Main extends App {
 
+ var log : Logger = null 		
 
  override def main(args: Array[String]) {
 
+  log = LogManager.getLogger("Main")
   val conf 		= ConfigFactory.load()
   val opts 		= new Opts(args,errorDriver)
+  
   if (opts.verbose()) {
-    LogManager.getRootLogger().setLevel(Level.DEBUG);
+    log.info("Setting mode to debug")
+    log.setLevel(Level.DEBUG);
+    log.debug("...in debug mode")
   }
-  val log 		= LoggerFactory.getLogger("Main")
 
   val rdf = opts.turtle.get match {
     case None => opts.endpoint.get match {
@@ -105,6 +109,7 @@ object Main extends App {
       case Some(endpoint) => Endpoint(endpoint)
     }
     case Some(turtleFile) => {
+      log.debug("Reading from file " + turtleFile)
       getRDFFromTurtle(turtleFile).get
     } 
   }
@@ -138,22 +143,27 @@ object Main extends App {
         println(s"Solution ${n}:\n" + typing.showTyping(pm))
       }
     }
-    case Failure(f) => println("Failure: " + f.toString)
+    case Failure(f) => {
+      println("Failure: " + f)
+    }
   }
  }
  
  private def getSchema(fileName: String) : Try[(Schema,PrefixMap)] = {
-  for (
+    log.debug("Reading schema from " + fileName)
+	for (
         cs <- getContents(fileName) 
       ; (schema,prefixMap) <- Schema.fromString(cs)
       ) yield (schema,prefixMap)
  }
 
  private def getRDFFromTurtle(fileName: String) : Try[RDF] = {
-  for (
-        cs <- getContents(fileName) 
+  for ( cs <- getContents(fileName) 
       ; triples <- RDFTriples.parse(cs)
-      ) yield triples
+      ) yield {
+    log.debug("Triples: " + triples)
+    triples
+  }
  }
 
  private def getIRI(str: String) : Try[IRI] = {

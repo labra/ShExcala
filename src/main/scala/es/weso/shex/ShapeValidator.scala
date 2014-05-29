@@ -42,16 +42,11 @@ object ShapeValidator {
 
 
 
-def matchShape(ctx:Context, iri: IRI, shape: Shape): Result[Typing] = {
-  
- log.debug("matchShape: " + iri + " shape: " + shape)
- 
- val triples = ctx.triplesAround(iri)
+def matchShape(ctx:Context, node: RDFNode, shape: Shape): Result[Typing] = {
 
- log.debug("triples around " + iri + " triples: " + triples)
-
+ val triples = ctx.triplesAround(node)
  for (
-   ctx1 <- ctx.addTyping(iri,shape.label.getIRI)
+   ctx1 <- ctx.addTyping(node,shape.label.getNode)
  ; t <- matchRule(ctx1,triples,shape.rule)
  ) yield t 
 } 
@@ -59,40 +54,41 @@ def matchShape(ctx:Context, iri: IRI, shape: Shape): Result[Typing] = {
 def matchRule (
     ctx: Context, 
     g: Set[RDFTriple], 
-    rule: Rule ): Result[Typing] = 
- rule match {
-
-  case AndRule(r1,r2) => for(
-      (g1,g2) <- parts(g)
-    ; t1 <- matchRule(ctx,g1,r1)
-    ; t2 <- matchRule(ctx,g2,r2)
-    ) yield t1 combine t2
+    rule: Rule ): Result[Typing] = {
+  
+  rule match {
+   
+   case AndRule(r1,r2) => for(
+       (g1,g2) <- parts(g)
+     ; t1 <- matchRule(ctx,g1,r1)
+     ; t2 <- matchRule(ctx,g2,r2)
+     ) yield t1 combine t2
   
 
-  case OrRule(r1,r2) => 
-    matchRule(ctx,g,r1) orelse 
-    matchRule(ctx,g,r2)
+   case OrRule(r1,r2) => 
+     matchRule(ctx,g,r1) orelse 
+     matchRule(ctx,g,r2)
   
-  case OneOrMore(r) => {
-    matchRule(ctx,g,r) orelse
-    ( for (
-        (g1,g2) <- parts(g)
-      ; t1 <- matchRule(ctx,g1,r)
-      ; t2 <- matchRule(ctx,g2,rule)
-      ) yield t1 combine t2
-    )
-  }
+   case OneOrMore(r) => {
+     matchRule(ctx,g,r) orelse
+     ( for (
+         (g1,g2) <- parts(g)
+       ; t1 <- matchRule(ctx,g1,r)
+       ; t2 <- matchRule(ctx,g2,rule)
+       ) yield t1 combine t2
+     )
+   }
 
-  case NoRule => 
+   case NoRule => 
     if (g.isEmpty) unit(ctx.typing)
     else failure("EmptyRule: graph non empty")
 
-  case NotRule(r) => {
+   case NotRule(r) => {
     if (matchRule(ctx,g,r).isFailure) unit(ctx.typing) 
     else failure("NotRule: matches") 
-  }
+   }
 
-  case RevArcRule(id,name,value) =>
+   case RevArcRule(id,name,value) =>
     if (g.size == 1) {
       val triple = g.head
       for ( b <- matchName(ctx,triple.pred,name)
@@ -101,7 +97,7 @@ def matchRule (
     } else 
        failure("RevArc expected one but zero or more than one triple found in graph:\n" + g.toString)
 
-  case ArcRule(id,name,value) =>
+   case ArcRule(id,name,value) =>
     if (g.size == 1) {
       val triple = g.head
       for ( b <- matchName(ctx,triple.pred,name)
@@ -110,8 +106,10 @@ def matchRule (
     } else 
        failure("Arc expected but zero or more than one triple found in graph:\n" + g.toString)
 
-  case ActionRule(r,a) => failure("Action not implemented yet")
-       
+   case ActionRule(r,a) => failure("Action not implemented yet")
+ 
+  }     
+
  }
  
 
@@ -135,7 +133,8 @@ def matchRule (
  }
    
    
- def matchValue(ctx: Context, obj: RDFNode, v: ValueClass): Result[Typing] = { 
+ def matchValue(ctx: Context, obj: RDFNode, v: ValueClass): Result[Typing] = {
+   
   v match {
 
     case ValueType(v) => 
@@ -162,7 +161,7 @@ def matchRule (
 
     case ValueReference(l) => 
       if (obj.isIRI) {
-        if (ctx.containsType(obj.toIRI,l.getIRI)) unit(ctx.typing)
+        if (ctx.containsType(obj.toIRI,l.getNode)) unit(ctx.typing)
         else 
        	for ( shape <- ctx.getShape(l)
        		; newT <- matchShape(ctx,obj.toIRI,shape)
@@ -173,14 +172,16 @@ def matchRule (
  }
    
  def matchType(obj: RDFNode, vtype: RDFNode): Result[Boolean] = {
+   
    obj match {
-     case lit:Literal => 
+     case lit:Literal => {
        if (vtype == shex_Literal || 
            vtype == shex_NonIRI ||
            vtype == shex_NonBNode ||
-           lit.dataType == vtype) unit(true)
+           lit.dataType == vtype) 
+         unit(true)
        else unit(false)
-                         
+     }                         
      case iri:IRI => {
        if (vtype == shex_IRI || 
            vtype == shex_NonLiteral ||

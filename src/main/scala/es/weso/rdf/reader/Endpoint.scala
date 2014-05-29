@@ -83,14 +83,18 @@ case class Endpoint(endpoint: String) extends RDF {
     model2triples(model)
   }
 
-  def triplesWithSubject(subj: IRI): Set[RDFTriple] = {
-    val model = QueryExecutionFactory.sparqlService(endpoint,queryTriplesWithSubject(subj)).execConstruct()
-    model2triples(model)
+  def triplesWithSubject(node: RDFNode): Set[RDFTriple] = {
+    if (node.isIRI) {
+    	val model = QueryExecutionFactory.sparqlService(endpoint,queryTriplesWithSubject(node.toIRI)).execConstruct()
+    	model2triples(model)
+    } else throw new Exception("triplesWithSubject: node " + node + " must be a IRI")
   }
   
-  def triplesWithObject(obj: IRI): Set[RDFTriple] = {
-    val model = QueryExecutionFactory.sparqlService(endpoint,queryTriplesWithObject(obj)).execConstruct()
-    model2triples(model)
+  def triplesWithObject(node: RDFNode): Set[RDFTriple] = {
+    if (node.isIRI) {
+    	val model = QueryExecutionFactory.sparqlService(endpoint,queryTriplesWithObject(node.toIRI)).execConstruct()
+    	model2triples(model)
+    } else throw new Exception("triplesWithObject: node " + node + " must be a IRI")
   }
 
   def model2triples(model: Model): Set[RDFTriple] = {

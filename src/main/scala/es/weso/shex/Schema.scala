@@ -42,12 +42,16 @@ object Schema {
 
   def matchSchema(iri:IRI, rdf:RDF, schema: Schema, validateIncoming: Boolean = false): Result[Typing] = {
     
-    val ctx = Context(rdf=rdf,shEx=schema.shEx, Typing.emptyTyping, validateIncoming)
+    val ctx = 
+      Context(rdf=rdf,
+    		  shEx=schema.shEx, 
+    		  Typing.emptyTyping, 
+    		  validateIncoming)
 
     def matchLabel(lbl: Label): Result[Typing] = {
 
       for ( shape <- ctx.getShape(lbl)
-          ; ctx1 <- ctx.addTyping(iri,lbl.getIRI)
+          ; ctx1 <- ctx.addTyping(iri,lbl.getNode)
           ; t <- matchShape(ctx1,iri,shape)
           ) yield t
     }

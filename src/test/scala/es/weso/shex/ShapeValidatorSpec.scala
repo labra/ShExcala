@@ -26,6 +26,36 @@ class ShapeValidatorSpec
      matchType(obj,vtype).run should be(Stream(true))
    }
    
+   it("Should validate type xsd_string") {
+     val obj: RDFNode = StringLiteral("a")
+     val vtype = xsd_string 
+     matchType(obj,vtype).run should be(Stream(true))
+   }
+   
+   it("Should validate type xsd_integer") {
+     val obj: RDFNode = IntegerLiteral(23)
+     val vtype = xsd_integer 
+     matchType(obj,vtype).run should be(Stream(true))
+   }
+
+   it("Should validate type xsd_double") {
+     val obj = DoubleLiteral(23.5)
+     val vtype = xsd_double 
+     matchType(obj,vtype).run should be(Stream(true))
+   }
+
+   it("Should validate type xsd_double by datatype") {
+     val obj: RDFNode = DatatypeLiteral("23.5",xsd_double)
+     val vtype = xsd_double 
+     matchType(obj,vtype).run should be(Stream(true))
+   }
+
+   it("Should not validate type xsd_double with xsd_integer by datatype") {
+     val obj: RDFNode = DatatypeLiteral("23.5",xsd_double)
+     val vtype = xsd_integer 
+     matchType(obj,vtype).run should be(Stream(false))
+   }
+
  }
  
  describe("Shape Validator with Rules") {

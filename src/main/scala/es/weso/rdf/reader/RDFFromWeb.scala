@@ -83,20 +83,29 @@ case class RDFFromWeb() extends RDF {
     throw new Exception("Cannot obtain triples from RDFFromWeb " )
   }
 
-  def triplesWithSubject(subj: IRI): Set[RDFTriple] = {
+  def triplesWithSubject(node: RDFNode): Set[RDFTriple] = {
+    if (node.isIRI) {
+    val subj = node.toIRI
     val derefModel = ModelFactory.createDefaultModel
     RDFDataMgr.read(derefModel,subj.str)
     val model = QueryExecutionFactory.create(queryTriplesWithSubject(subj),derefModel).execConstruct()
     val triples = model2triples(model)
-    log.info("triples with subject " + subj + " =\n" + triples)
+    log.debug("triples with subject " + subj + " =\n" + triples)
     triples
+    }
+    else 
+      throw new Exception("triplesWithSubject: node " + node + " must be a IRI")
   }
   
-  def triplesWithObject(obj: IRI): Set[RDFTriple] = {
-    val derefModel = ModelFactory.createDefaultModel
-    RDFDataMgr.read(derefModel,obj.str)
-    val model = QueryExecutionFactory.create(queryTriplesWithObject(obj),derefModel).execConstruct()
-    model2triples(model)
+  def triplesWithObject(node: RDFNode): Set[RDFTriple] = {
+    if (node.isIRI) {
+     val obj = node.toIRI
+     val derefModel = ModelFactory.createDefaultModel
+     RDFDataMgr.read(derefModel,obj.str)
+     val model = QueryExecutionFactory.create(queryTriplesWithObject(obj),derefModel).execConstruct()
+     model2triples(model)
+    } else 
+      throw new Exception("triplesWithObject: node " + node + " must be a IRI")
   }
 
   def model2triples(model: Model): Set[RDFTriple] = {

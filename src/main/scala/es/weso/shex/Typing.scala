@@ -7,9 +7,9 @@ import es.weso.parser.PrefixMap
 import scala.util.parsing.input.Positional
 
 
-case class Typing(map:Map[IRI,Set[IRI]]) {
+case class Typing(map:Map[RDFNode,Set[RDFNode]]) {
 
- def addType(key:IRI,value:IRI): Option[Typing] = {
+ def addType(key:RDFNode,value:RDFNode): Option[Typing] = {
    if (map contains key) {
      Some(Typing(map.updated(key,map(key) + value)))  
    } else {
@@ -17,7 +17,7 @@ case class Typing(map:Map[IRI,Set[IRI]]) {
    }
  }
 
- def rmType(key:IRI,value:IRI): Option[Typing] = {
+ def rmType(key:RDFNode,value:RDFNode): Option[Typing] = {
    if ((map contains key) && (map(key) contains value)) {
      val newSet = map(key) - value
      if (newSet.isEmpty) {
@@ -28,8 +28,8 @@ case class Typing(map:Map[IRI,Set[IRI]]) {
    } else None
  }
  
- def hasType(iri: IRI): Set[IRI] = {
-   if (map contains iri) map(iri)
+ def hasType(n: RDFNode): Set[RDFNode] = {
+   if (map contains n) map(n)
    else Set()
  }
  
@@ -37,14 +37,14 @@ case class Typing(map:Map[IRI,Set[IRI]]) {
    Typing(map ++ other.map)
  }
 
- def hasTypes(iri:IRI, iris:Set[IRI]): Boolean = {
-   hasType(iri) == iris 
+ def hasTypes(n:RDFNode, nodes:Set[RDFNode]): Boolean = {
+   hasType(n) == nodes 
  }
 
    def showTyping(implicit pm: PrefixMap): String = {
     val sb = new StringBuilder
     for (is <- map) {
-      sb ++= (showIRI(is._1) + " -> " + showIRIs(is._2) + "\n")
+      sb ++= (showNode(is._1) + " -> " + showNodes(is._2) + "\n")
     }
     sb.toString
   }
@@ -54,11 +54,16 @@ case class Typing(map:Map[IRI,Set[IRI]]) {
     "<" + iri.str + ">"
   }
   
-  private def showIRIs(iris: Set[IRI])(implicit pm:PrefixMap): String = {
+  private def showNode(node: RDFNode)(implicit pm: PrefixMap): String = {
+    if (node.isIRI) showIRI(node.toIRI)
+    else node.toString
+  }
+  
+  private def showNodes(nodes: Set[RDFNode])(implicit pm:PrefixMap): String = {
     val sb = new StringBuilder
     sb ++= "("
-    for (iri <- iris) {
-      sb ++= (showIRI(iri) + " ")
+    for (n <- nodes) {
+      sb ++= (showNode(n) + " ")
     }
     sb ++= ")"
     sb.toString
@@ -68,6 +73,6 @@ case class Typing(map:Map[IRI,Set[IRI]]) {
 
 object Typing {
 
-  def emptyTyping : Typing = Typing(Map[IRI,Set[IRI]]())
+  def emptyTyping : Typing = Typing(Map[RDFNode,Set[RDFNode]]())
 
 }
