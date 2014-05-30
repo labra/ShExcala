@@ -13,7 +13,9 @@ version := Build.currentVersion
 
 libraryDependencies ++= Seq(
     "org.specs2" %% "specs2" % "2.3.7" % "test" 
+//  , "org.clapper" %% "grizzled-slf4j" % "1.0.2"
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
+//  , "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2"
   , "org.scalatest" % "scalatest_2.10" % "2.0.1-SNAP" % "test"
   , "commons-configuration" % "commons-configuration" % "1.7"
   , "org.rogach" %% "scallop" % "0.9.5" 

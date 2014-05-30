@@ -1,7 +1,7 @@
 package es.weso.shex
 
 
-import com.hp.hpl.jena.rdf.model.RDFNode
+import com.hp.hpl.jena.rdf.model.{RDFNode => JenaNode}
 import es.weso.rdfgraph.nodes._
 import es.weso.monads.Result._
 import com.typesafe.config._
@@ -142,7 +142,9 @@ object RunTestsFolder {
    }
   
 
-   def valid(m:Model)(currentReport : Report,res: Resource): Report = {
+   def valid(m:Model)(
+       currentReport : Report,
+       res: Resource): Report = {
      val testType = "Valid"
      val vreport = 
        for ( schema   <- getSchema(m,res)
@@ -203,7 +205,7 @@ object RunTestsFolder {
      getURIWithProperty(m,r,iri)
    }
 
-   def getShapes(m: Model, r:Resource) : Try[Set[IRI]] = {
+   def getShapes(m: Model, r:Resource) : Try[Set[RDFNode]] = {
      for ( rs <- getResourcesWithProperty(m,r,shape)
          ) yield (rs.map(r => IRI(r.asResource.getURI)).toSet)
    }
@@ -220,7 +222,7 @@ object RunTestsFolder {
      }
    }
 
-   def getResourcesWithProperty(m: Model, r:Resource, p:Property) : Try[List[RDFNode]] = {
+   def getResourcesWithProperty(m: Model, r:Resource, p:Property) : Try[List[JenaNode]] = {
      if (m.contains(r,p)) 
        Success(m.listObjectsOfProperty(r,p).toList.asScala.toList)
      else 
@@ -230,7 +232,7 @@ object RunTestsFolder {
    def getName(m: Model, r:Resource) : Try[String] = {
      val iter = m.listObjectsOfProperty(r,mfname)
      if (iter.hasNext) {
-       val node : RDFNode = iter.next()
+       val node : JenaNode = iter.next()
        if (node.isLiteral) Success(node.asLiteral().getLexicalForm)
        else Failure(new Exception("getName: resource " + r + ", name = " + node + " is not a literal"))
      } 
@@ -242,7 +244,7 @@ object RunTestsFolder {
 		    schema : IRI, 
 		    instance: IRI,
 		    iri: IRI, 
-		    shapes: Set[IRI]) : Try[String]= {
+		    shapes: Set[RDFNode]) : Try[String]= {
    for ( cs_schema <- dereference(schema.str)  
        ; (schema,prefixMap) <- Schema.fromString(cs_schema)
        ; cs_instance <- dereference(instance.str)

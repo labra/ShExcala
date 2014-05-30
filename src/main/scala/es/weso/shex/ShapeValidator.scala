@@ -13,16 +13,15 @@ import es.weso.rdf._
 import es.weso.shex.Context._
 import org.slf4j._
 import scala.util.matching.Regex
+import es.weso.utils.Logging
 
 
-object ShapeValidator {
-
- val log = LoggerFactory.getLogger("ShapeValidator")
-
+object ShapeValidator extends Logging {
+  
  def matchAll(ctx:Context): Result[Typing] = {
 
   def matchWithTyping(iri: IRI, typing: Typing)(shape: Shape): Result[Typing] = {
-    println("matchSome. iri: " + iri.toString + 
+    log.debug("matchSome. iri: " + iri.toString + 
             "\n--typing: " + typing.toString + 
             "\n--shape: " + shape.toString)
     for ( t <- matchShape(ctx,iri,shape)) 
@@ -30,12 +29,12 @@ object ShapeValidator {
   }
 
   def matchSomeWithTyping(iri: IRI, typing: Typing): Result[Typing] = {
-    println("matchSome. iri: " + iri.toString + ". typing: " + typing.toString)
+    log.debug("matchSome. iri: " + iri.toString + ". typing: " + typing.toString)
     Result.passSome(ctx.getShapes, matchWithTyping(iri, typing)) 
   }
 
-  println("ctx: " + ctx.toString)
-  println("iris: " + ctx.getIRIs)
+  log.debug("ctx: " + ctx.toString)
+  log.debug("iris: " + ctx.getIRIs)
   Result.passAll(ctx.getIRIs, emptyTyping, matchSomeWithTyping)
 
 }
@@ -43,8 +42,9 @@ object ShapeValidator {
 
 
 def matchShape(ctx:Context, node: RDFNode, shape: Shape): Result[Typing] = {
-
+ log.debug("matchShape, node: " + node + " with shape " + shape.label)
  val triples = ctx.triplesAround(node)
+ log.debug("matchShape, triplesAround(" + node + ") = " + triples)
  for (
    ctx1 <- ctx.addTyping(node,shape.label.getNode)
  ; t <- matchRule(ctx1,triples,shape.rule)
@@ -56,6 +56,7 @@ def matchRule (
     g: Set[RDFTriple], 
     rule: Rule ): Result[Typing] = {
   
+  log.debug("matchRule " + rule)
   rule match {
    
    case AndRule(r1,r2) => for(
@@ -81,11 +82,19 @@ def matchRule (
 
    case NoRule => 
     if (g.isEmpty) unit(ctx.typing)
-    else failure("EmptyRule: graph non empty")
+    else {
+      val msg = "EmptyRule: graph non empty"
+      log.debug(msg)
+      failure(msg)
+    }
 
    case NotRule(r) => {
     if (matchRule(ctx,g,r).isFailure) unit(ctx.typing) 
-    else failure("NotRule: matches") 
+    else {
+      val msg = "NotRule: matches"
+      log.debug(msg)
+      failure(msg)
+    }
    }
 
    case RevArcRule(id,name,value) =>
@@ -94,8 +103,11 @@ def matchRule (
       for ( b <- matchName(ctx,triple.pred,name)
           ; typing <- matchValue(ctx,triple.subj,value)
           ) yield typing
-    } else 
-       failure("RevArc expected one but zero or more than one triple found in graph:\n" + g.toString)
+    } else {
+      val msg = "RevArc expected one but zero or more than one triple found in graph:\n" + g.toString
+      log.debug("fail: " + msg)
+      failure(msg)
+    } 
 
    case ArcRule(id,name,value) =>
     if (g.size == 1) {
@@ -103,38 +115,61 @@ def matchRule (
       for ( b <- matchName(ctx,triple.pred,name)
           ; typing <- matchValue(ctx,triple.obj,value)
           ) yield typing
-    } else 
-       failure("Arc expected but zero or more than one triple found in graph:\n" + g.toString)
+    } else {
+     val msg = "Arc expected but zero or more than one triple found in graph:\n" + g.toString
+     log.debug("fail: " + msg)
+     failure(msg)
+    }
 
-   case ActionRule(r,a) => failure("Action not implemented yet")
+   case ActionRule(r,a) => {
+     log.debug("Executing... " + a)
+     unit(ctx.typing)
+   }
  
   }     
 
  }
  
 
- def matchName(ctx: Context, pred: IRI, n: NameClass): Result[Boolean] =
+ def matchName(ctx: Context, pred: IRI, n: NameClass): Result[Boolean] = {
+   log.debug("Matchname: " + pred + " ~ " + n)
+   
    n match {
    
    case NameTerm(t) => {
      if (pred == t) unit(true)
-     else failure("matchName: iri=" + pred + " does not match name=" + t)
+     else {
+       val msg = "matchName: iri=" + pred + " does not match name=" + t
+       log.debug(msg)
+       failure(msg)
+     }
    }
 
    case NameAny(excl) => {
-     if (matchStems(excl, pred)) failure("matchName: iri= " + pred + " appears in excl= " + excl)
+     if (matchStems(excl, pred)) {
+       val msg = "matchName: iri= " + pred + " appears in excl= " + excl
+       log.debug(msg)
+       failure(msg)
+     }
      else unit(true)
    }
 
    case NameStem(s) => {
      if (s.matchStem(pred)) unit(true) 
-     else failure("matchName: iri= " + pred + " does not match stem= " + s)
+     else {
+       val msg = "matchName: iri= " + pred + " does not match stem= " + s
+       log.debug(msg)
+       failure(msg)
+     }
    } 
+  }
  }
    
    
  def matchValue(ctx: Context, obj: RDFNode, v: ValueClass): Result[Typing] = {
-   
+
+  log.debug("MatchValue: " + obj + " ~ " + v)
+  
   v match {
 
     case ValueType(v) => 
@@ -147,16 +182,28 @@ def matchRule (
       if (Result.passSome(s.toList, 
     		  			  matchValueObject(obj)).isValid) 
         unit(ctx.typing)
-      else failure("matchValue: obj" + obj + " is not in set " + s)
+      else {
+        val msg = "matchValue: obj" + obj + " is not in set " + s
+        log.debug(msg)
+        failure(msg)
+      }
 
     case ValueAny(excl) => {
-      if (matchStems(excl, obj)) failure("matchValue, value any: iri= " + obj + " appears in excl= " + excl)
+      if (matchStems(excl, obj)) {
+        val msg = "matchValue, value any: iri= " + obj + " appears in excl= " + excl
+        log.debug(msg)
+        failure(msg)
+      }
       else unit(ctx.typing)
     }
 
     case ValueStem(s) => {
       if (s.matchStem(obj)) unit(ctx.typing)
-      else failure("matchValue, value stem: iri = " + obj + " does not have stem = " + s)
+      else {
+        val msg = "matchValue, value stem: iri = " + obj + " does not have stem = " + s
+        log.debug(msg)
+        failure(msg)
+      }
     }
 
     case ValueReference(l) => 
@@ -167,12 +214,16 @@ def matchRule (
        		; newT <- matchShape(ctx,obj.toIRI,shape)
        		) yield newT
       }
-      else failure("ValueReference: object " + obj + " must be an IRI")
+      else {
+        val msg = "ValueReference: object " + obj + " must be an IRI"
+        log.debug(msg)
+        failure(msg)
+      }
   }
  }
    
  def matchType(obj: RDFNode, vtype: RDFNode): Result[Boolean] = {
-   
+   log.debug("MatchType: " + obj + " ~ " + vtype)
    obj match {
      case lit:Literal => {
        if (vtype == shex_Literal || 
@@ -198,6 +249,7 @@ def matchRule (
  }
  
  def matchValueObject(node: RDFNode)(vo: ValueObject) : Result[Boolean] = {
+   log.debug("MatchValueObject: " + node + " ~ " + vo)
    vo match {
      case RDFNodeObject(n) => unit(n == node)
      case LangObject(lang) => node match {

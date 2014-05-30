@@ -1,26 +1,23 @@
 package es.weso.shex
 
+import scala.util._
+import org.slf4j._
+import es.weso.utils.Logging
 import org.rogach.scallop._
 import org.rogach.scallop.exceptions._
-import org.apache.log4j._
 import com.typesafe.config._
-import es.weso.shex.ShapeSyntax._
-import es.weso.shex.ShapeDoc._
 import es.weso.monads.Result._
-import es.weso.shex.Typing._
-import scala.util.parsing.input.CharSequenceReader
-import java.io.IOException
-import java.io.FileNotFoundException
-import scala.util._
-import es.weso.utils.IO._
-import es.weso.rdf.RDFTriples
-import es.weso.rdf.RDF
-import es.weso.rdfgraph.nodes.IRI
 import es.weso.parser.PrefixMap
+import es.weso.rdf.RDF
+import es.weso.rdf.RDFTriples
 import es.weso.rdf.reader.Endpoint
 import es.weso.rdf.reader.RDFFromWeb
-import org.apache.log4j.LogManager
-import org.apache.log4j.Level
+import es.weso.rdfgraph.nodes.IRI
+import es.weso.shex.ShapeDoc._
+import es.weso.shex.ShapeSyntax._
+import es.weso.shex.Typing._
+import es.weso.utils.IO._
+import com.hp.hpl.jena.sparql.procedure.library.debug
 
 
 class Opts(
@@ -34,7 +31,7 @@ class Opts(
     
     footer("Enjoy!")
     
-    version("ShExcala 0.0.2")
+    version("ShExcala 0.0.9")
     
     val turtle     = opt[String]("turtle",
     				   required=false,
@@ -87,19 +84,17 @@ class Opts(
     override protected def onError(e: Throwable) = onError(e, builder)
 }
 
-object Main extends App {
+object Main extends App with Logging {
 
- var log : Logger = null 		
+ // val logger = Logger(LoggerFactory getLogger "name")
 
  override def main(args: Array[String]) {
 
-  log = LogManager.getLogger("Main")
   val conf 		= ConfigFactory.load()
   val opts 		= new Opts(args,errorDriver)
   
   if (opts.verbose()) {
-    log.info("Setting mode to debug")
-    log.setLevel(Level.DEBUG);
+    setDebug()
     log.debug("...in debug mode")
   }
 
@@ -110,7 +105,9 @@ object Main extends App {
     }
     case Some(turtleFile) => {
       log.debug("Reading from file " + turtleFile)
-      getRDFFromTurtle(turtleFile).get
+      val ts = getRDFFromTurtle(turtleFile).get
+      log.debug("# of triples: " + ts.rdfTriples.size)
+      ts
     } 
   }
   
@@ -119,7 +116,7 @@ object Main extends App {
         ; iri <- getIRI(opts.iri())
         ) yield {
    
-   log.debug("Got schema " + schema)
+   log.debug("Got schema. Labels: " + showLabels(schema))
    log.debug("Got iri " + iri)
    if (opts.showSchema()) {
       println(schema.toString())
@@ -131,8 +128,6 @@ object Main extends App {
    log.debug("Before match schema ")
    (Schema.matchSchema(iri,rdf,schema),pm)
   }
-
-  log.debug("Before result check, result = " + result)
 
   result match {
     case Success((ts,pm)) => {
@@ -148,9 +143,12 @@ object Main extends App {
     }
   }
  }
+
+ private def showLabels(schema: Schema): String = {
+   schema.getLabels.map(_.getNode.toString ++ " ").mkString 
+ }
  
  private def getSchema(fileName: String) : Try[(Schema,PrefixMap)] = {
-    log.debug("Reading schema from " + fileName)
 	for (
         cs <- getContents(fileName) 
       ; (schema,prefixMap) <- Schema.fromString(cs)
@@ -161,7 +159,6 @@ object Main extends App {
   for ( cs <- getContents(fileName) 
       ; triples <- RDFTriples.parse(cs)
       ) yield {
-    log.debug("Triples: " + triples)
     triples
   }
  }
