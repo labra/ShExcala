@@ -1,5 +1,9 @@
 package es.weso.monads
 
+import util.{Failure => TryFailure}
+import util.Success
+import util.Try
+
 sealed abstract class Result[+A] {
 
   def run(): Stream[A] = {
@@ -124,6 +128,13 @@ object Result {
     opt match {
       case None => Failure("Option with value None")
       case Some(v) => Passed(Stream(v))
+    }
+  }
+
+  def liftTry[A](t:Try[A]):Result[A] = {
+    t match {
+      case TryFailure(e) => Failure(e.getMessage())
+      case Success(v) => Passed(Stream(v))
     }
   }
 
