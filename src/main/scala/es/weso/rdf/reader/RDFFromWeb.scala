@@ -74,11 +74,6 @@ case class RDFFromWeb() extends RDF {
     throw new Exception("Cannot serialize RDFFromWeb")
   }      
 
-  override def iris(): Set[IRI] = {
-    throw new Exception("Cannot obtain triples from RDFFromWeb " )
-  }  
-  
-  
   def rdfTriples(): Set[RDFTriple] = {
     throw new Exception("Cannot obtain triples from RDFFromWeb " )
   }

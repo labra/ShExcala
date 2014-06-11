@@ -22,13 +22,37 @@ case class Endpoint(endpoint: String) extends RDF {
   
   lazy val findIRIs = QueryFactory.create(
       """|select ?x where {
+         | { ?x ?a ?b . } UNION { ?a ?x ?b . } UNION { ?a ?b ?x . } 
+         | filter (isIRI(?x))
+	     |}
+         |""".stripMargin
+      )
+
+  lazy val findSubjects = QueryFactory.create(
+      """|select ?x where {
          | ?x ?p ?y .
          | filter (isIRI(?x))
 	     |}
          |""".stripMargin
       )
       
-  lazy val findRDFTriples = QueryFactory.create(
+  lazy val findPredicates = QueryFactory.create(
+      """|select ?p where {
+         | ?x ?p ?y .
+         | filter (isIRI(?p))
+	     |}
+         |""".stripMargin
+      )
+
+  lazy val findObjects = QueryFactory.create(
+      """|select ?y where {
+         | ?x ?p ?y .
+         | filter (isIRI(?y))
+	     |}
+         |""".stripMargin
+      )
+
+ lazy val findRDFTriples = QueryFactory.create(
       """|construct { ?x ?p ?y } where {
          | ?x ?p ?y .
 	     |}
@@ -77,7 +101,21 @@ case class Endpoint(endpoint: String) extends RDF {
     resultSet.map(qs => IRI(qs.get("x").asResource.getURI)).toSet
   }  
   
+  override def subjects(): Set[IRI] = {
+    val resultSet = QueryExecutionFactory.sparqlService(endpoint,findIRIs).execSelect()
+    resultSet.map(qs => IRI(qs.get("x").asResource.getURI)).toSet
+  }  
   
+  override def predicates(): Set[IRI] = {
+    val resultSet = QueryExecutionFactory.sparqlService(endpoint,findIRIs).execSelect()
+    resultSet.map(qs => IRI(qs.get("p").asResource.getURI)).toSet
+  }  
+
+  override def objects(): Set[IRI] = {
+    val resultSet = QueryExecutionFactory.sparqlService(endpoint,findIRIs).execSelect()
+    resultSet.map(qs => IRI(qs.get("y").asResource.getURI)).toSet
+  }  
+
   def rdfTriples(): Set[RDFTriple] = {
     val model = QueryExecutionFactory.sparqlService(endpoint,queryTriples).execConstruct()
     model2triples(model)

@@ -467,7 +467,21 @@ class ShapeParserSuite extends ShapeParser
       shouldParseIgnoreState(shExParser,state, str, shex)
     }
 
-  /*  it("Should parse (b .)") {
+    it("Should parse (. . *)") {
+      val prefix = "http://example.org/"
+      val xsd = "http://www.w3.org/2001/XMLSchema#"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+    		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+                ":a { . . * }"
+      val state = ShapeParserState.initial
+      val ruleAny = AnyRule
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = ruleAny )
+      val shex : ShEx = ShEx(rules=List(shape),start=None)
+      shouldParseIgnoreState(shExParser,state, str, shex)
+    }
+
+    /*  it("Should parse (b .)") {
       val prefix = "http://example.org/"
       val xsd = "http://www.w3.org/2001/XMLSchema#"
       val str = "PREFIX : <" + prefix + ">\n" + 

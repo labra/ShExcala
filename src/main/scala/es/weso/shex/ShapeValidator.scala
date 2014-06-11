@@ -81,11 +81,14 @@ def matchRule (
    }
 
    case NoRule => 
-    if (g.isEmpty) unit(ctx.typing)
+    if (ctx.openShapes) unit(ctx.typing)
     else {
-      val msg = "EmptyRule: graph non empty"
-      log.debug(msg)
-      failure(msg)
+    	if (g.isEmpty) unit(ctx.typing)
+    	else {
+    		val msg = "EmptyRule: graph non empty"
+    		log.debug(msg)
+    		failure(msg)
+    	}
     }
 
    case NotRule(r) => {
@@ -97,17 +100,8 @@ def matchRule (
     }
    }
 
-   case RevArcRule(id,name,value) =>
-    if (g.size == 1) {
-      val triple = g.head
-      for ( b <- matchName(ctx,triple.pred,name)
-          ; typing <- matchValue(ctx,triple.subj,value)
-          ) yield typing
-    } else {
-      val msg = "RevArc expected one but zero or more than one triple found in graph:\n" + g.toString
-      log.debug("fail: " + msg)
-      failure(msg)
-    } 
+   case AnyRule =>
+    unit(ctx.typing)
 
    case ArcRule(id,name,value) =>
     if (g.size == 1) {
@@ -120,6 +114,18 @@ def matchRule (
      log.debug("fail: " + msg)
      failure(msg)
     }
+
+   case RevArcRule(id,name,value) =>
+    if (g.size == 1) {
+      val triple = g.head
+      for ( b <- matchName(ctx,triple.pred,name)
+          ; typing <- matchValue(ctx,triple.subj,value)
+          ) yield typing
+    } else {
+      val msg = "RevArc expected one but zero or more than one triple found in graph:\n" + g.toString
+      log.debug("fail: " + msg)
+      failure(msg)
+    } 
 
    case ActionRule(r,a) => {
      log.debug("Executing... " + a)

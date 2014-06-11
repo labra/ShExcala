@@ -19,7 +19,9 @@ import org.slf4j._
  * 
  */
 
-case class Schema(pm: PrefixMap, shEx: ShEx) extends Positional {
+case class Schema(
+    pm: PrefixMap, 
+    shEx: ShEx) extends Positional {
 
   override def toString(): String = {
     val sd = ShapeDoc(pm)
@@ -29,6 +31,11 @@ case class Schema(pm: PrefixMap, shEx: ShEx) extends Positional {
   def getLabels(): List[Label] = {
     shEx.rules.map(_.label).toList
   }
+
+  def addAny: Schema = 
+    Schema( pm.addPrefix("shex",ShapeSyntax.shex_IRI)
+          , shEx.copy(rules = shEx.rules :+ ShapeSyntax.anyShape)
+          )
 
 }
 
@@ -40,13 +47,25 @@ object Schema {
     ShapeParser.parse(cs) 
   }  
 
-  def matchSchema(iri:IRI, rdf:RDF, schema: Schema, validateIncoming: Boolean = false): Result[Typing] = {
+  def matchSchema( iri:IRI
+		  		 , rdf:RDF
+		  		 , schema: Schema
+		  		 , validateIncoming: Boolean = false
+		  		 , openShapes: Boolean = false
+		  		 , withAny: Boolean = false
+		  		 ): Result[Typing] = {
+
+    val shex_extended = 
+      if (withAny) schema.addAny.shEx
+      else schema.shEx
     
     val ctx = 
-      Context(rdf=rdf,
-    		  shEx=schema.shEx, 
-    		  Typing.emptyTyping, 
-    		  validateIncoming)
+      Context( rdf=rdf
+    		 , shEx=shex_extended
+    		 , Typing.emptyTyping 
+    		 , validateIncoming
+    		 , openShapes
+    		 )
 
     def matchLabel(lbl: Label): Result[Typing] = {
 
@@ -58,4 +77,20 @@ object Schema {
     
     Result.passSome(schema.getLabels,matchLabel)
   }
+  
+  def matchAll(rdf:RDF
+		  	  , schema: Schema
+		  	  , validateIncoming: Boolean = false
+		  	  , openShapes: Boolean = false
+		  	  , withAny: Boolean = false
+		  	  ): Result[Typing] = {
+      def step(iri:IRI,t:Typing):Result[Typing] = {
+        for ( t1 <- matchSchema(iri,rdf,schema,validateIncoming,openShapes,withAny)
+            ) yield t1 combine t
+      }
+      
+      val subjects : List[IRI] = rdf.subjects.toList
+      Result.passAll(subjects,Typing.emptyTyping,step)
+  }
+
 }

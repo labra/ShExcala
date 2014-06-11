@@ -28,10 +28,34 @@ case class RDFFromJenaModel(model: Model) extends RDF {
   
   val log = LoggerFactory.getLogger("RDFFromJenaModel")
   
-  lazy val findIRIs = QueryFactory.create(
+lazy val findIRIs = QueryFactory.create(
+      """|select ?x where {
+         | { ?x ?a ?b . } UNION { ?a ?x ?b . } UNION { ?a ?b ?x . } 
+         | filter (isIRI(?x))
+	     |}
+         |""".stripMargin
+      )
+
+  lazy val findSubjects = QueryFactory.create(
       """|select ?x where {
          | ?x ?p ?y .
          | filter (isIRI(?x))
+	     |}
+         |""".stripMargin
+      )
+      
+  lazy val findPredicates = QueryFactory.create(
+      """|select ?p where {
+         | ?x ?p ?y .
+         | filter (isIRI(?p))
+	     |}
+         |""".stripMargin
+      )
+
+  lazy val findObjects = QueryFactory.create(
+      """|select ?y where {
+         | ?x ?p ?y .
+         | filter (isIRI(?y))
 	     |}
          |""".stripMargin
       )
@@ -88,12 +112,17 @@ case class RDFFromJenaModel(model: Model) extends RDF {
     out.toString
   }      
 
+  // TODO: this implementation only returns subjects
   override def iris(): Set[IRI] = {
     val resources : Set[Resource] = model.listSubjects().toSet().toSet
     resources.filter(s => s.isURIResource).map(r => IRI(r.getURI))
   }  
-  
-  
+
+  override def subjects(): Set[IRI] = {
+    val resources : Set[Resource] = model.listSubjects().toSet().toSet
+    resources.filter(s => s.isURIResource).map(r => IRI(r.getURI))
+  }  
+
   def rdfTriples(): Set[RDFTriple] = {
     throw new Exception("Cannot obtain triples from RDFFromWeb " )
   }

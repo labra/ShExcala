@@ -36,6 +36,7 @@ case class OneOrMore(r: Rule) extends Rule
 case class NotRule(r: Rule) extends Rule
 case class ActionRule(r: Rule, a: Seq[Action]) extends Rule
 case object NoRule extends Rule
+case object AnyRule extends Rule
 
 sealed trait Label {
   def getNode():RDFNode
@@ -111,6 +112,7 @@ lazy val shex_Literal = IRI(shex + "Literal")
 lazy val shex_NonLiteral = IRI(shex + "NonLiteral")
 lazy val shex_BNode = IRI(shex + "BNode")
 lazy val shex_NonBNode = IRI(shex + "NonBNode")
+lazy val shex_Any = IRI(shex + "Any")
 lazy val xsd_string = IRI(xsd + "string")
 lazy val xsd_integer = IRI(xsd + "integer")
 lazy val xsd_double = IRI(xsd + "double")
@@ -123,6 +125,10 @@ lazy val typeShexBNode  	= ValueType(v = shex_BNode)
 lazy val typeShexNonBNode  	= ValueType(v = shex_NonBNode)
 lazy val typeShexNonLiteral	= ValueType(v = shex_NonLiteral)
 lazy val typeXsdString		= ValueType(v = xsd_string)
+
+lazy val anyShape = Shape( label = IRILabel(shex_Any)
+                         , rule = AnyRule
+                         )
 
 def matchStems(stems:Set[IRIStem], node:RDFNode): Boolean = {
   stems.exists(_.matchStem(node)) 

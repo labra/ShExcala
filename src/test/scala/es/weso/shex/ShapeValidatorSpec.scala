@@ -473,6 +473,31 @@ class ShapeValidatorSpec
      result.isValid should be(true)
    }
 
+    it("should validate any") {
+     val strShape = "prefix :     <http://example.org/>\n" +
+    		 		"<a> { . . * }"
+     val strRDF = "prefix : <http://example.org/>\n" +
+    		 	  "<x> :a 1 ."
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
+    it("should validate any 2") {
+     val strShape = "prefix :     <http://example.org/>\n" +
+    		 		"<a> { . . * , :a (1)}"
+     val strRDF = "prefix : <http://example.org/>\n" +
+    		 	  "<x> :a 1, 2 ."
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
 }
  
  

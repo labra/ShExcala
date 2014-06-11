@@ -11,10 +11,12 @@ import es.weso.rdfgraph.nodes.RDFNode
 
 
 case class Context(
-    rdf: RDF,
-    shEx: ShEx,
-    typing: Typing,
-    validateIncoming:Boolean = false) {
+      rdf: RDF
+    , shEx: ShEx
+    , typing: Typing
+    , validateIncoming:Boolean = false
+    , openShapes: Boolean = false
+    ) {
   
   val log = LoggerFactory.getLogger("Context")
   
@@ -57,23 +59,28 @@ case class Context(
       case Some(sh) => unit(sh)
     }
   }
+  
+  def setOpenShapes(open: Boolean): Context = {
+    this.copy(openShapes = open)
+  }
+
 }
 
 object Context {
   def emptyContext : Context = 
-    Context(
-        RDFTriples.noTriples,
-        ShEx(rules = Seq(),start = None),
-        Typing.emptyTyping,
-        validateIncoming = false
-      )
+    Context( RDFTriples.noTriples
+           , ShEx(rules = Seq(),start = None)
+           , Typing.emptyTyping
+           , validateIncoming = false
+           , openShapes = false
+           )
       
   def emptyContextWithRev : Context = 
-    Context(
-        rdf = RDFTriples.noTriples,
-        shEx = ShEx(rules = Seq(),start = None),
-        Typing.emptyTyping,
-        validateIncoming = true
-      )     
+    Context( rdf = RDFTriples.noTriples
+           , shEx = ShEx(rules = Seq(),start = None)
+           , Typing.emptyTyping
+           , validateIncoming = true
+           , openShapes = false
+           )     
       
 }

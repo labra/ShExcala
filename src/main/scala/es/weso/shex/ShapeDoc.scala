@@ -55,6 +55,7 @@ case class ShapeDoc(pm: PrefixMap) {
       case OneOrMore(r) => "(" :/: ruleDoc(r) :/: text(")+")
       case NotRule(r) => "!" :/: ruleDoc(r) 
       case ActionRule(r,a) => "(" :/: ruleDoc(r) :/: text(") %") :/: actionDoc(a)
+      case AnyRule => text(". . *") 
       case NoRule => text(" ")
     }
   }

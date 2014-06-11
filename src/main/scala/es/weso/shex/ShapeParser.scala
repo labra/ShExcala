@@ -115,7 +115,8 @@ trait ShapeParser
 
   // TODO: Add repeatCount and CODE
   def unaryExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    ( arc(s)
+    ( anyRule ^^ { case r => (r,s) }
+    | arc(s)
     | symbol("!") ~> unaryExpression(s) ^^ {
       case (r,s1) => (NotRule(r),s1)
       }
@@ -150,6 +151,10 @@ trait ShapeParser
             case (Some(_),((n,v),s1)) => (RevArcRule(None,n,v),s1)
           }
     }
+  }
+
+  def anyRule : Parser[Rule] = {
+    dot ~ WS ~ dot ~ opt(WS) ~ symbol("*") ^^^ AnyRule
   }
   
   def repeatCount: Parser[Rule => Rule] = {
