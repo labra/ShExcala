@@ -90,6 +90,24 @@ class ShapeValidatorSpec
      matchRule(ctx,g,r).isValid should be(false) 
    }
 
+   it("Should validate rule with a value set") {
+     val ctx = emptyContext
+     val g : Set[RDFTriple] = 
+        Set( RDFTriple(IRI("x"),IRI("a"),StringLiteral("hi"))
+           )
+     val r = ArcRule(id = None, n = NameTerm(IRI("a")), v = ValueSet(Seq(RDFNodeObject(StringLiteral("hi")))))
+     matchRule(ctx,g,r).isValid should be(true) 
+   }
+
+   it("Should not validate rule with a value set and different value") {
+     val ctx = emptyContext
+     val g : Set[RDFTriple] = 
+        Set( RDFTriple(IRI("x"),IRI("a"),StringLiteral("hi"))
+           )
+     val r = ArcRule(id = None, n = NameTerm(IRI("a")), v = ValueSet(Seq(RDFNodeObject(StringLiteral("bye")))))
+     matchRule(ctx,g,r).isValid should be(false) 
+   }
+
    it("Should validate rule with two arcs and 2 triples") {
      val ctx = emptyContext
      val g : Set[RDFTriple] = 

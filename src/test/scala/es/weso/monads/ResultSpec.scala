@@ -62,6 +62,7 @@ class ResultSpec
     bm.isFailure should be(true)
   }
 
+  describe("pass all") {
    it("should pass all...if all pass") {
     val xs = List(1,2,3)
     val current = true
@@ -80,13 +81,17 @@ class ResultSpec
     passAll(xs,current,eval).isFailure should be(true)
   }
    
-  it("should pass some...if all pass") {
+  }
+  
+  describe("pass Some") {
+  
+    it("should pass some...if all pass") {
     val xs = List(1,2,3)
     def eval(x:Int) = 
       if (x > 0 ) unit(true)
       else failure("x <= 0")        
     passSome(xs,eval).isValid should be(true)
-  }
+   }
 
   it("should pass some...if one pass") {
     val xs = List(-1,2,-3)
@@ -101,9 +106,11 @@ class ResultSpec
     def eval(x:Int) = 
       if (x > 0) unit(true)
       else failure("x <= 0")        
-    passSome(xs,eval).isFailure should be(true)
+    passSome(xs,eval).isValid should be(false)
   }
-
+  
+  }
+  
   it("A sequence with a fail and orelse...recovers") {
     val u1 : Result[Int] = unit(1)
     val f : Result[Int] = failure("fail")
@@ -115,12 +122,16 @@ class ResultSpec
     bm2.run should be (List((2)).toStream)
   }
 
-  it("pSet of 1,2") {
+  describe("parts of a set") {
+
+    it("pSet of 1,2") {
     val bm = parts(Set(1,2))
     bm.run should be (List((Set(1,2),Set()),(Set(1),Set(2)),(Set(2),Set(1)),(Set(),Set(1,2))).toStream)
-  }
+  
+    }
 
-  it("pSet of 1,2,3") {
+  
+    it("pSet of 1,2,3") {
     val bm = parts(Set(1,2,3))
     bm.run.toSet should be (
         Set((Set(1,2,3),Set()),
@@ -132,6 +143,10 @@ class ResultSpec
             (Set(3),Set(1,2)),
             (Set(),Set(1,2,3))
             ))
+  
+    }
+ 
   }
+ 
  }
 }

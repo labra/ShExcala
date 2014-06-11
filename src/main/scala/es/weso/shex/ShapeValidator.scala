@@ -184,15 +184,16 @@ def matchRule (
           ) 
         yield ctx.typing
           
-    case ValueSet(s) => 
-      if (Result.passSome(s.toList, 
-    		  			  matchValueObject(obj)).isValid) 
+    case ValueSet(s) => {
+      val evalSet = Result.passSome(s.toList, matchValueObject(obj))
+      if (evalSet.run.filter(x => x==true).size > 0) {
         unit(ctx.typing)
-      else {
+      } else {
         val msg = "matchValue: obj" + obj + " is not in set " + s
         log.debug(msg)
         failure(msg)
       }
+    }
 
     case ValueAny(excl) => {
       if (matchStems(excl, obj)) {
