@@ -513,9 +513,96 @@ class ShapeValidatorSpec
      info("Schema: " + schema)
      val rdf = RDFTriples.parse(strRDF).get
      val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     result.isValid should be(true)
+   }
+
+    it("should validate collection") {
+     val strShape = "prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 		"<li> { rdf:rest (rdf:nil) | rdf:first . , rdf:rest @<li> }"
+     val strRDF = "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 	  "<x> rdf:rest rdf:nil ."
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
      info("Result:\n" + result.toList.toString)
      result.isValid should be(true)
    }
+
+    it("should validate collection 2") {
+     val strShape = "prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 		"<li> { rdf:rest (rdf:nil) | rdf:first . , rdf:rest @<li> }"
+     val strRDF = "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 	  "<x1> rdf:rest rdf:nil ." +
+    		 	  "<x2> rdf:first 1 ; rdf:rest <x1> ."
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x2"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
+    it("should validate collection 3") {
+     val strShape = "prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 		"<li> { rdf:rest (rdf:nil) | rdf:first . , rdf:rest @<li> }" +
+    		 		"<a> { <p> @<li> } "
+     val strRDF = "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 	  "<x1> rdf:rest rdf:nil ." +
+    		 	  "<x2> rdf:first 1 ; rdf:rest <x1> ." +
+    		 	  "<x> <p> <x2> ."
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     result.isValid should be(true)
+   }
+
+    it("should validate collection 4") {
+     val strShape = "prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 		"<li> { rdf:first ., rdf:rest (rdf:nil) | rdf:first . , rdf:rest @<li> }" +
+    		 		"<a> { <p> @<li> } "
+     val strRDF = "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 	  "<x> <p> ( 1 ) ."
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     info("RDF:\n" + rdf.serialize())
+     result.isValid should be(true)
+   }
+
+   it("should validate collection 5") {
+     val strShape = "prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 		"<li> { rdf:rest (rdf:nil) | rdf:first . , rdf:rest @<li> }" +
+    		 		"<a> { <p> @<li> } "
+     val strRDF = "prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
+    		 	  "_:2 rdf:rest rdf:nil ." +
+    		 	  "_:1 rdf:first 1 ; rdf:rest _:2 ." +
+    		 	  "<x> <p> _:1 ."
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     info("Result:\n" + result.toList.toString)
+     info("RDF:\n" + rdf.serialize())
+     result.isValid should be(true)
+   }
+    
+   it("should validate anon reference") {
+     val strShape = "<a> { <p> @<b> }\n" +
+    		 		"<b> { <q> . }"
+     val strRDF = "<x> <p> _:1 .\n" + 
+    		 	  "_:1 <q> 1 . "
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     result.isValid should be(true)
+   }
+  
 }
  
  

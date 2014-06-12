@@ -214,18 +214,11 @@ def matchRule (
     }
 
     case ValueReference(l) => 
-      if (obj.isIRI) {
-        if (ctx.containsType(obj.toIRI,l.getNode)) unit(ctx.typing)
+      if (ctx.containsType(obj,l.getNode)) unit(ctx.typing)
         else 
        	for ( shape <- ctx.getShape(l)
-       		; newT <- matchShape(ctx,obj.toIRI,shape)
+       		; newT <- matchShape(ctx,obj,shape)
        		) yield newT
-      }
-      else {
-        val msg = "ValueReference: object " + obj + " must be an IRI"
-        log.debug(msg)
-        failure(msg)
-      }
   }
  }
    
