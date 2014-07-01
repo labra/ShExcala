@@ -16,7 +16,7 @@ import scala.util.matching.Regex
 import es.weso.utils.Logging
 
 
-object ShapeValidator extends Logging {
+object ShapeValidatorDeriv extends Logging {
   
  def matchAll(ctx:Context): Result[Typing] = {
 

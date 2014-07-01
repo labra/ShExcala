@@ -96,25 +96,27 @@ case class ShapeDoc(pm: PrefixMap) {
     }    
   }
 
-  def valueObjectDoc(vo: ValueObject): Document = {
+  def valueObjectDoc(vo:ValueObject): Document = {
     vo match {
       case RDFNodeObject(n) => rdfNodeDoc(n)
       case LangObject(lang) => text("@") :/: text(lang.lang)
       case RegexObject(r,None) => "/" :/: text(r.toString) :/: text("/")
       case RegexObject(r,Some(lang)) => "/" :/: text(r.toString) :/: text("/") :/: "@" :/: text(lang.lang)
+      case NoObject(obj) => "- (" :/: valueObjectDoc(obj) :/: text(")")
+      case OrObject(o1,o2) => "(" :/: valueObjectDoc(o1) :/: text("|") :/: valueObjectDoc(o2) :/: text(")")
     }
   }
 
  def rdfNodeDoc(n : RDFNode): Document = {
-    text(rdfNode2String(n))  
+    text(ShapeDoc.rdfNode2String(n)(pm))  
   }
 
   def iriDoc(i : IRI): Document = {
-    text(iri2String(i))  
+    text(ShapeDoc.iri2String(i)(pm))  
   }
   
   def iriStemDoc(i : IRIStem): Document = {
-    text(iri2String(i.iri))  
+    text(ShapeDoc.iri2String(i.iri)(pm))  
   }
 
   def actionDoc(a : Seq[Action]) : Document = 
@@ -145,11 +147,40 @@ case class ShapeDoc(pm: PrefixMap) {
       )
   }
 
-  def rules2String(rs: Seq[Shape]): String = {
-    prettyPrint(rulesDoc(rs))
+}
+
+object ShapeDoc {
+
+    /**
+   * Generic function for pretty printing 
+   */
+  def prettyPrint(d: Document) : String = {
+	  val writer = new java.io.StringWriter
+	  d.format(1, writer)
+	  writer.toString
   }
-  
-  def rdfNode2String(n: RDFNode): String = {
+
+  def rule2String(r: Rule)(implicit pm:PrefixMap): String = {
+    prettyPrint(ShapeDoc(pm).ruleDoc(r))
+  }
+
+  def schema2String(s: Schema)(implicit pm:PrefixMap): String = {
+    prettyPrint(ShapeDoc(pm).schemaDoc(s))
+  }
+
+  def shape2String(shape: Shape)(implicit pm:PrefixMap) : String = 
+    prettyPrint(ShapeDoc(pm).shapeDoc(shape))
+
+  def schema2String(shEx: ShEx)(implicit pm:PrefixMap) : String = {
+    prettyPrint(ShapeDoc(pm).shExDoc(shEx))
+    
+  }
+
+  def rules2String(rs: Seq[Shape])(implicit pm:PrefixMap): String = {
+    prettyPrint(ShapeDoc(pm).rulesDoc(rs))
+  }
+
+  def rdfNode2String(n: RDFNode)(implicit pm: PrefixMap): String = {
     n match {
       case BNodeId(id) => "_:" + id
       case iri: IRI => iri2String(iri)
@@ -157,7 +188,7 @@ case class ShapeDoc(pm: PrefixMap) {
     }
   }
   
-  def iri2String(iri: IRI): String = {
+  def iri2String(iri: IRI)(implicit pm: PrefixMap): String = {
  
     def startsWithPredicate(p:(String, IRI)): Boolean = {
       iri.str.startsWith(p._2.str)
@@ -169,27 +200,6 @@ case class ShapeDoc(pm: PrefixMap) {
     }
   }
 
-  /**
-   * Generic function for pretty printing 
-   */
-  def prettyPrint(d: Document) : String = {
-	  val writer = new java.io.StringWriter
-	  d.format(1, writer)
-	  writer.toString
-  }
-
-  def schema2String(s: Schema): String = {
-    prettyPrint(schemaDoc(s))
-  }
-
-  def shape2String(shape: Shape) : String = 
-    prettyPrint(shapeDoc(shape))
-
-  def schema2String(shEx: ShEx) : String = 
-    prettyPrint(shExDoc(shEx))
-}
-
-object ShapeDoc {
 }
 
 

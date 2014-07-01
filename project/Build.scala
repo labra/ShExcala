@@ -11,7 +11,7 @@ object Build extends sbt.Build {
  
   def repo = "weso-releases" 
 
-  val shExcalaVersion = "0.0.14"
+  val shExcalaVersion = "0.0.19"
 
   publishMavenStyle := true
 
@@ -46,4 +46,5 @@ object Build extends sbt.Build {
     url("http://dl.bintray.com/content/scala-js/scala-js-releases"))(
       Resolver.ivyStylePatterns)
 
+  
 } 

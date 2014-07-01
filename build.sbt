@@ -23,6 +23,7 @@ libraryDependencies ++= Seq(
   , "org.apache.jena" % "jena-arq" % "2.10.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.scalaz" % "scalaz-core_2.10" % "7.0.6" 
   , "es.weso" % "wesin_2.10" % "0.1.4" excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "com.github.axel22" %% "scalameter" % "0.5-M2"
   )
 
 autoCompilerPlugins := true
@@ -48,5 +49,13 @@ packageArchetype.java_application
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
+testFrameworks += new TestFramework(
+    "org.scalameter.ScalaMeterFramework")
 
+logBuffered := false
+
+// Scalameter benchmark needs to run tests sequentially 
+parallelExecution in Test := false
+//resolvers += "Sonatype OSS Snapshots" at
+//  "https://oss.sonatype.org/content/repositories/snapshots"
 

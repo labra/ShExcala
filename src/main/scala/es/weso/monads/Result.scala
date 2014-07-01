@@ -64,6 +64,7 @@ sealed abstract class Result[+A] {
       case Failure(msg) => Failure(msg)
     }
   }
+  
 
   def orelse[B >: A](other: => Result[B]): Result[B] = {
     this match {
@@ -96,15 +97,34 @@ object Result {
 
   def failure(msg:String):Result[Nothing] = Failure(msg)
 
-  def combineAll[A,B](
-      ls:List[A], 
-      current: B,
-      eval:(A,B) => Result[B]): Result[B] = {
-    ls match {
-      case Nil => Passed(Stream(current))
-      case x :: xs => eval(x,current).flatMap(next => combineAll(xs,next,eval)) 
+  def merge[B](comp1: Result[B], comp2: Result[B], combine:(B,B)=>B) : Result[B] = {
+    (comp1,comp2) match {
+      case (Passed(rs1),Passed(rs2)) => {
+        if (rs1.isEmpty) {
+          Passed(rs2)
+        } else if (rs2.isEmpty) Passed(rs1)
+        	   else {
+        		   Passed(rs1.map(x => rs2.map(y => combine(x,y))).flatten)
+        	   }
+      }
+      case (Passed(rs1),Failure(_)) => Passed(rs1)
+      case (Failure(_),Passed(rs2)) => Passed(rs2)
+      case (Failure(msg1),Failure(msg2)) => Failure(msg1 + "\n" + msg2)
     }
   }
+
+  def combineAll[A,B](
+      ls:List[A], 
+      eval:A => Result[B],
+      neutral: B,
+      combine:(B,B)=>B): Result[B] = {
+    ls match {
+      case Nil => Passed(Stream(neutral))
+      case x :: xs => {
+        merge(eval(x),combineAll(xs,eval,neutral,combine),combine) 
+      }
+    }
+  } 
 
   
   def passSome[A,B](ls:List[A], eval: A => Result[B]): Result[B] = {
@@ -142,19 +162,36 @@ object Result {
     Passed(pSet(set))
   }
  
+ 
   
-  /* pSet s generates the power set of s, pairing each subset with its complement.
+ /* pSet s generates the power set of s, pairing each subset with its complement.
      e.g. pSet [1,2] = [([1,2],[]),([1],[2]),([2],[1]),([],[1,2])].
-*/
-  def pSet[A](set:Set[A]):Stream[(Set[A],Set[A])] = {
+ */
+  /* Non tail recursive pSet */
+  def pSetOld[A](set:Set[A]):Stream[(Set[A],Set[A])] = {
    if (set.isEmpty) Stream((Set(),Set()))
    else { 
-     val sets = pSet(set.tail)
+     val sets = pSetOld(set.tail)
      val x = set.head
      sets.map(addFirst(x)) ++ sets.map(addSecond(x))
    }
   }
   
+  /* Tail recursive pSet */
+  def pSet[A](set:Set[A]):Stream[(Set[A],Set[A])] = {
+    
+   @annotation.tailrec
+   def pSetRec(set:Set[A], 
+               acc: Stream[(Set[A],Set[A])]): Stream[(Set[A],Set[A])] = {
+    if (set.isEmpty) acc
+    else { 
+     val x = set.head
+     pSetRec(set.tail, acc.map(addFirst(x)) ++ acc.map(addSecond(x)))
+    }
+   }  
+   pSetRec(set,Stream((Set(),Set())))
+  }
+
   def addFirst[A](x:A)(pair:(Set[A],Set[A])):(Set[A],Set[A]) = {
     (pair._1 + x, pair._2)
   }

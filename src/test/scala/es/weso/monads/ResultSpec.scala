@@ -110,7 +110,8 @@ class ResultSpec
   }
   
   }
-  
+
+  describe("Or else") {
   it("A sequence with a fail and orelse...recovers") {
     val u1 : Result[Int] = unit(1)
     val f : Result[Int] = failure("fail")
@@ -121,13 +122,63 @@ class ResultSpec
     bm2.isFailure should be(false)
     bm2.run should be (List((2)).toStream)
   }
+  
+  }
+  
+  describe("Merge") {
+    it("Should merge two computations") {
+      val comp1 : Result[Int] = Passed(Stream(1,2,3))
+      val comp2 : Result[Int] = Passed(Stream(4,5,6))
+      def comb(x:Int,y:Int) = x + y
+      merge(comp1,comp2,comb) should be(Passed(Stream(5,6,7,6,7,8,7,8,9)))
+    }
+    it("Should merge a computation with values and the basic computation") {
+      val comp1 : Result[Int] = Passed(Stream(1,2,3))
+      val comp2 : Result[Int] = Passed(Stream(0))
+      def comb(x:Int,y:Int) = x + y
+      merge(comp1,comp2,comb) should be(Passed(Stream(1,2,3)))
+    }
+    it("Should merge a computation with values and a Failure computation") {
+      val comp1 : Result[Int] = Passed(Stream(1,2,3))
+      val comp2 : Result[Int] = Failure("hi")
+      def comb(x:Int,y:Int) = x + y
+      merge(comp1,comp2,comb) should be(Passed(Stream(1,2,3)))
+    }
+
+    it("Should merge a computation with values and an empty computation") {
+      val comp1 : Result[Int] = Passed(Stream(1,2,3))
+      val comp2 : Result[Int] = Passed(Stream(0))
+      def comb(x:Int,y:Int) = x + y
+      merge(comp1,comp2,comb) should be(Passed(Stream(1,2,3)))
+    }
+    
+  }
+
+  describe("Combine All") {
+    it("Should combine two computations") {
+      val ls : List[Int] = List(1,2)
+      def eval(n:Int):Result[String] = { Passed({(for (i <- 0 to n) yield i.toString).toStream })}
+      def comb(x:String,y:String) = x + y 
+      combineAll(ls,eval,"0",comb) should be(Passed(Stream("000","010","020","100","110","120")))
+    }
+    
+    it("Should combine three computations even if one fails") {
+      val ls : List[Int] = List(1,-1,2)
+      def eval(n:Int):Result[String] = { 
+        if (n > 0) Passed({(for (i <- 0 to n) yield i.toString).toStream })
+        else Failure("neg")
+      }
+      def comb(x:String,y:String) = x + y 
+      combineAll(ls,eval,"0",comb) should be(Passed(Stream("000","010","020","100","110","120")))
+    }
+  }
 
   describe("parts of a set") {
 
     it("pSet of 1,2") {
     val bm = parts(Set(1,2))
-    bm.run should be (List((Set(1,2),Set()),(Set(1),Set(2)),(Set(2),Set(1)),(Set(),Set(1,2))).toStream)
-  
+    bm.run.toSet should be 
+     Set((Set(1,2),Set()),(Set(1),Set(2)),(Set(2),Set(1)),(Set(),Set(1,2)))
     }
 
   

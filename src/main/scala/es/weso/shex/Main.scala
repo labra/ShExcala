@@ -46,14 +46,14 @@ class Opts(
     				descr = "Schema file")
     				
     val iri 	= opt[String]("iri",
-                    required=true,
+                    required=false,
                     descr = "IRI")
                     
     val syntax 	= opt[String]("syntax", 
         			default=Some("ShEx"), 
         			descr = "ShEx")
         			
-    val showSchema = toggle("show", 
+    val showSchema = toggle("showSchema", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "show schema", 
@@ -64,7 +64,25 @@ class Opts(
     				default = Some(false),
     				descrYes = "show RDF", 
         			descrNo = "don't show RDF")
+
+    val withIncoming   = toggle("withIncoming", 
+    				prefix = "no-",
+    				default = Some(false),
+    				descrYes = "validates with nodes incoming", 
+        			descrNo = "does not validate nodes incoming")        			
         			
+    val withAny   = toggle("withAny", 
+    				prefix = "no-",
+    				default = Some(false),
+    				descrYes = "adds a node of type any", 
+        			descrNo = "does not add a node of type any")        			
+
+    val withOpen   = toggle("withOpen", 
+    				prefix = "no-",
+    				default = Some(false),
+    				descrYes = "with open semantics", 
+        			descrNo = "with closed semantics")        			
+
     val verbose = toggle("verbose", 
     				prefix = "no-",
     				default = Some(false),
@@ -113,11 +131,9 @@ object Main extends App with Logging {
   
   val result = 
     for ( (schema,pm) <- getSchema(opts.schema())
-        ; iri <- getIRI(opts.iri())
         ) yield {
    
    log.debug("Got schema. Labels: " + showLabels(schema))
-   log.debug("Got iri " + iri)
    if (opts.showSchema()) {
       println(schema.toString())
     }
@@ -126,7 +142,10 @@ object Main extends App with Logging {
      println(rdf.toString())
    }
    log.debug("Before match schema ")
-   (Schema.matchSchema(iri,rdf,schema),pm)
+   if (opts.iri.isSupplied)
+    (Schema.matchSchema(IRI(opts.iri()),rdf,schema,opts.withIncoming(),opts.withOpen(), opts.withAny()),pm)
+   else 
+    (Schema.matchAll(rdf,schema,opts.withIncoming(),opts.withOpen(),opts.withAny()),pm)
   }
 
   result match {
@@ -163,9 +182,6 @@ object Main extends App with Logging {
   }
  }
 
- private def getIRI(str: String) : Try[IRI] = {
-   Success(IRI(str))
- }
 
  private def errorDriver(e: Throwable, scallop: Scallop) = e match {
     case Help(s) =>

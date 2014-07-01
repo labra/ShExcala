@@ -8,13 +8,17 @@ object PrefixMaps {
   lazy val rdfs			= "http://www.w3.org/2000/01/rdf-schema#"
   lazy val shex			= "http://www.w3.org/2013/ShEx/ns#"
   lazy val xsd			= "http://www.w3.org/2001/XMLSchema#"
-  lazy val commonMap 	= Map("xsd" -> IRI(xsd), 
-      "rdf" -> IRI(rdf),
-      "rdfs" -> IRI(rdfs),
-      "shex" -> IRI(shex)
-  )
+  lazy val ex			= "http://example.org/"
+
+  lazy val commonMap 	= 
+    Map( "xsd" -> IRI(xsd) 
+       , "rdf" -> IRI(rdf)
+       , "rdfs" -> IRI(rdfs)
+       , "shex" -> IRI(shex)
+       )
 
   lazy val commonShex 	= PrefixMap(map = commonMap) 
+  lazy val example 		= PrefixMap(commonMap + ("ex" -> IRI(ex)))
       
 }
 

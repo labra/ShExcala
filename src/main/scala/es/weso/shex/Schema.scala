@@ -24,8 +24,7 @@ case class Schema(
     shEx: ShEx) extends Positional {
 
   override def toString(): String = {
-    val sd = ShapeDoc(pm)
-    sd.schema2String(this)
+    ShapeDoc.schema2String(this)(pm)
   }
   
   def getLabels(): List[Label] = {
@@ -78,19 +77,22 @@ object Schema {
     Result.passSome(schema.getLabels,matchLabel)
   }
   
-  def matchAll(rdf:RDF
+  def matchAll( rdf:RDF
 		  	  , schema: Schema
 		  	  , validateIncoming: Boolean = false
 		  	  , openShapes: Boolean = false
 		  	  , withAny: Boolean = false
 		  	  ): Result[Typing] = {
-      def step(iri:IRI,t:Typing):Result[Typing] = {
-        for ( t1 <- matchSchema(iri,rdf,schema,validateIncoming,openShapes,withAny)
-            ) yield t1 combine t
-      }
-      
-      val subjects : List[IRI] = rdf.subjects.toList
-      Result.passAll(subjects,Typing.emptyTyping,step)
+    val subjects : List[IRI] = rdf.subjects.toList
+    
+    def eval(iri:IRI) = {
+      matchSchema(iri,rdf,schema,validateIncoming,openShapes,withAny)
+    }
+    
+    def comb(t1:Typing,t2:Typing):Typing = {
+      t1 combine t2
+    }
+    Result.combineAll(subjects,eval,Typing.emptyTyping,comb)
   }
 
 }

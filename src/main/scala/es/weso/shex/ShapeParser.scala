@@ -16,6 +16,7 @@ import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import scala.util.Try
 import org.slf4j._
+
 /**
  * Shape parser. This parser follows
  *  [[http://www.w3.org/2013/ShEx/ShEx.bnf this grammar]]
@@ -167,14 +168,14 @@ trait ShapeParser
 
   def nameClassAndValue(s: ShapeParserState): 
 	  Parser[((NameClass, ValueClass), ShapeParserState)] = 
-   ( iri(s.namespaces) ~ fixedValues(s) ^^ { 
-     	case (i ~ ((v,s))) => ((NameTerm(i), v), s) 
+   ( iriStem(s.namespaces) ~ fixedValues(s) ^^ {
+        case (is ~ ((v,s))) => {
+           if (is.isStem) ((NameStem(is),v),s)
+           else ((NameTerm(is.iri), v), s)
+        }
      }
    | symbol("a") ~> fixedValues(s) ^^ { 
      	case (v,s) => ((NameTerm(rdf_type),v),s)
-     }
-   | iriStem(s.namespaces) ~ fixedValues(s) ^^ {
-        case (is ~ ((v,s))) => ((NameStem(is),v),s)
      }
    | dot ~ fixedValues(s) ^^ { 
      	case (_ ~ ((v,s))) => ((NameAny(excl=Set()),v), s) 
@@ -209,7 +210,6 @@ trait ShapeParser
   
   def dot = symbol(".") 
 
-  // TODO: add typeSpec ?
   def fixedValues(s: ShapeParserState): Parser[(ValueClass, ShapeParserState)] = {
     opt(WS) ~>
       ( token("@") ~> label(s) ^^ { case l => (ValueReference(l), s) }
@@ -220,9 +220,16 @@ trait ShapeParser
   }
 
   def valueType(s: ShapeParserState): Parser[(ValueType,ShapeParserState)] = {
-    opt(WS) ~> iri(s.namespaces) <~opt(WS) ^^ {
+    ( opt(WS) ~> iri(s.namespaces) <~opt(WS) ^^ {
       case iri => (ValueType(iri),s)
-    }
+      }
+    | ignorecase("Literal") ^^^ { (typeShexLiteral,s) }
+    | ignorecase("IRI") ^^^ { (typeShexIRI,s) }
+    | ignorecase("BNode") ^^^ { (typeShexBNode,s) }
+    | ignorecase("NonLiteral") ^^^ { (typeShexNonLiteral,s) }
+    | ignorecase("NonIRI") ^^^ { (typeShexNonIRI,s) }
+    | ignorecase("NonBNode") ^^^ { (typeShexNonLiteral,s) }
+    )
   }
   
   def valueSet(s: ShapeParserState): Parser[(ValueSet, ShapeParserState)] =
@@ -232,14 +239,21 @@ trait ShapeParser
     case (ls, s) => (ValueSet(ls), s) 
   }
 
-  def openParen: Parser[String] = symbol("(") // opt(WS) ~> "(" <~ opt(WS)
+  def openParen: Parser[String] = symbol("(") 
   def closeParen: Parser[String] = symbol(")")
 
   /**
    * It corresponds to object rule in
    *  [[http://www.w3.org/2013/ShEx/ShEx.bnf grammar]]
    */
-  def valueObject(s: ShapeParserState): Parser[(ValueObject, ShapeParserState)] =
+  def valueObject(s: ShapeParserState): Parser[(ValueObject, ShapeParserState)] = { 
+      ( symbol("-") ~> basicValueObject(s) ^^ { case ((vo,s)) => (NoObject(vo),s) } 
+      | basicValueObject(s)
+      )
+  }
+  
+  
+  def basicValueObject(s: ShapeParserState): Parser[(ValueObject, ShapeParserState)] =
     opt(WS) ~>
       ( regexChars ~ opt(LANGTAG) ^^ {
         case r ~ None 		=> (RegexObject(r,None),s)
@@ -266,6 +280,13 @@ trait ShapeParser
   def symbol(str: Parser[String]): Parser[String] = {
     opt(WS) ~> str <~ opt(WS)
   }
+      
+  // The trick to parse ignoring cases was taken from: 
+  // http://stackoverflow.com/questions/6080437/case-insensitive-scala-parser-combinator
+  def ignorecase(str:String): Parser[String] = {
+    opt(WS) ~> ("""(?i)\Q""" + str + """\E""").r <~ opt(WS)
+  }
+
 
   def regexChars : Parser[Regex] = {
     "/" ~> acceptRegex("regex","""[a-zA-Z0-9\.\+\*\(\)\[\]\-\{\}]*""".r) <~ "/"^^ {

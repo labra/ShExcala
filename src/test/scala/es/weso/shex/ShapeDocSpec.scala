@@ -21,8 +21,7 @@ class ShapeDocSpec
                            v = typeShexIRI,
                            id = None)
      val shape = Shape(IRILabel(IRI("test")),arcRule)
-     val sd = ShapeDoc(pm = PrefixMap.empty)
-     info("Shape: " + sd.shape2String(shape))
+     info("Shape: " + ShapeDoc.shape2String(shape)(PrefixMap.empty))
   }
 
   it("Should be able to define basic UserShapes") {

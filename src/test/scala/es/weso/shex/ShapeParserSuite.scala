@@ -16,14 +16,14 @@ class ShapeParserSuite extends ShapeParser
 
  describe("Shape Parser") {
 
-   /*   describe("valueObject") {
+   describe("valueObject") {
 
 	   it ("Should parse a value Object made by <>") {
        val str = "<>"
        
        val state : ShapeParserState = ShapeParserState.initial
        val result = ShapeParser.parse(ShapeParser.valueObject(state),str)
-       result.get._1 should be(IRI(""))
+       result.get._1 should be(RDFNodeObject(IRI("")))
        result.get._2 should be(state)
      }  
 
@@ -33,7 +33,7 @@ class ShapeParserSuite extends ShapeParser
        
        val state : ShapeParserState = ShapeParserState.initial
        val result = parse(valueObject(state),str)
-       result.get._1 should be(IRI(iri))
+       result.get._1 should be(RDFNodeObject(IRI(iri)))
        result.get._2 should be(state)
      }  
 
@@ -44,7 +44,7 @@ class ShapeParserSuite extends ShapeParser
        val result = parse(valueObject(state),str)
        info("result.get_1" + result.get._1)
        info("result.get_2" + result.get._2)
-       result.get._1 should be(id1)
+       result.get._1 should be(RDFNodeObject(id1))
        result.get._2 should be(state1)
        // shouldParseState(valueObject,state, str,(id1,state1))
      }  
@@ -56,7 +56,7 @@ class ShapeParserSuite extends ShapeParser
        val result = parse(valueObject(state),str)
        info("result.get_1" + result.get._1)
        info("result.get_2" + result.get._2)
-       result.get._1 should be(id1)
+       result.get._1 should be(RDFNodeObject(id1))
        result.get._2 should be(state1)
        // shouldParseState(valueObject,state, str,(id1,state1))
      }  
@@ -68,7 +68,7 @@ class ShapeParserSuite extends ShapeParser
        val result = parse(valueObject(state),str)
        info("result.get_1" + result.get._1)
        info("result.get_2" + result.get._2)
-       result.get._1 should be(id1)
+       result.get._1 should be(RDFNodeObject(id1))
        result.get._2 should be(state1)
        // shouldParseState(valueObject,state, str,(id1,state1))
      }  
@@ -81,7 +81,7 @@ class ShapeParserSuite extends ShapeParser
        val state1 = state.addPrefix(prefix, IRI(example))
 
        val result = ShapeParser.parse(ShapeParser.valueObject(state1),strTest)
-       result.get._1 should be (IRI(example + localname))
+       result.get._1 should be (RDFNodeObject(IRI(example + localname)))
        result.get._2 should be (state1)
      }  
    
@@ -92,7 +92,7 @@ class ShapeParserSuite extends ShapeParser
        val state : ShapeParserState = ShapeParserState.initial
 
        val result = ShapeParser.parse(ShapeParser.valueObject(state),strTest)
-       result.get._1 should be (StringLiteral(str))
+       result.get._1 should be (RDFNodeObject(StringLiteral(str)))
        result.get._2 should be (state)
      }  
    }
@@ -180,15 +180,15 @@ class ShapeParserSuite extends ShapeParser
        result.get._1 should be (ValueType(IRI(prefix + localName)))
      }
 
-     it("Should parse fixedValues with a set of one qualified value") {
+/*     it("Should parse fixedValues with a set of one qualified value") {
        val prefix = "http://example.org/"
        val a = "a"
        val alias = "ex"
        val str = "( " + alias + ":" + a + " )"  
        val state = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
        val result = parse(fixedValues(state),str)
-       result.get._1 should be (ValueSet(Seq(IRI(prefix + a))))
-     }
+       result.get._1 should be ((Seq(IRI(prefix + a))))
+     } 
 
      it("Should parse fixedValues with a set of two qualified values ") {
        val prefix = "http://example.org/"
@@ -199,7 +199,7 @@ class ShapeParserSuite extends ShapeParser
        val state = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
        val result = ShapeParser.parse(ShapeParser.fixedValues(state),str)
        result.get._1 should be (ValueSet(Seq(IRI(prefix + a), IRI(prefix + b))))
-     }
+     } */
 
      it("Should parse fixedValues with a reference ") {
        val label = "http://example.org/a"
@@ -450,7 +450,7 @@ class ShapeParserSuite extends ShapeParser
       val shex : ShEx = ShEx(rules=List(shape),start=None)
       shouldParseIgnoreState(shExParser,state, str, shex)
     }
-*/
+
     it("Should parse (b)") {
       val prefix = "http://example.org/"
       val xsd = "http://www.w3.org/2001/XMLSchema#"
@@ -481,7 +481,7 @@ class ShapeParserSuite extends ShapeParser
       shouldParseIgnoreState(shExParser,state, str, shex)
     }
 
-    /*  it("Should parse (b .)") {
+    it("Should parse (b .)") {
       val prefix = "http://example.org/"
       val xsd = "http://www.w3.org/2001/XMLSchema#"
       val str = "PREFIX : <" + prefix + ">\n" + 
@@ -509,10 +509,10 @@ class ShapeParserSuite extends ShapeParser
                           v  = ValueType(IRI(xsd + "integer")))
       val labelA = IRILabel(IRI(prefix + "a"))
       val shape : Shape = Shape(label = labelA, rule = ruleB )
-      val shex : ShEx = ShEx(rules=List(shape),start=None)
+      val shex : ShEx = ShEx( rules=List(shape), start=None )
       shouldParseIgnoreState(shExParser,state, str, shex)
     }
- */
+ 
 }   
 
 def shouldParse[A](p:Parser[A], s : String, a : A) {

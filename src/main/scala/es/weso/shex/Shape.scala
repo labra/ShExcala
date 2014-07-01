@@ -63,9 +63,12 @@ case class ValueStem(s: IRIStem) extends ValueClass
 case class ValueReference(l: Label) extends ValueClass
 
 sealed trait ValueObject
-case class RDFNodeObject(node: RDFNode) extends ValueObject
-case class LangObject(lang: Lang) extends ValueObject
-case class RegexObject(regex:Regex, lang: Option[Lang]) extends ValueObject
+
+case class RDFNodeObject(node: RDFNode) extends ValueObject 
+case class LangObject(lang: Lang) extends ValueObject 
+case class RegexObject(regex:Regex, lang: Option[Lang]) extends ValueObject 
+case class NoObject(obj: ValueObject) extends ValueObject
+case class OrObject(obj1: ValueObject, obj2: ValueObject) extends ValueObject
 
 case class Action(label: Label, code: String)
 
@@ -120,10 +123,12 @@ lazy val rdf_type = IRI(rdf + "type")
 
 lazy val typeShexLiteral  	= ValueType(v = shex_Literal)
 lazy val typeShexIRI  		= ValueType(v = shex_IRI)
-lazy val typeShexNonIRI		= ValueType(v = shex_NonIRI)
 lazy val typeShexBNode  	= ValueType(v = shex_BNode)
-lazy val typeShexNonBNode  	= ValueType(v = shex_NonBNode)
+
 lazy val typeShexNonLiteral	= ValueType(v = shex_NonLiteral)
+lazy val typeShexNonIRI		= ValueType(v = shex_NonIRI)
+lazy val typeShexNonBNode  	= ValueType(v = shex_NonBNode)
+
 lazy val typeXsdString		= ValueType(v = xsd_string)
 
 lazy val anyShape = Shape( label = IRILabel(shex_Any)
