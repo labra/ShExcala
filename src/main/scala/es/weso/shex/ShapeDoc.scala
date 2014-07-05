@@ -50,6 +50,7 @@ case class ShapeDoc(pm: PrefixMap) {
     rule match {
       case r : ArcRule => arcRuleDoc(r)
       case r : RevArcRule => "^" :/: revArcRuleDoc(r)
+      case FailRule(msg) => text("Fail(" + msg + ")")
       case AndRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text(",") :/: ruleDoc(e2) :/: text(")")
       case OrRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text("|") :/: ruleDoc(e2) :/: text(")")
       case OneOrMore(r) => "(" :/: ruleDoc(r) :/: text(")+")

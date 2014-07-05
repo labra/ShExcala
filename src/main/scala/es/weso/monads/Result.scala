@@ -15,6 +15,7 @@ sealed abstract class Result[+A] {
   
   def isFailure: Boolean
   def isValid: Boolean = !isFailure
+  def failMsg : String
   
   def toList(): List[A] = {
     this match {
@@ -35,9 +36,7 @@ sealed abstract class Result[+A] {
   }
   
   def concatResults[B](rs: Stream[Result[B]]): Result[B] = {
-    // TODO: substitute by foldLeft
-    if (rs.isEmpty) noResult
-    else appendResult(rs.head,concatResults(rs.tail))
+    rs.foldLeft(noResult: Result[B])(appendResult)
   }
 
   // TODO: I added this declaration to avoid warning...
@@ -81,11 +80,15 @@ sealed abstract class Result[+A] {
 }
 
 case class Passed[+A](passed: Stream[A]) extends Result[A] {
-  def isFailure = passed.isEmpty
+  override def isFailure = passed.isEmpty
+  
+  override def failMsg = "" 
 }
   
 case class Failure(msg: String) extends Result[Nothing] {
   def isFailure = true
+  
+  override def failMsg = msg
 }
 
 case class ResultException(msg: String) extends RuntimeException(msg)

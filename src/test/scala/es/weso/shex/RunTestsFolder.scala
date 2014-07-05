@@ -24,7 +24,7 @@ import es.weso.rdf.RDFTriples
 import scala.util.Try
 import scala.collection.JavaConverters._
 
-object RunTestsFolder {
+object RunTestsFolder extends ShapeValidator {
 
   val conf : Config = ConfigFactory.load()
   

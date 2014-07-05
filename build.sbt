@@ -22,7 +22,7 @@ libraryDependencies ++= Seq(
   , "com.assembla.scala-incubator" % "graph-core_2.10" % "1.6.2"
   , "org.apache.jena" % "jena-arq" % "2.10.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.scalaz" % "scalaz-core_2.10" % "7.0.6" 
-  , "es.weso" % "wesin_2.10" % "0.1.4" excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "es.weso" % "wesin_2.10" % "0.1.5" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "com.github.axel22" %% "scalameter" % "0.5-M2"
   )
 

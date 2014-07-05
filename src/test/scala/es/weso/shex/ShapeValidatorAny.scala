@@ -7,7 +7,6 @@ import es.weso.rdfgraph._
 import org.scalatest._
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.prop.Checkers
-import es.weso.shex.ShapeValidator._
 import es.weso.shex.Typing._
 import es.weso.shex.Context._
 import es.weso.parser.PrefixMap
@@ -16,7 +15,8 @@ import es.weso.rdf.RDFTriples
 class ShapeValidatorAny
 	extends FunSpec 
 	with Matchers 
-	with Checkers {
+	with Checkers 
+	with ShapeValidator {
   
 describe("Schema all") {
  it("Should validate all nodes ok when all pass") {

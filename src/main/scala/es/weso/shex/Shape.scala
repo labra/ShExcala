@@ -37,6 +37,7 @@ case class NotRule(r: Rule) extends Rule
 case class ActionRule(r: Rule, a: Seq[Action]) extends Rule
 case object NoRule extends Rule
 case object AnyRule extends Rule
+case class FailRule(msg: String) extends Rule  // Always fails with a message
 
 sealed trait Label {
   def getNode():RDFNode

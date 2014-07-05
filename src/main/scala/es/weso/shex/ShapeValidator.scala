@@ -16,7 +16,7 @@ import scala.util.matching.Regex
 import es.weso.utils.Logging
 
 
-object ShapeValidator extends Logging {
+trait ShapeValidator extends Logging {
   
  def matchAll(ctx:Context): Result[Typing] = {
 
@@ -145,6 +145,9 @@ def matchRule (
      log.debug("Executing... " + a)
      unit(ctx.typing)
    }
+   
+   case FailRule(msg) => 
+     failure(msg)
  
   }     
 

@@ -5,7 +5,6 @@ import es.weso.rdfgraph._
 import es.weso.parser.PrefixMap
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.ShapeParser._
-import es.weso.shex.ShapeValidator._
 import scala.util.parsing.input.Positional
 import scala.util.{Try, Success, Failure}
 import es.weso.monads.Result
@@ -38,10 +37,8 @@ case class Schema(
 
 }
 
-object Schema {
+object Schema extends ShapeValidator {
 
-  val log = LoggerFactory.getLogger("Schema")
-  
   def fromString(cs: CharSequence): Try[(Schema,PrefixMap)] = {
     ShapeParser.parse(cs) 
   }  
