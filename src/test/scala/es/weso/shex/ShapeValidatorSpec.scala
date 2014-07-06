@@ -62,7 +62,7 @@ class ShapeValidatorSpec
    it("Should validate empty rule") {
      val ctx = emptyContext
      val g : Set[RDFTriple] = Set()
-     val r = NoRule
+     val r = EmptyRule
      matchRule(ctx,g,r).run should be(Stream(emptyTyping))
    }
   
@@ -246,14 +246,14 @@ class ShapeValidatorSpec
    
    it("should validate empty shape") {
      val ctx = emptyContext
-     val shape = Shape(label = IRILabel(IRI("a")), rule = NoRule)
+     val shape = Shape(label = IRILabel(IRI("a")), rule = EmptyRule)
      matchShape(ctx,IRI("a"),shape)
    }
 
    it("should not validate shape with a triple") {
      val epm = PrefixMap.empty
      val g = RDFTriples(triples= Set(RDFTriple(IRI("a"),IRI("p"),StringLiteral("hi"))), pm=epm)
-     val shape = Shape(label = IRILabel(IRI("a")), rule = NoRule)
+     val shape = Shape(label = IRILabel(IRI("a")), rule = EmptyRule)
      val ctx = Context(
          rdf=g,
          shEx = ShEx(rules=Seq(shape), start = None), 

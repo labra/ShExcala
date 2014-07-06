@@ -37,7 +37,7 @@ case class Schema(
 
 }
 
-object Schema extends ShapeValidator {
+object Schema extends ShapeValidatorWithDeriv {
 
   def fromString(cs: CharSequence): Try[(Schema,PrefixMap)] = {
     ShapeParser.parse(cs) 

@@ -35,7 +35,7 @@ case class OrRule(r1: Rule, r2: Rule) extends Rule
 case class OneOrMore(r: Rule) extends Rule
 case class NotRule(r: Rule) extends Rule
 case class ActionRule(r: Rule, a: Seq[Action]) extends Rule
-case object NoRule extends Rule
+case object EmptyRule extends Rule
 case object AnyRule extends Rule
 case class FailRule(msg: String) extends Rule  // Always fails with a message
 
@@ -75,18 +75,18 @@ case class Action(label: Label, code: String)
 
 //----------
 def option(r: Rule): Rule = {
- OrRule(r,NoRule)  
+ OrRule(r,EmptyRule)  
 }
 
 def star(r: Rule): Rule = {
- OrRule(OneOrMore(r),NoRule)  
+ OrRule(OneOrMore(r),EmptyRule)  
 }
 
 def range(m:Int,n:Int,r:Rule):Rule = {
   require(m > 0, "range: m must be positive")
   require(n >= m,"range: n(" + n + ") must be bigger than m (" + m + ")")
   if (m == 0) {
-    if (n == 0) NoRule
+    if (n == 0) EmptyRule
     else OrRule(r,range(m,n - 1,r))
   } else {
     AndRule(r,range(m-1,n,r))

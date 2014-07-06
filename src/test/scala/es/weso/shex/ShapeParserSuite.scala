@@ -311,7 +311,7 @@ class ShapeParserSuite extends ShapeParser
                 ":a { }"
       val state = ShapeParserState.initial
       val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
-      val rule = NoRule
+      val rule = EmptyRule
       val labelA = IRILabel(IRI(prefix + "a"))
       val shape1 : Shape = Shape(label = labelA, rule = rule )
       val shex : ShEx = ShEx(rules=List(shape1),start=None)

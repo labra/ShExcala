@@ -88,7 +88,7 @@ trait ShapeParser
 
   def typeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
     opt(WS) ~> "{" ~> opt(WS) ~> opt(orExpression(s)) <~ opt(WS) <~ "}" ^^ 
-      { case None           => (NoRule,s) 
+      { case None           => (EmptyRule,s) 
         case Some((ors,s1)) => (ors,s1) 
       }
   }

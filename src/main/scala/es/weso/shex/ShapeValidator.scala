@@ -92,7 +92,7 @@ def matchRule (
      )
    }
 
-   case NoRule => 
+   case EmptyRule => 
     if (ctx.openShapes) unit(ctx.typing)
     else {
     	if (g.isEmpty) unit(ctx.typing)

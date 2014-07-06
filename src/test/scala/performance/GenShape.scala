@@ -20,7 +20,7 @@ object GenShape {
     
     def ands(n:Int) : Rule = {
       def mkAnd(r:Rule, n:Int): Rule = AndRule(r,ruleAN(n))
-      (1 to n).toList.foldLeft(NoRule: Rule)(mkAnd)
+      (1 to n).toList.foldLeft(EmptyRule: Rule)(mkAnd)
     }
 
     val labelA = IRILabel(IRI(prefix + "a"))
