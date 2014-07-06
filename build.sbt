@@ -59,3 +59,4 @@ parallelExecution in Test := false
 //resolvers += "Sonatype OSS Snapshots" at
 //  "https://oss.sonatype.org/content/repositories/snapshots"
 
+resolvers += "Bintray" at "http://dl.bintray.com/weso/weso-releases"
