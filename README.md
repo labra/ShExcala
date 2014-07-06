@@ -8,9 +8,9 @@ This repository contains an RDF Shape Expressions validator implemented in Scala
 Links
 =====
 
-* [More info](http://labra.github.io/shexcala)
-* [Binaries](https://bintray.com/weso/weso-releases/shexcala/view)
-* [![Build Status](https://travis-ci.org/labra/shexcala.svg?branch=master)](https://travis-ci.org/labra/shexcala)
+* [More info](http://labra.github.io/ShExcala/)
+* [Binaries](https://bintray.com/weso/weso-releases/shExcala/view)
+* [![Build Status](https://travis-ci.org/labra/ShExcala.svg?branch=master)](https://travis-ci.org/labra/ShExcala)
 
 Author
 ======
