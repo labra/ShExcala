@@ -14,7 +14,6 @@ object GenShape {
   def iri(str: String) = IRI(prefix + str)
   
   def genAnds(n:Int): Schema = {
-    
 
     def ruleAN(n:Int) : Rule = {
       ArcRule(id = None, n  = NameTerm(iri("a")),

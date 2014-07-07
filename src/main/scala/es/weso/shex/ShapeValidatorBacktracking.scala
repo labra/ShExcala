@@ -17,12 +17,12 @@ import es.weso.monads.Passed
 import es.weso.monads.Failure
 
 /**
- * Shape validator using Regular Expression Derivatives
- * Some parts of this code have been inspired by: 
- * https://hackage.haskell.org/package/hxt-regex-xmlschema-9.1.0/docs/src/Text-Regex-XMLSchema-String-Regex.html 
- * 
+ * Shape validator using Backtracking
+ * It mimics the inference rule semantics but is computationally very expensive 
  */
 trait ShapeValidatorBacktracking extends ShapeValidator with Logging {
+  
+override def id = "Validator by Backtracking 1.0"
   
 override def matchRule (
     ctx: Context, 

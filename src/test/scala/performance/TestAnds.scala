@@ -11,7 +11,7 @@ import org.scalameter.api._
 
 object TestAnds extends PerformanceTest.Quickbenchmark {
    
-  val sizes: Gen[Int] = Gen.range("size")(1, 5, 2)
+  val sizes: Gen[Int] = Gen.range("size")(1, 500, 100)
   
   val pairs: Gen[(Schema,RDFTriples)] = { 
     for { size <- sizes } yield 

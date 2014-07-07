@@ -24,6 +24,8 @@ import es.weso.monads.Failure
  */
 trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
   
+  override def id = "Validator by Derivatives 1.0"
+  
   implicit val pm: PrefixMap = PrefixMaps.commonShex
   
   override def matchRule(ctx: Context, g: Set[RDFTriple], rule: Rule): Result[Typing] = {

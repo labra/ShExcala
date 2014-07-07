@@ -18,6 +18,8 @@ import es.weso.utils.Logging
 
 trait ShapeValidator extends Logging {
   
+ def id: String // Abstract
+  
  def matchAll(ctx:Context): Result[Typing] = {
 
   def matchWithTyping(iri: IRI, typing: Typing)(shape: Shape): Result[Typing] = {
