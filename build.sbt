@@ -42,10 +42,10 @@ publishMavenStyle := true
 
 packageArchetype.java_application
 
-//resourceGenerators in Test += Def.task {
-//  val location = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
-//  IO.unzipURL(location, resourceManaged.value / "downloadedTests").toSeq
-//}.taskValue
+resourceGenerators in Test += Def.task {
+  val location = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
+  IO.unzipURL(location, resourceManaged.value / "downloadedTests").toSeq
+}.taskValue
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
@@ -56,6 +56,7 @@ logBuffered := false
 
 // Scalameter benchmark needs to run tests sequentially 
 parallelExecution in Test := false
+
 //resolvers += "Sonatype OSS Snapshots" at
 //  "https://oss.sonatype.org/content/repositories/snapshots"
 
