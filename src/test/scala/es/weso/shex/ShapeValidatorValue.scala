@@ -16,7 +16,7 @@ class ShapeValidatorValue
 	extends FunSpec 
 	with Matchers 
 	with Checkers 
-	with ShapeValidator {
+	with ShapeValidatorWithDeriv {
   
 
  describe("Shape Validator for Value") {

@@ -1,6 +1,5 @@
 package es.weso.shex
 
-
 import com.hp.hpl.jena.rdf.model.{RDFNode => JenaNode}
 import es.weso.rdfgraph.nodes._
 import es.weso.monads.Result._
@@ -24,7 +23,7 @@ import es.weso.rdf.RDFTriples
 import scala.util.Try
 import scala.collection.JavaConverters._
 
-object RunTestsFolder extends ShapeValidator {
+object RunTestsFolder extends ShapeValidatorWithDeriv {
 
   val conf : Config = ConfigFactory.load()
   
@@ -149,12 +148,12 @@ object RunTestsFolder extends ShapeValidator {
      val vreport = 
        for ( schema   <- getSchema(m,res)
            ; instance <- getInstance(m,res)
-           ; iri 	  <- getIRI(m,res)
+           ; optIRI   <- getIRI(m,res)
            ; shapes	  <- getShapes(m,res)
            ; name     <- getName(m,res) 
            ) yield {
        val baseIRI = shExTestsURL + name + ".ttl" // Base URI for relative URI resolution. See http://www.w3.org/2013/TurtleTests/
-       (valid(name,IRI(baseIRI),schema,instance,iri,shapes),name) 
+       (valid(name,IRI(baseIRI),schema,instance,optIRI,shapes),name) 
        }
     vreport match {
     	case Success((r,name)) => {
@@ -174,11 +173,11 @@ object RunTestsFolder extends ShapeValidator {
      val vreport = 
        for ( schema   <- getSchema(m,res)
            ; instance <- getInstance(m,res)
-           ; iri 	  <- getIRI(m,res)
+           ; optIRI   <- getIRI(m,res)
            ; name     <- getName(m,res) 
            ) yield {
        val baseIRI = shExTestsURL + name + ".ttl" // Base URI for relative URI resolution. See http://www.w3.org/2013/TurtleTests/
-       (notValid(name,IRI(baseIRI),schema,instance,iri),name) 
+       (notValid(name,IRI(baseIRI),schema,instance,optIRI),name) 
        }
     vreport match {
     	case Success((r,name)) => {
@@ -201,8 +200,21 @@ object RunTestsFolder extends ShapeValidator {
      getURIWithProperty(m,r,instance)
    }
 
-   def getIRI(m: Model, r:Resource) : Try[IRI] = {
-     getURIWithProperty(m,r,iri)
+   def getIRI(m: Model, r:Resource) : Try[Option[IRI]] = {
+     for (rs <- getResourcesWithProperty(m,r,iri))
+     yield {
+       rs.size match {
+         case 0 => None : Option[IRI]
+         case 1 => {
+          val r = rs.head 
+          if (r.isURIResource()) Some(IRI(r.asResource.getURI))
+          else 
+            throw new Exception("IRI property of " + r + " must be an IRI but it is " + r)
+           
+         }
+         case _ => throw new Exception("More than one IRI for resource " + r) 
+       }
+     }
    }
 
    def getShapes(m: Model, r:Resource) : Try[Set[RDFNode]] = {
@@ -213,12 +225,15 @@ object RunTestsFolder extends ShapeValidator {
    def getURIWithProperty(m: Model, r:Resource, p:Property) : Try[IRI] = {
      for (rs <- getResourcesWithProperty(m,r,p)) 
      yield {
-       if (rs.size == 1) {
-         val r = rs.head 
-         if (r.isURIResource()) IRI(r.asResource.getURI)
-         else throw new Exception("getURIWithProperty: value of property " + p + " is " + r + ", must be an URI")
-       } 
-       else throw new Exception("getURIWithProperty: resource " + r + " has more than one value for property " + p)
+       rs.size match {
+         case 0 => throw new Exception("getURIWithProperty: resource " + r + " has no value for property " + p)
+         case 1 => {
+          val r = rs.head 
+          if (r.isURIResource()) IRI(r.asResource.getURI)
+          else throw new Exception("getURIWithProperty: value of property " + p + " is " + r + ", must be an URI")
+         }
+         case _ => throw new Exception("getURIWithProperty: resource " + r + " has " + rs.size + " values for property " + p) 
+       }
      }
    }
 
@@ -226,7 +241,7 @@ object RunTestsFolder extends ShapeValidator {
      if (m.contains(r,p)) 
        Success(m.listObjectsOfProperty(r,p).toList.asScala.toList)
      else 
-       Failure(new Exception("Resource "+ r + "does not have property " + p))    
+       Success(List())    
    }
 
    def getName(m: Model, r:Resource) : Try[String] = {
@@ -243,24 +258,35 @@ object RunTestsFolder extends ShapeValidator {
 		    baseIRI: IRI,
 		    schema : IRI, 
 		    instance: IRI,
-		    iri: IRI, 
+		    optIRI: Option[IRI], 
 		    shapes: Set[RDFNode]) : Try[String]= {
    for ( cs_schema <- dereference(schema.str)  
        ; (schema,prefixMap) <- Schema.fromString(cs_schema)
        ; cs_instance <- dereference(instance.str)
        ; rdf <- RDFTriples.parse(cs_instance)
        ) yield {
-    val result = Schema.matchSchema(iri, rdf, schema)
-    if (result.isValid) {
-      val typings = result.toList
-      if (typings.exists(t => t.hasTypes(iri,shapes))) {
-       "Valid typings: " + typings
-      } else {
-        throw new Exception("Result does not contain " + iri + " -> " + shapes + "\nTypings: " + typings)
+    optIRI match {
+      case None => {
+        val result = Schema.matchAll(rdf, schema)
+        if (result.isValid) {
+          "Valid typings " + result.toList
+        } else
+          throw new Exception("Result should be valid but isn't")
       }
-    }
-    else 
-      throw new Exception("Non valid")
+      case Some(iri) => {
+    	  val result = Schema.matchSchema(iri, rdf, schema)
+    	  if (result.isValid) {
+    		  val typings = result.toList
+    		  if (typings.exists(t => t.hasTypes(iri,shapes))) {
+    			  "Valid typings: " + typings
+    		  } else {
+    			  throw new Exception("Result does not contain " + iri + " -> " + shapes + "\nTypings: " + typings)
+    		  }
+    	  }
+    	  else 
+    		  throw new Exception("Non valid. Result: " + result + "\ncs_schema:\n " + cs_schema + "\nTriples:\n " + rdf)
+        }
+     }
    }
   }
 
@@ -268,22 +294,33 @@ object RunTestsFolder extends ShapeValidator {
 		    baseIRI: IRI,
 		    schema : IRI, 
 		    instance: IRI,
-		    iri: IRI 
+		    optIRI: Option[IRI]
 		    ) : Try[String]= {
    for ( cs_schema <- dereference(schema.str)  
        ; (schema,prefixMap) <- Schema.fromString(cs_schema)
        ; cs_instance <- dereference(instance.str)
        ; rdf <- RDFTriples.parse(cs_instance)
        ) yield {
-    val result = Schema.matchSchema(iri, rdf, schema)
-    if (result.isValid) {
-        throw new Exception("Result valid with typings: " + result.toList + " but should not be valid")
+    optIRI match {
+      case None => {
+        val result = Schema.matchAll(rdf, schema)
+           if (result.isValid) {
+        	   throw new Exception("Result valid with typings: " + result.toList + " but should not be valid")
+           }
+           else "Not valid and should not be"
+      }
+      case Some(iri) => {
+           val result = Schema.matchSchema(iri, rdf, schema)
+           if (result.isValid) {
+        	   throw new Exception("Result valid with typings: " + result.toList + " but should not be valid")
+           }
+           else "Not valid and should not be"
+     }
     }
-    else 
-      "Not valid"
    }
   }
- /**
+  
+  /**
   * Convert a String to a Model
   * @param s String
   * @param base Base URL (default = empty String)

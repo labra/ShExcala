@@ -61,100 +61,9 @@ def showRule(r: Rule) : String = {
  ShapeDoc.rule2String(r)(PrefixMap.empty)
 }
 
-def matchRule (
-    ctx: Context, 
-    g: Set[RDFTriple], 
-    rule: Rule ): Result[Typing] = {
-  
-  log.debug("matchRule " + showRule(rule))
-  log.debug("Triples:")
-  showTriples(g)
-  rule match {
-   
-   case AndRule(r1,r2) => for(
-       (g1,g2) <- parts(g)
-     ; t1 <- matchRule(ctx,g1,r1)
-     ; t2 <- matchRule(ctx,g2,r2)
-     ) yield t1 combine t2
-  
-
-   case OrRule(r1,r2) => 
-     matchRule(ctx,g,r1) orelse 
-     matchRule(ctx,g,r2)
-  
-   case OneOrMore(r) => {
-     matchRule(ctx,g,r) orelse
-     ( for (
-         (g1,g2) <- parts(g)
-       ; t1 <- matchRule(ctx,g1,r)
-       ; t2 <- matchRule(ctx,g2,rule)
-       ) yield t1 combine t2
-     )
-   }
-
-   case EmptyRule => 
-    if (ctx.openShapes) unit(ctx.typing)
-    else {
-    	if (g.isEmpty) unit(ctx.typing)
-    	else {
-    		val msg = "EmptyRule: graph non empty"
-    		log.debug(msg)
-    		failure(msg)
-    	}
-    }
-
-   case NotRule(r) => {
-    if (matchRule(ctx,g,r).isFailure) unit(ctx.typing) 
-    else {
-      val msg = "NotRule: matches"
-      log.debug(msg)
-      failure(msg)
-    }
-   }
-
-   case AnyRule => {
-	 log.debug("matching with any")
-     unit(ctx.typing)
-   }
-
-   case ArcRule(id,name,value) =>
-    if (g.size == 1) {
-      val triple = g.head
-      for ( b <- matchName(ctx,triple.pred,name)
-          ; typing <- matchValue(ctx,triple.obj,value)
-          ) yield typing
-    } else {
-     val msg = "Arc expected but zero or more than one triple found in graph:\n" + g.toString
-     log.debug("fail: " + msg)
-     failure(msg)
-    }
-
-   case RevArcRule(id,name,value) =>
-    if (g.size == 1) {
-      val triple = g.head
-      for ( b <- matchName(ctx,triple.pred,name)
-          ; typing <- matchValue(ctx,triple.subj,value)
-          ) yield typing
-    } else {
-      val msg = "RevArc expected one but zero or more than one triple found in graph:\n" + g.toString
-      log.debug("fail: " + msg)
-      failure(msg)
-    } 
-
-   case ActionRule(r,a) => {
-     log.debug("Executing... " + a)
-     unit(ctx.typing)
-   }
-   
-   case FailRule(msg) => 
-     failure(msg)
- 
-  }     
-
- }
  
 
- def matchName(ctx: Context, pred: IRI, n: NameClass): Result[Boolean] = {
+def matchName(ctx: Context, pred: IRI, n: NameClass): Result[Boolean] = {
    log.debug("Matchname: " + pred + " ~ " + n)
    
    n match {
@@ -188,7 +97,14 @@ def matchRule (
   }
  }
    
-   
+ /**
+  * abstract method that can be overriden with different algorithms: derivatives, backtracking, etc.
+  */  
+ def matchRule (ctx: Context,
+     g: Set[RDFTriple],
+     rule: Rule ): Result[Typing]
+
+
  def matchValue(ctx: Context, obj: RDFNode, v: ValueClass): Result[Typing] = {
 
   log.debug("MatchValue: " + obj + " ~ " + v)

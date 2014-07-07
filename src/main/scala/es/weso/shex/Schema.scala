@@ -64,7 +64,7 @@ object Schema extends ShapeValidatorWithDeriv {
     		 )
 
     def matchLabel(lbl: Label): Result[Typing] = {
-
+      println("...trying " + lbl)
       for ( shape <- ctx.getShape(lbl)
           ; ctx1 <- ctx.addTyping(iri,lbl.getNode)
           ; t <- matchShape(ctx1,iri,shape)
@@ -89,7 +89,7 @@ object Schema extends ShapeValidatorWithDeriv {
     def comb(t1:Typing,t2:Typing):Typing = {
       t1 combine t2
     }
-    Result.combineAll(subjects,eval,Typing.emptyTyping,comb)
+    Result.combineAll(subjects,eval,comb)
   }
 
 }

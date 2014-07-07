@@ -155,12 +155,12 @@ trait ShapeParser
   }
 
   def anyRule : Parser[Rule] = {
-    dot ~ WS ~ dot ~ opt(WS) ~ symbol("*") ^^^ AnyRule
+    dot ~ WS ~ dot ~ opt(WS) ~ symbol("*") ^^^ StarRule(AnyRule)
   }
   
   def repeatCount: Parser[Rule => Rule] = {
    ( symbol("*") ^^^ star _
-   | symbol("+") ^^^ OneOrMore
+   | symbol("+") ^^^ PlusRule
    | symbol("?") ^^^ option _
    )
     // TODO: integer ranges 

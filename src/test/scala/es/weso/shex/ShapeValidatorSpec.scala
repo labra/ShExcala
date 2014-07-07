@@ -14,7 +14,7 @@ import es.weso.rdf.RDFTriples
 
 class ShapeValidatorSpec 
 	extends FunSpec
-	with ShapeValidator
+	with ShapeValidatorWithDeriv
 	with Matchers 
 	with Checkers {
   
@@ -162,7 +162,7 @@ class ShapeValidatorSpec
      val g : Set[RDFTriple] = 
         Set( RDFTriple(IRI("x"),IRI("a"),StringLiteral("hi"))
            )
-     val r = OneOrMore(
+     val r = PlusRule(
               ArcRule(id = None, n = NameTerm(IRI("a")), v = typeXsdString)
              )
      matchRule(ctx,g,r).isValid should be(true) 
@@ -174,7 +174,7 @@ class ShapeValidatorSpec
         Set( RDFTriple(IRI("x"),IRI("a"),StringLiteral("hi1"))
            , RDFTriple(IRI("x"),IRI("a"),StringLiteral("hi2"))
            )
-     val r = OneOrMore(
+     val r = PlusRule(
               ArcRule(id = None, n = NameTerm(IRI("a")), v = typeXsdString)
              )
      matchRule(ctx,g,r).isValid should be(true) 
@@ -187,7 +187,7 @@ class ShapeValidatorSpec
            , RDFTriple(IRI("x"),IRI("a"),StringLiteral("hi2"))
            , RDFTriple(IRI("x"),IRI("a"),StringLiteral("hi3"))
            )
-     val r = OneOrMore(
+     val r = PlusRule(
               ArcRule(id = None, n = NameTerm(IRI("a")), v = typeXsdString)
              )
      info("Result: " + matchRule(ctx,g,r))
@@ -199,7 +199,7 @@ class ShapeValidatorSpec
      val g : Set[RDFTriple] = 
         Set( RDFTriple(IRI("x"),IRI("b"),StringLiteral("hi1"))
            )
-     val r = OneOrMore(
+     val r = PlusRule(
               ArcRule(id = None, n = NameTerm(IRI("a")), v = typeXsdString)
              )
      matchRule(ctx,g,r).isValid should be(false) 
@@ -211,7 +211,7 @@ class ShapeValidatorSpec
         Set( RDFTriple(IRI("x"),IRI("a"),StringLiteral("hi1"))
            , RDFTriple(IRI("x"),IRI("b"),StringLiteral("hi1"))
            )
-     val r = OneOrMore(
+     val r = PlusRule(
               ArcRule(id = None, n = NameTerm(IRI("a")), v = typeXsdString)
              )
      matchRule(ctx,g,r).isValid should be(false) 

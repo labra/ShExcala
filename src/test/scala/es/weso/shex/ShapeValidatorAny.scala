@@ -16,7 +16,7 @@ class ShapeValidatorAny
 	extends FunSpec 
 	with Matchers 
 	with Checkers 
-	with ShapeValidator {
+	with ShapeValidatorWithDeriv {
   
 describe("Schema all") {
  it("Should validate all nodes ok when all pass") {

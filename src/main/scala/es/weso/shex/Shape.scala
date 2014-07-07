@@ -32,7 +32,9 @@ case class ArcRule(id: Option[Label], n: NameClass, v: ValueClass) extends Rule
 case class RevArcRule(id: Option[Label], n: NameClass, v: ValueClass) extends Rule
 case class AndRule(r1: Rule, r2: Rule) extends Rule
 case class OrRule(r1: Rule, r2: Rule) extends Rule
-case class OneOrMore(r: Rule) extends Rule
+case class StarRule(r: Rule) extends Rule
+case class PlusRule(r: Rule) extends Rule
+case class OptRule(r: Rule) extends Rule
 case class NotRule(r: Rule) extends Rule
 case class ActionRule(r: Rule, a: Seq[Action]) extends Rule
 case object EmptyRule extends Rule
@@ -75,11 +77,13 @@ case class Action(label: Label, code: String)
 
 //----------
 def option(r: Rule): Rule = {
- OrRule(r,EmptyRule)  
+ // OrRule(r,EmptyRule)
+ OptRule(r)
 }
 
 def star(r: Rule): Rule = {
- OrRule(OneOrMore(r),EmptyRule)  
+ // OrRule(PlusRule(r),EmptyRule)
+ StarRule(r) 
 }
 
 def range(m:Int,n:Int,r:Rule):Rule = {

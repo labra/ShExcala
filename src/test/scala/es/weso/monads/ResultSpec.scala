@@ -159,7 +159,7 @@ class ResultSpec
       val ls : List[Int] = List(1,2)
       def eval(n:Int):Result[String] = { Passed({(for (i <- 0 to n) yield i.toString).toStream })}
       def comb(x:String,y:String) = x + y 
-      combineAll(ls,eval,"0",comb) should be(Passed(Stream("000","010","020","100","110","120")))
+      combineAll(ls,eval,comb) should be(Passed(Stream("00","01","02","10","11","12")))
     }
     
     it("Should combine three computations even if one fails") {
@@ -169,7 +169,7 @@ class ResultSpec
         else Failure("neg")
       }
       def comb(x:String,y:String) = x + y 
-      combineAll(ls,eval,"0",comb) should be(Passed(Stream("000","010","020","100","110","120")))
+      combineAll(ls,eval,comb) should be(Passed(Stream("00","01","02","10","11","12")))
     }
   }
 

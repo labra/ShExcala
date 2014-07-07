@@ -3,6 +3,7 @@ package es.weso.monads
 import util.{Failure => TryFailure}
 import util.Success
 import util.Try
+import scala.annotation.tailrec
 
 sealed abstract class Result[+A] {
 
@@ -101,6 +102,7 @@ object Result {
   def failure(msg:String):Result[Nothing] = Failure(msg)
 
   def merge[B](comp1: Result[B], comp2: Result[B], combine:(B,B)=>B) : Result[B] = {
+    println("Merging ... " + comp1 + " with " + comp2)
     (comp1,comp2) match {
       case (Passed(rs1),Passed(rs2)) => {
         if (rs1.isEmpty) {
@@ -119,22 +121,21 @@ object Result {
   def combineAll[A,B](
       ls:List[A], 
       eval:A => Result[B],
-      neutral: B,
       combine:(B,B)=>B): Result[B] = {
-    ls match {
-      case Nil => Passed(Stream(neutral))
-      case x :: xs => {
-        merge(eval(x),combineAll(xs,eval,neutral,combine),combine) 
-      }
+    def e : Result[B] = Passed(Stream())
+    def step(x:A, r: Result[B]):Result[B] = {
+      println("...trying combineAll with " + x)
+      merge(eval(x),r,combine)
     }
+    ls.foldRight(e)(step)
   } 
 
   
-  def passSome[A,B](ls:List[A], eval: A => Result[B]): Result[B] = {
-    ls match {
-      case Nil => Passed(Stream())
-      case x :: xs => eval(x) orelse passSome(xs,eval)
-    }
+  def passSome[A,B](ls:List[A], 
+      eval: A => Result[B]): Result[B] = {
+    def e : Result[B] = Passed(Stream())
+    def step(x:A,r:Result[B]):Result[B] = eval(x) orelse r
+    ls.foldRight(e)(step)
   }
 
   def passAll[A,B](
