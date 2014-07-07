@@ -8,12 +8,13 @@ import es.weso.monads.Result._
 import es.weso.rdfgraph.nodes.IRI
 import org.slf4j._
 import es.weso.rdfgraph.nodes.RDFNode
-
+import es.weso.parser.PrefixMap
 
 case class Context(
       rdf: RDF
     , shEx: ShEx
     , typing: Typing
+    , pm: PrefixMap
     , validateIncoming:Boolean = false
     , openShapes: Boolean = false
     ) {
@@ -41,7 +42,7 @@ case class Context(
   def addTyping(node:RDFNode, t: RDFNode): Result[Context] = {
     this.typing.addType(node,t) match {
       case None => failure("Context: cannot assign type " + t + " to iri " + node + "...current typing: " + this.typing )
-      case Some(newT) => unit(Context(rdf,shEx,newT,validateIncoming))
+      case Some(newT) => unit(this.copy(typing=newT)) 
     }
   }
   
@@ -71,6 +72,7 @@ object Context {
     Context( RDFTriples.noTriples
            , ShEx(rules = Seq(),start = None)
            , Typing.emptyTyping
+           , pm = PrefixMaps.commonShex
            , validateIncoming = false
            , openShapes = false
            )
@@ -79,6 +81,7 @@ object Context {
     Context( rdf = RDFTriples.noTriples
            , shEx = ShEx(rules = Seq(),start = None)
            , Typing.emptyTyping
+           , pm = PrefixMaps.commonShex
            , validateIncoming = true
            , openShapes = false
            )     

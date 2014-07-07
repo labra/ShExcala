@@ -49,17 +49,17 @@ case class ShapeDoc(pm: PrefixMap) {
   def ruleDoc(rule: Rule) : Document = {
     rule match {
       case r : ArcRule => arcRuleDoc(r)
-      case r : RevArcRule => "^" :/: revArcRuleDoc(r)
+      case r : RevArcRule => "^(" :: revArcRuleDoc(r) :: text(" )")
       case FailRule(msg) => text("Fail(" + msg + ")")
-      case AndRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text(",") :/: ruleDoc(e2) :/: text(")")
-      case OrRule(e1,e2) => "(" :/: ruleDoc(e1) :/: text("|") :/: ruleDoc(e2) :/: text(")")
-      case PlusRule(r) => "(" :/: ruleDoc(r) :/: text(")+")
-      case StarRule(r) => "(" :/: ruleDoc(r) :/: text(")*")
-      case OptRule(r) => "(" :/: ruleDoc(r) :/: text(")?")
-      case NotRule(r) => "!" :/: ruleDoc(r) 
-      case ActionRule(r,a) => "(" :/: ruleDoc(r) :/: text(") %") :/: actionDoc(a)
-      case AnyRule => text(". . *") 
-      case EmptyRule => text(" ")
+      case AndRule(e1,e2) => "( " :: ruleDoc(e1) :: text(",") :: ruleDoc(e2) :: text(" )")
+      case OrRule(e1,e2) => "( " :: ruleDoc(e1) :: text("|") :: ruleDoc(e2) :: text(" )")
+      case PlusRule(r) => "( " :: ruleDoc(r) :: text(" )+")
+      case StarRule(r) => "( " :: ruleDoc(r) :: text(" )*")
+      case OptRule(r) => "( " :: ruleDoc(r) :: text(" )?")
+      case NotRule(r) => "!" :: ruleDoc(r) 
+      case ActionRule(r,a) => "( " :: ruleDoc(r) :: text(" ) %") :: actionDoc(a)
+      case AnyRule => text(". . ") 
+      case EmptyRule => text(" () ")
     }
   }
 
@@ -79,7 +79,7 @@ case class ShapeDoc(pm: PrefixMap) {
       case NameAny(excl) => {
         if (excl.isEmpty) text("NameAny.")
         else 
-          text("-") :/: nest(3,setDocWithSep(excl," ",iriStemDoc))
+          text("-") :: nest(3,setDocWithSep(excl," ",iriStemDoc))
       }
       case NameStem(s) => iriStemDoc(s)
     }
@@ -88,11 +88,11 @@ case class ShapeDoc(pm: PrefixMap) {
   def valueClassDoc(v: ValueClass) : Document = {
     v match {
       case ValueType(v) => rdfNodeDoc(v)
-      case ValueSet(s) => "(" :/: nest(3,seqDocWithSep(s," ",valueObjectDoc)) :/: text(")")
+      case ValueSet(s) => "(" :: nest(3,seqDocWithSep(s," ",valueObjectDoc)) :: text(")")
       case ValueAny(stem) => {
         if (stem.isEmpty) text(".")
         else 
-          text("-") :/: nest(3,setDocWithSep(stem," ",iriStemDoc))
+          text("-") :: nest(3,setDocWithSep(stem," ",iriStemDoc))
       }
       case ValueStem(stem) => iriStemDoc(stem)
       case ValueReference(l) => "@" :: labelDoc(l)
@@ -102,11 +102,11 @@ case class ShapeDoc(pm: PrefixMap) {
   def valueObjectDoc(vo:ValueObject): Document = {
     vo match {
       case RDFNodeObject(n) => rdfNodeDoc(n)
-      case LangObject(lang) => text("@") :/: text(lang.lang)
-      case RegexObject(r,None) => "/" :/: text(r.toString) :/: text("/")
-      case RegexObject(r,Some(lang)) => "/" :/: text(r.toString) :/: text("/") :/: "@" :/: text(lang.lang)
-      case NoObject(obj) => "- (" :/: valueObjectDoc(obj) :/: text(")")
-      case OrObject(o1,o2) => "(" :/: valueObjectDoc(o1) :/: text("|") :/: valueObjectDoc(o2) :/: text(")")
+      case LangObject(lang) => text("@") :: text(lang.lang)
+      case RegexObject(r,None) => "/" :: text(r.toString) :: text("/")
+      case RegexObject(r,Some(lang)) => "/" :: text(r.toString) :: text("/") :: "@" :: text(lang.lang)
+      case NoObject(obj) => "- (" :: valueObjectDoc(obj) :: text(")")
+      case OrObject(o1,o2) => "(" :: valueObjectDoc(o1) :: text("|") :: valueObjectDoc(o2) :: text(")")
     }
   }
 

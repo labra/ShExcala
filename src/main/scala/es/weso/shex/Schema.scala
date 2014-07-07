@@ -40,7 +40,10 @@ case class Schema(
 object Schema extends ShapeValidatorWithDeriv {
 
   def fromString(cs: CharSequence): Try[(Schema,PrefixMap)] = {
-    ShapeParser.parse(cs) 
+    ShapeParser.parse(cs) match {
+      case s@Success(_) => s
+      case Failure(t) => throw new Exception("Parsing schema: " + t.getMessage) 
+    }
   }  
 
   def matchSchema( iri:IRI
@@ -58,13 +61,13 @@ object Schema extends ShapeValidatorWithDeriv {
     val ctx = 
       Context( rdf=rdf
     		 , shEx=shex_extended
-    		 , Typing.emptyTyping 
+    		 , Typing.emptyTyping
+    		 , schema.pm
     		 , validateIncoming
     		 , openShapes
     		 )
 
     def matchLabel(lbl: Label): Result[Typing] = {
-      println("...trying " + lbl)
       for ( shape <- ctx.getShape(lbl)
           ; ctx1 <- ctx.addTyping(iri,lbl.getNode)
           ; t <- matchShape(ctx1,iri,shape)

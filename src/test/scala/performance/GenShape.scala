@@ -9,12 +9,15 @@ import es.weso.rdfgraph.statements.RDFTriple
 
 
 object GenShape {
-
+  val prefix = "http://example.org/"
+    
+  def iri(str: String) = IRI(prefix + str)
+  
   def genAnds(n:Int): Schema = {
-    val prefix = "http://example.org/"
+    
 
     def ruleAN(n:Int) : Rule = {
-      ArcRule(id = None, n  = NameTerm(IRI(prefix + "a")),
+      ArcRule(id = None, n  = NameTerm(iri("a")),
                          v  = ValueSet(Seq(RDFNodeObject(IntegerLiteral(n)))))
     } 
     
@@ -23,16 +26,17 @@ object GenShape {
       (1 to n).toList.foldLeft(EmptyRule: Rule)(mkAnd)
     }
 
-    val labelA = IRILabel(IRI(prefix + "a"))
+    val labelA = IRILabel(iri("a"))
     val shape : Shape = Shape(label = labelA, rule = ands(n) )
     val shex : ShEx = ShEx( rules=List(shape), start=None )
     Schema(shEx = shex, pm = PrefixMaps.example)
   }
 
   def genTriples(n:Int): RDFTriples = {
+    
     val ts : Set[RDFTriple] =
-      (for (v <- 0 to n) 
-       yield RDFTriple(IRI("x"),IRI("a"),IntegerLiteral(v))).toSet
+      (for (v <- 1 to n) 
+       yield RDFTriple(iri("x"),iri("a"),IntegerLiteral(v))).toSet
     RDFTriples(ts,PrefixMaps.example)
   } 
 }

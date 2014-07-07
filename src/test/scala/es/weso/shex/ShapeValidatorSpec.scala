@@ -257,7 +257,8 @@ class ShapeValidatorSpec
      val ctx = Context(
          rdf=g,
          shEx = ShEx(rules=Seq(shape), start = None), 
-         typing = Typing.emptyTyping)
+         typing = Typing.emptyTyping,
+         pm = epm)
      matchShape(ctx,IRI("a"),shape).isFailure should be(true)
    } 
    
@@ -269,7 +270,8 @@ class ShapeValidatorSpec
          			  )
      val ctx = Context(rdf=g, 
          shEx = ShEx(rules=Seq(shape),start =None),
-         typing = Typing.emptyTyping)
+         typing = Typing.emptyTyping,
+         pm = epm)
      val result = matchShape(ctx,IRI("a"),shape)
      info("Result:\n" + result.toString)
      result.isValid should be(true)
@@ -288,7 +290,8 @@ class ShapeValidatorSpec
      val shEx= ShEx(rules=Seq(shape),start =None)
      val ctx = Context(rdf=g, 
          shEx = shEx, 
-         typing = Typing.emptyTyping)
+         typing = Typing.emptyTyping,
+         pm = epm)
      val schema = Schema(pm = epm, shEx = shEx)
      val result = Schema.matchSchema(IRI("a"), g, schema)
      info("Result:\n" + result.toString)
@@ -307,7 +310,11 @@ class ShapeValidatorSpec
          			   rule = ArcRule(id = None, n = NameAny(excl = Set()), v = typeXsdString)
          			  )         			  
      val shEx= ShEx(rules=Seq(shape1,shape2),start =None)
-     val ctx = Context(rdf=g, shEx = shEx, typing = Typing.emptyTyping)
+     val ctx = Context(rdf=g, 
+         shEx = shEx, 
+         typing = Typing.emptyTyping,
+         pm = epm
+         )
      val schema = Schema(pm = epm, shEx = shEx)
      val result = Schema.matchSchema(IRI("a"), g, schema)
      info("Result:\n" + result.toList.toString)

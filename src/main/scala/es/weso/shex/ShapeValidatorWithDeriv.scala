@@ -24,13 +24,14 @@ import es.weso.monads.Failure
  */
 trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
   
+  implicit val pm: PrefixMap = PrefixMaps.commonShex
+  
   override def matchRule(ctx: Context, g: Set[RDFTriple], rule: Rule): Result[Typing] = {
-    println("match rule " + rule + " with derivatives. \nTriples: " + g)
     val (dr,ts) = deltaTriples(rule,g,ctx)
     if (nullable(dr)) {
       Passed(ts)    
     } else {
-      Failure("Does not match, dr = " + dr)
+      Failure("Does not match, dr = " + showRule(dr)(ctx.pm))
     }
   }
  
@@ -55,22 +56,51 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
     }
   }
   
+  def mkAndRule(r1:Rule, r2: Rule): Rule = {
+    val r = (r1,r2) match {
+      case (EmptyRule,e2) => e2
+      case (e1,EmptyRule) => e1
+      case (f@FailRule(_),_) => f
+      case (_,f@FailRule(_)) => f
+      case (_,_) => AndRule(r1,r2)
+    }
+    r
+  } 
+  
+  // TODO:....
+  def mkOrRule(r1:Rule, r2: Rule): Rule = {
+    val r = (r1,r2) match {
+      case (f@FailRule(_),e2) => e2
+      case (e1,f@FailRule(_)) => e1
+      case (e1,e2) => 
+        if (e1 == e2) e1
+        else OrRule(e1,e2)
+    }
+    r
+  } 
+
   def deltaTriples(r:Rule, ts: Set[RDFTriple], ctx:Context): (Rule,Stream[Typing]) = {
     val e : Res = (r,Stream(ctx.typing))
     def f (b: Res, triple:RDFTriple): Res = {
       val (current,st1) = b
+      log.debug("Calculating delta of " + showRule(current)(ctx.pm) + " with triple: " + triple )
       val (dr,st2) = delta(current,triple,ctx)
-      println("Rule " + r )
-      println("st1 = " + st1)
-      println("st2 = " + st2)
-      (dr,st1 ++ st2)
+      log.debug(" step delta of rule: " + showRule(current)(ctx.pm) + " with triple: " + triple + " = " + showRule(dr)(ctx.pm))
+      (dr,combineTypings(st1,st2))
     } 
+
+    def combineTypings(st1: Stream[Typing], st2:Stream[Typing]): Stream[Typing] = {
+      if (st1.isEmpty) st2
+      else for (t1 <- st1; t2 <- st2) yield (t1 combine t2)
+    }
     ts.foldLeft(e)(f)
   }
 
-  def delta(rule: Rule, triple: RDFTriple, ctx: Context): (Rule, Stream[Typing]) = {
-    lazy val noTyping = Stream(ctx.typing)
 
+  def delta(rule: Rule, triple: RDFTriple, ctx: Context): 
+	  	(Rule, Stream[Typing]) = {
+    lazy val noTyping = Stream(ctx.typing)
+    
     rule match {
       case ArcRule(_,n,v) =>
         if (matchName(ctx,triple.pred, n).isValid) {
@@ -79,12 +109,12 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
             (EmptyRule,mv.run)
           } else {
             (FailRule("Does not match value " + triple.obj + 
-                " with ArcRule " + rule + " Msg: " + mv.failMsg), 
+                " with ArcRule " + showRule(rule)(ctx.pm) + " Msg: " + mv.failMsg), 
              failTyping)
           }      
         } else {
           (FailRule("Does not match name " + triple.pred + 
-              " with ArcRule " + rule), 
+              " with ArcRule " + showRule(rule)(ctx.pm)), 
               failTyping)
         }
       case RevArcRule(_,n,v) =>
@@ -94,58 +124,75 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
             (EmptyRule,mv.run)
           } else {
             (FailRule("Does not match value " + triple.subj + 
-                " with RevArcRule " + rule + " Msg: " + mv.failMsg), 
+                " with RevArcRule " + showRule(rule)(ctx.pm) + " Msg: " + mv.failMsg), 
              failTyping)
           }      
         } else {
           (FailRule("Does not match name " + triple.pred + 
-              " with RevArcRule " + rule), 
+              " with RevArcRule " + showRule(rule)(ctx.pm)), 
              failTyping)
         }
 
       case EmptyRule => 
         (FailRule("Unexpected triple " + triple),failTyping)
         			 
-      case f@FailRule(_) => (f,failTyping)
+      case f@FailRule(msg) => {
+        log.debug("...Failing rule " + showRule(rule)(ctx.pm) + " with " + msg)
+        (f,failTyping)
+      }
       case OrRule(r1,r2) => { 
         val (dr1,t1) = delta(r1,triple,ctx)
         val (dr2,t2) = delta(r2,triple,ctx)
-        (OrRule(dr1,dr2),t1 ++ t2)
+        (mkOrRule(dr1,dr2),t1 ++ t2)
       }
+      
+      // The semantics of And is more close to interleave
+      // TODO: check possible simplifications of this rule in case dr1/dr2 are nullable
       case AndRule(r1,r2) => {
         val (dr1,t1) = delta(r1,triple,ctx)
-        if (nullable(r1)) {
-          val (dr2,t2) = delta(r2,triple,ctx)
-          (OrRule(AndRule(dr1,r2),dr2),t1 ++ t2)
-        } else {
-          (AndRule(dr1,r2), t1)
-        }
+        val (dr2,t2) = delta(r2,triple,ctx)
+        (mkOrRule(mkAndRule(dr1,r2),mkAndRule(dr2,r1)), t1 ++ t2)
       }
       
       case e@StarRule(r) => {
         val (dr,t) = delta(r,triple,ctx)
-        (AndRule(dr,e),t)
+        (mkAndRule(dr,e),t)
       }
+
       case OptRule(r) => {
         val (dr,t) = delta(r,triple,ctx)
         (dr,t)
       }
+
       case PlusRule(r) => {
         val (dr,t) = delta(r,triple,ctx)
-        (AndRule(dr,StarRule(r)),t)
+        (mkAndRule(dr,StarRule(r)),t)
       }
+      
       case ActionRule(r,a) => delta(r,triple,ctx)
+
       case AnyRule => (EmptyRule,noTyping)
+
       case NotRule(r) => {
+        println("Not rule" + showRule(rule) + " triple: " + triple)
         val (dr,t) = delta(r,triple,ctx)
+        println("dr : " + showRule(dr) + " typing: " + t)
         dr match {
-          case FailRule(_) => (EmptyRule,noTyping)
-          case _ => (FailRule("Not rule found triple " + t + " that matches"), noTyping)
+          case EmptyRule => 
+            (FailRule("Not rule found triple " + t + " that matches " + showRule(rule)(ctx.pm)), noTyping)
+          case FailRule(msg) => {
+            println("Not found empty rule...Found " + showRule(dr))
+            (EmptyRule,noTyping)
+          }
+          case _ => (NotRule(dr),t)
         }
       }
         
     }
     
-    
   }
+  
+  def showRule(rule: Rule)(implicit pm: PrefixMap): String = 
+     ShapeDoc.rule2String(rule)(pm)
+
 }

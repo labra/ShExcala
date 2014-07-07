@@ -102,7 +102,6 @@ object Result {
   def failure(msg:String):Result[Nothing] = Failure(msg)
 
   def merge[B](comp1: Result[B], comp2: Result[B], combine:(B,B)=>B) : Result[B] = {
-    println("Merging ... " + comp1 + " with " + comp2)
     (comp1,comp2) match {
       case (Passed(rs1),Passed(rs2)) => {
         if (rs1.isEmpty) {
@@ -124,7 +123,6 @@ object Result {
       combine:(B,B)=>B): Result[B] = {
     def e : Result[B] = Passed(Stream())
     def step(x:A, r: Result[B]):Result[B] = {
-      println("...trying combineAll with " + x)
       merge(eval(x),r,combine)
     }
     ls.foldRight(e)(step)

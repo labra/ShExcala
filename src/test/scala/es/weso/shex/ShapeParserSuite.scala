@@ -474,7 +474,7 @@ class ShapeParserSuite extends ShapeParser
     		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
                 ":a { . . * }"
       val state = ShapeParserState.initial
-      val ruleAny = AnyRule
+      val ruleAny = StarRule(AnyRule)
       val labelA = IRILabel(IRI(prefix + "a"))
       val shape : Shape = Shape(label = labelA, rule = ruleAny )
       val shex : ShEx = ShEx(rules=List(shape),start=None)

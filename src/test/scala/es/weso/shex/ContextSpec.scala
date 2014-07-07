@@ -28,7 +28,11 @@ class ContextSpec
                  )
            
      val shEx = ShEx(rules=Seq(),start=None)
-     val ctx = Context(rdf=rdf,shEx=shEx, typing = Typing.emptyTyping)
+     val ctx = Context(rdf=rdf,
+         shEx=shEx, 
+         typing = Typing.emptyTyping,
+         pm = PrefixMap.empty
+         )
      ctx.getIRIs.toSet should be(Set(IRI("a"),IRI("p"),IRI("q"),IRI("x")))
   }
 
@@ -40,7 +44,8 @@ class ContextSpec
          			  )
      val ctx = Context(rdf=g,
          shEx = ShEx(rules=Seq(shape),start =None),
-         typing = Typing.emptyTyping)
+         typing = Typing.emptyTyping,
+         pm = epm)
      ctx.getIRIs.toSet should be(Set(IRI("a"),IRI("p")))
   }
 

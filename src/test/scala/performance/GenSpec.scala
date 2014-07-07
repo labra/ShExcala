@@ -9,6 +9,7 @@ import es.weso.shex.Typing
 import es.weso.rdf.RDFTriples
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.shex.PrefixMaps
+import es.weso.shex.ShapeDoc
 
 class GenSpec 
  extends FunSpec 
@@ -20,7 +21,9 @@ class GenSpec
   it("Should generate a schema with 2 rules") {
     val gen2 = GenShape.genAnds(2)
     val g = GenShape.genTriples(2) 
-    val t : Typing = Typing.emptyTyping.addType(IRI("x"),IRI("a")).get           
+    val t : Typing = Typing.emptyTyping.addType(IRI("x"),IRI("a")).get
+    info("Shape: " + ShapeDoc.schema2String(gen2)(PrefixMaps.commonShex))
+    info("Triples: " + g.serialize())
     Schema.matchAll(g,gen2).isValid should be(true)
   }
 
@@ -31,6 +34,13 @@ class GenSpec
     Schema.matchAll(g,gen).isValid should be(true)
   }
 
+  it("Should generate a schema with 200 rules") {
+    val gen = GenShape.genAnds(200)
+    val g = GenShape.genTriples(200) 
+    val t : Typing = Typing.emptyTyping.addType(IRI("x"),IRI("a")).get           
+    Schema.matchAll(g,gen).isValid should be(true)
+  }
+  
  } 
 
 }
