@@ -56,6 +56,8 @@ case class ShapeDoc(pm: PrefixMap) {
       case PlusRule(r) => "( " :: ruleDoc(r) :: text(" )+")
       case StarRule(r) => "( " :: ruleDoc(r) :: text(" )*")
       case OptRule(r) => "( " :: ruleDoc(r) :: text(" )?")
+      case RangeRule(m,n,r) => ruleDoc(r) :: "{" :: m.toString :: "," :: n.toString :: text("}") 
+      case RangeMinRule(m,r) => ruleDoc(r) :: "{" :: m.toString :: text("}")
       case NotRule(r) => "!" :: ruleDoc(r) 
       case ActionRule(r,a) => "( " :: ruleDoc(r) :: text(" ) %") :: actionDoc(a)
       case AnyRule => text(". . ") 

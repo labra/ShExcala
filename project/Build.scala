@@ -11,14 +11,12 @@ object Build extends sbt.Build {
  
   def repo = "weso-releases" 
 
-  val shExcalaVersion = "0.1.0"
+  val shExcalaVersion = "0.1.4"
 
   publishMavenStyle := true
 
   val currentVersion = shExcalaVersion
 
-  // protected val bintrayPublishIvyStyle = settingKey[Boolean]("=== !publishMavenStyle") //workaround for sbt-bintray bug
-  
   lazy val publishSettings = Seq(
     repository in bintray := this.repo,
     bintrayOrganization in bintray := Some("weso"),
@@ -46,5 +44,5 @@ object Build extends sbt.Build {
     url("http://dl.bintray.com/content/scala-js/scala-js-releases"))(
       Resolver.ivyStylePatterns)
 
-  
+ 
 } 

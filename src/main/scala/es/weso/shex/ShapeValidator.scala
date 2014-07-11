@@ -20,7 +20,7 @@ trait ShapeValidator extends Logging {
   
  def id: String // Abstract
   
- def matchAll(ctx:Context): Result[Typing] = {
+  def matchAll(ctx:Context): Result[Typing] = {
 
   def matchWithTyping(iri: IRI, typing: Typing)(shape: Shape): Result[Typing] = {
     log.debug("matchSome. iri: " + iri.toString + 

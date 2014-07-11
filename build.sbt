@@ -5,28 +5,40 @@ import bintray.Plugin.bintraySettings
 import bintray.Keys._
 import scala.scalajs.sbtplugin.ScalaJSPlugin.ScalaJSKeys._
 
-lazy val root = project.in(file("."))//.settings(crossScalaVersions := Seq("2.10.4", "2.11.0"))
+lazy val root = project.in(file(".")).configs( PerfTest ).settings(inConfig(PerfTest)(Defaults.testTasks): _*)
 
 Build.sharedSettings
+
+scalaVersion := "2.11.1"
 
 version := Build.currentVersion
 
 libraryDependencies ++= Seq(
-    "org.specs2" %% "specs2" % "2.3.7" % "test" 
-  , "org.slf4j" % "slf4j-simple" % "1.6.4"
-  , "org.scalatest" % "scalatest_2.10" % "2.0.1-SNAP" % "test"
+    "org.slf4j" % "slf4j-simple" % "1.6.4"
+  , "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
   , "commons-configuration" % "commons-configuration" % "1.7"
   , "org.rogach" %% "scallop" % "0.9.5" 
   , "com.typesafe" % "config" % "1.0.1"
-  , "org.scala-lang" % "scala-compiler" % "2.10.2" 
-  , "com.assembla.scala-incubator" % "graph-core_2.10" % "1.6.2"
+  , "org.scala-lang" % "scala-compiler" % scalaVersion.value  
   , "org.apache.jena" % "jena-arq" % "2.10.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
-  , "org.scalaz" % "scalaz-core_2.10" % "7.0.6" 
-  , "es.weso" % "wesin_2.10" % "0.1.5" excludeAll(ExclusionRule(organization = "org.slf4j"))
-  , "com.github.axel22" %% "scalameter" % "0.5-M2"
+  , "org.scalaz" % "scalaz-core_2.11" % "7.0.6" 
+  , "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test"
+  ,	"org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
+  , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
+  , "es.weso" % "wesin_2.11" % "0.1.6" excludeAll(ExclusionRule(organization = "org.slf4j"))
   )
 
 autoCompilerPlugins := true
+
+// For performance test...
+
+lazy val PerfTest = config("perf").extend(Test)
+
+testFrameworks in PerfTest += new TestFramework("org.scalameter.ScalaMeterFramework")
+
+logBuffered in PerfTest := false
+
+parallelExecution in PerfTest := false
 
 seq(bintraySettings:_*)
 
@@ -49,15 +61,9 @@ resourceGenerators in Test += Def.task {
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
-testFrameworks += new TestFramework(
-    "org.scalameter.ScalaMeterFramework")
-
-logBuffered := false
-
-// Scalameter benchmark needs to run tests sequentially 
-parallelExecution in Test := false
-
 //resolvers += "Sonatype OSS Snapshots" at
 //  "https://oss.sonatype.org/content/repositories/snapshots"
 
 resolvers += "Bintray" at "http://dl.bintray.com/weso/weso-releases"
+
+instrumentSettings  // for SCoverage

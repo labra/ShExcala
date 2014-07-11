@@ -53,6 +53,8 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
       case PlusRule(r) => nullable(r)
       case OptRule(r) => true
       case ActionRule(r,_) => nullable(r)
+      case RangeMinRule(m,r) => m == 0 || nullable(r)
+      case RangeRule(m,n,r) => m == 0 || nullable(r)
       case NotRule(r) => !nullable(r) // TODO: check the semantics of this 
       case AnyRule => true
     }
@@ -69,7 +71,6 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
     r
   } 
   
-  // TODO:....
   def mkOrRule(r1:Rule, r2: Rule): Rule = {
     val r = (r1,r2) match {
       case (f@FailRule(_),e2) => e2
@@ -81,6 +82,33 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
     r
   } 
 
+   def mkRangeRule(m:Int,n:Int, r:Rule): Rule = {
+    if (m < 0) FailRule("Range with negative lower bound = " + m)
+    else if (m > n) FailRule("Range with lower bound " + m + " bigger than upper bound " + n)
+    else {
+     (m,n,r) match {
+      case (0,0,_) => EmptyRule
+      case (1,1,e) => e
+      case (_,_,f@FailRule(_)) => f
+      case (_,_,e@EmptyRule) => e
+      case (m,n,e) => RangeRule(m,n,e)
+     }
+    }
+  } 
+
+   def mkRangeMinRule(m:Int, r:Rule): Rule = {
+    if (m < 0) FailRule("Range with negative lower bound = " + m)
+    else {
+     (m,r) match {
+      case (0,_) => EmptyRule
+      case (1,e) => e
+      case (_,f@FailRule(_)) => f
+      case (_,e@EmptyRule) => e
+      case (m,e) => RangeMinRule(m,e)
+     }
+    }
+  }
+   
   def deltaTriples(r:Rule, ts: Set[RDFTriple], ctx:Context): (Rule,Stream[Typing]) = {
     val e : Res = (r,Stream(ctx.typing))
     def f (b: Res, triple:RDFTriple): Res = {
@@ -149,7 +177,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
       }
       
       // The semantics of And is more close to interleave
-      // TODO: check possible simplifications of this rule in case dr1/dr2 are nullable
+      // TODO: check possible simplifications of this rule in case dr1 or dr2 are nullable
       case AndRule(r1,r2) => {
         val (dr1,t1) = delta(r1,triple,ctx)
         val (dr2,t2) = delta(r2,triple,ctx)
@@ -171,19 +199,26 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
         (mkAndRule(dr,StarRule(r)),t)
       }
       
+      case RangeRule(m,n,r) => {
+        val (dr,t) = delta(r,triple,ctx)
+        (mkAndRule(dr,mkRangeRule(math.max(m - 1,0), n - 1, r)), t)
+      }
+
+      case RangeMinRule(m,r) => {
+        val (dr,t) = delta(r,triple,ctx)
+        (mkAndRule(dr,mkRangeMinRule(math.max(m - 1,0), r)), t)
+      }
+      
       case ActionRule(r,a) => delta(r,triple,ctx)
 
       case AnyRule => (EmptyRule,noTyping)
 
       case NotRule(r) => {
-        println("Not rule" + showRule(rule) + " triple: " + triple)
         val (dr,t) = delta(r,triple,ctx)
-        println("dr : " + showRule(dr) + " typing: " + t)
         dr match {
           case EmptyRule => 
             (FailRule("Not rule found triple " + t + " that matches " + showRule(rule)(ctx.pm)), noTyping)
           case FailRule(msg) => {
-            println("Not found empty rule...Found " + showRule(dr))
             (EmptyRule,noTyping)
           }
           case _ => (NotRule(dr),t)
@@ -197,4 +232,8 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
   def showRule(rule: Rule)(implicit pm: PrefixMap): String = 
      ShapeDoc.rule2String(rule)(pm)
 
+}
+
+object ShapeValidatorWithDeriv {
+  
 }

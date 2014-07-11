@@ -37,6 +37,8 @@ case class PlusRule(r: Rule) extends Rule
 case class OptRule(r: Rule) extends Rule
 case class NotRule(r: Rule) extends Rule
 case class ActionRule(r: Rule, a: Seq[Action]) extends Rule
+case class RangeRule(m:Int,n:Int,r:Rule) extends Rule
+case class RangeMinRule(m:Int,r:Rule) extends Rule
 case object EmptyRule extends Rule
 case object AnyRule extends Rule
 case class FailRule(msg: String) extends Rule  // Always fails with a message
@@ -86,16 +88,33 @@ def star(r: Rule): Rule = {
  StarRule(r) 
 }
 
-def range(m:Int,n:Int,r:Rule):Rule = {
-  require(m > 0, "range: m must be positive")
+/* Old definition of rangeMin...
+   It could be used if rangeMin where not builtin 
+ def rangeMin(m:Int)(r:Rule): Rule = {
+  require(m >= 0, "range: m must not be negative")
+  if (m == 0) {
+    EmptyRule
+  } else {
+    AndRule(r,rangeMin(m-1)(r))
+  }   
+} */
+
+def rangeMin(m:Int)(r:Rule) = RangeMinRule(m,r)
+
+/* Old definition of range
+ * I could be used if Range where not builtin 
+def range(m:Int,n:Int)(r:Rule): Rule = {
+  require(m >= 0, "range: m must not be negative")
   require(n >= m,"range: n(" + n + ") must be bigger than m (" + m + ")")
   if (m == 0) {
     if (n == 0) EmptyRule
-    else OrRule(r,range(m,n - 1,r))
+    else AndRule(OptRule(r),range(0,n - 1)(r))
   } else {
-    AndRule(r,range(m-1,n,r))
+    AndRule(r,range(m-1,n-1)(r))
   }   
-}
+} */
+
+def range(m:Int, n:Int)(r:Rule) = RangeRule(m,n,r)
 
 lazy val NoActions : Seq[Action] = Seq()
 // lazy val NoId : Label = IRILabel(iri = IRI(""))

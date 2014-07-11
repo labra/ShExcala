@@ -21,3 +21,7 @@ addSbtPlugin("me.lessis" % "bintray-sbt" % "0.1.1")
 addSbtPlugin("com.lihaoyi" % "utest-js-plugin" % "0.1.2")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "0.7.0-RC2")
+
+resolvers += Classpaths.sbtPluginReleases
+
+addSbtPlugin("org.scoverage" %% "sbt-scoverage" % "0.99.5.1")

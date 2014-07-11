@@ -131,7 +131,7 @@ case class RDFFromWeb() extends RDF {
      if (lit.getDatatypeURI() == null) {
        StringLiteral(lit.getString())
      } else
-     lit.getDatatypeURI() match {
+     IRI(lit.getDatatypeURI()) match {
        case RDFNode.IntegerDatatypeIRI => IntegerLiteral(lit.getInt)  
        case RDFNode.BooleanDatatypeIRI => BooleanLiteral(lit.getBoolean)
        case RDFNode.DoubleDatatypeIRI => DoubleLiteral(lit.getDouble())

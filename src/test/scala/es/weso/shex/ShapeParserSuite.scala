@@ -143,7 +143,7 @@ class ShapeParserSuite extends ShapeParser
      }
        
    }
-   
+
    describe("Shapes") {
 
      it("Should parse labels") {
@@ -497,7 +497,7 @@ class ShapeParserSuite extends ShapeParser
       shouldParseIgnoreState(shExParser,state, str, shex)
     }
 
-    it("Should parse b") {
+    it("Should parse b xsd:integer") {
       val prefix = "http://example.org/"
       val xsd = "http://www.w3.org/2001/XMLSchema#"
       val str = "PREFIX : <" + prefix + ">\n" + 
@@ -512,6 +512,8 @@ class ShapeParserSuite extends ShapeParser
       val shex : ShEx = ShEx( rules=List(shape), start=None )
       shouldParseIgnoreState(shExParser,state, str, shex)
     }
+    
+
  
 }   
 

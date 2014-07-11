@@ -23,7 +23,7 @@ import es.weso.rdf.RDFTriples
 import scala.util.Try
 import scala.collection.JavaConverters._
 
-object RunTestsFolder extends ShapeValidatorWithDeriv {
+object RunTestsFolder {
 
   val conf : Config = ConfigFactory.load()
   
@@ -284,7 +284,11 @@ object RunTestsFolder extends ShapeValidatorWithDeriv {
     		  }
     	  }
     	  else 
-    		  throw new Exception("Non valid. Result: " + result + "\ncs_schema:\n " + cs_schema + "\nTriples:\n " + rdf)
+    		  throw new Exception("Non valid. \n" +
+    		      " Result: " + result + 
+    		      "\ncs_schema:\n " + cs_schema + 
+    		      "\nSchema: " + ShapeDoc.schema2String(schema)(prefixMap) + 
+    		      "\nTriples:\n " + rdf.serialize())
         }
      }
    }

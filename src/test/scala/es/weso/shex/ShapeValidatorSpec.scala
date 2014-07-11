@@ -634,6 +634,37 @@ class ShapeValidatorSpec
      val result = Schema.matchSchema(IRI("x"), rdf, schema)
      result.isValid should be(true)
    }
+   
+   it("should validate range 1 2 against 1 ") {
+     val strShape = "<a> { <p> . {1,2}  }\n" 
+     val strRDF = "<x> <p> 1 .\n" 
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     result.isValid should be(true)
+   }
+
+   it("should validate range 1 2 against 2") {
+     val strShape = "<a> { <p> . {1,2}  }\n" 
+     val strRDF = "<x> <p> 1,2 .\n" 
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     result.isValid should be(true)
+   }
+
+   it("should validate range 1 2 against 3") {
+     val strShape = "<a> { <p> . {1,2}  }\n" 
+     val strRDF = "<x> <p> 1,2,3 .\n" 
+     val schema = Schema.fromString(strShape).get._1
+     info("Schema: " + schema)
+     val rdf = RDFTriples.parse(strRDF).get
+     val result = Schema.matchSchema(IRI("x"), rdf, schema)
+     result.isValid should be(false)
+   }
+
 }
  
  

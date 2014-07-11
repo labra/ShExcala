@@ -9,7 +9,8 @@ import scala.collection.JavaConverters._
 import org.scalatest.Matchers
 
 
-class RunTestsFolderSpec extends FunSpec with Matchers {
+
+class RunTestsSpecWithDeriv extends FunSpec with Matchers {
  val report = RunTestsFolder.createReport
  
  

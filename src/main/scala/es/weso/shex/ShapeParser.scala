@@ -162,8 +162,22 @@ trait ShapeParser
    ( symbol("*") ^^^ star _
    | symbol("+") ^^^ PlusRule
    | symbol("?") ^^^ option _
+   | symbol("{") ~> integer ~ 
+       opt(symbol(",") ~> integer) <~ symbol("}") ^^
+        { case m ~ maybeN => 
+            (m, maybeN) match {
+              case (m,None) => rangeMin(m)
+              case (m,Some(n)) => {
+                  // TODO: Add error checking here? (m > n...)
+            	  range(m,n)
+              }
+            }
+        }
    )
-    // TODO: integer ranges 
+  }
+  
+  def integer: Parser[Int] = {
+    """\d\d*""".r ^^ (s => s.toInt)
   }
 
   def nameClassAndValue(s: ShapeParserState): 
