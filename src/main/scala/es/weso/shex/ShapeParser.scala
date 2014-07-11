@@ -84,9 +84,10 @@ trait ShapeParser
   }
 
   def shape(s: ShapeParserState): Parser[(Shape, ShapeParserState)] =
-    opt(WS) ~> label(s) ~ typeSpec(s) ^^ { case (l ~ r) => (Shape(l, r._1), r._2) }
+    opt(WS) ~> label(s) ~ shapeSpec(s) ^^ 
+        { case (l ~ r) => (Shape(l, r._1), r._2) }
 
-  def typeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+  def shapeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
     opt(WS) ~> "{" ~> opt(WS) ~> opt(orExpression(s)) <~ opt(WS) <~ "}" ^^ 
       { case None           => (EmptyRule,s) 
         case Some((ors,s1)) => (ors,s1) 
@@ -143,15 +144,19 @@ trait ShapeParser
     (RevArcRule(None, n, v), s)
   }
 
+  private def mkRelationRule(nvs: ((ValueClass, ValueClass), ShapeParserState)): (Rule,ShapeParserState) = {
+    val ((v1,v2),s) = nvs 
+    (RelationRule(None, v1, v2), s)
+  }
+
   def arc(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    opt(symbol("^")) ~
-    nameClassAndValue(s) ^^ {
-        case maybeRev ~ nc => 
-          (maybeRev,nc) match {
-            case (None,((n,v),s1)) => (ArcRule(None,n,v),s1)
-            case (Some(_),((n,v),s1)) => (RevArcRule(None,n,v),s1)
-          }
-    }
+    ( symbol("^") ~> nameClassAndValue(s) 
+        ^^ { case ((n,v),s1) => (RevArcRule(None,n,v),s1) }
+    | symbol("<>") ~> fixedValues(s) ~ fixedValues(s) 
+        ^^ { case ((v1,_)) ~ ((v2,_)) => (RelationRule(None,v1,v2),s) }
+    | nameClassAndValue(s) 
+        ^^ { case ((n,v),s1) => (ArcRule(None,n,v),s1) }
+    )
   }
 
   def anyRule : Parser[Rule] = {
@@ -189,14 +194,14 @@ trait ShapeParser
         }
      }
    | symbol("a") ~> fixedValues(s) ^^ { 
-     	case (v,s) => ((NameTerm(rdf_type),v),s)
+     	case (v,s1) => ((NameTerm(rdf_type),v),s1)
      }
    | dot ~ fixedValues(s) ^^ { 
-     	case (_ ~ ((v,s))) => ((NameAny(excl=Set()),v), s) 
+     	case (_ ~ ((v,s1))) => ((NameAny(excl=Set()),v), s1) 
      }
    | exclusions(s) ~ fixedValues(s) ^^ {
-        case excls ~ ((v,s)) => {
-          ((NameAny(excls),v), s)
+        case excls ~ ((v,s1)) => {
+          ((NameAny(excls),v), s1)
         }
      }
    )

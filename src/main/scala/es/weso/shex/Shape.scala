@@ -30,6 +30,7 @@ sealed trait Rule extends Positional
 
 case class ArcRule(id: Option[Label], n: NameClass, v: ValueClass) extends Rule
 case class RevArcRule(id: Option[Label], n: NameClass, v: ValueClass) extends Rule
+case class RelationRule(id: Option[Label], v1: ValueClass, v2: ValueClass) extends Rule
 case class AndRule(r1: Rule, r2: Rule) extends Rule
 case class OrRule(r1: Rule, r2: Rule) extends Rule
 case class StarRule(r: Rule) extends Rule
@@ -42,6 +43,7 @@ case class RangeMinRule(m:Int,r:Rule) extends Rule
 case object EmptyRule extends Rule
 case object AnyRule extends Rule
 case class FailRule(msg: String) extends Rule  // Always fails with a message
+// case class OpenRule(r: Rule) extends Rule
 
 sealed trait Label {
   def getNode():RDFNode
@@ -77,19 +79,24 @@ case class OrObject(obj1: ValueObject, obj2: ValueObject) extends ValueObject
 
 case class Action(label: Label, code: String)
 
-//----------
+
+
+/*
+ Can be defined as: 
+ option(r) = OrRule(r,EmptyRule)
+ */
 def option(r: Rule): Rule = {
- // OrRule(r,EmptyRule)
  OptRule(r)
 }
 
+/* Can be defined as:
+ * star(r) = OrRule(PlusRule(r),EmptyRule)
+ */
 def star(r: Rule): Rule = {
- // OrRule(PlusRule(r),EmptyRule)
  StarRule(r) 
 }
 
-/* Old definition of rangeMin...
-   It could be used if rangeMin where not builtin 
+/* Can be defined as:
  def rangeMin(m:Int)(r:Rule): Rule = {
   require(m >= 0, "range: m must not be negative")
   if (m == 0) {
@@ -98,11 +105,9 @@ def star(r: Rule): Rule = {
     AndRule(r,rangeMin(m-1)(r))
   }   
 } */
-
 def rangeMin(m:Int)(r:Rule) = RangeMinRule(m,r)
 
-/* Old definition of range
- * I could be used if Range where not builtin 
+/* Can be defined as: 
 def range(m:Int,n:Int)(r:Rule): Rule = {
   require(m >= 0, "range: m must not be negative")
   require(n >= m,"range: n(" + n + ") must be bigger than m (" + m + ")")
@@ -113,10 +118,14 @@ def range(m:Int,n:Int)(r:Rule): Rule = {
     AndRule(r,range(m-1,n-1)(r))
   }   
 } */
-
 def range(m:Int, n:Int)(r:Rule) = RangeRule(m,n,r)
 
+def openShape(r:Rule) : Rule = {
+  AndRule(r,AnyRule)
+}
+
 lazy val NoActions : Seq[Action] = Seq()
+
 // lazy val NoId : Label = IRILabel(iri = IRI(""))
 
 

@@ -130,7 +130,7 @@ object Main extends App with Logging {
   }
   
   val result = 
-    for ( (schema,pm) <- getSchema(opts.schema())
+    for ( (schema,pm) <- Schema.fromFile(opts.schema())
         ) yield {
    
    log.debug("Got schema. Labels: " + showLabels(schema))
@@ -167,13 +167,6 @@ object Main extends App with Logging {
    schema.getLabels.map(_.getNode.toString ++ " ").mkString 
  }
  
- private def getSchema(fileName: String) : Try[(Schema,PrefixMap)] = {
-	for (
-        cs <- getContents(fileName) 
-      ; (schema,prefixMap) <- Schema.fromString(cs)
-      ) yield (schema,prefixMap)
- }
-
  private def getRDFFromTurtle(fileName: String) : Try[RDF] = {
   for ( cs <- getContents(fileName) 
       ; triples <- RDFTriples.parse(cs)

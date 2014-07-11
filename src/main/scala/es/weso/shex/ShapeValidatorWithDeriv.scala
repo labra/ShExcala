@@ -6,15 +6,13 @@ import es.weso.rdfgraph.statements._
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.Typing._
 import es.weso.monads.Result._
-import es.weso.monads.Result
 import es.weso.parser.PrefixMap
 import es.weso.rdf._
 import es.weso.shex.Context._
 import org.slf4j._
 import scala.util.matching.Regex
 import es.weso.utils.Logging
-import es.weso.monads.Passed
-import es.weso.monads.Failure
+import es.weso.monads._
 
 /**
  * Shape validator using Regular Expression Derivatives
@@ -47,6 +45,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
       case EmptyRule => true
       case ArcRule(_,_,_) => false
       case RevArcRule(_,_,_) => false
+      case RelationRule(_,_,_) => false
       case AndRule(r1,r2) => nullable(r1) && nullable(r2)
       case OrRule(r1,r2) => nullable(r1) || nullable(r2)
       case StarRule(r) => true
@@ -163,8 +162,26 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
              failTyping)
         }
 
+      case RelationRule(_,v1,v2) =>
+          val mv1 = matchValue(ctx,triple.subj,v1)
+          val mv2 = matchValue(ctx,triple.obj,v1)
+          if (mv1.isValid) {
+            if (mv2.isValid)
+            (EmptyRule,mv1.run ++ mv2.run)
+            else {
+              (FailRule("Does not match value " + triple.obj + 
+                " with RelationRule " + showRule(rule)(ctx.pm) + " Msg: " + mv2.failMsg), 
+               failTyping)
+            }
+          } else {
+            (FailRule("Does not match value " + triple.subj + 
+                " with RelationRule " + showRule(rule)(ctx.pm) + " Msg: " + mv1.failMsg), 
+             failTyping)
+          }      
+
       case EmptyRule => 
-        (FailRule("Unexpected triple " + triple),failTyping)
+        if (ctx.openShapes) (EmptyRule,noTyping)  
+        else (FailRule("Unexpected triple " + triple),failTyping)
         			 
       case f@FailRule(msg) => {
         log.debug("...Failing rule " + showRule(rule)(ctx.pm) + " with " + msg)

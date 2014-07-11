@@ -242,7 +242,7 @@ class ShapeParserSuite extends ShapeParser
        val alias = "ex"
        val str = "{ " + alias + ":" + a + " " + alias + ":" + b + " }"    
        val state  = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
-       val result = ShapeParser.parse(ShapeParser.typeSpec(state),str)
+       val result = ShapeParser.parse(ShapeParser.shapeSpec(state),str)
        val expected : ArcRule = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + a)),
                            v  = ValueType(IRI(prefix + b)))

@@ -10,7 +10,7 @@ import scala.util.{Try, Success, Failure}
 import es.weso.monads.Result
 import es.weso.rdf.RDF
 import org.slf4j._
-
+import es.weso.utils.IO._
 
 
 /**
@@ -45,6 +45,13 @@ object Schema extends ShapeValidatorWithDeriv {
       case Failure(t) => throw new Exception("Parsing schema: " + t.getMessage) 
     }
   }  
+  
+  def fromFile(fileName: String) : Try[(Schema,PrefixMap)] = {
+	for (
+        cs <- getContents(fileName) 
+      ; (schema,prefixMap) <- Schema.fromString(cs)
+      ) yield (schema,prefixMap)
+  }
 
   def matchSchema( iri:IRI
 		  		 , rdf:RDF
