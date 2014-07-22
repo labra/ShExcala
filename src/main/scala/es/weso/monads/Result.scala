@@ -25,7 +25,14 @@ sealed abstract class Result[+A] {
     }
   }
 
-  def noResult[B]: Result[B] = Passed(Stream())
+  def toList(n : Int): List[A] = {
+    this match {
+      case Passed(rs) => rs.take(n).toList
+      case Failure(msg) => List()
+    }
+  }
+
+ def noResult[B]: Result[B] = Passed(Stream())
   
   def appendResult[B](r: Result[B],x:Result[B]): Result[B] = {
     (x,r) match {

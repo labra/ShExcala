@@ -180,8 +180,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
           }      
 
       case EmptyRule => 
-        if (ctx.openShapes) (EmptyRule,noTyping)  
-        else (FailRule("Unexpected triple " + triple),failTyping)
+        (FailRule("Unexpected triple " + triple),failTyping)
         			 
       case f@FailRule(msg) => {
         log.debug("...Failing rule " + showRule(rule)(ctx.pm) + " with " + msg)
@@ -193,7 +192,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
         (mkOrRule(dr1,dr2),t1 ++ t2)
       }
       
-      // The semantics of And is more close to interleave
+      // The semantics of And is the same as interleave in RelaxNG because arcs are not ordered
       // TODO: check possible simplifications of this rule in case dr1 or dr2 are nullable
       case AndRule(r1,r2) => {
         val (dr1,t1) = delta(r1,triple,ctx)

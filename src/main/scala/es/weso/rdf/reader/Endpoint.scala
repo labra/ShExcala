@@ -16,7 +16,9 @@ import org.slf4j._
 import com.hp.hpl.jena.rdf.model.{RDFNode => JenaRDFNode}
 import es.weso.rdf.RDF
 
+
 case class Endpoint(endpoint: String) extends RDF {
+// TODO: check that endpoint is a well formed URI  
   
   val log = LoggerFactory.getLogger("Endpoint")
   

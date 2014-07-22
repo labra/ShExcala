@@ -28,7 +28,8 @@ class ShapeValidatorRule
      val schema = Schema.fromString(strShape).get._1
      info("Schema: " + schema)
      val rdf = RDFTriples.parse(strRDF).get
-     val result = Schema.matchSchema(IRI("http://example.org/a"),rdf, schema)
+     val matcher = Matcher(schema,rdf,false,false)
+     val result = matcher.matchIRI_AllLabels(IRI("http://example.org/a"))
      info("Result:\n" + result.toList.toString)
      result.isValid should be(true)
    }
@@ -41,7 +42,8 @@ class ShapeValidatorRule
      val schema = Schema.fromString(strShape).get._1
      info("Schema: " + schema)
      val rdf = RDFTriples.parse(strRDF).get
-     val result = Schema.matchAll(rdf, schema)
+     val matcher = Matcher(schema,rdf,false,false)
+     val result = matcher.matchAllIRIs_AllLabels()
      info("Result:\n" + result.toList.toString)
      result.isValid should be(false)
    }

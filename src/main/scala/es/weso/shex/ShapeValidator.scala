@@ -168,8 +168,9 @@ def matchName(ctx: Context, pred: IRI, n: NameClass): Result[Boolean] = {
        if (vtype == shex_Literal || 
            vtype == shex_NonIRI ||
            vtype == shex_NonBNode ||
-           lit.dataType == vtype) 
+           lit.dataType == vtype) {
          unit(true)
+       } 
        else unit(false)
      }                         
      case iri:IRI => {

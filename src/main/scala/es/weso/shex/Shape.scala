@@ -57,6 +57,10 @@ case class BNodeLabel(bnodeId: Int) extends Label {
   override def getNode = BNodeId(bnodeId)
 }
 
+def mkLabel(str: String): IRILabel = {
+  IRILabel(IRI(str))
+}
+
 sealed trait NameClass
 case class NameTerm(t: IRI) extends NameClass
 case class NameAny(excl: Set[IRIStem]) extends NameClass
@@ -148,6 +152,7 @@ lazy val shex_Literal = IRI(shex + "Literal")
 lazy val shex_NonLiteral = IRI(shex + "NonLiteral")
 lazy val shex_BNode = IRI(shex + "BNode")
 lazy val shex_NonBNode = IRI(shex + "NonBNode")
+lazy val rdf_langString = IRI(rdf + "langString")
 lazy val shex_Any = IRI(shex + "Any")
 lazy val xsd_string = IRI(xsd + "string")
 lazy val xsd_integer = IRI(xsd + "integer")

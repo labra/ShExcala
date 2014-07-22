@@ -46,6 +46,8 @@ object RunTestsFolder {
   val result 		= model.createProperty(mf 	+ "result")
   val mfname 		= model.createProperty(mf 	+ "name")
   val rdftype 		= model.createProperty(rdf 	+ "type")
+  
+  val MAX_TYPINGS   = 2
 
   def createReport : Report = {
 	
@@ -265,16 +267,17 @@ object RunTestsFolder {
        ; cs_instance <- dereference(instance.str)
        ; rdf <- RDFTriples.parse(cs_instance)
        ) yield {
+    val matcher = Matcher(schema,rdf,false,false)
     optIRI match {
       case None => {
-        val result = Schema.matchAll(rdf, schema)
+        val result = matcher.matchAllIRIs_AllLabels()
         if (result.isValid) {
-          "Valid typings " + result.toList
+          "Valid typings " + result.toList(MAX_TYPINGS)
         } else
           throw new Exception("Result should be valid but isn't")
       }
       case Some(iri) => {
-    	  val result = Schema.matchSchema(iri, rdf, schema)
+    	  val result = matcher.matchIRI_AllLabels(iri)
     	  if (result.isValid) {
     		  val typings = result.toList
     		  if (typings.exists(t => t.hasTypes(iri,shapes))) {
@@ -305,18 +308,19 @@ object RunTestsFolder {
        ; cs_instance <- dereference(instance.str)
        ; rdf <- RDFTriples.parse(cs_instance)
        ) yield {
-    optIRI match {
+      val matcher = Matcher(schema,rdf,false, false)    
+      optIRI match {
       case None => {
-        val result = Schema.matchAll(rdf, schema)
+        val result = matcher.matchAllIRIs_AllLabels()
            if (result.isValid) {
-        	   throw new Exception("Result valid with typings: " + result.toList + " but should not be valid")
+        	   throw new Exception("Result valid with typings: " + result.toList(MAX_TYPINGS) + " but should not be valid")
            }
            else "Not valid and should not be"
       }
       case Some(iri) => {
-           val result = Schema.matchSchema(iri, rdf, schema)
+           val result = matcher.matchIRI_AllLabels(iri)
            if (result.isValid) {
-        	   throw new Exception("Result valid with typings: " + result.toList + " but should not be valid")
+        	   throw new Exception("Result valid with typings: " + result.toList(MAX_TYPINGS) + " but should not be valid")
            }
            else "Not valid and should not be"
      }

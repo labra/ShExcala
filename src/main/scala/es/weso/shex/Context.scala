@@ -16,7 +16,6 @@ case class Context(
     , typing: Typing
     , pm: PrefixMap
     , validateIncoming:Boolean = false
-    , openShapes: Boolean = false
     ) {
   
   val log = LoggerFactory.getLogger("Context")
@@ -61,10 +60,6 @@ case class Context(
     }
   }
   
-  def setOpenShapes(open: Boolean): Context = {
-    this.copy(openShapes = open)
-  }
-
 }
 
 object Context {
@@ -74,7 +69,6 @@ object Context {
            , Typing.emptyTyping
            , pm = PrefixMaps.commonShex
            , validateIncoming = false
-           , openShapes = false
            )
       
   def emptyContextWithRev : Context = 
@@ -83,7 +77,6 @@ object Context {
            , Typing.emptyTyping
            , pm = PrefixMaps.commonShex
            , validateIncoming = true
-           , openShapes = false
            )     
       
 }

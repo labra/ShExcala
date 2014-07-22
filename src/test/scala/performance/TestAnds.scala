@@ -3,6 +3,7 @@ package es.weso.performance
 
 import es.weso.rdfgraph.nodes._
 import es.weso.shex.Schema
+import es.weso.shex.Matcher
 import es.weso.shex.Typing
 import es.weso.rdf.RDFTriples
 import es.weso.rdfgraph.statements.RDFTriple
@@ -21,7 +22,10 @@ object TestAnds extends PerformanceTest.Quickbenchmark {
   performance of "ShapeValidator ands" in {
   measure method "matchAll" in {
     using(pairs) in {
-      p => Schema.matchAll(p._2,p._1)
+      case ((schema,rdf)) => {
+        val matcher = Matcher(schema,rdf)
+        matcher.matchAllIRIs_AllLabels()
+      }
     }
   }
  }

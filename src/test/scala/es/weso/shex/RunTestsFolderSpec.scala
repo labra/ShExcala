@@ -12,8 +12,7 @@ import org.scalatest.Matchers
 
 class RunTestsSpecWithDeriv extends FunSpec with Matchers {
  val report = RunTestsFolder.createReport
- 
- 
+  
  describe("test-suite report") {
    info("Running tests from " + RunTestsFolder.testsDir)
    info("Manifest file: " + RunTestsFolder.manifestFile)

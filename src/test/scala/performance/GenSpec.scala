@@ -10,6 +10,8 @@ import es.weso.rdf.RDFTriples
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.shex.PrefixMaps
 import es.weso.shex.ShapeDoc
+import es.weso.shex.Matcher
+
 
 class GenSpec 
  extends FunSpec 
@@ -24,21 +26,27 @@ class GenSpec
     val t : Typing = Typing.emptyTyping.addType(IRI("x"),IRI("a")).get
     info("Shape: " + ShapeDoc.schema2String(gen2)(PrefixMaps.commonShex))
     info("Triples: " + g.serialize())
-    Schema.matchAll(g,gen2).isValid should be(true)
+    val matcher = Matcher(gen2,g,false,false)
+    val result = matcher.matchAllIRIs_AllLabels()
+    result.isValid should be(true)
   }
 
   it("Should generate a schema with 20 rules") {
     val gen = GenShape.genAnds(20)
     val g = GenShape.genTriples(20) 
     val t : Typing = Typing.emptyTyping.addType(IRI("x"),IRI("a")).get           
-    Schema.matchAll(g,gen).isValid should be(true)
+    val matcher = Matcher(gen,g,false,false)
+    val result = matcher.matchAllIRIs_AllLabels()
+    result.isValid should be(true)
   }
 
   it("Should generate a schema with 200 rules") {
     val gen = GenShape.genAnds(200)
     val g = GenShape.genTriples(200) 
     val t : Typing = Typing.emptyTyping.addType(IRI("x"),IRI("a")).get           
-    Schema.matchAll(g,gen).isValid should be(true)
+    val matcher = Matcher(gen,g,false,false)
+    val result = matcher.matchAllIRIs_AllLabels()
+    result.isValid should be(true)
   }
   
  } 

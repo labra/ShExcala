@@ -125,7 +125,7 @@ class ShapeParserSuite extends ShapeParser
       val ex = "http://example.org/"
       val str = "PREFIX : <" + ex + ">\n" + 
                 "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-                ":s { :a xsd:string }"
+                ":s [ :a xsd:string ]"
 
      val state = ShapeParserState.initial
      val shape : ArcRule = ArcRule(
@@ -240,7 +240,7 @@ class ShapeParserSuite extends ShapeParser
        val a = "a"
        val b = "b"
        val alias = "ex"
-       val str = "{ " + alias + ":" + a + " " + alias + ":" + b + " }"    
+       val str = "[ " + alias + ":" + a + " " + alias + ":" + b + " ]"    
        val state  = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
        val result = ShapeParser.parse(ShapeParser.shapeSpec(state),str)
        val expected : ArcRule = ArcRule(id = None,
@@ -255,7 +255,7 @@ class ShapeParserSuite extends ShapeParser
        val b = "b"
        val c = "c"
        val alias = "ex"
-       val str = alias + ":" + a + " { " + alias + ":" + b + " " + alias + ":" + c + " }"    
+       val str = alias + ":" + a + " [ " + alias + ":" + b + " " + alias + ":" + c + " ]"    
        val state = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
        val result = ShapeParser.parse(ShapeParser.shape(state),str)
        val expected : Shape = 
@@ -273,8 +273,8 @@ class ShapeParserSuite extends ShapeParser
        val b = "b"
        val c = "c"
        val alias = "ex"
-       val str = alias + ":" + a + " { " + alias + ":" + b + " " + alias + ":" + c + " }\n" +
-                 alias + ":" + b + " { " + alias + ":" + b + " " + alias + ":" + c + " } "
+       val str = alias + ":" + a + " [ " + alias + ":" + b + " " + alias + ":" + c + " ]\n" +
+                 alias + ":" + b + " [ " + alias + ":" + b + " " + alias + ":" + c + " ] "
                  
        val state = ShapeParserState.initial.addPrefix(alias,IRI(prefix))
        val result = parse(shExParser(state),str)
@@ -293,7 +293,7 @@ class ShapeParserSuite extends ShapeParser
       val prefix = "http://example.org/"
       val xsd = "http://www.w3.org/2001/XMLSchema#"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { :b :c }"
+                ":a [ :b :c ]"
       val state = ShapeParserState.initial
       val result = parse(shExParser(state),str)
       val ruleBC = ArcRule(id = None,
@@ -308,7 +308,7 @@ class ShapeParserSuite extends ShapeParser
      it("Should parse empty rule") {
       val prefix = "http://example.org/"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { }"
+                ":a [ ]"
       val state = ShapeParserState.initial
       val result = ShapeParser.parse(ShapeParser.shExParser(state),str)
       val rule = EmptyRule
@@ -322,7 +322,7 @@ class ShapeParserSuite extends ShapeParser
     it("Should parse or simple") {
       val prefix = "http://example.org/"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { :b :c | :b :d }"
+                ":a [ :b :c | :b :d ]"
       val state = ShapeParserState.initial
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
@@ -341,7 +341,7 @@ class ShapeParserSuite extends ShapeParser
     it("Should parse and simple") {
       val prefix = "http://example.org/"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { :b :c , :b :d }"
+                ":a [ :b :c , :b :d ]"
       val state = ShapeParserState.initial
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
@@ -361,7 +361,7 @@ class ShapeParserSuite extends ShapeParser
     it("Should parse and/or simple") {
       val prefix = "http://example.org/"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { :b :c , (:b :d | :b :e) }"
+                ":a [ :b :c , (:b :d | :b :e) ]"
       val state = ShapeParserState.initial
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
@@ -383,7 +383,7 @@ class ShapeParserSuite extends ShapeParser
     it("Should parse and/or simple withour paren") {
       val prefix = "http://example.org/"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { :b :c , :b :d | :b :e }"
+                ":a [ :b :c , :b :d | :b :e ]"
       val state = ShapeParserState.initial
       val ruleBC = ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
@@ -405,7 +405,7 @@ class ShapeParserSuite extends ShapeParser
     it("Should parse arc with star") {
       val prefix = "http://example.org/"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { :b :c* }"
+                ":a [ :b :c* ]"
       val state = ShapeParserState.initial
       val ruleBC = star(ArcRule(id = None,
                            n  = NameTerm(IRI(prefix + "b")),
@@ -420,7 +420,7 @@ class ShapeParserSuite extends ShapeParser
     it("Should parse arc with stem") {
       val prefix = "http://example.org/"
       val str = "PREFIX : <" + prefix + ">\n" + 
-                ":a { - <http://e.org/> ~ :c }"
+                ":a [ - <http://e.org/> ~ :c ]"
       val state = ShapeParserState.initial
       val ruleBC = ArcRule(id = None,
                            n  = NameAny(Set(IRIStem(IRI("http://e.org/"),true))),
@@ -437,7 +437,7 @@ class ShapeParserSuite extends ShapeParser
       val xsd = "http://www.w3.org/2001/XMLSchema#"
       val str = "PREFIX : <" + prefix + ">\n" + 
     		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-                ":a { :a xsd:integer | ( :b xsd:integer ) }"
+                ":a [ :a xsd:integer | ( :b xsd:integer ) ]"
       val state = ShapeParserState.initial
       val ruleA = ArcRule(id = None,
                           n  = NameTerm(IRI(prefix + "a")),
@@ -456,7 +456,7 @@ class ShapeParserSuite extends ShapeParser
       val xsd = "http://www.w3.org/2001/XMLSchema#"
       val str = "PREFIX : <" + prefix + ">\n" + 
     		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-                ":a { ( :b xsd:integer ) }"
+                ":a [ ( :b xsd:integer ) ]"
       val state = ShapeParserState.initial
       val ruleB = ArcRule(id = None,
                           n  = NameTerm(IRI(prefix + "b")),
@@ -472,7 +472,7 @@ class ShapeParserSuite extends ShapeParser
       val xsd = "http://www.w3.org/2001/XMLSchema#"
       val str = "PREFIX : <" + prefix + ">\n" + 
     		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-                ":a { . . * }"
+                ":a [ . . * ]"
       val state = ShapeParserState.initial
       val ruleAny = StarRule(AnyRule)
       val labelA = IRILabel(IRI(prefix + "a"))
@@ -486,7 +486,7 @@ class ShapeParserSuite extends ShapeParser
       val xsd = "http://www.w3.org/2001/XMLSchema#"
       val str = "PREFIX : <" + prefix + ">\n" + 
     		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-                ":a { ( :b . ) }"
+                ":a [ ( :b . ) ]"
       val state = ShapeParserState.initial
       val ruleB = ArcRule(id = None,
                           n  = NameTerm(IRI(prefix + "b")),
@@ -502,7 +502,7 @@ class ShapeParserSuite extends ShapeParser
       val xsd = "http://www.w3.org/2001/XMLSchema#"
       val str = "PREFIX : <" + prefix + ">\n" + 
     		  	"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-                ":a {  :b xsd:integer  }"
+                ":a [  :b xsd:integer  ]"
       val state = ShapeParserState.initial
       val ruleB = ArcRule(id = None,
                           n  = NameTerm(IRI(prefix + "b")),

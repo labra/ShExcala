@@ -64,15 +64,12 @@ override def matchRule (
    }
 
    case EmptyRule => 
-    if (ctx.openShapes) unit(ctx.typing)
-    else {
     	if (g.isEmpty) unit(ctx.typing)
     	else {
     		val msg = "EmptyRule: graph non empty"
     		log.debug(msg)
     		failure(msg)
     	}
-    }
 
    case NotRule(r) => {
     if (matchRule(ctx,g,r).isFailure) unit(ctx.typing) 

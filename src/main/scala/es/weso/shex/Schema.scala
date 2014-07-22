@@ -27,7 +27,8 @@ case class Schema(
   }
   
   def getLabels(): List[Label] = {
-    shEx.rules.map(_.label).toList
+    if (shEx.start == None) shEx.rules.map(_.label).toList
+    else List(shEx.start.get)
   }
 
   def addAny: Schema = 
@@ -42,7 +43,7 @@ object Schema extends ShapeValidatorWithDeriv {
   def fromString(cs: CharSequence): Try[(Schema,PrefixMap)] = {
     ShapeParser.parse(cs) match {
       case s@Success(_) => s
-      case Failure(t) => throw new Exception("Parsing schema: " + t.getMessage) 
+      case Failure(t) => Failure(throw new Exception("Parsing schema: " + t.getMessage)) 
     }
   }  
   
@@ -51,55 +52,6 @@ object Schema extends ShapeValidatorWithDeriv {
         cs <- getContents(fileName) 
       ; (schema,prefixMap) <- Schema.fromString(cs)
       ) yield (schema,prefixMap)
-  }
-
-  def matchSchema( iri:IRI
-		  		 , rdf:RDF
-		  		 , schema: Schema
-		  		 , validateIncoming: Boolean = false
-		  		 , openShapes: Boolean = false
-		  		 , withAny: Boolean = false
-		  		 ): Result[Typing] = {
-
-    val shex_extended = 
-      if (withAny) schema.addAny.shEx
-      else schema.shEx
-    
-    val ctx = 
-      Context( rdf=rdf
-    		 , shEx=shex_extended
-    		 , Typing.emptyTyping
-    		 , schema.pm
-    		 , validateIncoming
-    		 , openShapes
-    		 )
-
-    def matchLabel(lbl: Label): Result[Typing] = {
-      for ( shape <- ctx.getShape(lbl)
-          ; ctx1 <- ctx.addTyping(iri,lbl.getNode)
-          ; t <- matchShape(ctx1,iri,shape)
-          ) yield t
-    }
-    
-    Result.passSome(schema.getLabels,matchLabel)
-  }
-  
-  def matchAll( rdf:RDF
-		  	  , schema: Schema
-		  	  , validateIncoming: Boolean = false
-		  	  , openShapes: Boolean = false
-		  	  , withAny: Boolean = false
-		  	  ): Result[Typing] = {
-    val subjects : List[IRI] = rdf.subjects.toList
-    
-    def eval(iri:IRI) = {
-      matchSchema(iri,rdf,schema,validateIncoming,openShapes,withAny)
-    }
-    
-    def comb(t1:Typing,t2:Typing):Typing = {
-      t1 combine t2
-    }
-    Result.combineAll(subjects,eval,comb)
   }
 
 }

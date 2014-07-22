@@ -84,11 +84,22 @@ trait ShapeParser
   }
 
   def shape(s: ShapeParserState): Parser[(Shape, ShapeParserState)] =
-    opt(WS) ~> label(s) ~ shapeSpec(s) ^^ 
+    opt(WS) ~> label(s) ~ ( opt(WS) ~> shapeSpec(s)) ^^ 
         { case (l ~ r) => (Shape(l, r._1), r._2) }
 
   def shapeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    opt(WS) ~> "{" ~> opt(WS) ~> opt(orExpression(s)) <~ opt(WS) <~ "}" ^^ 
+    openShapeSpec(s) | closedShapeSpec(s)
+  }
+    
+  def openShapeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+    "{" ~> opt(WS) ~> opt(orExpression(s)) <~ opt(WS) <~ "}" ^^ 
+      { case None           => (StarRule(AnyRule),s) 
+        case Some((ors,s1)) => (AndRule(ors,StarRule(AnyRule)),s1) 
+      }
+  }
+
+  def closedShapeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+    "[" ~> opt(WS) ~> opt(orExpression(s)) <~ opt(WS) <~ "]" ^^ 
       { case None           => (EmptyRule,s) 
         case Some((ors,s1)) => (ors,s1) 
       }

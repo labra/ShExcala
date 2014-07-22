@@ -47,7 +47,11 @@ class Opts(
     				
     val iri 	= opt[String]("iri",
                     required=false,
-                    descr = "IRI")
+                    descr = "IRI to validate")
+                    
+    val shape 	= opt[String]("shape",
+                    required=false,
+                    descr = "Label of Shape in Schema")
                     
     val syntax 	= opt[String]("syntax", 
         			default=Some("ShEx"), 
@@ -59,7 +63,13 @@ class Opts(
     				descrYes = "show schema", 
         			descrNo = "don't show schema")
         			
-    val showRDF   = toggle("showRDF", 
+    val time = toggle("time", 
+    				prefix = "no-",
+    				default = Some(false),
+    				descrYes = "show time", 
+        			descrNo = "don't time")
+
+	val showRDF   = toggle("showRDF", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "show RDF", 
@@ -79,9 +89,9 @@ class Opts(
 
     val withOpen   = toggle("withOpen", 
     				prefix = "no-",
-    				default = Some(false),
-    				descrYes = "with open semantics", 
-        			descrNo = "with closed semantics")        			
+    				default = Some(true),
+    				descrYes = "with open shapes by default", 
+        			descrNo = "with closed shapes by default")        			
 
     val verbose = toggle("verbose", 
     				prefix = "no-",
@@ -129,6 +139,7 @@ object Main extends App with Logging {
     } 
   }
   
+  val now = System.nanoTime
   val result = 
     for ( (schema,pm) <- Schema.fromFile(opts.schema())
         ) yield {
@@ -141,12 +152,25 @@ object Main extends App with Logging {
    if (opts.showRDF()) {
      println(rdf.toString())
    }
+   
    log.debug("Before match schema ")
-   if (opts.iri.isSupplied)
-    (Schema.matchSchema(IRI(opts.iri()),rdf,schema,opts.withIncoming(),opts.withOpen(), opts.withAny()),pm)
-   else 
-    (Schema.matchAll(rdf,schema,opts.withIncoming(),opts.withOpen(),opts.withAny()),pm)
+   
+   val matcher = Matcher(schema,rdf,opts.withIncoming(), opts.withAny())
+   
+   val r =
+     if (opts.iri.isSupplied)
+      if (opts.shape.isSupplied)
+       matcher.matchIRI_Label(IRI(opts.iri()))(mkLabel(opts.shape()))
+      else
+       matcher.matchIRI_AllLabels(IRI(opts.iri()))
+      else
+       if (opts.shape.isSupplied)
+        matcher.matchAllIRIs_Label(mkLabel(opts.shape()))
+       else
+        matcher.matchAllIRIs_AllLabels()
+    (r,pm)
   }
+  val micros = (System.nanoTime - now) / 1000
 
   result match {
     case Success((ts,pm)) => {
@@ -160,6 +184,9 @@ object Main extends App with Logging {
     case Failure(f) => {
       println("Failure: " + f)
     }
+  }
+  if (opts.time()) {
+     println("%d microseconds".format(micros))
   }
  }
 
@@ -186,6 +213,13 @@ object Main extends App with Logging {
       scallop.printHelp
       sys.exit(1)
   }
-  
+
+  def time[A](a: => A) = {
+     val now = System.nanoTime
+     val result = a
+     val micros = (System.nanoTime - now) / 1000
+     println("%d microseconds".format(micros))
+     result
+  }
 } 
 

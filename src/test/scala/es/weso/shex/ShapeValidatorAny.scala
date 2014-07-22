@@ -25,9 +25,10 @@ describe("Schema all") {
                 ":n3 :p :d ."
   val rdf = RDFTriples.parse(rdf_str).get                
   val schema_str = "prefix : <http://example.org/> \n" +
-                  ":a { :p . } "
+                  ":a [ :p . ] "
   val schema = Schema.fromString(schema_str).get._1
-  val rs = Schema.matchAll(rdf,schema)
+  val matcher = Matcher(schema,rdf,false,false)
+  val rs = matcher.matchAllIRIs_AllLabels()
   def ex(n:String) = IRI("http://example.org/" + n)
   val t0 = Typing.emptyTyping
   val t1 = t0.addType(ex("n1"),ex("a")).get
@@ -42,9 +43,10 @@ describe("Schema all") {
                 ":n3 :p :d ."
   val rdf = RDFTriples.parse(rdf_str).get                
   val schema_str = "prefix : <http://example.org/> \n" +
-                  ":a { :p . } "
+                  ":a [ :p . ] "
   val schema = Schema.fromString(schema_str).get._1
-  val rs = Schema.matchAll(rdf,schema)
+  val matcher = Matcher(schema,rdf,false,false)
+  val rs = matcher.matchAllIRIs_AllLabels()
   def ex(n:String) = IRI("http://example.org/" + n)
   val t0 = Typing.emptyTyping
   val t1 = t0.addType(ex("n1"),ex("a")).get
