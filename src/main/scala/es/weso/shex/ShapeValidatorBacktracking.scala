@@ -118,6 +118,19 @@ override def matchRule (
       failure(msg)
     } 
 
+   case RelationRule(id,value1,value2) => 
+     if (g.size == 1) {
+      val triple = g.head
+      for ( t1 <- matchValue(ctx,triple.subj,value1)
+          ; t2 <- matchValue(ctx,triple.obj,value2)
+          ) yield t1 combine t2
+       
+     } else {
+      val msg = "RelationRule expected one but zero or more than one triple found in graph:\n" + g.toString
+      log.debug("fail: " + msg)
+      failure(msg)
+    } 
+
    case ActionRule(r,a) => {
      log.debug("Executing... " + a)
      unit(ctx.typing)
@@ -145,7 +158,6 @@ override def matchRule (
          matchRule(ctx,g,AndRule(r, RangeRule(m-1,n-1,r)))
    }
 
-   case RelationRule(_,_,_) => ???
    case FailRule(msg) => 
      failure(msg)
  
