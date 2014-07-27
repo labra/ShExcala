@@ -23,7 +23,7 @@ import es.weso.rdf.RDFTriples
 import scala.util.Try
 import scala.collection.JavaConverters._
 
-object RunTestsFolder {
+case class RunTestsFolder(validator: ShapeValidator) {
 
   val conf : Config = ConfigFactory.load()
   
@@ -146,7 +146,7 @@ object RunTestsFolder {
    def valid(m:Model)(
        currentReport : Report,
        res: Resource): Report = {
-     val testType = "Valid"
+     val testType = "Test validity"
      val vreport = 
        for ( schema   <- getSchema(m,res)
            ; instance <- getInstance(m,res)
@@ -157,6 +157,7 @@ object RunTestsFolder {
        val baseIRI = shExTestsURL + name + ".ttl" // Base URI for relative URI resolution. See http://www.w3.org/2013/TurtleTests/
        (valid(name,IRI(baseIRI),schema,instance,optIRI,shapes),name) 
        }
+       
     vreport match {
     	case Success((r,name)) => {
     	  r match {
@@ -171,7 +172,7 @@ object RunTestsFolder {
    }
 
    def notValid(m:Model)(currentReport : Report,res: Resource): Report = {
-     val testType = "NotValid"
+     val testType = "Test non Validity"
      val vreport = 
        for ( schema   <- getSchema(m,res)
            ; instance <- getInstance(m,res)
@@ -267,7 +268,7 @@ object RunTestsFolder {
        ; cs_instance <- dereference(instance.str)
        ; rdf <- RDFTriples.parse(cs_instance)
        ) yield {
-    val matcher = Matcher(schema,rdf,false,false)
+    val matcher = Matcher(schema,rdf,false,false,validator)
     optIRI match {
       case None => {
         val result = matcher.matchAllIRIs_AllLabels()
@@ -308,7 +309,7 @@ object RunTestsFolder {
        ; cs_instance <- dereference(instance.str)
        ; rdf <- RDFTriples.parse(cs_instance)
        ) yield {
-      val matcher = Matcher(schema,rdf,false, false)    
+      val matcher = Matcher(schema,rdf,false, false,validator)    
       optIRI match {
       case None => {
         val result = matcher.matchAllIRIs_AllLabels()

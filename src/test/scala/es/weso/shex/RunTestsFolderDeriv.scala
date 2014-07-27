@@ -10,12 +10,13 @@ import org.scalatest.Matchers
 
 
 
-class RunTestsSpecWithDeriv extends FunSpec with Matchers {
- val report = RunTestsFolder.createReport
+class RunTestsDeriv extends FunSpec with Matchers {
+ val runner = RunTestsFolder(ShapeValidatorWithDeriv)
+ val report = runner.createReport
   
  describe("test-suite report") {
-   info("Running tests from " + RunTestsFolder.testsDir)
-   info("Manifest file: " + RunTestsFolder.manifestFile)
+   info("Running tests from " + runner.testsDir)
+   info("Manifest file: " + runner.manifestFile)
 
    for ((r,n) <- report.items.sortWith(Report.sortReport) zip (1 to report.items.length))
    it(r.name + ". " + n ) {

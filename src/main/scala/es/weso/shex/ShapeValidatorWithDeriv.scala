@@ -250,6 +250,6 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
 
 }
 
-object ShapeValidatorWithDeriv {
+object ShapeValidatorWithDeriv extends ShapeValidatorWithDeriv {
   
 }

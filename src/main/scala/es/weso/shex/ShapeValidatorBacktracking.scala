@@ -21,8 +21,11 @@ import es.weso.monads.Failure
  * It mimics the inference rule semantics but is computationally very expensive 
  */
 trait ShapeValidatorBacktracking extends ShapeValidator with Logging {
+
   
 override def id = "Validator by Backtracking 1.0"
+  
+  
   
 override def matchRule (
     ctx: Context, 
@@ -30,8 +33,7 @@ override def matchRule (
     rule: Rule ): Result[Typing] = {
   
   log.debug("matchRule " + showRule(rule))
-  log.debug("Triples:")
-  showTriples(g)
+  
   rule match {
    
    case AndRule(r1,r2) => for(
@@ -53,6 +55,11 @@ override def matchRule (
        ; t2 <- matchRule(ctx,g2,rule)
        ) yield t1 combine t2
      )
+   }
+
+   case StarRule(AnyRule) => {
+	 log.debug("matching with any *")
+     unit(ctx.typing)
    }
 
    case StarRule(r) => {
@@ -82,7 +89,9 @@ override def matchRule (
 
    case AnyRule => {
 	 log.debug("matching with any")
-     unit(ctx.typing)
+     if (g.size == 1) unit(ctx.typing)
+     else 
+       failure("Any arc expected but found a graph with " + g.size + " triples")
    }
 
    case ArcRule(id,name,value) =>
@@ -114,6 +123,29 @@ override def matchRule (
      unit(ctx.typing)
    }
    
+   case RangeMinRule(m,r) => {
+     if (m < 0) failure("RangeMin with negative value " + m)
+     else
+       if (m == 0 && g.size == 0) unit(ctx.typing)
+       else {
+         matchRule(ctx,g,AndRule(r,RangeMinRule(m-1,r)))
+       }
+   }
+     
+
+   case RangeRule(m,n,r) => {
+     if (m > n) failure("Range with bad interval (" + m + "," + n + ")")
+     else 
+       if (m == 0)
+         if (n == 0)  
+          matchRule(ctx,g,EmptyRule)
+         else
+          matchRule(ctx,g,AndRule(OptRule(r),RangeRule(0,n-1,r))) 
+       else 
+         matchRule(ctx,g,AndRule(r, RangeRule(m-1,n-1,r)))
+   }
+
+   case RelationRule(_,_,_) => ???
    case FailRule(msg) => 
      failure(msg)
  
@@ -121,4 +153,24 @@ override def matchRule (
 
  }
 
+ /* Converts ranges to Ands/Opts
+  * Example: range(2,4,x) = x, x, x?, x?
+  * This function is not used 
+  */
+ def range(m:Int,n:Int)(r:Rule): Rule = {
+  require(m >= 0, "range: m must not be negative")
+  require(n >= m,"range: n(" + n + ") must be bigger than m (" + m + ")")
+   if (m == 0) {
+    if (n == 0) EmptyRule
+    else AndRule(OptRule(r),range(0,n - 1)(r))
+   } else {
+    AndRule(r,range(m-1,n-1)(r))
+   }   
+  } 
+
+
+}
+
+object ShapeValidatorBacktracking extends ShapeValidatorBacktracking {
+  
 }

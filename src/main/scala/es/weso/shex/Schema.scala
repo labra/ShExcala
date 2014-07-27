@@ -19,8 +19,9 @@ import es.weso.utils.IO._
  */
 
 case class Schema(
-    pm: PrefixMap, 
-    shEx: ShEx) extends Positional {
+     pm: PrefixMap 
+   , shEx: ShEx
+   ) extends Positional {
 
   override def toString(): String = {
     ShapeDoc.schema2String(this)(pm)
@@ -32,13 +33,13 @@ case class Schema(
   }
 
   def addAny: Schema = 
-    Schema( pm.addPrefix("shex",ShapeSyntax.shex_IRI)
-          , shEx.copy(rules = shEx.rules :+ ShapeSyntax.anyShape)
-          )
+    this.copy( pm = pm.addPrefix("shex",ShapeSyntax.shex_IRI)
+             , shEx = shEx.copy(rules = shEx.rules :+ ShapeSyntax.anyShape)
+             )
 
 }
 
-object Schema extends ShapeValidatorWithDeriv {
+object Schema {
 
   def fromString(cs: CharSequence): Try[(Schema,PrefixMap)] = {
     ShapeParser.parse(cs) match {

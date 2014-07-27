@@ -34,9 +34,9 @@ case class ShapeDoc(pm: PrefixMap) {
 
   def shapeDoc(shape: Shape): Document = {
     labelDoc(shape.label) :: 
-    space :: "{" :: space ::
+    space :: "[" :: space ::
     nest(3,group( ruleDoc(shape.rule))) :: space :: 
-    text("}")  
+    text("]")  
   }
 
   def labelDoc(label: Label): Document = {

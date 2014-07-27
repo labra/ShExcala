@@ -1,14 +1,17 @@
 package es.weso.shex
 
-import es.weso.monads.Result
+import es.weso.monads._
 import es.weso.rdf.RDF
 import es.weso.shex.ShapeSyntax._
 import es.weso.rdfgraph.nodes._
+import java.lang._
 
-case class Matcher(schema: Schema
+case class Matcher(
+      schema: Schema
     , rdf: RDF
     , validateIncoming: Boolean = false
 	, withAny: Boolean = false
+	, validator: ShapeValidator = ShapeValidatorWithDeriv
 	) {
 
   val subjects : List[IRI] = rdf.subjects.toList
@@ -26,10 +29,15 @@ case class Matcher(schema: Schema
     		 )
 
     def matchIRI_Label(iri: IRI)(lbl: Label): Result[Typing] = {
-      for ( shape <- ctx.getShape(lbl)
-          ; ctx1 <- ctx.addTyping(iri,lbl.getNode)
-          ; t <- Schema.matchShape(ctx1,iri,shape)
-          ) yield t
+      try {
+       for ( shape <- ctx.getShape(lbl)
+           ; ctx1 <- ctx.addTyping(iri,lbl.getNode)
+           ; t <- validator.matchShape(ctx1,iri,shape)
+           ) yield t
+      } catch {
+        case _ : StackOverflowError => Failure("StackOverflow error")
+        case e : Exception => Failure("Exception " + e.getMessage)
+      }     
     }
     
     def matchLabel_IRI(lbl: Label)(iri: IRI): Result[Typing] = {
