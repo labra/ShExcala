@@ -4,6 +4,8 @@ addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.7.4")
 
 addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0")
 
+addSbtPlugin("com.eed3si9n" % "sbt-buildinfo" % "0.3.2")
+
 //scalajs plugin
 addSbtPlugin("org.scala-lang.modules.scalajs" % "scalajs-sbt-plugin" % "0.4.3")
 

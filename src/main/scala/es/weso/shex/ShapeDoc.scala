@@ -33,10 +33,18 @@ case class ShapeDoc(pm: PrefixMap) {
   }
 
   def shapeDoc(shape: Shape): Document = {
-    labelDoc(shape.label) :: 
-    space :: "[" :: space ::
-    nest(3,group( ruleDoc(shape.rule))) :: space :: 
-    text("]")  
+    labelDoc(shape.label) :: openClosedDoc(shape.rule)
+  }
+  
+  def openClosedDoc(rule: Rule): Document = {
+    rule match {
+      case OpenRule(r) => 
+        space :: "{" :: space ::
+    		nest(3,group( ruleDoc(r))) :: space :: text("}")
+      case _ => 
+        space :: "[" :: space ::
+    		nest(3,group( ruleDoc(rule))) :: space :: text("]")    	  				  
+    }
   }
 
   def labelDoc(label: Label): Document = {
@@ -50,6 +58,7 @@ case class ShapeDoc(pm: PrefixMap) {
     rule match {
       case r : ArcRule => arcRuleDoc(r)
       case r : RevArcRule => "^(" :: revArcRuleDoc(r) :: text(" )")
+      case r : RelationRule => "<>(" :: relationArcDoc(r) :: text(" )")
       case FailRule(msg) => text("Fail(" + msg + ")")
       case AndRule(e1,e2) => "( " :: ruleDoc(e1) :: text(",") :: ruleDoc(e2) :: text(" )")
       case OrRule(e1,e2) => "( " :: ruleDoc(e1) :: text("|") :: ruleDoc(e2) :: text(" )")
@@ -62,6 +71,7 @@ case class ShapeDoc(pm: PrefixMap) {
       case ActionRule(r,a) => "( " :: ruleDoc(r) :: text(" ) %") :: actionDoc(a)
       case AnyRule => text(". . ") 
       case EmptyRule => text(" () ")
+      case OpenRule(r) => ruleDoc(r)
     }
   }
 
@@ -73,6 +83,11 @@ case class ShapeDoc(pm: PrefixMap) {
   def revArcRuleDoc(arc: RevArcRule) : Document = {
     nameClassDoc(arc.n) :: space ::
     valueClassDoc(arc.v) 
+  }
+
+  def relationArcDoc(arc: RelationRule) : Document = {
+    valueClassDoc(arc.v1) :: space ::
+    valueClassDoc(arc.v2) 
   }
 
   def nameClassDoc(n : NameClass) : Document = {

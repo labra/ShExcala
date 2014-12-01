@@ -94,7 +94,7 @@ trait ShapeParser
   def openShapeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
     "{" ~> opt(WS) ~> opt(orExpression(s)) <~ opt(WS) <~ "}" ^^ 
       { case None           => (StarRule(AnyRule),s) 
-        case Some((ors,s1)) => (AndRule(ors,StarRule(AnyRule)),s1) 
+        case Some((ors,s1)) => (OpenRule(ors),s1) 
       }
   }
 

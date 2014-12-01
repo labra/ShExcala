@@ -18,7 +18,7 @@ import es.weso.shex.ShapeSyntax._
 import es.weso.shex.Typing._
 import es.weso.utils.IO._
 import com.hp.hpl.jena.sparql.procedure.library.debug
-
+import buildInfo._
 
 class Opts(
     arguments: Array[String],
@@ -31,7 +31,7 @@ class Opts(
     
     footer("Enjoy!")
     
-    version("ShExcala 0.0.9")
+    version(BuildInfo.version)
     
     val turtle     = opt[String]("turtle",
     				   required=false,
@@ -117,6 +117,7 @@ object Main extends App with Logging {
  // val logger = Logger(LoggerFactory getLogger "name")
 
  override def main(args: Array[String]) {
+   
 
   val conf 		= ConfigFactory.load()
   val opts 		= new Opts(args,errorDriver)

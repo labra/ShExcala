@@ -67,3 +67,16 @@ resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 resolvers += "Bintray" at "http://dl.bintray.com/weso/weso-releases"
 
 instrumentSettings  // for SCoverage
+
+// for BuildInfo
+
+buildInfoSettings
+
+sourceGenerators in Compile <+= buildInfo
+
+buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion)
+
+buildInfoPackage := "buildInfo"
+
+EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed
+

@@ -26,18 +26,42 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
   
   implicit val pm: PrefixMap = PrefixMaps.commonShex
   
-  override def matchRule(ctx: Context, g: Set[RDFTriple], rule: Rule): Result[Typing] = {
+  override def matchRule(
+      ctx: Context, 
+      g: Set[RDFTriple], 
+      rule: Rule
+      ): Result[Typing] = 
+    rule match {
+      case OpenRule(r) => 
+        for( (g1,remaining) <- parts(g)
+           ; t <- matchRuleClosed(ctx,g1,r)
+           ) yield t
+      case _ => matchRuleClosed(ctx,g,rule)
+    }
+
+  def matchRuleClosed(
+      ctx: Context, 
+      g: Set[RDFTriple], 
+      rule: Rule
+      ): Result[Typing] = { 
     val (dr,ts) = deltaTriples(rule,g,ctx)
     if (nullable(dr)) {
-      Passed(ts)    
+    	  Passed(ts)    
     } else {
-      Failure("Does not match, dr = " + showRule(dr)(ctx.pm))
+          Failure("Does not match, dr = " + showRule(dr)(ctx.pm))
     }
   }
  
   type Nullable = Boolean
   type Res = (Rule,Stream[Typing])
   lazy val failTyping = Stream()
+
+  def isOpen(rule: Rule): Boolean = {
+    rule match {
+      case OpenRule(_) => true
+      case _ => false
+    }
+  }
 
   def nullable(r: Rule): Nullable = {
     r match {
@@ -56,6 +80,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
       case RangeRule(m,n,r) => m == 0 || nullable(r)
       case NotRule(r) => !nullable(r) // TODO: check the semantics of this 
       case AnyRule => true
+      case OpenRule(r) => nullable(r)
     }
   }
   
@@ -122,6 +147,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
       if (st1.isEmpty) st2
       else for (t1 <- st1; t2 <- st2) yield (t1 combine t2)
     }
+    
     ts.foldLeft(e)(f)
   }
 
@@ -139,12 +165,12 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
           } else {
             (FailRule("Does not match value " + triple.obj + 
                 " with ArcRule " + showRule(rule)(ctx.pm) + " Msg: " + mv.failMsg), 
-             failTyping)
+             noTyping)
           }      
         } else {
           (FailRule("Does not match name " + triple.pred + 
               " with ArcRule " + showRule(rule)(ctx.pm)), 
-              failTyping)
+              noTyping)
         }
       case RevArcRule(_,n,v) =>
         if (matchName(ctx,triple.pred, n).isValid) {
@@ -154,12 +180,12 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
           } else {
             (FailRule("Does not match value " + triple.subj + 
                 " with RevArcRule " + showRule(rule)(ctx.pm) + " Msg: " + mv.failMsg), 
-             failTyping)
+             noTyping)
           }      
         } else {
           (FailRule("Does not match name " + triple.pred + 
               " with RevArcRule " + showRule(rule)(ctx.pm)), 
-             failTyping)
+             noTyping)
         }
 
       case RelationRule(_,v1,v2) =>
@@ -171,20 +197,20 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
             else {
               (FailRule("Does not match value " + triple.obj + 
                 " with RelationRule " + showRule(rule)(ctx.pm) + " Msg: " + mv2.failMsg), 
-               failTyping)
+               noTyping)
             }
           } else {
             (FailRule("Does not match value " + triple.subj + 
                 " with RelationRule " + showRule(rule)(ctx.pm) + " Msg: " + mv1.failMsg), 
-             failTyping)
+             noTyping)
           }      
 
       case EmptyRule => 
-        (FailRule("Unexpected triple " + triple),failTyping)
+        (FailRule("Unexpected triple " + triple),noTyping)
         			 
       case f@FailRule(msg) => {
         log.debug("...Failing rule " + showRule(rule)(ctx.pm) + " with " + msg)
-        (f,failTyping)
+        (f,noTyping)
       }
       case OrRule(r1,r2) => { 
         val (dr1,t1) = delta(r1,triple,ctx)
@@ -239,6 +265,11 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
           }
           case _ => (NotRule(dr),t)
         }
+      }
+      
+      case OpenRule(r) => {
+        val (dr,t) = delta(r,triple,ctx)
+        (dr,t)
       }
         
     }

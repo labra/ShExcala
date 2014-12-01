@@ -359,6 +359,7 @@ class ShapeValidatorSpec
      val matcher = Matcher(schema,rdf,false,false)
      val result = matcher.matchIRI_AllLabels(IRI("x"))
      info("Result:\n" + result.toList.toString)
+     info("Schema: " + schema)
      result.isValid should be(true)
    }
    
@@ -720,16 +721,17 @@ class ShapeValidatorSpec
    }
 
    it("should validate optional with remaining triples if open") {
-     val strShape = "<a> { <p> (1) ?  }\n" 
+     val strShape = "<a> { <p> (1) *  }\n" 
      val strRDF = "<x> <q> 2 .\n" 
      val schema = Schema.fromString(strShape).get._1
      info("Schema: " + schema)
      val rdf = RDFTriples.parse(strRDF).get
      val matcher = Matcher(schema,rdf,false,false)
-     val result = matcher.matchIRI_AllLabels(IRI("x"))
+     val result = matcher.matchIRI_Label(IRI("x"))(IRILabel(IRI("a")))
+     info("Result: " + result)
      result.isValid should be(true)
    }
 
-}
+ }
  
  

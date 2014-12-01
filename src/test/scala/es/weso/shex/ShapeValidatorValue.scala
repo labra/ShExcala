@@ -54,6 +54,20 @@ class ShapeValidatorValue
      val v: ValueClass = typeXsdString
      matchValue(ctx,obj1,v).isValid should be(false)
    }
+     
+   it("Should validate exclusion with a different value") {
+     val ctx = Context.emptyContext
+     val obj1: RDFNode = IRI("b")
+     val v: ValueClass = ValueSet(Seq(NoObject(RDFNodeObject(IRI("a"))))) 
+     matchValue(ctx,obj1,v).isValid should be(true)
+   }
+
+   it("Should not validate exclusion with a different value") {
+     val ctx = Context.emptyContext
+     val obj1: RDFNode = IRI("b")
+     val v: ValueClass = ValueSet(Seq(NoObject(RDFNodeObject(IRI("b"))))) 
+     matchValue(ctx,obj1,v).isValid should be(false)
+   }
 }
 }
  

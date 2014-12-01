@@ -26,7 +26,7 @@ case class Shape(label: Label, rule: Rule)
 	 extends Positional
 
 
-sealed trait Rule extends Positional  
+sealed trait Rule extends Positional 
 
 case class ArcRule(id: Option[Label], n: NameClass, v: ValueClass) extends Rule
 case class RevArcRule(id: Option[Label], n: NameClass, v: ValueClass) extends Rule
@@ -43,7 +43,7 @@ case class RangeMinRule(m:Int,r:Rule) extends Rule
 case object EmptyRule extends Rule
 case object AnyRule extends Rule
 case class FailRule(msg: String) extends Rule  // Always fails with a message
-// case class OpenRule(r: Rule) extends Rule
+case class OpenRule(r: Rule) extends Rule
 
 sealed trait Label {
   def getNode():RDFNode

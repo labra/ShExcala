@@ -25,8 +25,6 @@ trait ShapeValidatorBacktracking extends ShapeValidator with Logging {
   
 override def id = "Validator by Backtracking 1.0"
   
-  
-  
 override def matchRule (
     ctx: Context, 
     g: Set[RDFTriple], 
@@ -161,7 +159,14 @@ override def matchRule (
    case FailRule(msg) => 
      failure(msg)
  
-  }     
+   case OpenRule(r) => {
+     for( (g1,remaining) <- parts(g)
+        ; t <- matchRule(ctx,g1,r)
+        ) yield {
+       t
+     }
+   }
+  }
 
  }
 
@@ -180,6 +185,11 @@ override def matchRule (
    }   
   } 
 
+ def showTriples(
+     ts: Set[RDFTriple],
+     ctx: Context): String = {
+   RDFTriples(ts,ctx.pm).serialize()
+ }
 
 }
 

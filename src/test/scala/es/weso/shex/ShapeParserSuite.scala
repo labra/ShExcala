@@ -513,7 +513,22 @@ class ShapeParserSuite extends ShapeParser
       shouldParseIgnoreState(shExParser,state, str, shex)
     }
     
-
+   it("Should parse value exclusions") {
+      val prefix = "http://example.org/"
+      val void = "http://www.w3.org/2001/XMLSchema#"
+      val str = "PREFIX : <" + prefix + ">\n" + 
+    		  	"PREFIX void: <" + void + ">\n" +
+                ":a [  :b ( - void:Dataset ) ]"
+      val state = ShapeParserState.initial
+      val ruleB = ArcRule(id = None,
+                          n  = NameTerm(IRI(prefix + "b")),
+                          v  = ValueSet(Seq(NoObject(RDFNodeObject(IRI(void + "Dataset"))))))
+      val labelA = IRILabel(IRI(prefix + "a"))
+      val shape : Shape = Shape(label = labelA, rule = ruleB )
+      val shex : ShEx = ShEx( rules=List(shape), start=None )
+      shouldParseIgnoreState(shExParser,state, str, shex)
+    }
+ 
  
 }   
 
