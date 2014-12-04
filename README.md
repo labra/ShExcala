@@ -34,12 +34,9 @@ It will create a file shexcala-<version-number>.zip file located at: `target/uni
 
 That file contains two excutable files for both Linux (`shexcala`) and Windows (`shexcala.bat`) which can be invoked from the command line.
 
-
-
-
-
-
 ## Usage
+
+See [the link](https://github.com/labra/ShExcala/wiki) on how to use ShExcala from the command line.
 
 ## Links
 
