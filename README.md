@@ -36,7 +36,9 @@ That file contains two excutable files for both Linux (`shexcala`) and Windows (
 
 ## Usage
 
-See [the link](https://github.com/labra/ShExcala/wiki) on how to use ShExcala from the command line.
+See [this link](https://github.com/labra/ShExcala/wiki) on how to use ShExcala from the command line.
+
+
 
 ## Links
 

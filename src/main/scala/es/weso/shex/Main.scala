@@ -42,7 +42,7 @@ class Opts(
                       descr = "SPARQL endpoint")
                     
     val schema 	= opt[String]("schema",
-    				required=true,
+    				required=false,
     				descr = "Schema file")
     				
     val iri 	= opt[String]("iri",
@@ -97,7 +97,7 @@ class Opts(
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "Normal output", 
-        			descrNo = "Verbose output")
+        		descrNo = "Verbose output")
         			
     val version = opt[Boolean]("version", 
     				noshort = true, 
@@ -116,17 +116,21 @@ object Main extends App with Logging {
 
  // val logger = Logger(LoggerFactory getLogger "name")
 
- override def main(args: Array[String]) {
+ override def main(args: Array[String]): Unit = {
    
-
+  
   val conf 		= ConfigFactory.load()
   val opts 		= new Opts(args,errorDriver)
+  if (args.length == 0) {
+    opts.printHelp()
+    return 
+  }
   
   if (opts.verbose()) {
     setDebug()
     log.debug("...in debug mode")
   }
-
+  
   val rdf = opts.turtle.get match {
     case None => opts.endpoint.get match {
       case None => RDFFromWeb()
@@ -140,25 +144,27 @@ object Main extends App with Logging {
     } 
   }
   
+
+  if (opts.showRDF()) {
+     println(rdf.toString())
+  }
+   
+  
   val now = System.nanoTime
-  val result = 
-    for ( (schema,pm) <- Schema.fromFile(opts.schema())
+
+  if (opts.schema.isDefined) {
+    val result = 
+      for ( (schema,pm) <- Schema.fromFile(opts.schema())
         ) yield {
    
-   log.debug("Got schema. Labels: " + showLabels(schema))
-   if (opts.showSchema()) {
+     log.debug("Got schema. Labels: " + showLabels(schema))
+     if (opts.showSchema()) {
       println(schema.toString())
-    }
+     }
+      
+    val matcher = Matcher(schema,rdf,opts.withIncoming(), opts.withAny())
    
-   if (opts.showRDF()) {
-     println(rdf.toString())
-   }
-   
-   log.debug("Before match schema ")
-   
-   val matcher = Matcher(schema,rdf,opts.withIncoming(), opts.withAny())
-   
-   val r =
+    val r =
      if (opts.iri.isSupplied)
       if (opts.shape.isSupplied)
        matcher.matchIRI_Label(IRI(opts.iri()))(mkLabel(opts.shape()))
@@ -170,25 +176,29 @@ object Main extends App with Logging {
        else
         matcher.matchAllIRIs_AllLabels()
     (r,pm)
-  }
-  val micros = (System.nanoTime - now) / 1000
-
-  result match {
-    case Success((ts,pm)) => {
-      if (ts.isFailure) {
-        println("<No shape typings>")
-      } else
-      for ((typing,n) <- (ts.run) zip (1 to 100) ) {
-        println(s"Solution ${n}:\n" + typing.showTyping(pm))
-      }
     }
+  
+    val micros = (System.nanoTime - now) / 1000
+
+    result match {
+      case Success((ts,pm)) => {
+        if (ts.isFailure) {
+          println("<No shape typings>")
+        } else
+        for ((typing,n) <- (ts.run) zip (1 to 100) ) {
+          println(s"Solution ${n}:\n" + typing.showTyping(pm))
+        }
+      }
     case Failure(f) => {
       println("Failure: " + f)
     }
   }
+
   if (opts.time()) {
      println("%d microseconds".format(micros))
   }
+  }
+  
  }
 
  private def showLabels(schema: Schema): String = {
@@ -202,7 +212,6 @@ object Main extends App with Logging {
     triples
   }
  }
-
 
  private def errorDriver(e: Throwable, scallop: Scallop) = e match {
     case Help(s) =>
