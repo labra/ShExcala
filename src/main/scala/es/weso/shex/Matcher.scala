@@ -7,9 +7,9 @@ import es.weso.rdfgraph.nodes._
 import java.lang._
 
 case class Matcher(
-      schema: Schema
-    , rdf: RDF
-    , validateIncoming: Boolean = false
+    schema: Schema
+  , rdf: RDF
+  , validateIncoming: Boolean = false
 	, withAny: Boolean = false
 	, validator: ShapeValidator = ShapeValidatorWithDeriv
 	) {

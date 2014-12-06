@@ -73,9 +73,11 @@ class Opts(
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "show RDF", 
-        			descrNo = "don't show RDF")
+        		descrNo = "don't show RDF")
 
-    val withIncoming   = toggle("withIncoming", 
+  val cut = opt[Int](default = Some(1), validate = (0<))
+  
+  val withIncoming   = toggle("withIncoming", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "validates with nodes incoming", 
@@ -185,7 +187,7 @@ object Main extends App with Logging {
         if (ts.isFailure) {
           println("<No shape typings>")
         } else
-        for ((typing,n) <- (ts.run) zip (1 to 100) ) {
+        for ((typing,n) <- (ts.run) zip (1 to opts.cut()) ) {
           println(s"Solution ${n}:\n" + typing.showTyping(pm))
         }
       }
