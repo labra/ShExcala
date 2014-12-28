@@ -11,11 +11,7 @@ object Build extends sbt.Build {
  
   def repo = "weso-releases" 
 
-  val shExcalaVersion = "0.1.9"
-
   publishMavenStyle := true
-
-  val currentVersion = shExcalaVersion
 
   lazy val publishSettings = Seq(
     repository in bintray := this.repo,
@@ -33,12 +29,6 @@ object Build extends sbt.Build {
     publishLocal := (),
     publishArtifact := false
   )
-
-  val sharedSettings = Seq(
-      organization := "es.weso",
-      name := "shExcala",
-      scalaVersion := "2.10.4"
-    )
 
   val scalajsResolver: URLRepository = Resolver.url("scala-js-releases",
     url("http://dl.bintray.com/content/scala-js/scala-js-releases"))(

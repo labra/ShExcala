@@ -7,15 +7,16 @@ import scala.scalajs.sbtplugin.ScalaJSPlugin.ScalaJSKeys._
 
 lazy val root = project.in(file(".")).configs( PerfTest ).settings(inConfig(PerfTest)(Defaults.testTasks): _*)
 
-Build.sharedSettings
+scalaVersion := "2.11.4"
 
-scalaVersion := "2.11.1"
+organization := "es.weso"
 
-version := Build.currentVersion
+name := "shExcala"
+
+version := "0.2.0"
 
 libraryDependencies ++= Seq(
-    "org.slf4j" % "slf4j-simple" % "1.6.4"
-  , "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
   , "commons-configuration" % "commons-configuration" % "1.7"
   , "org.rogach" %% "scallop" % "0.9.5" 
   , "com.typesafe" % "config" % "1.0.1"
@@ -26,7 +27,8 @@ libraryDependencies ++= Seq(
   ,	"org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
   , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
   , "es.weso" % "wesin_2.11" % "0.1.6" excludeAll(ExclusionRule(organization = "org.slf4j"))
-  )
+  , "org.slf4j" % "slf4j-simple" % "1.6.4"
+)
 
 autoCompilerPlugins := true
 
