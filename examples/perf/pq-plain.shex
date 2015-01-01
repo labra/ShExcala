@@ -1,0 +1,9 @@
+prefix : <http://example.org/>
+
+<p> [ :a ( 1 )
+    , :b  .* 
+    ]
+
+<q> [ :c ( 2 )
+    | :d .*
+	]

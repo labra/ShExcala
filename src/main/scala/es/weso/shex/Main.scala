@@ -7,6 +7,7 @@ import org.rogach.scallop._
 import org.rogach.scallop.exceptions._
 import com.typesafe.config._
 import es.weso.monads.Result._
+import es.weso.monads.Result
 import es.weso.parser.PrefixMap
 import es.weso.rdf.RDF
 import es.weso.rdf.RDFTriples
@@ -54,26 +55,32 @@ class Opts(
                     descr = "Label of Shape in Schema")
                     
     val syntax 	= opt[String]("syntax", 
-        			default=Some("ShEx"), 
-        			descr = "ShEx")
+        			default=Some("shexc"), 
+        			descr = "shexc")
         			
     val showSchema = toggle("showSchema", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "show schema", 
-        			descrNo = "don't show schema")
+        		descrNo = "don't show schema")
         			
-    val time = toggle("time", 
-    				prefix = "no-",
-    				default = Some(false),
-    				descrYes = "show time", 
-        			descrNo = "don't time")
+  val time = toggle("time", 
+    				    prefix = "no-",
+    				    default = Some(false),
+    				    descrYes = "show time", 
+        			  descrNo = "don't time")
 
+  val memory = toggle("memory", 
+                prefix = "no-",
+                default = Some(false),
+                descrYes = "show memory used", 
+                descrNo = "don't show memory used")
+              
 	val showRDF   = toggle("showRDF", 
-    				prefix = "no-",
-    				default = Some(false),
-    				descrYes = "show RDF", 
-        		descrNo = "don't show RDF")
+    				        prefix = "no-",
+    				        default = Some(false),
+    				        descrYes = "show RDF", 
+        		        descrNo = "don't show RDF")
 
   val cut = opt[Int](default = Some(1), validate = (0<))
   
@@ -95,6 +102,9 @@ class Opts(
     				descrYes = "with open shapes by default", 
         			descrNo = "with closed shapes by default")        			
 
+    val validator = opt[String](default=Some("deriv"), 
+                                validate = (x => List("deriv","back").contains(x)))
+              
     val verbose = toggle("verbose", 
     				prefix = "no-",
     				default = Some(false),
@@ -119,8 +129,7 @@ object Main extends App with Logging {
  // val logger = Logger(LoggerFactory getLogger "name")
 
  override def main(args: Array[String]): Unit = {
-   
-  
+
   val conf 		= ConfigFactory.load()
   val opts 		= new Opts(args,errorDriver)
   if (args.length == 0) {
@@ -152,60 +161,51 @@ object Main extends App with Logging {
   }
    
   
-  val now = System.nanoTime
+  val now = getTimeNow()
 
   if (opts.schema.isDefined) {
-    val result = 
-      for ( (schema,pm) <- Schema.fromFile(opts.schema())
-        ) yield {
-   
-     log.debug("Got schema. Labels: " + showLabels(schema))
-     if (opts.showSchema()) {
-      println(schema.toString())
-     }
-      
-    val matcher = Matcher(schema,rdf,opts.withIncoming(), opts.withAny())
-   
-    val r =
-     if (opts.iri.isSupplied)
-      if (opts.shape.isSupplied)
-       matcher.matchIRI_Label(IRI(opts.iri()))(mkLabel(opts.shape()))
-      else
-       matcher.matchIRI_AllLabels(IRI(opts.iri()))
-      else
-       if (opts.shape.isSupplied)
-        matcher.matchAllIRIs_Label(mkLabel(opts.shape()))
-       else
-        matcher.matchAllIRIs_AllLabels()
-    (r,pm)
-    }
-  
-    val micros = (System.nanoTime - now) / 1000
-
+    val result = validateSchema(rdf,opts)
+    val micros = getTimeFrom(now)
+    val runtime = Runtime.getRuntime()
     result match {
-      case Success((ts,pm)) => {
-        if (ts.isFailure) {
-          println("<No shape typings>")
-        } else
-        for ((typing,n) <- (ts.run) zip (1 to opts.cut()) ) {
-          println(s"Solution ${n}:\n" + typing.showTyping(pm))
+        case Success((typings,pm)) => {
+          if (typings.isFailure) {
+            println("<No shape typings>")
+          } else
+          for ((typing,n) <- (typings.run) zip (1 to opts.cut()) ) {
+            println(s"Solution ${n}:\n" + typing.showTyping(pm))
+          }
+        }
+        case Failure(f) => {
+          println("Failure: " + f)
         }
       }
-    case Failure(f) => {
-      println("Failure: " + f)
-    }
-  }
-
-  if (opts.time()) {
-     println("%d microseconds".format(micros))
-  }
-  }
+      
+      if (opts.time()) { showTime(micros) }
+      if (opts.memory()) { showRuntimeMemory(runtime) }
   
+   }
+ }
+ 
+ private def showLabels(schema: Schema): String = {
+     schema.getLabels.map(_.getNode.toString ++ " ").mkString 
+   }
+ 
+ def getTimeNow(): Long = System.nanoTime
+ def getTimeFrom(from: Long): Long = (System.nanoTime - from) / 1000
+ def showTime(micros:Long): Unit = {
+   println("%d microseconds".format(micros))
  }
 
- private def showLabels(schema: Schema): String = {
-   schema.getLabels.map(_.getNode.toString ++ " ").mkString 
+ def showRuntimeMemory(runtime: Runtime): Unit = { 
+    // memory info, code from: http://alvinalexander.com/scala/how-show-memory-ram-use-scala-application-used-free-total-max
+    val mb = 1024*1024
+    println("** Used Memory:  " + (runtime.totalMemory - runtime.freeMemory) / mb)
+    println("** Free Memory:  " + runtime.freeMemory / mb)
+    println("** Total Memory: " + runtime.totalMemory / mb)
+    println("** Max Memory:   " + runtime.maxMemory / mb)
  }
+
  
  private def getRDFFromTurtle(fileName: String) : Try[RDF] = {
   for ( cs <- getContents(fileName) 
@@ -226,6 +226,40 @@ object Main extends App with Logging {
       sys.exit(1)
   }
 
+  def validateSchema(rdf: RDF, opts: Opts): Try[(Result[Typing],PrefixMap)] = {
+       for 
+      ( 
+          (schema,pm) <- Schema.fromFile(opts.schema())
+      ) yield {
+         
+         log.debug("Got schema. Labels: " + showLabels(schema))
+         if (opts.showSchema()) {
+           println(schema.toString())
+         }
+    
+        val validator = 
+          opts.validator() match {
+            case "deriv" => ShapeValidatorWithDeriv
+            case "back"  => ShapeValidatorBacktracking
+          }  
+    
+        val matcher = Matcher(schema,rdf,opts.withIncoming(), opts.withAny(), validator)
+   
+        val r =
+         if (opts.iri.isSupplied)
+          if (opts.shape.isSupplied)
+           matcher.matchIRI_Label(IRI(opts.iri()))(mkLabel(opts.shape()))
+          else
+           matcher.matchIRI_AllLabels(IRI(opts.iri()))
+          else
+           if (opts.shape.isSupplied)
+            matcher.matchAllIRIs_Label(mkLabel(opts.shape()))
+           else
+            matcher.matchAllIRIs_AllLabels()
+       (r,pm)
+       }
+  }
+ 
   def time[A](a: => A) = {
      val now = System.nanoTime
      val result = a

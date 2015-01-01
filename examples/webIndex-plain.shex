@@ -52,9 +52,9 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   ) ?
 , dcterms:issued xsd:integer ?
 , dcterms:publisher (wforg:WebFoundation ) ?
-, qb:dataSet @<DataSet>
+, qb:dataSet IRI
 , wfonto:ref-area .
-, cex:indicator @<Indicator> 
+, cex:indicator IRI
 , wfonto:ref-year .
 , cex:value xsd:float              
 } 
@@ -66,9 +66,9 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 , rdfs:label . 
 , cex:highLow (cex:High cex:Low) 
 , wfonto:country-coverage xsd:integer? 
-, wfonto:provider-link @<Organization>?
+, wfonto:provider-link IRI?
 , wfonto:republish xsd:integer? 
-, cex:component @<Component> ?
+, cex:component IRI ?
 , rdfs:comment xsd:string ? 
 , skos:notation xsd:string ?
 , time:intervalStarts xsd:integer ?
@@ -81,7 +81,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 , wfonto:order xsd:integer               # In which position is should be visualized
 , dcterms:contributor ( wfonto:WESO )
 , dcterms:issued xsd:integer             # timestamp
-, cex:element @<Indicator>
+, cex:element IRI
 , skos:notation xsd:string
 } 
  
@@ -91,7 +91,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 , rdfs:label xsd:string
 , wfonto:order xsd:integer               # In which position is should be visualized
 , wfonto:colour xsd:string               # In which colour is should be visualized
-, cex:element @<Component> 
+, cex:element IRI 
 , skos:notation xsd:string
 } 
  
@@ -100,7 +100,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
   rdf:type ( cex:Index )
 , wfonto:order xsd:integer # In which position is should be visualized
 , wfonto:colour xsd:string # In which colour is should be visualized
-, cex:element @<Subindex> 
+, cex:element IRI 
 , rdfs:label . 
 , skos:notation xsd:string
 } 
@@ -115,7 +115,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 <Region> { 
   rdf:type            ( wfonto:Region )
 , rdfs:label          . 
-, wfonto:has-country  @<Country>
+, wfonto:has-country  IRI
 } 
  
  <Organization> { 
@@ -126,33 +126,33 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 <Ranking> { 
    rdf:type             ( cex:Ranking ),
    rdfs:reason          xsd:string,
-   cex:slice            @<Slice>,        # Slice that has been ranked
-   cex:observation      @<Observation>,  # Observation that has been ranked
+   cex:slice            .,        # Slice that has been ranked
+   cex:observation      .,  # Observation that has been ranked
    cex:dimension        ( wfonto:ref-area )  # In WebIndex, rankings are made by area (Country)
 } 
  
 <Normalize> { 
    rdf:type             ( cex:Normalize ),
    cex:mean             xsd:decimal,        # Mean of the values in the slice
-   cex:observation      @<Observation>,  # Observation that has been normalized
+   cex:observation      .,                  # Observation that has been normalized
    cex:stdDesv          xsd:decimal,        # Standard deviation of the values in the slice
-   cex:slice            @<Slice>           # Reference slice of the normalization
+   cex:slice            .                   # Reference slice of the normalization
 } 
  
 <Score> { 
    rdf:type             ( cex:Score ),
-   cex:rangeMax         ( 100 ),             # Maximum target
-   cex:rangeMin         ( 0 ),               # Minimum target
-   cex:valueMax         xsd:decimal,     # Maximum of all the values in the slice to score
-   cex:valueMin         xsd:decimal,     # Minimum of all the values in the slice to score
-   cex:observation      @<Observation>, # Observation to score
-   cex:slice            @<Slice>       # Slice that is being scored
+   cex:rangeMax         ( 100 ),      # Maximum target
+   cex:rangeMin         ( 0 ),        # Minimum target
+   cex:valueMax         xsd:decimal,  # Maximum of all the values in the slice to score
+   cex:valueMin         xsd:decimal,  # Minimum of all the values in the slice to score
+   cex:observation      .,            # Observation to score
+   cex:slice            .             # Slice that is being scored
 } 
  
 <GroupClusters> { 
    rdf:type             ( cex:GroupClusters ),
-   cex:component        @<Component>,    # Component(s) that are being grouped
-   cex:dataSet          @<Dataset>,      # Dataset that is being grouped
+   cex:component        .,                      # Component(s) that are being grouped
+   cex:dataSet          .,                      # Dataset that is being grouped
    cex:dimension        ( wfonto:ref-area ),    # Dimension that is being grouped
    cex:filterDimension  ( wfonto:ref-year ),    # Dimension that is being applied to filter
    cex:filterValue      xsd:integer         # Value that acts as the filter
@@ -160,22 +160,22 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
  
  <GroupIndex> { 
    rdf:type             ( cex:GroupSubIndex ),
-   cex:component        @<Component>,    # Component(s) that are being grouped
-   cex:dataSet          @<Dataset>,      # Dataset that is being grouped
+   cex:component        .,                      # Component(s) that are being grouped
+   cex:dataSet          .,                      # Dataset that is being grouped
    cex:dimension        ( wfonto:ref-area ),    # Dimension that is being grouped
    cex:filterDimension  ( wfonto:ref-year ),    # Dimension that is being applied to filter
-   cex:filterValue      xsd:integer         # Value that acts as the filter
+   cex:filterValue      xsd:integer             # Value that acts as the filter
  } 
  
 <WeightSchema> { 
    rdf:type                    ( cex:Weight ),
-   cex:weight                  @<Weight>      # weight(s) that belong to the weight schema
+   cex:weight                  .                # weight(s) that belong to the weight schema
 } 
  
 <Weight> { 
   rdf:type             ( cex:Weight )
-, cex:element          @<Indicator>      # Element to weight
-, cex:value            xsd:decimal          # value of the weight
+, cex:element          .               # Element to weight
+, cex:value            xsd:decimal     # value of the weight
 } 
 
 <Raw> { 
@@ -188,15 +188,15 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 , cex:computation . ? 
 , qb:structure ( wfonto:DSD ) ?
 , sdmxAttribute:unitMeasure . ?
-, qb:slice @<Slice>* 
+, qb:slice . * 
 }
  
 <Slice> { 
   rdf:type (qb:Slice )
-, cex:indicator @<Indicator> 
+, cex:indicator . 
 , qb:sliceStructure . 
 , wfonto:ref-year .
-, qb:observation @<Observation>*
+, qb:observation . *
 }
 
 # <nothing> { }

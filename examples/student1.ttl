@@ -1,0 +1,16 @@
+prefix : <http://example.org/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+:john rdfs:label "John" ;
+      :course :algebra , :logic .
+	  
+:bob rdfs:label "Robert" ;
+     :course :algebra .
+	  
+:algebra rdfs:label "Algebra";
+  :student :john, :bob .
+
+:logic rdfs:label "Logic" ;
+       :status :noStudents .

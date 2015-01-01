@@ -1,0 +1,235 @@
+<http://data.webfoundation.org/webindex/v2013/dataset/I0-Imputed>
+        a       <http://purl.org/linked-data/cube#DataSet> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Dataset I0-Imputed"@en ;
+        <http://purl.org/linked-data/cube#slice>
+                <http://data.webfoundation.org/webindex/v2013/slice/I0Year0-Imputed> ;
+        <http://purl.org/linked-data/cube#structure>
+                <http://data.webfoundation.org/ontology/DSD> ;
+        <http://purl.org/weso/ontology/computex#computation>
+                [ a       <http://purl.org/weso/ontology/computex#ImputeDataSet> ;
+                  <http://purl.org/weso/ontology/computex#dataSet>
+                          <http://data.webfoundation.org/webindex/v2013/dataset/I0-Raw> ;
+                  <http://purl.org/weso/ontology/computex#method>
+                          <http://purl.org/weso/ontology/computex#MeanBetweenMissing> , <http://purl.org/weso/ontology/computex#AvgGrowth2Missing> , <http://purl.org/weso/ontology/computex#CopyRaw>
+                ] .
+
+<http://data.webfoundation.org/ontology/sliceByArea>
+        a       <http://purl.org/linked-data/cube#SliceKey> ;
+        <http://purl.org/linked-data/cube#componentProperty>
+                <http://data.webfoundation.org/ontology/ref-year> , <http://purl.org/weso/ontology/computex#indicator> .
+
+<http://data.webfoundation.org/webindex/v2013/observation/I0Year0C0>
+        a       <http://purl.org/linked-data/cube#Observation> ;
+        <http://data.webfoundation.org/ontology/ref-area>
+                <http://data.webfoundation.org/webindex/v2013/country/C0> ;
+        <http://data.webfoundation.org/ontology/ref-year>
+                "Year0" ;
+        <http://purl.org/linked-data/cube#dataSet>
+                <http://data.webfoundation.org/webindex/v2013/dataset/I0-Raw> ;
+        <http://purl.org/weso/ontology/computex#indicator>
+                <http://data.webfoundation.org/webindex/v2013/indicator/I0> ;
+        <http://purl.org/weso/ontology/computex#value>
+                "0.90027165"^^<http://www.w3.org/2001/XMLSchema#float> .
+
+<http://data.webfoundation.org/webindex/v2013/slice/ranking>
+        a       <http://purl.org/linked-data/cube#Slice> ;
+        <http://data.webfoundation.org/ontology/ref-year>
+                "Year0" ;
+        <http://purl.org/linked-data/cube#sliceStructure>
+                <http://data.webfoundation.org/ontology/sliceByArea> ;
+        <http://purl.org/weso/ontology/computex#indicator>
+                <http://data.webfoundation.org/webindex/v2013/index/index> .
+
+<http://data.webfoundation.org/webindex/v2013/index/index>
+        a       <http://purl.org/weso/ontology/computex#index> ;
+        <http://purl.org/weso/ontology/computex#element>
+                <http://data.webfoundation.org/webindex/v2013/indicator/I0> .
+
+<http://data.webfoundation.org/webindex/v2013/dataset/Composite>
+        a       <http://purl.org/linked-data/cube#DataSet> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Dataset Composite"@en ;
+        <http://purl.org/linked-data/cube#slice>
+                <http://data.webfoundation.org/webindex/v2013/slice/composite> ;
+        <http://purl.org/linked-data/cube#structure>
+                <http://data.webfoundation.org/ontology/DSD> ;
+        <http://purl.org/weso/ontology/computex#computation>
+                [ a       <http://purl.org/weso/ontology/computex#WeightedMean> ;
+                  <http://purl.org/weso/ontology/computex#component>
+                          <http://data.webfoundation.org/webindex/v2013/index/index> ;
+                  <http://purl.org/weso/ontology/computex#dataSet>
+                          <http://data.webfoundation.org/webindex/v2013/dataset/Adjusted> ;
+                  <http://purl.org/weso/ontology/computex#dimension>
+                          <http://data.webfoundation.org/ontology/ref-area> ;
+                  <http://purl.org/weso/ontology/computex#weightSchema>
+                          <http://data.webfoundation.org/webindex/v2013/weightSchema/indicatorWeights>
+                ] .
+
+<http://data.webfoundation.org/ontology/DSD>
+        a       <http://purl.org/linked-data/cube#DataStructureDefinition> ;
+        <http://purl.org/linked-data/cube#component>
+                [ <http://purl.org/linked-data/cube#measure>
+                          <http://purl.org/weso/ontology/computex#value> ] ;
+        <http://purl.org/linked-data/cube#component>
+                [ <http://purl.org/linked-data/cube#dimension>
+                          <http://purl.org/weso/ontology/computex#indicator> ;
+                  <http://purl.org/linked-data/cube#order>
+                          "3"^^<http://www.w3.org/2001/XMLSchema#int>
+                ] ;
+        <http://purl.org/linked-data/cube#component>
+                [ <http://purl.org/linked-data/cube#dimension>
+                          <http://data.webfoundation.org/ontology/ref-year> ;
+                  <http://purl.org/linked-data/cube#order>
+                          "2"^^<http://www.w3.org/2001/XMLSchema#int>
+                ] ;
+        <http://purl.org/linked-data/cube#component>
+                [ <http://purl.org/linked-data/cube#dimension>
+                          <http://data.webfoundation.org/ontology/ref-area> ;
+                  <http://purl.org/linked-data/cube#order>
+                          "1"^^<http://www.w3.org/2001/XMLSchema#int>
+                ] ;
+        <http://purl.org/linked-data/cube#sliceKey>
+                <http://data.webfoundation.org/ontology/sliceByArea> .
+
+<http://data.webfoundation.org/ontology/ref-area>
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://data.webfoundation.org/ontology/Area> .
+
+<http://data.webfoundation.org/webindex/v2013/slice/I0Year0-Imputed>
+        a       <http://purl.org/linked-data/cube#Slice> ;
+        <http://data.webfoundation.org/ontology/ref-year>
+                "Year0" ;
+        <http://purl.org/linked-data/cube#sliceStructure>
+                <http://data.webfoundation.org/ontology/sliceByArea> ;
+        <http://purl.org/weso/ontology/computex#indicator>
+                <http://data.webfoundation.org/webindex/v2013/indicator/I0> .
+
+<http://data.webfoundation.org/webindex/v2013/slice/I0Year0-Normalized>
+        a       <http://purl.org/linked-data/cube#Slice> ;
+        <http://data.webfoundation.org/ontology/ref-year>
+                "Year0" ;
+        <http://purl.org/linked-data/cube#sliceStructure>
+                <http://data.webfoundation.org/ontology/sliceByArea> ;
+        <http://purl.org/weso/ontology/computex#indicator>
+                <http://data.webfoundation.org/webindex/v2013/indicator/I0> .
+
+<http://data.webfoundation.org/webindex/v2013/slice/I0Year0-Adjusted>
+        a       <http://purl.org/linked-data/cube#Slice> ;
+        <http://data.webfoundation.org/ontology/ref-year>
+                "Year0" ;
+        <http://purl.org/linked-data/cube#sliceStructure>
+                <http://data.webfoundation.org/ontology/sliceByArea> ;
+        <http://purl.org/weso/ontology/computex#indicator>
+                <http://data.webfoundation.org/webindex/v2013/indicator/I0> .
+
+<http://data.webfoundation.org/webindex/v2013/indicator/I0>
+        a       <http://data.webfoundation.org/ontology/SecondaryIndicator> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Indicator I0"@en ;
+        <http://purl.org/weso/ontology/computex#highLow>
+                <http://purl.org/weso/ontology/computex#High> .
+
+<http://data.webfoundation.org/webindex/v2013/dataset/I0-Normalized>
+        a       <http://purl.org/linked-data/cube#DataSet> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Dataset I0-Normalized"@en ;
+        <http://purl.org/linked-data/cube#slice>
+                <http://data.webfoundation.org/webindex/v2013/slice/I0Year0-Normalized> ;
+        <http://purl.org/linked-data/cube#structure>
+                <http://data.webfoundation.org/ontology/DSD> ;
+        <http://purl.org/weso/ontology/computex#computation>
+                [ a       <http://purl.org/weso/ontology/computex#NormalizeDataSet> ;
+                  <http://purl.org/weso/ontology/computex#dataSet>
+                          <http://data.webfoundation.org/webindex/v2013/dataset/I0-Imputed>
+                ] .
+
+<http://data.webfoundation.org/webindex/v2013/dataset/Adjusted>
+        a       <http://purl.org/linked-data/cube#DataSet> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "DataSet Adjusted"@en ;
+        <http://purl.org/linked-data/cube#slice>
+                <http://data.webfoundation.org/webindex/v2013/slice/I0Year0-Adjusted> ;
+        <http://purl.org/linked-data/cube#structure>
+                <http://data.webfoundation.org/ontology/DSD> ;
+        <http://purl.org/weso/ontology/computex#computation>
+                [ a       <http://purl.org/weso/ontology/computex#AdjustDataSet> ;
+                  <http://purl.org/weso/ontology/computex#dataSet>
+                          <http://data.webfoundation.org/webindex/v2013/dataset/I0-Normalized> ;
+                  <http://purl.org/weso/ontology/computex#dimension>
+                          <http://data.webfoundation.org/ontology/ref-year> ;
+                  <http://purl.org/weso/ontology/computex#increment>
+                          "8"^^<http://www.w3.org/2001/XMLSchema#int> ;
+                  <http://purl.org/weso/ontology/computex#value>
+                          "Year0"
+                ] .
+
+<http://data.webfoundation.org/webindex/v2013/dataset/Ranking>
+        a       <http://purl.org/linked-data/cube#DataSet> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Dataset Ranking"@en ;
+        <http://purl.org/linked-data/cube#slice>
+                <http://data.webfoundation.org/webindex/v2013/slice/ranking> ;
+        <http://purl.org/linked-data/cube#structure>
+                <http://data.webfoundation.org/ontology/DSD> ;
+        <http://purl.org/weso/ontology/computex#computation>
+                [ a       <http://purl.org/weso/ontology/computex#Ranking> ;
+                  <http://purl.org/weso/ontology/computex#dimension>
+                          <http://data.webfoundation.org/ontology/ref-area> ;
+                  <http://purl.org/weso/ontology/computex#slice>
+                          <http://data.webfoundation.org/webindex/v2013/slice/composite>
+                ] .
+
+<http://data.webfoundation.org/webindex/v2013/slice/composite>
+        a       <http://purl.org/linked-data/cube#Slice> ;
+        <http://data.webfoundation.org/ontology/ref-year>
+                "Year0" ;
+        <http://purl.org/linked-data/cube#sliceStructure>
+                <http://data.webfoundation.org/ontology/sliceByArea> ;
+        <http://purl.org/weso/ontology/computex#indicator>
+                <http://data.webfoundation.org/webindex/v2013/index/index> .
+
+<http://data.webfoundation.org/ontology/ref-year>
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://data.webfoundation.org/ontology/Year> .
+
+<http://data.webfoundation.org/webindex/v2013/weightSchema/indicatorWeights>
+        a       <http://purl.org/weso/ontology/computex#WeightSchema> ;
+        <http://purl.org/weso/ontology/computex#weight>
+                [ a       <http://purl.org/weso/ontology/computex#Weight> ;
+                  <http://purl.org/weso/ontology/computex#dimension>
+                          <http://purl.org/weso/ontology/computex#indicator> ;
+                  <http://purl.org/weso/ontology/computex#element>
+                          <http://data.webfoundation.org/webindex/v2013/indicator/I0> ;
+                  <http://purl.org/weso/ontology/computex#value>
+                          "1.0"^^<http://www.w3.org/2001/XMLSchema#float>
+                ] .
+
+<http://data.webfoundation.org/webindex/v2013/slice/I0Year0-Raw>
+        a       <http://purl.org/linked-data/cube#Slice> ;
+        <http://data.webfoundation.org/ontology/ref-year>
+                "Year0" ;
+        <http://purl.org/linked-data/cube#observation>
+                <http://data.webfoundation.org/webindex/v2013/observation/I0Year0C0> ;
+        <http://purl.org/linked-data/cube#sliceStructure>
+                <http://data.webfoundation.org/ontology/sliceByArea> ;
+        <http://purl.org/weso/ontology/computex#indicator>
+                <http://data.webfoundation.org/webindex/v2013/indicator/I0> .
+
+<http://purl.org/weso/ontology/computex#indicator>
+        <http://www.w3.org/2000/01/rdf-schema#range>
+                <http://data.webfoundation.org/ontology/Indicator> .
+
+<http://data.webfoundation.org/webindex/v2013/country/C0>
+        a       <http://data.webfoundation.org/ontology/Country> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Country C0"@en .
+
+<http://data.webfoundation.org/webindex/v2013/dataset/I0-Raw>
+        a       <http://purl.org/linked-data/cube#DataSet> ;
+        <http://www.w3.org/2000/01/rdf-schema#label>
+                "Dataset I0-Raw"@en ;
+        <http://purl.org/linked-data/cube#slice>
+                <http://data.webfoundation.org/webindex/v2013/slice/I0Year0-Raw> ;
+        <http://purl.org/linked-data/cube#structure>
+                <http://data.webfoundation.org/ontology/DSD> .

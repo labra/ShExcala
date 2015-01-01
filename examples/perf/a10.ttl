@@ -1,0 +1,13 @@
+prefix : <http://example.org/>
+
+:a0 :a 0 .
+:a1 :a 1 .
+:a2 :a 2 .
+:a3 :a 3 .
+:a4 :a 4 .
+:a5 :a 5 . 
+:a6 :a 6 .
+:a7 :a 7 .
+:a8 :a 8 .
+:a9 :a 9 .
+:a10 :a 10 .

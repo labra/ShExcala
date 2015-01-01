@@ -1,0 +1,16 @@
+prefix : <http://example.org/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+<Student> [
+  rdfs:label xsd:string
+, :course @<Course>*
+]
+
+<Course> [
+  rdfs:label xsd:string ,
+  ( :student . * 
+  | :status ( :noStudents )
+  )
+]

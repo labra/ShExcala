@@ -137,9 +137,14 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
     val e : Res = (r,Stream(ctx.typing))
     def f (b: Res, triple:RDFTriple): Res = {
       val (current,st1) = b
-      log.debug("Calculating delta of " + showRule(current)(ctx.pm) + " with triple: " + triple )
+      log.debug("Calculating delta.\nTriple: " + triple + 
+                "\nschema "+ showRule(current)(ctx.pm) + 
+                "\nst1= " + st1)
       val (dr,st2) = delta(current,triple,ctx)
-      log.debug(" step delta of rule: " + showRule(current)(ctx.pm) + " with triple: " + triple + " = " + showRule(dr)(ctx.pm))
+      log.debug("Step delta of triple " + triple + 
+                "\nRule: " + showRule(current)(ctx.pm) + 
+                "\ndr = " + dr + 
+                "\nst2 =" + st2 )
       (dr,combineTypings(st1,st2))
     } 
 
