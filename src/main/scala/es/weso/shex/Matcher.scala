@@ -5,6 +5,7 @@ import es.weso.rdf.RDF
 import es.weso.shex.ShapeSyntax._
 import es.weso.rdfgraph.nodes._
 import java.lang._
+import es.weso.utils.Logging
 
 case class Matcher(
     schema: Schema
@@ -12,7 +13,7 @@ case class Matcher(
   , validateIncoming: Boolean = false
 	, withAny: Boolean = false
 	, validator: ShapeValidator = ShapeValidatorWithDeriv
-	) {
+	) extends Logging {
 
   val subjects : List[IRI] = rdf.subjects.toList
   
@@ -29,14 +30,18 @@ case class Matcher(
     		 )
 
     def matchIRI_Label(iri: IRI)(lbl: Label): Result[Typing] = {
+      log.debug("Matching " + iri + " with label " + lbl)
       try {
        for ( shape <- ctx.getShape(lbl)
            ; ctx1 <- ctx.addTyping(iri,lbl.getNode)
            ; t <- validator.matchShape(ctx1,iri,shape)
-           ) yield t
+           ) yield {
+        log.debug("Matched with typing: " + t)
+        t 
+       }
       } catch {
         case _ : StackOverflowError => Failure("StackOverflow error")
-        case e : Exception => Failure("Exception " + e.getMessage)
+        case e : Exception => Failure("Exception matching iri " + iri + " with label " + lbl + ": "  + e.getMessage)
       }     
     }
     

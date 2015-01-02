@@ -1,0 +1,14 @@
+prefix : <http://example.org/>
+
+:n0 :a 1 ;
+    :b :n1 , 
+	   :n2 ,
+	   :n3 ,
+	   :n4 ,
+	   :n5 .
+
+:n1 :d :n0 .
+:n2 :d :n0 .
+:n3 :d :n0 .
+:n4 :d :n0 .
+:n5 :c 2 .

@@ -1,0 +1,5 @@
+prefix : <http://example.org/>
+
+:n0 :b :n1 .
+
+:n1 :a 1 .

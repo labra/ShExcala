@@ -157,7 +157,7 @@ object Main extends App with Logging {
   
 
   if (opts.showRDF()) {
-     println(rdf.toString())
+     println(rdf.serialize("TURTLE"))
   }
    
   
