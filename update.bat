@@ -1,7 +1,7 @@
 set oldversion=0.1.9
 set version=0.2.0
 
-set source=\src\ShExcala\target\universal
+set source=\src\shapes\ShExcala\target\universal
 set dest=\gh-pages\ShExcala\binaries
 
 rm %dest%\shexcala-%oldversion%.zip
