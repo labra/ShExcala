@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: org.openrdf.sesame:sesame-model:2.7.10">
+    <CLASSES>
+      <root url="jar://$USER_HOME$\.ivy2\cache\org.openrdf.sesame\sesame-model\jars\sesame-model-2.7.10.jar!/"/>
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$\.ivy2\cache\org.openrdf.sesame\sesame-model\docs\sesame-model-2.7.10-javadoc.jar!/"/>
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$\.ivy2\cache\org.openrdf.sesame\sesame-model\srcs\sesame-model-2.7.10-sources.jar!/"/>
+    </SOURCES>
+  </library>
+</component>

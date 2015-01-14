@@ -1,0 +1,43 @@
+@prefix : <http://example.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# good
+:peter foaf:knows :john; 
+       foaf:knows :anna;
+       foaf:age 23;
+       foaf:name "Peter"  .
+
+# good
+:john  foaf:knows :anna;
+       foaf:age "John" ;
+	   foaf:name "John", "Johnny" .
+
+# good 	   
+:anna  foaf:age 23 .
+
+# good 	   
+:self  foaf:age 23 ; foaf:name "Self" ;
+       foaf:knows :self .
+
+:pair1 foaf:age 34 ; foaf:name "Pair1" ; foaf:knows :pair2 .
+:pair2 foaf:age 45 ; foaf:name "Pair2" ; foaf:knows :pair1 .
+
+:triple1 foaf:age 34 ; foaf:name "Triple1" ; foaf:knows :triple2 .
+:triple2 foaf:age 34 ; foaf:name "Triple2" ; foaf:knows :triple3 .
+:triple3 foaf:age 34 ; foaf:name "Triple3" ; foaf:knows :triple1 .
+	   
+# good 
+:aisle rdfs:label "Person" .
+
+# bad...? because it knows something that is not a person
+:mary rdfs:label "Person" ; foaf:knows :ben .
+
+:tom rdfs:label "Cat" .
+
+:pluto rdfs:label "Dog" ; foaf:knows :tom .
+
+:ben rdfs:label "Wolf"; rdfs:label "Person" .
+
+:sam rdfs:label "Person"; foaf:knows :mary .

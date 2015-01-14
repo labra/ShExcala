@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: commons-digester:commons-digester:1.8.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$\.ivy2\cache\commons-digester\commons-digester\jars\commons-digester-1.8.1.jar!/"/>
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$\.ivy2\cache\commons-digester\commons-digester\docs\commons-digester-1.8.1-javadoc.jar!/"/>
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$\.ivy2\cache\commons-digester\commons-digester\srcs\commons-digester-1.8.1-sources.jar!/"/>
+    </SOURCES>
+  </library>
+</component>

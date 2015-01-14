@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: es.weso:stateparser_2.11:0.0.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$\.ivy2\cache\es.weso\stateparser_2.11\jars\stateparser_2.11-0.0.3.jar!/"/>
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$\.ivy2\cache\es.weso\stateparser_2.11\docs\stateparser_2.11-0.0.3-javadoc.jar!/"/>
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$\.ivy2\cache\es.weso\stateparser_2.11\srcs\stateparser_2.11-0.0.3-sources.jar!/"/>
+    </SOURCES>
+  </library>
+</component>

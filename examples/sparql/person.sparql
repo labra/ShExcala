@@ -1,0 +1,37 @@
+PREFIX :<http://example.org/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+CONSTRUCT { ?Person :shape :Person } where {
+
+    # foaf:age xsd:string
+    { SELECT ?Person {
+      ?Person foaf:age ?o .
+    } GROUP BY ?Person HAVING (COUNT(*)=1)}
+	{ SELECT ?Person {
+      ?Person foaf:age ?o . 
+	  FILTER ((isLiteral(?o) && datatype(?o) = xsd:integer))
+    } GROUP BY ?Person HAVING (COUNT(*)=1)
+	}
+
+	# foaf:name xsd:string +
+    { SELECT ?Person (COUNT(*) AS ?Person_c0) {
+      ?Person foaf:name ?o .
+    } GROUP BY ?Person HAVING (COUNT(*)>=1)}
+    { SELECT ?Person (COUNT(*) AS ?Person_c1) {
+      ?Person foaf:name ?o . 
+	  FILTER ((isLiteral(?o) && datatype(?o) = xsd:string))
+    } GROUP BY ?Person HAVING (COUNT(*)>=1)
+	} FILTER (?Person_c0 = ?Person_c1)
+	
+	# foaf:knows @<Person>* 
+    { SELECT ?Person (COUNT(*) AS ?Person_c2) {
+      ?Person foaf:knows ?o .
+      } GROUP BY ?Person HAVING (COUNT(*) >= 0)
+	}
+    { SELECT ?Person (COUNT(*) AS ?Person_c3) {
+      ?Person foaf:knows ?o . 
+	  # FILTER ((isIRI(?o) || isBlank(?o)))
+    } GROUP BY ?Person HAVING (COUNT(*) >= 0) }
+    FILTER (?Person_c2 = ?Person_c3)
+    
+}

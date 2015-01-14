@@ -1,0 +1,40 @@
+@prefix : <http://stackoverflow.com/q/25256452/1281433/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+
+# good
+:peter foaf:knows :john; 
+       foaf:knows :anna;
+       rdfs:label "Person" .
+
+# good
+:john  foaf:knows :anna;
+       rdfs:label "Person" .
+
+# good 	   
+:anna  rdfs:label "Person" .
+
+# good 	   
+:self  rdfs:label "Person" ;
+       foaf:knows :self .
+
+:pair1 rdfs:label "Person" ; foaf:knows :pair2 .
+:pair2 rdfs:label "Person" ; foaf:knows :pair1 .
+
+:triple1 rdfs:label "Person"; foaf:knows :triple2 .
+:triple2 rdfs:label "Person"; foaf:knows :triple3 .
+:triple3 rdfs:label "Person"; foaf:knows :triple1 .
+	   
+# good 
+:aisle rdfs:label "Person" .
+
+# bad...? because it knows something that is not a person
+:mary rdfs:label "Person" ; foaf:knows :ben .
+
+:tom rdfs:label "Cat" .
+
+:pluto rdfs:label "Dog" ; foaf:knows :tom .
+
+:ben rdfs:label "Wolf"; rdfs:label "Person" .
+
+:sam rdfs:label "Person"; foaf:knows :mary .

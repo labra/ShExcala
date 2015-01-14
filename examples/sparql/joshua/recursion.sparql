@@ -1,0 +1,18 @@
+prefix : <http://stackoverflow.com/q/25256452/1281433/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+
+select ?person where { 
+  #-- each node in the graph
+  ?person :? ?person .
+
+  #-- except those that foaf:know* some ?x
+  #-- (and since * includes the zero length
+  #-- path, ?x is also bound to ?person)
+  #-- that don't meet the labeling condition.
+  filter not exists {
+    ?person foaf:knows* ?x
+    optional { ?x rdfs:label ?label }
+    filter ( !bound(?label) || ?label != "Person" )
+  }
+}

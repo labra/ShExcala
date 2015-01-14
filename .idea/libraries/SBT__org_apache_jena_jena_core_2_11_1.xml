@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="SBT: org.apache.jena:jena-core:2.11.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$\.ivy2\cache\org.apache.jena\jena-core\jars\jena-core-2.11.1.jar!/"/>
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$\.ivy2\cache\org.apache.jena\jena-core\docs\jena-core-2.11.1-javadoc.jar!/"/>
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$\.ivy2\cache\org.apache.jena\jena-core\srcs\jena-core-2.11.1-sources.jar!/"/>
+    </SOURCES>
+  </library>
+</component>

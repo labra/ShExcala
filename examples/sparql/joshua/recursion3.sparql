@@ -1,0 +1,21 @@
+prefix : <http://stackoverflow.com/q/25256452/1281433/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+
+select ?person where { 
+  #-- each node in the graph
+  ?person :? ?person .
+
+  filter not exists {
+    ?person foaf:knows* ?x
+	optional { 
+	     ?x foaf:age ?age ; 
+		    foaf:name ?name ;
+	        foaf:knows ?y 
+	} filter (  !bound(?age) || !isLiteral(?age) || !datatype(?age) = xsd:integer
+	         || !bound(?name) || !isLiteral(?name) || !datatype(?age) = xsd:string
+	         || !bound(?y)
+			 )
+  }
+}
