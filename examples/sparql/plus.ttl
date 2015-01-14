@@ -1,0 +1,8 @@
+@prefix : <http://example.org/> .
+
+:good1 :a 1 .
+:good1_r :a 1 ; :c 3 .
+:good2 :a 2; :a 3 .
+:good3 :a 2; :a 3; :a 4 ; :c 3 ; :c 4 .
+
+:bad0 :c 3 .

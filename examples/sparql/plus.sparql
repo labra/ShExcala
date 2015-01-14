@@ -1,0 +1,11 @@
+prefix : <http://example.org/>
+
+construct { ?x :shape :shape }
+where {
+ { select ?x where { 
+    ?x :a ?o . 
+    FILTER (?o in (1, 2, 3, 4))
+   } 
+   group by ?x having (count(*)>=1)
+ } 
+}

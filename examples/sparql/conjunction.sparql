@@ -1,0 +1,11 @@
+prefix : <http://example.org/>
+
+construct { ?x :shape :shape }
+where {
+ { select ?x where { ?x :a 1 . } 
+   group by ?x having (count(*)=1)
+ } 
+ { select ?x where { ?x :b 2 . } 
+   group by ?x having (count(*)=1)
+ }
+}

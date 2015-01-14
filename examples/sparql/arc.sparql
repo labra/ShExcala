@@ -1,0 +1,16 @@
+prefix : <http://example.org/>
+
+construct { ?x :shape :shape }
+where {  
+ { select ?x where {
+   ?x ?p ?o .
+   FILTER (?p in (:a, :b)) 
+ } group by ?x having (count(*)=1)
+ }
+ { select ?x where {
+   ?x ?p ?o .
+   FILTER (?p in (:a, :b)) 
+   FILTER (?o in (1, 2, 3)) 
+   } group by ?x having (count(*)=1) 
+ }
+}
