@@ -1,10 +1,14 @@
 @prefix : <http://example.org/> .
 
 :good1 :a 1; :c 3 .
-:good2 :b 2; :c 3 .
+:good2 :a 2; :c 3 .
 :good3 :a 1; :c 4; :r 5 .
 :good4 :a 1; :c 4; :r 3 .
 
 :bad1 :a 1 .
 :bad2 :b 2 .
 :bad3 :c 3 .
+:bad4 :a 1, 2; :c 3 .
+:bad5 :a 1; :c 3; :a 2 .
+:bad6 :a 1, 2; :b 2; :c 3 .
+:bad7 :a 1, 2 .

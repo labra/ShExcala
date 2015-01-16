@@ -1,0 +1,52 @@
+PREFIX :<http://example.org/>
+PREFIX foaf:<http://xmlns.com/foaf/0.1/>
+PREFIX rdfs:<http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+CONSTRUCT {
+ ?Course :hasShape <Course>
+} where {
+    { SELECT ?Course {
+      ?Course rdfs:label ?o .
+    } GROUP BY ?Course HAVING (COUNT(*)=1)}
+    { SELECT ?Course {
+      ?Course rdfs:label ?o . FILTER ((isLiteral(?o) && datatype(?o) = xsd:string))
+    } GROUP BY ?Course HAVING (COUNT(*)=1)}
+    { SELECT ?Course (COUNT(*) AS ?Course_c0) {
+      ?Course :student ?o .
+    } GROUP BY ?Course}
+    { SELECT ?Course (COUNT(*) AS ?Course_c1) {
+      ?Course :student ?o . FILTER ((isIRI(?o) || isBlank(?o)))
+    } GROUP BY ?Course}
+    FILTER (?Course_c0 = ?Course_c1)
+    { SELECT ?Course (COUNT(*) AS ?Course_c2) {
+        { SELECT ?Course ?Person {
+          ?Course :student ?Person . FILTER (true && (isIRI(?Person) || isBlank(?Person)))
+        } }
+        { SELECT ?Person WHERE {
+            {
+                { SELECT ?Person {
+                  ?Person foaf:name ?o .
+                } GROUP BY ?Person HAVING (COUNT(*)=1)}
+                { SELECT ?Person {
+                  ?Person foaf:name ?o . FILTER ((isLiteral(?o) && datatype(?o) = xsd:string))
+                } GROUP BY ?Person HAVING (COUNT(*)=1)}
+            } UNION {
+                { SELECT ?Person (COUNT(*) AS ?Person_c0) {
+                  ?Person foaf:givenName ?o .
+                } GROUP BY ?Person}
+                { SELECT ?Person (COUNT(*) AS ?Person_c1) {
+                  ?Person foaf:givenName ?o . FILTER ((isLiteral(?o) && datatype(?o) = xsd:string))
+                } GROUP BY ?Person}
+                FILTER (?Person_c0 = ?Person_c1)
+                { SELECT ?Person {
+                  ?Person foaf:lastName ?o .
+                } GROUP BY ?Person HAVING (COUNT(*)=1)}
+                { SELECT ?Person {
+                  ?Person foaf:lastName ?o . FILTER ((isLiteral(?o) && datatype(?o) = xsd:string))
+                } GROUP BY ?Person HAVING (COUNT(*)=1)}
+            }
+        } GROUP BY ?Person HAVING (COUNT(*) = 1)}
+    } GROUP BY ?Course }
+    FILTER (?Course_c0 = ?Course_c2)
+    OPTIONAL { ?Course :student ?Course_Person_ref0 . FILTER (true && (isIRI(?Course_Person_ref0) || isBlank(?Course_Person_ref0))) }
+}

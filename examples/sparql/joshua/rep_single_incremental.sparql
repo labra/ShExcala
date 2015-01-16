@@ -1,0 +1,22 @@
+prefix : <http://example.org/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+
+select ?x where { 
+  #-- each node in the graph
+  ?x :? ?x .
+
+    { select ?y (count(*) as ?x_c0) where {
+	    
+  	    { select ?x where {
+			?x :a [] .
+			{ select ?x where {
+				?x :a ?o .
+				filter ( bound(?o) && ?o in (1, 2, 3)) 
+			} GROUP BY ?x HAVING (COUNT(*)=1)
+		} } GROUP BY ?x HAVING (COUNT(*)=1)
+		}
+	} GROUP BY ?y HAVING (COUNT(*)>=1)
+	}
+}

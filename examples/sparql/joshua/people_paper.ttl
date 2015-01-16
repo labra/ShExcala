@@ -2,21 +2,32 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix foaf: <http://xmlns.com/foaf/0.1/>.
 
-# good
-:peter foaf:knows :john; 
-       foaf:knows :anna;
-       rdfs:label "Person" .
+:only_age foaf:age 20 .
 
-# good
-:john  foaf:knows :anna;
-       rdfs:label "Person" .
+:john foaf:age 23;
+      foaf:name "John";
+      foaf:knows :bob .
+      
+:bob  foaf:age 34;
+      foaf:name "Bob", "Robert" .
+
+:mary foaf:age 50, 65 .
 
 # good 	   
-:anna  rdfs:label "Person" .
-
-# good 	   
-:self  rdfs:label "Person" ;
+:self  foaf:age 34 ; 
+       foaf:name "Self" ;
        foaf:knows :self .
+	   
+:knows_strange foaf:age 14 ;
+       foaf:name "Knows Strange" ;
+       foaf:knows "Strange" .
+	   
+:knows_noperson foaf:age 15 ;
+       foaf:name "Knows NoPerson" ;
+	   foaf:knows :noPerson .
+	   
+:noPerson rdfs:label "No Person" ;
+        foaf:age "No age" .
 
 :pair1 rdfs:label "Person" ; foaf:knows :pair2 .
 :pair2 rdfs:label "Person" ; foaf:knows :pair1 .
@@ -25,17 +36,11 @@
 :triple2 rdfs:label "Person"; foaf:knows :triple3 .
 :triple3 rdfs:label "Person"; foaf:knows :triple1 .
 	   
-:actor foaf:age 23, 34 ;
-       foaf:name "Actor" ;
-	   foaf:knows :actor .
-	   
 # good 
-:aisle foaf:age 23; foaf:name "Aisle" .
+:aisle rdfs:label "Person" .
 
 # bad...? because it knows something that is not a person
-:mary foaf:age 24; 
-      foaf:name "Mary" ; 
-      foaf:knows :ben .
+:mary rdfs:label "Person" ; foaf:knows :ben .
 
 :tom rdfs:label "Cat" .
 

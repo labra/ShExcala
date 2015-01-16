@@ -1,0 +1,19 @@
+PREFIX :<http://example.org/>
+SELECT ?s ?p ?o {
+  { ?s ?p ?o } MINUS
+  {
+    { SELECT ?Shape (COUNT(*) AS ?Shape_c0) {
+      ?Shape :a ?o .
+    } GROUP BY ?Shape HAVING (COUNT(*)>=1)}
+    { SELECT ?Shape (COUNT(*) AS ?Shape_c1) {
+      ?Shape :a ?o . FILTER (?o in (1,2,3,4))
+    } GROUP BY ?Shape HAVING (COUNT(*)>=1)}
+    FILTER (?Shape_c0 = ?Shape_c1)
+    {
+      { ?Shape :a ?o . 
+	    FILTER (true && (?o in (1,2,3,4))) 
+		BIND (?Shape AS ?s) BIND (:a AS ?p) 
+	  }
+    }
+  }
+}

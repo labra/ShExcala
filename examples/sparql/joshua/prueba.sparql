@@ -9,13 +9,19 @@ select ?person where {
 
   filter not exists {
     ?person foaf:knows* ?x
-	optional { 
-	  ?x foaf:age ?age ; 
-	  foaf:name ?name ;
-	  foaf:knows ?y 
-	} filter (  !bound(?age) || !isLiteral(?age) || !datatype(?age) = xsd:integer
-	         || !bound(?name) || !isLiteral(?name) || !datatype(?age) = xsd:string
-	         || !bound(?y)
-			 )
+	
+	{ optional { 
+	    ?x foaf:age   ?age ;
+		   foaf:name  ?name ;
+           foaf:knows ?known 		   
+	} filter (!bound(?age) || 
+	          !isLiteral(?age) || 
+			  !datatype(?age) = xsd:integer ||
+			  !bound(?name) ||
+			  !isLiteral(?name) ||
+			  !datatype(?name) = xsd:string ||
+			  !bound(?known)
+			  )
+	} 
   }
 }

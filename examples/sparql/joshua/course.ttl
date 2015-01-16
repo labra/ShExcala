@@ -1,0 +1,18 @@
+@prefix : <http://example.org/>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+
+:cs211 rdfs:label "Logic" ;
+       :student :bob, :john .
+	   
+:bob foaf:name "Bob" .
+:john foaf:name "John" .
+	   
+	   
+:cs0 rdfs:label "zero" .
+
+:bad1 rdfs:label "Logic" ;
+      :student :anna .
+
+	 
+	   

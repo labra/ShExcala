@@ -9,7 +9,7 @@ select ?person where {
   #-- except those that foaf:know* some ?x
   #-- (and since * includes the zero length
   #-- path, ?x is also bound to ?person)
-  #-- that don't meet the labeling condition.
+  #-- that don't meet the shape condition.
   filter not exists {
     ?person foaf:knows* ?x
     optional { ?x rdfs:label ?label }

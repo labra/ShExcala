@@ -1,4 +1,4 @@
-prefix : <http://stackoverflow.com/q/25256452/1281433/>
+prefix : <http://example.org/>
 prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix foaf: <http://xmlns.com/foaf/0.1/>
 
@@ -9,8 +9,8 @@ select ?person where {
   filter not exists {
     ?person foaf:knows* ?x
 	optional { 
-	     ?x rdfs:label ?label ; 
-	        foaf:knows ?y 
+	  ?x rdfs:label ?label ; 
+	  foaf:knows ?y 
 	} filter (  !bound(?label) || ?label != "Person" 
 	         || !bound(?y)
 			 )

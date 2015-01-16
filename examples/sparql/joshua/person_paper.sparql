@@ -1,0 +1,47 @@
+prefix : <http://example.org/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+
+select ?person where {
+ ?person <>? ?person .
+ 
+ filter exists {
+ 
+ ?person foaf:knows* ?p .
+
+ { select ?p where {
+	?p foaf:age ?o .
+    { select ?p where {
+	   ?p foaf:age ?o .
+	   filter ( isLiteral(?o) && 
+				datatype(?o) = xsd:integer
+			   ) 
+    } GROUP BY ?p HAVING (COUNT(*)=1)
+    }
+   } GROUP BY ?p HAVING (COUNT(*)=1)
+ }
+
+ { select ?p ?cn0 (count(*) as ?cn1)  where {
+	?p foaf:name ?o .
+    { select ?p (count(*) as ?cn0) where {
+	   ?p foaf:name ?o .
+	   filter ( isLiteral(?o) && 
+				datatype(?o) = xsd:string
+			   ) 
+    } GROUP BY ?p HAVING (COUNT(*)>=1)
+    }
+   } GROUP BY ?p ?cn0 HAVING (COUNT(*)>=1)
+ } filter (?cn0 = ?cn1)
+ 
+ { select ?p ?ck0 (count(*) as ?ck1) where {
+	?p foaf:knows ?o .
+    { select ?p (count(*) as ?ck0) where {
+	   ?p foaf:knows ?o .
+	   filter ( isUri(?o) )
+    } GROUP BY ?p HAVING (COUNT(*)>=0)
+    }
+   } GROUP BY ?p ?ck0 HAVING (COUNT(*)>=0)
+ } filter (?ck0 = ?ck1)
+ }
+} 
