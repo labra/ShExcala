@@ -1,4 +1,4 @@
-prefix : <http://example.org/>
+@prefix : <http://example.org/> .
 
 :a0 :a 1, 
        2, 
@@ -100,6 +100,7 @@ prefix : <http://example.org/>
 	   98,
 	   99,
        100,
+	   101,
        102, 
 	   103, 
 	   104, 
@@ -199,3 +200,4 @@ prefix : <http://example.org/>
 	   198,
 	   199,
 	   200 .
+	   

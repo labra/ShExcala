@@ -1,11 +1,13 @@
 PREFIX :<http://example.org/>
-CONSTRUCT { 
- ?a :hasShape :a 
-} WHERE {
+construct {
+ ?a :hasShape <a> 
+} where {
     { SELECT ?a {
       ?a :a ?o .
-    } GROUP BY ?a HAVING (COUNT(*)=1)}
-    { SELECT ?a {
-      ?a :a ?o . FILTER ((?o = "1"^^<http://www.w3.org/2001/XMLSchema#integer>))
+	   { SELECT ?a {
+          ?a :a ?o . 
+		  filter (?o = 1)
+          } GROUP BY ?a HAVING (COUNT(*)=1)
+	   } 
     } GROUP BY ?a HAVING (COUNT(*)=1)}
 }

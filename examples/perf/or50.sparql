@@ -1,0 +1,52 @@
+PREFIX :<http://example.org/>
+PREFIX foaf:<http://xmlns.com/foaf/0.1/>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+construct {
+?a :hasShape <a>
+} where 
+{ SELECT ?a WHERE {
+        { { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "0"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "1"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "2"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "3"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "4"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "5"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+		  { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "6"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "7"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "8"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "9"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "10"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+		  { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "20"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "21"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "22"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "23"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "24"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "25"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+		  { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "26"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "27"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "28"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "29"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "30"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "31"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "32"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "33"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "34"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "35"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+		  { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "36"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "37"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "38"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "39"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "40"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "41"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "42"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "43"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "44"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "45"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+		  { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "46"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "47"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "48"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "49"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "50"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+        }
+ } GROUP BY ?a HAVING (COUNT(*) = 1)
+}

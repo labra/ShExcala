@@ -1,0 +1,1205 @@
+PREFIX :<http://example.org/>
+construct {
+ ?x :hasShape <a> 
+} where {
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "1"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "2"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "3"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "4"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "5"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "6"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "7"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "8"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "9"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "10"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "11"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "12"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "13"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "14"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "15"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "16"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "17"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "18"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "19"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "20"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "21"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "22"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "23"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "24"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "25"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "26"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "27"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "28"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "29"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "30"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "31"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "32"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "33"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "34"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "35"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "36"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "37"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "38"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "39"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "40"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "41"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "42"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "43"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "44"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "45"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "46"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "47"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "48"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "49"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "50"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "51"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "52"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "53"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "54"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "55"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "56"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "57"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "58"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "59"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "60"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "61"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "62"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "63"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "64"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "65"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "66"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "67"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "68"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "69"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "70"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "71"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "72"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "73"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "74"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "75"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "76"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "77"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "78"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "79"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "80"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "81"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "82"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "83"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "84"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "85"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "86"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "87"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "88"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "89"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "90"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "91"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "92"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "93"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "94"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "95"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "96"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "97"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "98"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "99"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "100"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "101"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "102"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "103"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "104"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "105"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "106"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "107"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "108"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "109"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "110"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "111"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "112"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "113"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "114"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "115"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "116"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "117"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "118"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "119"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "120"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "121"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "122"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "123"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "124"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "125"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "126"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "127"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "128"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "129"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "130"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "131"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "132"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "133"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "134"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "135"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "136"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "137"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "138"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "139"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "140"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "141"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "142"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "143"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "144"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "145"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "146"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "147"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "148"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "149"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "150"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "151"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "152"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "153"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "154"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "155"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "156"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "157"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "158"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "159"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "160"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "161"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "162"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "163"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "164"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "165"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "166"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "167"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "168"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "169"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "170"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "171"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "172"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "173"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "174"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "175"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "176"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "177"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "178"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "179"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "180"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "181"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "182"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "183"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "184"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "185"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "186"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "187"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "188"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "189"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "190"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "191"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "192"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "193"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "194"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "195"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "196"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "197"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "198"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "199"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o .
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER ((?o = "200"^^<http://www.w3.org/2001/XMLSchema#integer>))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+}
