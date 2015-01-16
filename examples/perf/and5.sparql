@@ -1,0 +1,34 @@
+PREFIX :<http://example.org/>
+construct {
+ ?a :hasShape <a> 
+} where {
+    { SELECT ?a {
+      ?a :a ?o .
+	   { SELECT ?a {
+          ?a :a ?o . 
+	      FILTER (?o = 1)
+          } GROUP BY ?a HAVING (COUNT(*)=1)
+	   }
+	   { SELECT ?a {
+          ?a :a ?o . 
+	      FILTER (?o = 2)
+          } GROUP BY ?a HAVING (COUNT(*)=1)
+	   }
+  	   { SELECT ?a {
+          ?a :a ?o . 
+	      FILTER (?o = 3)
+          } GROUP BY ?a HAVING (COUNT(*)=1)
+	   }
+  	   { SELECT ?a {
+          ?a :a ?o . 
+	      FILTER (?o = 4)
+          } GROUP BY ?a HAVING (COUNT(*)=1)
+	   }
+  	   { SELECT ?a {
+          ?a :a ?o . 
+	      FILTER (?o = 5)
+          } GROUP BY ?a HAVING (COUNT(*)=1)
+	   }
+ 
+    } GROUP BY ?a HAVING (COUNT(*)=5)}
+}

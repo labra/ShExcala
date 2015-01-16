@@ -1,4 +1,4 @@
-prefix : <http://example.org/>
+@prefix : <http://example.org/> .
 
 :a0 :a 0 .
 :a1 :a 1 .

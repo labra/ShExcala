@@ -1,0 +1,16 @@
+PREFIX :<http://example.org/>
+PREFIX foaf:<http://xmlns.com/foaf/0.1/>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+construct {
+?a :hasShape <a>
+} where 
+{ SELECT ?a WHERE {
+        { { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "0"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "1"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "2"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "3"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "4"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+          { SELECT ?a { ?a :a ?o . } GROUP BY ?a HAVING (COUNT(*)=1)} { SELECT ?a { ?a :a ?o . FILTER ((?o = "5"^^<http://www.w3.org/2001/XMLSchema#integer>)) } GROUP BY ?a HAVING (COUNT(*)=1)} } UNION {
+        }
+ } GROUP BY ?a HAVING (COUNT(*) = 1)
+}
