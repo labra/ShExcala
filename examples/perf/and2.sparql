@@ -1,0 +1,14 @@
+PREFIX :<http://example.org/>
+CONSTRUCT { 
+ ?a :hasShape :a 
+} WHERE {
+    { SELECT ?a { ?a :a ?o . } 
+	  group by ?a having (count(*)=2) 
+	}
+    { SELECT ?a {
+      ?a :a ?o . FILTER (?o IN (1))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+    { SELECT ?a {
+      ?a :a ?o . FILTER (?o IN (2))
+    } GROUP BY ?a HAVING (COUNT(*)=1)}
+}

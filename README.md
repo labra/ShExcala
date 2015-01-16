@@ -1,8 +1,6 @@
-# ShExcala
+# ShExcala - Shape Expressions in Scala
 
-RDF Shape Expressions in Scala
-
-This repository contains an RDF Shape Expressions validator implemented in Scala
+This repository contains an RDF Shape Expressions validator implemented in Scala. 
 
 ## Compiling from sources
 
@@ -34,19 +32,32 @@ It will create a file shexcala-<version-number>.zip file located at: `target/uni
 
 That file contains two excutable files for both Linux (`shexcala`) and Windows (`shexcala.bat`) which can be invoked from the command line.
 
+## Binaries 
+
+Compiled binaries are available [here](http://labra.github.io/ShExcala/).
+
 ## Usage
 
-See [this link](https://github.com/labra/ShExcala/wiki) on how to use ShExcala from the command line.
-
-
+ShExcala can be used as a command line tool or as a library. Given that it has been implemented in Scala, 
+ it can be used as a Jar library from any JVM compatible language, like Java, Scala, Clojure, etc.
+ 
+* See [this link](https://github.com/labra/ShExcala/wiki) on how to use ShExcala from the command line.
+* In this link we explain how to use ShExcala from Java
+* In the near future, we are planning to use [ScalaJs](http://www.scala-js.org/) to compile 
+  ShExcala to Javascript. 
 
 ## Links
 
 * [More info](http://labra.github.io/ShExcala/)
+* [ShEx by example](http://www.w3.org/2014/Talks/1209-shex-egp)
 * [Binaries](https://bintray.com/weso/weso-releases/shExcala/view)
+* [Release Notes](https://github.com/labra/ShExcala/tree/master/notes)
 * [![Build Status](https://travis-ci.org/labra/ShExcala.svg?branch=master)](https://travis-ci.org/labra/ShExcala)
 
 ## Author
 
 [Jose Emilio Labra Gayo](http://www.di.uniovi.es/~labra), [WESO Research Group](http://www.weso.es)
 
+## Acknowlegments
+
+[Eric Prud'hommeaux](http://www.w3.org/People/Eric/), [W3c](http://www.w3c.org) 
