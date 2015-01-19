@@ -88,13 +88,17 @@ class Opts(
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "validates with nodes incoming", 
-        			descrNo = "does not validate nodes incoming")        			
-        			
-    val withAny   = toggle("withAny", 
+        		descrNo = "does not validate nodes incoming")
+            
+   val sparql     = opt[String]("sparql",
+               required=false,
+               descr = "Turtle RDF Data file")
+               
+  val withAny   = toggle("withAny", 
     				prefix = "no-",
     				default = Some(false),
     				descrYes = "adds a node of type any", 
-        			descrNo = "does not add a node of type any")        			
+        		descrNo = "does not add a node of type any")        			
 
     val withOpen   = toggle("withOpen", 
     				prefix = "no-",
@@ -162,6 +166,12 @@ object Main extends App with Logging {
    
   
   val now = getTimeNow()
+  
+  if (opts.turtle.isDefined && opts.sparql.isDefined) {
+      val micros = getTimeFrom(now)
+      println(Sparql.query(opts.turtle(),opts.sparql()))
+      if (opts.time()) { showTime(micros) }
+  }
 
   if (opts.schema.isDefined) {
     val result = validateSchema(rdf,opts)
