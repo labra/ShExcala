@@ -1,0 +1,10 @@
+prefix :     <http://example.org/>
+prefix xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+:x :p :y . 
+:y :a 1 .
+:y :b 2 .
+
+:x_1 :p :y_1, :y_2 .
+:y_1 :a 1 .
+:y_2 :b 2 .

@@ -1,0 +1,10 @@
+prefix :     <http://example.org/>
+prefix xsd:  <http://www.w3.org/2001/XMLSchema#>
+
+<S> { :p @<T1> 
+    , :p @<T2>
+	}
+
+<T1> { :a ( 1 ), . . * }
+
+<T2> { :b ( 2 ), . . * }

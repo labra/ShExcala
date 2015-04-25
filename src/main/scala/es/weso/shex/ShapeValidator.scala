@@ -41,8 +41,6 @@ trait ShapeValidator extends Logging {
 
 }
 
-
-
 def matchShape(ctx:Context, node: RDFNode, shape: Shape): Result[Typing] = {
  log.debug("matchShape, node: " + node + " with shape " + shape.label)
  val triples = ctx.triplesAround(node)
