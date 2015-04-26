@@ -4,8 +4,6 @@ import com.hp.hpl.jena.rdf.model._
 import com.hp.hpl.jena.query._
 import java.io.StringWriter
 
-
-
 object Sparql {
   def query(turtleFile: String, queryFile: String): String = {
     try {
@@ -17,11 +15,11 @@ object Sparql {
       val exec = QueryExecutionFactory.create(query, model)
       val result = exec.execConstruct()
       val strWriter = new StringWriter
-      model.write(strWriter,"Turtle")
+      model.write(strWriter, "Turtle")
       return strWriter.toString
     } catch {
       case e: Exception => "Exception: " + e
     }
-    
+
   }
 }

@@ -12,43 +12,42 @@ import es.weso.shex.PrefixMaps
 import es.weso.shex.ShapeDoc
 import es.weso.shex.Matcher
 
+class GenSpec
+    extends FunSpec
+    with Matchers
+    with Checkers {
 
-class GenSpec 
- extends FunSpec 
- with Matchers 
- with Checkers {
+  describe("Generator of Schemas") {
 
- describe("Generator of Schemas") {
-   
-  it("Should generate a schema with 2 rules") {
-    val gen2 = GenShape.genAnds(2)
-    val g = GenShape.genTriples(2) 
-    val t : Typing = Typing.emptyTyping.addType(IRI("x"),IRI("a")).get
-    info("Shape: " + ShapeDoc.schema2String(gen2)(PrefixMaps.commonShex))
-    info("Triples: " + g.serialize())
-    val matcher = Matcher(gen2,g,false,false)
-    val result = matcher.matchAllIRIs_AllLabels()
-    result.isValid should be(true)
+    it("Should generate a schema with 2 rules") {
+      val gen2 = GenShape.genAnds(2)
+      val g = GenShape.genTriples(2)
+      val t: Typing = Typing.emptyTyping.addType(IRI("x"), IRI("a")).get
+      info("Shape: " + ShapeDoc.schema2String(gen2)(PrefixMaps.commonShex))
+      info("Triples: " + g.serialize())
+      val matcher = Matcher(gen2, g, false, false)
+      val result = matcher.matchAllIRIs_AllLabels()
+      result.isValid should be(true)
+    }
+
+    it("Should generate a schema with 20 rules") {
+      val gen = GenShape.genAnds(20)
+      val g = GenShape.genTriples(20)
+      val t: Typing = Typing.emptyTyping.addType(IRI("x"), IRI("a")).get
+      val matcher = Matcher(gen, g, false, false)
+      val result = matcher.matchAllIRIs_AllLabels()
+      result.isValid should be(true)
+    }
+
+    it("Should generate a schema with 200 rules") {
+      val gen = GenShape.genAnds(200)
+      val g = GenShape.genTriples(200)
+      val t: Typing = Typing.emptyTyping.addType(IRI("x"), IRI("a")).get
+      val matcher = Matcher(gen, g, false, false)
+      val result = matcher.matchAllIRIs_AllLabels()
+      result.isValid should be(true)
+    }
+
   }
-
-  it("Should generate a schema with 20 rules") {
-    val gen = GenShape.genAnds(20)
-    val g = GenShape.genTriples(20) 
-    val t : Typing = Typing.emptyTyping.addType(IRI("x"),IRI("a")).get           
-    val matcher = Matcher(gen,g,false,false)
-    val result = matcher.matchAllIRIs_AllLabels()
-    result.isValid should be(true)
-  }
-
-  it("Should generate a schema with 200 rules") {
-    val gen = GenShape.genAnds(200)
-    val g = GenShape.genTriples(200) 
-    val t : Typing = Typing.emptyTyping.addType(IRI("x"),IRI("a")).get           
-    val matcher = Matcher(gen,g,false,false)
-    val result = matcher.matchAllIRIs_AllLabels()
-    result.isValid should be(true)
-  }
-  
- } 
 
 }

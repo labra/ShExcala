@@ -6,8 +6,9 @@ import es.weso.rdfgraph._
 import scala.util.Try
 import es.weso.rdf.RDF
 
-
 object RDF2Shape {
-  def rdf2Shape(rdf:RDF): Try[Shape] = ???
+  def rdf2Shape(rdf: RDF): Try[Schema] = {
+    ???
+  }
 }
 

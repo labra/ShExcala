@@ -7,7 +7,7 @@ import es.weso.shex.ShapeSyntax._
 import es.weso.shex.Typing._
 import es.weso.monads.Result._
 import es.weso.monads.Result
-import es.weso.parser.PrefixMap
+import es.weso.rdf.PrefixMap
 import es.weso.rdf._
 import es.weso.shex.Context._
 import org.slf4j._
@@ -18,10 +18,10 @@ import es.weso.monads.Failure
 
 /**
  * Shape validator converting to SPARQL queries
- * 
+ *
  */
 trait ShapeValidatorSparql extends ShapeValidator with Logging {
-  
-  override def matchRule(ctx: Context, g: Set[RDFTriple], rule: Rule): Result[Typing] = 
+
+  override def matchRule(ctx: Context, g: Set[RDFTriple], rule: Rule): Result[Typing] =
     ???
 }

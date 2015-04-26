@@ -8,9 +8,8 @@ import es.weso.monads.Result._
 import es.weso.rdfgraph.nodes.IRI
 import org.slf4j._
 import es.weso.rdfgraph.nodes.RDFNode
-import es.weso.parser.PrefixMap
+import es.weso.rdf.PrefixMap
 
-case class Tracer(
-    ) {
-  
+case class Tracer() {
+
 }

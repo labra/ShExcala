@@ -7,13 +7,13 @@ import scala.scalajs.sbtplugin.ScalaJSPlugin.ScalaJSKeys._
 
 lazy val root = project.in(file(".")).configs( PerfTest ).settings(inConfig(PerfTest)(Defaults.testTasks): _*)
 
-scalaVersion := "2.11.4"
+name := "shExcala"
 
 organization := "es.weso"
 
-name := "shExcala"
+version := "0.2.1"
 
-version := "0.2.0"
+scalaVersion := "2.11.6"
 
 libraryDependencies ++= Seq(
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
@@ -26,7 +26,7 @@ libraryDependencies ++= Seq(
   , "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test"
   ,	"org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
   , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
-  , "es.weso" % "wesin_2.11" % "0.1.6" excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "es.weso" % "wesin_2.11" % "0.1.8" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
 )
 
@@ -44,13 +44,11 @@ parallelExecution in PerfTest := false
 
 seq(bintraySettings:_*)
 
-net.virtualvoid.sbt.graph.Plugin.graphSettings
-
-Build.publishSettings
-
 deploymentSettings
 
 publishMavenStyle := true
+
+net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 // publish <<= publish.dependsOn(publish in config("universal"))
 
@@ -68,8 +66,6 @@ resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
 resolvers += "Bintray" at "http://dl.bintray.com/weso/weso-releases"
 
-instrumentSettings  // for SCoverage
-
 // for BuildInfo
 
 buildInfoSettings
@@ -82,3 +78,14 @@ buildInfoPackage := "buildInfo"
 
 EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed
 
+bintraySettings
+
+scalariformSettings
+
+repository in bintray := "weso-releases"
+
+bintrayOrganization in bintray := Some("weso")
+
+licenses += ("MPL-2.0", url("http://opensource.org/licenses/MPL-2.0"))
+
+resolvers += "Bintray" at "http://dl.bintray.com/weso/weso-releases"

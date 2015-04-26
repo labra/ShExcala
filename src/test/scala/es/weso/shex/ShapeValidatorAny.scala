@@ -9,53 +9,52 @@ import org.scalatest.prop.PropertyChecks
 import org.scalatest.prop.Checkers
 import es.weso.shex.Typing._
 import es.weso.shex.Context._
-import es.weso.parser.PrefixMap
+import es.weso.rdf.PrefixMap
 import es.weso.rdf.RDFTriples
 
 class ShapeValidatorAny
-	extends FunSpec 
-	with Matchers 
-	with Checkers 
-	with ShapeValidatorWithDeriv {
-  
-describe("Schema all") {
- it("Should validate all nodes ok when all pass") {
-  val rdf_str = "@prefix : <http://example.org/> .\n" +
-                ":n1 :p :b . \n" +
-                ":n3 :p :d ."
-  val rdf = RDFTriples.parse(rdf_str).get                
-  val schema_str = "prefix : <http://example.org/> \n" +
-                  ":a [ :p . ] "
-  val schema = Schema.fromString(schema_str).get._1
-  val matcher = Matcher(schema,rdf,false,false)
-  val rs = matcher.matchAllIRIs_AllLabels()
-  def ex(n:String) = IRI("http://example.org/" + n)
-  val t0 = Typing.emptyTyping
-  val t1 = t0.addType(ex("n1"),ex("a")).get
-  val t2 = t1.addType(ex("n3"),ex("a")).get
-  rs.run should be(Stream(t2))
- }
+    extends FunSpec
+    with Matchers
+    with Checkers
+    with ShapeValidatorWithDeriv {
 
- it("Should validate some nodes ok when some pass") {
-  val rdf_str = "@prefix : <http://example.org/> .\n" +
-                ":n1 :p :b . \n" +
-                ":n2 :q :b . \n" +
-                ":n3 :p :d ."
-  val rdf = RDFTriples.parse(rdf_str).get                
-  val schema_str = "prefix : <http://example.org/> \n" +
-                  ":a [ :p . ] "
-  val schema = Schema.fromString(schema_str).get._1
-  val matcher = Matcher(schema,rdf,false,false)
-  val rs = matcher.matchAllIRIs_AllLabels()
-  def ex(n:String) = IRI("http://example.org/" + n)
-  val t0 = Typing.emptyTyping
-  val t1 = t0.addType(ex("n1"),ex("a")).get
-  val t2 = t1.addType(ex("n3"),ex("a")).get
-  rs.run should be(Stream(t2))
- }
+  describe("Schema all") {
+    it("Should validate all nodes ok when all pass") {
+      val rdf_str = "@prefix : <http://example.org/> .\n" +
+        ":n1 :p :b . \n" +
+        ":n3 :p :d ."
+      val rdf = RDFTriples.parse(rdf_str).get
+      val schema_str = "prefix : <http://example.org/> \n" +
+        ":a [ :p . ] "
+      val schema = Schema.fromString(schema_str).get._1
+      val matcher = Matcher(schema, rdf, false, false)
+      val rs = matcher.matchAllIRIs_AllLabels()
+      def ex(n: String) = IRI("http://example.org/" + n)
+      val t0 = Typing.emptyTyping
+      val t1 = t0.addType(ex("n1"), ex("a")).get
+      val t2 = t1.addType(ex("n3"), ex("a")).get
+      rs.run should be(Stream(t2))
+    }
+
+    it("Should validate some nodes ok when some pass") {
+      val rdf_str = "@prefix : <http://example.org/> .\n" +
+        ":n1 :p :b . \n" +
+        ":n2 :q :b . \n" +
+        ":n3 :p :d ."
+      val rdf = RDFTriples.parse(rdf_str).get
+      val schema_str = "prefix : <http://example.org/> \n" +
+        ":a [ :p . ] "
+      val schema = Schema.fromString(schema_str).get._1
+      val matcher = Matcher(schema, rdf, false, false)
+      val rs = matcher.matchAllIRIs_AllLabels()
+      def ex(n: String) = IRI("http://example.org/" + n)
+      val t0 = Typing.emptyTyping
+      val t1 = t0.addType(ex("n1"), ex("a")).get
+      val t2 = t1.addType(ex("n3"), ex("a")).get
+      rs.run should be(Stream(t2))
+    }
+
+  }
 
 }
-    
-}
- 
- 
+

@@ -9,65 +9,63 @@ import org.scalatest.prop.PropertyChecks
 import org.scalatest.prop.Checkers
 import es.weso.shex.Typing._
 import es.weso.shex.Context._
-import es.weso.parser.PrefixMap
-import es.weso.rdf.RDFTriples
+import es.weso.rdf._
 
 class ShapeValidatorValue
-	extends FunSpec 
-	with Matchers 
-	with Checkers 
-	with ShapeValidatorWithDeriv {
-  
+    extends FunSpec
+    with Matchers
+    with Checkers
+    with ShapeValidatorWithDeriv {
 
- describe("Shape Validator for Value") {
-   it("Should validate value set") {
-     val ctx = Context.emptyContext
-     val obj1: RDFNode = StringLiteral("a")
-     val vset: ValueClass = ValueSet(Seq(RDFNodeObject(StringLiteral("a"))))
-     matchValue(ctx,obj1,vset).isValid should be(true)
-   }
+  describe("Shape Validator for Value") {
+    it("Should validate value set") {
+      val ctx = Context.emptyContext
+      val obj1: RDFNode = StringLiteral("a")
+      val vset: ValueClass = ValueSet(Seq(RDFNodeObject(StringLiteral("a"))))
+      matchValue(ctx, obj1, vset).isValid should be(true)
+    }
 
-   it("Should not validate value set if different") {
-     val ctx = Context.emptyContext
-     val obj1: RDFNode = StringLiteral("a")
-     val vset: ValueClass = ValueSet(Seq(RDFNodeObject(StringLiteral("b"))))
-     matchValue(ctx,obj1,vset).isValid should be(false)
-   }
+    it("Should not validate value set if different") {
+      val ctx = Context.emptyContext
+      val obj1: RDFNode = StringLiteral("a")
+      val vset: ValueClass = ValueSet(Seq(RDFNodeObject(StringLiteral("b"))))
+      matchValue(ctx, obj1, vset).isValid should be(false)
+    }
 
-   it("Should validate value set if more than one match") {
-     val ctx = Context.emptyContext
-     val obj1: RDFNode = StringLiteral("a")
-     val vset: ValueClass = ValueSet(Seq(RDFNodeObject(StringLiteral("a")),RDFNodeObject(StringLiteral("a"))))
-     matchValue(ctx,obj1,vset).isValid should be(true)
-   }
+    it("Should validate value set if more than one match") {
+      val ctx = Context.emptyContext
+      val obj1: RDFNode = StringLiteral("a")
+      val vset: ValueClass = ValueSet(Seq(RDFNodeObject(StringLiteral("a")), RDFNodeObject(StringLiteral("a"))))
+      matchValue(ctx, obj1, vset).isValid should be(true)
+    }
 
-   it("Should validate value string") {
-     val ctx = Context.emptyContext
-     val obj1: RDFNode = StringLiteral("a")
-     val v: ValueClass = typeXsdString
-     matchValue(ctx,obj1,v).isValid should be(true)
-   }
+    it("Should validate value string") {
+      val ctx = Context.emptyContext
+      val obj1: RDFNode = StringLiteral("a")
+      val v: ValueClass = typeXsdString
+      matchValue(ctx, obj1, v).isValid should be(true)
+    }
 
-     it("Should not validate value string") {
-     val ctx = Context.emptyContext
-     val obj1: RDFNode = IntegerLiteral(23)
-     val v: ValueClass = typeXsdString
-     matchValue(ctx,obj1,v).isValid should be(false)
-   }
-     
-   it("Should validate exclusion with a different value") {
-     val ctx = Context.emptyContext
-     val obj1: RDFNode = IRI("b")
-     val v: ValueClass = ValueSet(Seq(NoObject(RDFNodeObject(IRI("a"))))) 
-     matchValue(ctx,obj1,v).isValid should be(true)
-   }
+    it("Should not validate value string") {
+      val ctx = Context.emptyContext
+      val obj1: RDFNode = IntegerLiteral(23)
+      val v: ValueClass = typeXsdString
+      matchValue(ctx, obj1, v).isValid should be(false)
+    }
 
-   it("Should not validate exclusion with a different value") {
-     val ctx = Context.emptyContext
-     val obj1: RDFNode = IRI("b")
-     val v: ValueClass = ValueSet(Seq(NoObject(RDFNodeObject(IRI("b"))))) 
-     matchValue(ctx,obj1,v).isValid should be(false)
-   }
+    it("Should validate exclusion with a different value") {
+      val ctx = Context.emptyContext
+      val obj1: RDFNode = IRI("b")
+      val v: ValueClass = ValueSet(Seq(NoObject(RDFNodeObject(IRI("a")))))
+      matchValue(ctx, obj1, v).isValid should be(true)
+    }
+
+    it("Should not validate exclusion with a different value") {
+      val ctx = Context.emptyContext
+      val obj1: RDFNode = IRI("b")
+      val v: ValueClass = ValueSet(Seq(NoObject(RDFNodeObject(IRI("b")))))
+      matchValue(ctx, obj1, v).isValid should be(false)
+    }
+  }
 }
-}
- 
+
