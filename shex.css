@@ -9,7 +9,7 @@ img.logo {
 }
 
 img.logo:hover {
-/* transform: rotate(180deg); */
+ transform: rotate(180deg); 
 }
 
 body {
