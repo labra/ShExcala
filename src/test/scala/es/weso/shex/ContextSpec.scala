@@ -6,8 +6,7 @@ import org.scalatest.prop.Checkers
 import es.weso.shex.Typing._
 import Stream._
 import es.weso.rdfgraph.nodes._
-import es.weso.rdf.RDFTriples
-import es.weso.rdf.RDF
+import es.weso.rdf._
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.rdf.PrefixMap
 import es.weso.shex.ShapeSyntax._
@@ -20,7 +19,7 @@ class ContextSpec
   describe("Context") {
 
     it("Should return IRIs of two triples") {
-      val rdf: RDF =
+      val rdf: RDFReader =
         RDFTriples(triples = Set(RDFTriple(IRI("a"), IRI("p"), IRI("x")), RDFTriple(IRI("a"), IRI("q"), IRI("x"))
         ), pm = PrefixMap.empty
         )

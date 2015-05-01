@@ -1,14 +1,14 @@
 package es.weso.shex
 
 import es.weso.monads._
-import es.weso.rdf.RDF
+import es.weso.rdf._
 import es.weso.shex.ShapeSyntax._
 import es.weso.rdfgraph.nodes._
 import java.lang._
 import es.weso.utils.Logging
 
 case class Matcher(
-    schema: Schema, rdf: RDF, validateIncoming: Boolean = false, withAny: Boolean = false, validator: ShapeValidator = ShapeValidatorWithDeriv) extends Logging {
+    schema: Schema, rdf: RDFReader, validateIncoming: Boolean = false, withAny: Boolean = false, validator: ShapeValidator = ShapeValidatorWithDeriv) extends Logging {
 
   val subjects: List[IRI] = rdf.subjects.toList
 

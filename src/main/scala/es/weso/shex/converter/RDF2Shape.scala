@@ -1,4 +1,4 @@
-package es.weso.shex.conversion
+package es.weso.shex.converter
 
 import es.weso.shex.ShapeSyntax._
 import es.weso.rdfgraph.nodes._

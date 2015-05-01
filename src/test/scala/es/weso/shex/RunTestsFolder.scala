@@ -10,7 +10,7 @@ import com.hp.hpl.jena.rdf.model.Resource
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import scala.io.Source._
-import es.weso.jena.JenaMapper
+import es.weso.rdf.jena.JenaMapper
 import com.hp.hpl.jena.rdf.model.Property
 import es.weso.parser.TurtleParser
 import java.io.IOException

@@ -9,7 +9,7 @@ import com.typesafe.config._
 import es.weso.monads.Result._
 import es.weso.monads.Result
 import es.weso.rdf._
-import es.weso.rdf.reader._
+import es.weso.rdf.jena._
 import es.weso.rdfgraph.nodes.IRI
 import es.weso.shex.ShapeDoc._
 import es.weso.shex.ShapeSyntax._
@@ -210,7 +210,7 @@ object Main extends App with Logging {
     println("** Max Memory:   " + runtime.maxMemory / mb)
   }
 
-  private def getRDFFromTurtle(fileName: String): Try[RDF] = {
+  private def getRDFFromTurtle(fileName: String): Try[RDFReader] = {
     for (
       cs <- getContents(fileName); triples <- RDFTriples.parse(cs)
     ) yield {
@@ -229,7 +229,7 @@ object Main extends App with Logging {
       sys.exit(1)
   }
 
-  def validateSchema(rdf: RDF, opts: Opts): Try[(Result[Typing], PrefixMap)] = {
+  def validateSchema(rdf: RDFReader, opts: Opts): Try[(Result[Typing], PrefixMap)] = {
     for (
       (schema, pm) <- Schema.fromFile(opts.schema())
     ) yield {

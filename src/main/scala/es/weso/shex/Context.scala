@@ -11,7 +11,7 @@ import es.weso.rdfgraph.nodes.RDFNode
 import es.weso.rdf.PrefixMap
 
 case class Context(
-    rdf: RDF, shEx: ShEx, typing: Typing, pm: PrefixMap, validateIncoming: Boolean = false) {
+    rdf: RDFReader, shEx: ShEx, typing: Typing, pm: PrefixMap, validateIncoming: Boolean = false) {
 
   val log = LoggerFactory.getLogger("Context")
 
