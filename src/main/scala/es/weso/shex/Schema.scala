@@ -5,6 +5,7 @@ import es.weso.rdfgraph._
 import es.weso.rdf._
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.ShapeParser._
+import es.weso.shex.PREFIXES._
 import scala.util.parsing.input.Positional
 import scala.util.{ Try, Success, Failure }
 import es.weso.monads.Result
@@ -29,7 +30,8 @@ case class Schema(
   }
 
   def addAny: Schema =
-    this.copy(pm = pm.addPrefix("shex", ShapeSyntax.shex_IRI), shEx = shEx.copy(rules = shEx.rules :+ ShapeSyntax.anyShape)
+    this.copy(pm = pm.addPrefix("shex", sh_IRI),
+      shEx = shEx.copy(rules = shEx.rules :+ ShapeSyntax.anyShape)
     )
 
 }

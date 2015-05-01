@@ -10,6 +10,7 @@ import org.scalatest.prop.Checkers
 import es.weso.shex.Typing._
 import es.weso.shex.Context._
 import es.weso.rdf._
+import es.weso.shex.PREFIXES._
 
 class ShapeValidatorSpec
     extends FunSpec
@@ -20,7 +21,7 @@ class ShapeValidatorSpec
   describe("Shape Validator with Types") {
     it("Should validate type IRI") {
       val obj: RDFNode = IRI("a")
-      val vtype: RDFNode = shex_IRI
+      val vtype: RDFNode = sh_IRI
       matchType(obj, vtype).run should be(Stream(true))
     }
 
@@ -367,7 +368,7 @@ class ShapeValidatorSpec
 
   it("should validate iri") {
     val ctx = emptyContext
-    val strShape = "<a> { <p> <http://www.w3.org/2013/ShEx/ns#IRI> }"
+    val strShape = "<a> { <p> <http://www.w3.org/ns/shacl/core#IRI> }"
     val strRDF = "<x> <p> <i> ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get

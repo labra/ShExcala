@@ -5,6 +5,7 @@ import es.weso.rdfgraph._
 import es.weso.rdf._
 import scala.util.parsing.input.Positional
 import scala.util.matching.Regex
+import es.weso.shex.PREFIXES._
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
@@ -138,34 +139,17 @@ def range(m:Int,n:Int)(r:Rule): Rule = {
 
   }
 
-  lazy val foaf = "http://xmlns.com/foaf/0.1/"
-  lazy val xsd = "http://www.w3.org/2001/XMLSchema#"
-  lazy val rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  lazy val shex = "http://www.w3.org/2013/ShEx/ns#"
-  lazy val shex_IRI = IRI(shex + "IRI")
-  lazy val shex_NonIRI = IRI(shex + "NonIRI")
-  lazy val shex_Literal = IRI(shex + "Literal")
-  lazy val shex_NonLiteral = IRI(shex + "NonLiteral")
-  lazy val shex_BNode = IRI(shex + "BNode")
-  lazy val shex_NonBNode = IRI(shex + "NonBNode")
-  lazy val rdf_langString = IRI(rdf + "langString")
-  lazy val shex_Any = IRI(shex + "Any")
-  lazy val xsd_string = IRI(xsd + "string")
-  lazy val xsd_integer = IRI(xsd + "integer")
-  lazy val xsd_double = IRI(xsd + "double")
-  lazy val rdf_type = IRI(rdf + "type")
+  lazy val typeShLiteral = ValueType(v = sh_Literal)
+  lazy val typeShIRI = ValueType(v = sh_IRI)
+  lazy val typeShBNode = ValueType(v = sh_BNode)
 
-  lazy val typeShexLiteral = ValueType(v = shex_Literal)
-  lazy val typeShexIRI = ValueType(v = shex_IRI)
-  lazy val typeShexBNode = ValueType(v = shex_BNode)
-
-  lazy val typeShexNonLiteral = ValueType(v = shex_NonLiteral)
-  lazy val typeShexNonIRI = ValueType(v = shex_NonIRI)
-  lazy val typeShexNonBNode = ValueType(v = shex_NonBNode)
+  lazy val typeShexNonLiteral = ValueType(v = sh_NonLiteral)
+  lazy val typeShexNonIRI = ValueType(v = sh_NonIRI)
+  lazy val typeShexNonBNode = ValueType(v = sh_NonBNode)
 
   lazy val typeXsdString = ValueType(v = xsd_string)
 
-  lazy val anyShape = Shape(label = IRILabel(shex_Any), rule = AnyRule
+  lazy val anyShape = Shape(label = IRILabel(sh_Any), rule = AnyRule
   )
 
   def matchStems(stems: Set[IRIStem], node: RDFNode): Boolean = {

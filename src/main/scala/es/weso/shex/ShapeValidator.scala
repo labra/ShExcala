@@ -5,6 +5,7 @@ import es.weso.rdfgraph._
 import es.weso.rdfgraph.statements._
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.Typing._
+import es.weso.shex.PREFIXES._
 import es.weso.monads.Result._
 import es.weso.monads.Result
 import es.weso.rdf.PrefixMap
@@ -154,23 +155,23 @@ trait ShapeValidator extends Logging {
     log.debug("MatchType: " + obj + " ~ " + vtype)
     obj match {
       case lit: Literal => {
-        if (vtype == shex_Literal ||
-          vtype == shex_NonIRI ||
-          vtype == shex_NonBNode ||
+        if (vtype == sh_Literal ||
+          vtype == sh_NonIRI ||
+          vtype == sh_NonBNode ||
           lit.dataType == vtype) {
           unit(true)
         } else unit(false)
       }
       case iri: IRI => {
-        if (vtype == shex_IRI ||
-          vtype == shex_NonLiteral ||
-          vtype == shex_NonBNode) unit(true)
+        if (vtype == sh_IRI ||
+          vtype == sh_NonLiteral ||
+          vtype == sh_NonBNode) unit(true)
         else unit(false)
       }
       case bnode: BNodeId =>
-        if (vtype == shex_BNode ||
-          vtype == shex_NonIRI ||
-          vtype == shex_NonLiteral) unit(true)
+        if (vtype == sh_BNode ||
+          vtype == sh_NonIRI ||
+          vtype == sh_NonLiteral) unit(true)
         else unit(false)
     }
 

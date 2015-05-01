@@ -9,6 +9,7 @@ import Document._
 import es.weso.rdf._
 import arq.iri
 import org.slf4j.LoggerFactory
+import es.weso.shex.PREFIXES._
 
 case class ShapeDoc(prefixMap: PrefixMap) {
 

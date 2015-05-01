@@ -3,6 +3,7 @@ package es.weso.shex
 import es.weso.shex.ShapeSyntax._
 import es.weso.parser._
 import es.weso.rdf._
+import es.weso.shex.PREFIXES._
 import scala.util.parsing.combinator.RegexParsers
 import scala.util.parsing.input._
 import scala.util.parsing.input.Positional
@@ -252,9 +253,9 @@ trait ShapeParser
     (opt(WS) ~> iri(s.namespaces) <~ opt(WS) ^^ {
       case iri => (ValueType(iri), s)
     }
-      | ignorecase("Literal") ^^^ { (typeShexLiteral, s) }
-      | ignorecase("IRI") ^^^ { (typeShexIRI, s) }
-      | ignorecase("BNode") ^^^ { (typeShexBNode, s) }
+      | ignorecase("Literal") ^^^ { (typeShLiteral, s) }
+      | ignorecase("IRI") ^^^ { (typeShIRI, s) }
+      | ignorecase("BNode") ^^^ { (typeShBNode, s) }
       | ignorecase("NonLiteral") ^^^ { (typeShexNonLiteral, s) }
       | ignorecase("NonIRI") ^^^ { (typeShexNonIRI, s) }
       | ignorecase("NonBNode") ^^^ { (typeShexNonLiteral, s) }

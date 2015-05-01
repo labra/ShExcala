@@ -8,6 +8,7 @@ import es.weso.rdfgraph._
 import es.weso.shex.ShapeDoc._
 import es.weso.shex.ShapeSyntax._
 import scala.Either._
+import es.weso.shex.PREFIXES._
 
 class ShapeParserSuite extends ShapeParser
     with FunSpecLike
@@ -129,7 +130,7 @@ class ShapeParserSuite extends ShapeParser
         val shape: ArcRule = ArcRule(
           id = None,
           n = NameTerm(IRI(ex + "a")),
-          v = ValueType(IRI(xsd + "string")))
+          v = ValueType(xsd_string))
 
         val expected: ShEx = ShEx(
           rules = Seq(Shape(label = IRILabel(IRI("http://example.org/s")),
