@@ -11,6 +11,8 @@ object DataFormats {
     formats.contains(format.toUpperCase)
   }
 
+  def default = "TURTLE"
+  
   lazy val toList: List[String] = formats
 
   override def toString(): String = {
