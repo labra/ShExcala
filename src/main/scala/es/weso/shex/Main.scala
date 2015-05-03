@@ -14,45 +14,79 @@ import es.weso.rdfgraph.nodes.IRI
 import es.weso.shex.ShapeDoc._
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.Typing._
+import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.utils.IO._
 import com.hp.hpl.jena.sparql.procedure.library.debug
-import buildInfo._
+import buildinfo._
 
 class Opts(
     arguments: Array[String],
     onError: (Throwable, Scallop) => Nothing) extends ScallopConf(arguments) {
 
   banner("""| RDF validator using Shape Expressions
-              | Options:
-              |""".stripMargin)
+            | Options:
+            |""".stripMargin)
 
   footer("Enjoy!")
 
   version(BuildInfo.version)
 
-  val turtle = opt[String]("turtle",
+  val data = opt[String]("data",
+    short = 'd',
     required = false,
-    descr = "Turtle RDF Data file")
+    descr = "Data to validate"
+  )
+
+  val data_format = opt[String]("in-data-format",
+    short = 'f',
+    required = false,
+    default = Some("TURTLE"),
+    validate = (x => DataFormats.available(x)),
+    descr = "Input data format. Available values: " + DataFormats.toString
+  )
+
+  val outdata_format = opt[String]("out-data-format",
+    required = false,
+    default = Some("TURTLE"),
+    descr = "Output data format. Available values: " + DataFormats.toString,
+    validate = (x => DataFormats.available(x)),
+    noshort = true
+  )
 
   val endpoint = opt[String]("endpoint",
+    short = 'e',
     required = false,
     descr = "SPARQL endpoint")
 
+  val node = opt[String]("node",
+    short = 'n',
+    required = false,
+    descr = "Node to validate")
+
+  val shape_label = opt[String]("shape",
+    short = 'l',
+    required = false,
+    descr = "Label (IRI) of Shape in Schema")
+
   val schema = opt[String]("schema",
+    short = 's',
     required = false,
     descr = "Schema file")
 
-  val iri = opt[String]("iri",
-    required = false,
-    descr = "IRI to validate")
+  val schema_format = opt[String]("schema-format",
+    short = 'x',
+    default = Some("SHEXC"),
+    descr = "Schema Format. Available values: " + SchemaFormats.toString,
+    validate = (x => SchemaFormats.available(x))
+  )
 
-  val shape = opt[String]("shape",
+  val outschema_format = opt[String]("out-schema-format",
     required = false,
-    descr = "Label of Shape in Schema")
-
-  val syntax = opt[String]("syntax",
-    default = Some("shexc"),
-    descr = "shexc")
+    default = Some("SHEXC"),
+    descr = "Output schema format. Available values: " + SchemaFormats.toString,
+    validate = (x => SchemaFormats.available(x)),
+    noshort = true
+  )
 
   val showSchema = toggle("showSchema",
     prefix = "no-",
@@ -72,23 +106,23 @@ class Opts(
     descrYes = "show memory used",
     descrNo = "don't show memory used")
 
-  val showRDF = toggle("showRDF",
+  val showData = toggle("showData",
     prefix = "no-",
     default = Some(false),
-    descrYes = "show RDF",
-    descrNo = "don't show RDF")
+    descrYes = "show Data",
+    descrNo = "don't show Data")
 
-  val cut = opt[Int](default = Some(1), validate = (0<))
+  val cut = opt[Int](
+    short = 'c',
+    default = Some(1),
+    validate = (0<)
+  )
 
   val withIncoming = toggle("withIncoming",
     prefix = "no-",
     default = Some(false),
     descrYes = "validates with nodes incoming",
     descrNo = "does not validate nodes incoming")
-
-  val sparql = opt[String]("sparql",
-    required = false,
-    descr = "Turtle RDF Data file")
 
   val withAny = toggle("withAny",
     prefix = "no-",
@@ -102,8 +136,11 @@ class Opts(
     descrYes = "with open shapes by default",
     descrNo = "with closed shapes by default")
 
-  val validator = opt[String](default = Some("deriv"),
-    validate = (x => List("deriv", "back").contains(x)))
+  val validator = opt[String](
+    default = Some("DERIV"),
+    descr = "Validation algorithm: DERIV (Derivatives), BACK (Backtracking), SPARQL (By SPARQL queries)",
+    validate = (x => List("DERIV", "BACK", "SPARQL").contains(x.toUpperCase))
+  )
 
   val verbose = toggle("verbose",
     prefix = "no-",
@@ -119,7 +156,7 @@ class Opts(
     noshort = true,
     descr = "Show this message")
 
-  mutuallyExclusive(turtle, endpoint)
+  mutuallyExclusive(data, endpoint)
 
   override protected def onError(e: Throwable) = onError(e, builder)
 }
@@ -142,30 +179,23 @@ object Main extends App with Logging {
       log.debug("...in debug mode")
     }
 
-    val rdf = opts.turtle.get match {
+    val rdf = opts.data.get match {
       case None => opts.endpoint.get match {
         case None => RDFFromWeb()
         case Some(endpoint) => Endpoint(endpoint)
       }
-      case Some(turtleFile) => {
-        log.debug("Reading from file " + turtleFile)
-        val ts = getRDFFromTurtle(turtleFile).get
-        log.debug("# of triples: " + ts.rdfTriples.size)
+      case Some(dataFile) => {
+        log.debug("Reading from file \'" + dataFile + "\'...")
+        val ts = getData(dataFile, opts.data_format()).get
         ts
       }
     }
 
-    if (opts.showRDF()) {
-      println(rdf.serialize("TURTLE"))
+    if (opts.showData()) {
+      println(rdf.serialize(opts.outdata_format()))
     }
 
     val now = getTimeNow()
-
-    if (opts.turtle.isDefined && opts.sparql.isDefined) {
-      val micros = getTimeFrom(now)
-      println(Sparql.query(opts.turtle(), opts.sparql()))
-      if (opts.time()) { showTime(micros) }
-    }
 
     if (opts.schema.isDefined) {
       val result = validateSchema(rdf, opts)
@@ -210,12 +240,12 @@ object Main extends App with Logging {
     println("** Max Memory:   " + runtime.maxMemory / mb)
   }
 
-  private def getRDFFromTurtle(fileName: String): Try[RDFReader] = {
-    for (
-      cs <- getContents(fileName); triples <- RDFTriples.parse(cs)
-    ) yield {
-      triples
-    }
+  private def getData(data: String, format: String): Try[RDFReader] = {
+    log.debug("reading from \'" + data + "\' with format " + format)
+    for {
+      cs <- getContents(data)
+      triples <- RDFAsJenaModel.fromChars(cs, format)
+    } yield { log.debug("After reading " + triples); triples }
   }
 
   private def errorDriver(e: Throwable, scallop: Scallop) = e match {
@@ -231,30 +261,30 @@ object Main extends App with Logging {
 
   def validateSchema(rdf: RDFReader, opts: Opts): Try[(Result[Typing], PrefixMap)] = {
     for (
-      (schema, pm) <- Schema.fromFile(opts.schema())
+      (schema, pm) <- Schema.fromFile(opts.schema(), opts.schema_format())
     ) yield {
 
       log.debug("Got schema. Labels: " + showLabels(schema))
       if (opts.showSchema()) {
-        println(schema.toString())
+        println(schema.serialize(opts.outschema_format()))
       }
 
       val validator =
         opts.validator() match {
-          case "deriv" => ShapeValidatorWithDeriv
-          case "back" => ShapeValidatorBacktracking
+          case "DERIV" => ShapeValidatorWithDeriv
+          case "BACK" => ShapeValidatorBacktracking
         }
 
       val matcher = Matcher(schema, rdf, opts.withIncoming(), opts.withAny(), validator)
 
       val r =
-        if (opts.iri.isSupplied)
-          if (opts.shape.isSupplied)
-            matcher.matchIRI_Label(IRI(opts.iri()))(mkLabel(opts.shape()))
+        if (opts.node.isSupplied)
+          if (opts.shape_label.isSupplied)
+            matcher.matchIRI_Label(IRI(opts.node()))(mkLabel(opts.shape_label()))
           else
-            matcher.matchIRI_AllLabels(IRI(opts.iri()))
-        else if (opts.shape.isSupplied)
-          matcher.matchAllIRIs_Label(mkLabel(opts.shape()))
+            matcher.matchIRI_AllLabels(IRI(opts.node()))
+        else if (opts.shape_label.isSupplied)
+          matcher.matchAllIRIs_Label(mkLabel(opts.shape_label()))
         else
           matcher.matchAllIRIs_AllLabels()
       (r, pm)

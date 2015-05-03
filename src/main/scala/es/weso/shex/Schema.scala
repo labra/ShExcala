@@ -5,12 +5,15 @@ import es.weso.rdfgraph._
 import es.weso.rdf._
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.ShapeParser._
+import es.weso.shex.converter._
+import es.weso.shex.converter._
 import es.weso.shex.PREFIXES._
 import scala.util.parsing.input.Positional
 import scala.util.{ Try, Success, Failure }
 import es.weso.monads.Result
 import org.slf4j._
 import es.weso.utils.IO._
+import es.weso.rdf.jena.RDFAsJenaModel
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
@@ -22,6 +25,16 @@ case class Schema(
 
   override def toString(): String = {
     ShapeDoc.schema2String(this)(pm)
+  }
+
+  def serialize(format: String): String = {
+    format match {
+      case "SHEXC" => toString
+      case x => if (SchemaFormats.available(x)) {
+        val rdf: RDFBuilder = Schema2RDF(this)
+        ???
+      } else "<<Unknown format: " + format + ">>"
+    }
   }
 
   def getLabels(): List[Label] = {
@@ -38,16 +51,27 @@ case class Schema(
 
 object Schema {
 
-  def fromString(cs: CharSequence): Try[(Schema, PrefixMap)] = {
-    ShapeParser.parse(cs) match {
-      case s @ Success(_) => s
-      case Failure(t) => Failure(throw new Exception("Parsing schema: " + t.getMessage))
+  def fromString(cs: CharSequence, format: String = "SHEXC"): Try[(Schema, PrefixMap)] = {
+    format match {
+      case "SHEXC" =>
+        ShapeParser.parse(cs) match {
+          case s @ Success(_) => s
+          case Failure(t) => Failure(throw new Exception("Parsing schema: " + t.getMessage))
+        }
+      case x =>
+        if (SchemaFormats.available(x)) {
+          for {
+            rdf <- RDFAsJenaModel.fromChars(cs, format)
+            (schema, pm) <- RDF2Schema(rdf)
+          } yield (schema, pm)
+        } else
+          Failure(throw new Exception("Unsupported format: " + x))
     }
   }
 
-  def fromFile(fileName: String): Try[(Schema, PrefixMap)] = {
+  def fromFile(fileName: String, format: String): Try[(Schema, PrefixMap)] = {
     for (
-      cs <- getContents(fileName); (schema, prefixMap) <- Schema.fromString(cs)
+      cs <- getContents(fileName); (schema, prefixMap) <- Schema.fromString(cs, format)
     ) yield (schema, prefixMap)
   }
 

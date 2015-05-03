@@ -15,5 +15,5 @@ prefix shex: <http://www.w3.org/2013/ShEx/ns#>
      |                               #  or
        foaf:givenName xsd:string+,   #   one or more givenNames
        foaf:familyName xsd:string)   #   and one familyName.
-	, foaf:mbox shex:IRI              
+	, foaf:mbox IRI              
 }

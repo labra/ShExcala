@@ -24,7 +24,7 @@ case class ShapeDoc(prefixMap: PrefixMap) {
 
   def pmDoc(pm: PrefixMap): Document = {
     pm.pm.foldLeft(empty: Document)(
-      (d, x) => d :/: text("prefix ") :: x._1 :: space ::
+      (d, x) => d :/: text("prefix ") :: x._1 :: text(":") :: space ::
         text("<") :: text(x._2.str) :: text(">")
     )
   }

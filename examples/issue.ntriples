@@ -1,0 +1,4 @@
+<http://example.org/x> <http://example.org/state> <http://example.org/unassigned> .
+<http://example.org/x> <http://example.org/reportedBy> <http://example.org/john> .
+<http://example.org/john> <http://xmlns.com/foaf/0.1/name> "John Smith" .
+<http://example.org/john> <http://xmlns.com/foaf/0.1/mbox> <mailto:john@example.org> .
