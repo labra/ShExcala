@@ -1,32 +1,46 @@
+<!DOCTYPE html>
 <html>
 <head>
 <title>ShExcala</title>
-<link rel="stylesheet" href="shex.css">
+<link rel="stylesheet" media="screen" href="javascript/lib/jquery-ui.min.css">
+<link rel="stylesheet" media="screen" href='javascript/lib/prettify.css'></script>
+
+<script type='text/javascript' src='javascript/lib/jquery.min.js'></script>
+<script type='text/javascript' src='javascript/lib/jquery-ui.min.js'></script>
+
+<link rel="stylesheet" media="screen" href="css/shex.css">
+<link rel="shortcut icon" type="image/png" href="images/shexcala.png">
+
 </head>
-<body>
+
+<body onload="prettyPrint()">
+
 <header>
 <img class="logo"
-     src="logo/shexcala.png" 
+     src="images/shexcala.png" 
 	 width="100px" height="100px" 
 	 alt="Shexcala logo" />
-<h1>ShExcala - Shape Expressions Implementation</h1>
+
+<h1>ShExcala - Scala Implementation of Shape Expressions</h1>
 </header>
 
 <section>
 <h2 id="intro">Introduction</h2>
 <p>ShExcala is an implementation of 
  the <a href="http://www.w3.org/2013/ShEx/">Shape Expressions</a> 
-  language that can describe and validate 
-  the topology of RDF graphs.
+  language that can be used to describe and validate RDF graphs.
 </p>
 
-<p>ShExcala can be used as a standalone command line program and 
+<p>ShExcala can be used as an independent command line tool or 
  as a jar library that can be invoked from Scala or Java programs.</p>
  
 <p>It has been used as the basis of the <a href="http://rdfshape.weso.es">RDFShape</a> online validator tool</p>
 
-You can see more information about how to use ShExcala in <a href="https://github.com/labra/ShExcala/wiki">this link</a>.
+More information is available at <a href="https://github.com/labra/ShExcala/wiki">ShExcala Wiki pages</a>.
 
+</section>
+<section>
+<h2 id="Download">Download</h2>
 
 <ul>
 
@@ -104,7 +118,7 @@ Sept. 2014, Leipzig, Germany,
 <a href="http://www.di.uniovi.es/~labra">Jose Emilio Labra Gayo</a>, 
 <a href="http://www.w3.org/People/Eric/">Eric Prud'hommeaux</a>, 
 <a href="http://www.mayo.edu/research/faculty/solbrig-harold-ralph/bio-20022700">Harold Solbrig</a>, 
-<a href="http://www.josemalvarez.es/"Jose María Álvarez Rodríguez</a>, 
+<a href="http://www.josemalvarez.es/">Jose María Álvarez Rodríguez</a>, 
 <a href="http://ldq.semanticmultimedia.org/">1st Workshop on Linked Data Quality</a>, 
 Sept. 2014, Leipzig, Germany, 
 <a href="papers/ldq2014.pdf">PDF</a> 
@@ -128,6 +142,17 @@ March 23-27, 2015, Brussels, Belgium,
 </ul>
 
 <section>
+<h2 id="Related">Related technologies</h2>
+<ul>
+<li><a href="http://w3c.github.io/data-shapes/data-shapes-primer/">SHACL (Shapes Constraint Language)</a></li>
+<li><a href="http://www.w3.org/2014/data-shapes/wiki/Main_Page">W3c RDF Data Shapes WG</a></li>
+<li><a href="http://www.w3.org/Submission/shapes/">OSLC Resource Shapes</a></li>
+<li><a href="http://spinrdf.org/">SPIN RDF</a></li>
+<li><a href="http://docs.stardog.com/icv/icv-specification.html">Stardog ICV</a></li> 
+</ul>
+</section>
+
+<section>
 <h2 id="credits">Credits</h2>
 <ul>
 <li><a href="http://www.di.uniovi.es/~labra">Jose Emilio Labra Gayo</a>: Scala implementation of ShEx</li>
@@ -135,5 +160,11 @@ March 23-27, 2015, Brussels, Belgium,
 </ul>
 </section>
 
+<footer>
+<div>Developed by: <a href="http://www.weso.es" title="Web Semantics Oviedo">WESO Research Group</a></div>
+</footer>
+<script src="javascript/lang-turtle.js" type="text/javascript"></script>
+<script src="javascript/lang-shex.js" type="text/javascript"></script>
 </body>
 </html>
+
