@@ -11,20 +11,27 @@ import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.shex.PREFIXES._
 import es.weso.rdfgraph.statements.RDFTriple
 
-object Schema2RDF {
-  def toRDF(schema: Schema, rdf: RDFBuilder): RDFBuilder = {
+case class Schema2RDF(rdf:RDFBuilder) extends RDFBuilder {
+  
+  def toRDF(schema: Schema): Schema2RDF = {
     rdf.addPrefixMap(schema.pm)
-    shapes2RDF(schema.shEx, rdf)
+    schema2RDF(schema.shEx, rdf)
   }
 
-  def shapes2RDF(shex: ShEx, current: RDFBuilder): RDFBuilder = {
-    val shapeNode = current.createBNode
-    current.addTriples(Set(RDFTriple(shapeNode, rdf_type, sh_Shape)))
+  def schema2RDF(shex: ShEx, current: RDFBuilder): RDFBuilder = {
+    val schemaNode = current.createBNode
+    addTriple(current, RDFTriple(schemaNode, rdf_type, sh_Shape))
+    rules2RDF(current,shex.rules,schemaNode)
+    start2RDF(cu)
   }
 
   def apply(schema: Schema): RDFBuilder = {
     toRDF(schema, RDFAsJenaModel.empty)
   }
 
+  def addTriple(rdf: RDFBuilder, triple:RDFTriple): RDFBuilder = {
+    rdf.addTriples(Set(triple))
+  }
+  
 }
 
