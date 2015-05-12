@@ -266,7 +266,9 @@ object Main extends App with Logging {
 
       log.debug("Got schema. Labels: " + showLabels(schema))
       if (opts.showSchema()) {
-        println(schema.serialize(opts.outschema_format()))
+        val schemaFormat = opts.outschema_format()
+        println("Schema with format " + schemaFormat)
+        println(schema.serialize(schemaFormat))
       }
 
       val validator =

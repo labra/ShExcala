@@ -13,8 +13,8 @@ import es.weso.shex.PREFIXES._
 object ShapeSyntax {
 
   case class ShEx(rules: Seq[Shape], start: Option[Label])
-      extends Positional // Positional helps Parser Combinators to show positions 
-      {
+      extends Positional // Positional helps Parser Combinators to show positions
+      with SchemaImpl {
 
     def findShape(label: Label): Option[Shape] = {
       val rs = rules.filter(r => r.label == label)

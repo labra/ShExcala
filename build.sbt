@@ -16,7 +16,7 @@ name := "shExcala"
 
 organization := "es.weso"
 
-version := "0.2.2"
+version := "0.2.3"
 
 scalaVersion := "2.11.6"
 
@@ -31,7 +31,7 @@ libraryDependencies ++= Seq(
   , "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test"
   ,	"org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
   , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
-  , "es.weso" % "wesin_2.11" % "0.2.3" excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "es.weso" % "wesin_2.11" % "0.2.4" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
 //  , "org.w3" % "banana-rdf_2.11" % "0.8.1"
 )

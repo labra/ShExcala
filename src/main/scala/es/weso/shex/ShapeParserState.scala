@@ -17,12 +17,19 @@ import es.weso.parser._
 import es.weso.rdf._
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
-import es.weso.shex.ShapeSyntax.Label
 
+/*
+ * State of Shape parser
+ * State is composed of:
+ * - a list of namespaces,
+ * - a list of bNodeLabels 
+ * - a list of starts
+ * - current baseIRI
+ */
 case class ShapeParserState(
     val namespaces: PrefixMap,
     val bNodeLabels: BNodeTable,
-    val starts: List[Label],
+    val starts: List[IRI],
     val baseIRI: IRI) {
 
   def newTable(table: BNodeTable): ShapeParserState =
@@ -44,7 +51,7 @@ case class ShapeParserState(
   def newBase(newIRI: IRI) =
     copy(baseIRI = newIRI)
 
-  def addStart(label: Label) =
+  def addStart(label: IRI) =
     copy(starts = starts :+ label)
 
 }

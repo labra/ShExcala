@@ -5,8 +5,7 @@ import es.weso.shex.ShapeDoc._
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import org.scalatest._
-import org.scalatest.prop.PropertyChecks
-import org.scalatest.prop.Checkers
+import org.scalatest.prop._
 import es.weso.rdf.PrefixMap
 import es.weso.shex.PREFIXES._
 

@@ -12,9 +12,8 @@ import es.weso.rdf._
 import es.weso.shex.Context._
 import org.slf4j._
 import scala.util.matching.Regex
-import es.weso.utils.Logging
-import es.weso.monads.Passed
-import es.weso.monads.Failure
+import es.weso.utils._
+import es.weso.monads._
 
 /**
  * Shape validator using Backtracking

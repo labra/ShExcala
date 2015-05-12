@@ -1,11 +1,11 @@
-package es.weso.shex.converter
+package es.weso.shacl.converter
 
-import es.weso.shex.ShapeSyntax._
+import es.weso.shacl._
+import es.weso.shacl.Shacl._
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import scala.util.Try
 import es.weso.rdf._
-import es.weso.shex._
 import es.weso.rdf.jena._
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.shex.PREFIXES._
@@ -18,31 +18,38 @@ object Schema2RDF extends Logging {
     rdf.addPrefixMap(schema.pm)
     rdf.addPrefix("sh", sh.str)
     rdf.addPrefix("xsd", xsd.str)
-    shEx2RDF(schema.shEx, rdf)
+    shaclSchema2RDF(schema.shaclSchema, rdf)
     rdf
   }
 
-  def shEx2RDF(shex: ShEx, rdf: RDFBuilder): RDFBuilder = {
+  def shaclSchema2RDF(shaclSchema: SHACLSchema, rdf: RDFBuilder): RDFBuilder = {
     val (schemaNode, _) = rdf.createBNode
     rdf.addTriple(RDFTriple(schemaNode, rdf_type, sh_Schema))
-    shapes2RDF(shex.rules, schemaNode, rdf)
-    start2RDF(shex.start, rdf)
+    rules2RDF(shaclSchema.rules, schemaNode, rdf)
+    //    start2RDF(shex.start, rdf)
   }
 
-  def shapes2RDF(shapes: Seq[Shape], schemaNode: RDFNode, rdf: RDFBuilder): RDFBuilder = {
-    for (shape <- shapes) {
-      shape2RDF(shape, schemaNode, rdf)
+  def rules2RDF(
+    rules: Set[Rule],
+    schemaNode: RDFNode,
+    rdf: RDFBuilder): RDFBuilder = {
+    for (rule <- rules) {
+      rule2RDF(rule, schemaNode, rdf)
     }
     rdf
   }
 
-  def shape2RDF(shape: Shape, schemaNode: RDFNode, rdf: RDFBuilder): RDFBuilder = {
-    val labelNode = shape.label.getNode
+  def rule2RDF(
+    rule: Rule,
+    schemaNode: RDFNode,
+    rdf: RDFBuilder): RDFBuilder = {
+    val labelNode = rule.label.getNode
     rdf.addTriple(RDFTriple(labelNode, rdf_type, sh_Shape))
     rdf.addTriple(RDFTriple(labelNode, sh_schema, schemaNode))
-    rule2RDF(shape.rule, labelNode, rdf)
+    //    rule2RDF(rule.rule, labelNode, rdf)
   }
 
+  /*
   def rule2RDF(rule: Rule, label: RDFNode, rdf: RDFBuilder): RDFBuilder = {
     rule match {
       case AndRule(r1, r2) => {
@@ -107,5 +114,5 @@ object Schema2RDF extends Logging {
   def start2RDF(label: Option[Label], rdf: RDFBuilder): RDFBuilder = {
     rdf
   }
-
+*/
 }

@@ -1,13 +1,13 @@
-package es.weso.shex
+package es.weso.shacl
 
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import es.weso.rdf._
-import es.weso.shex.ShapeSyntax._
-import es.weso.shex.ShapeParser._
-import es.weso.shex.converter._
-import es.weso.shex.converter._
+import es.weso.shacl.Shacl._
+import es.weso.shacl.ShaclParser._
+import es.weso.shacl.converter._
 import es.weso.shex.PREFIXES._
+import es.weso.shex._
 import scala.util.parsing.input.Positional
 import scala.util.{ Try, Success, Failure }
 import es.weso.monads._
@@ -20,14 +20,12 @@ import es.weso.rdf.jena.RDFAsJenaModel
  *
  */
 
-trait SchemaImpl
-
 case class Schema(
     pm: PrefixMap,
-    shEx: ShEx) extends Positional {
+    shaclSchema: SHACLSchema) extends Positional {
 
   override def toString(): String = {
-    ShapeDoc.schema2String(this)(pm)
+    ShaclDoc.schema2String(shaclSchema)(pm)
   }
 
   def serialize(format: String): String = {
@@ -42,16 +40,6 @@ case class Schema(
     }
   }
 
-  def getLabels(): List[Label] = {
-    if (shEx.start == None) shEx.rules.map(_.label).toList
-    else List(shEx.start.get)
-  }
-
-  def addAny: Schema =
-    this.copy(pm = pm.addPrefix("shex", sh_IRI),
-      shEx = shEx.copy(rules = shEx.rules :+ ShapeSyntax.anyShape)
-    )
-
 }
 
 object Schema {
@@ -59,7 +47,7 @@ object Schema {
   def fromString(cs: CharSequence, format: String = "SHEXC"): Try[(Schema, PrefixMap)] = {
     format match {
       case "SHEXC" =>
-        ShapeParser.parse(cs) match {
+        ShaclParser.parse(cs) match {
           case s @ Success(_) => s
           case Failure(t) => Failure(throw new Exception("Parsing schema: " + t.getMessage))
         }

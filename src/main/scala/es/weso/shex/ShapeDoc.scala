@@ -15,7 +15,7 @@ case class ShapeDoc(prefixMap: PrefixMap) {
 
   def schemaDoc(s: Schema): Document = {
     pmDoc(s.pm) :/:
-    shExDoc(s.shEx)
+      shExDoc(s.shEx)
   }
 
   def shExDoc(sh: ShEx): Document = {

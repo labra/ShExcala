@@ -45,9 +45,11 @@ trait ShapeParser
   def shExParser(s: ShapeParserState): Parser[(ShEx, ShapeParserState)] =
     opt(WS) ~> repState(s, statement) ^^ {
       case (lsOpt, s1) => {
-        val startLabel = if (s1.starts.isEmpty) None
-        else Some(s1.starts.last)
-        (ShEx(rules = lsOpt.flatten, start = startLabel), s1)
+        val startLabel =
+          if (s1.starts.isEmpty) None
+          else Some(IRILabel(s1.starts.last))
+        (ShEx(rules = lsOpt.flatten,
+          start = startLabel), s1)
       }
     }
 
@@ -67,7 +69,10 @@ trait ShapeParser
 
   def start(s: ShapeParserState): Parser[ShapeParserState] = {
     token("start") ~> opt(WS) ~> "=" ~> opt(WS) ~>
-      (label(s) ^^ { case lbl => s.addStart(lbl) } // TODO: add typeSpec 
+      (label(s) ^^ {
+        case IRILabel(iri) => s.addStart(iri)
+        case _ => ???
+      }
       )
   }
 
