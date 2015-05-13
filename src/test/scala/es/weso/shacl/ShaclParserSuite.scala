@@ -38,6 +38,16 @@ class ShaclParserSuite extends ShaclParser
         result.get._2 should be(state)
       }
 
+      it("Should parse valueClass with qualified value type") {
+        val prefix = "http://example.org/"
+        val localName = "a"
+        val alias = "ex"
+        val str = alias + ":" + localName
+        val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
+        val result = ShaclParser.parse(ShaclParser.valueClass(state), str)
+        result.get._1 should be(LiteralDatatype(IRI(prefix + localName), List()))
+      }
+
     }
   }
 
@@ -154,45 +164,29 @@ class ShaclParserSuite extends ShaclParser
         shouldParseIgnoreState(shExParser, state, str, expected)
       }
 
+    } */
+
+  describe("Shapes") {
+
+    it("Should parse labels") {
+      val state = ShapeParserState.initial
+      val iri = "Label"
+      val str = "<" + iri + ">"
+      val result = ShaclParser.parse(ShaclParser.label(state), str)
+      result.get should be(IRILabel(IRI(iri)))
     }
 
-    describe("Shapes") {
+    it("Should parse qualified labels ") {
+      val prefix = "http://example.org/"
+      val localName = "a"
+      val alias = "ex"
+      val str = alias + ":" + localName
+      val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
+      val result = ShaclParser.parse(ShaclParser.label(state), str)
+      result.get should be(IRILabel(IRI(prefix + localName)))
+    }
 
-      it("Should parse labels") {
-        val state = ShapeParserState.initial
-        val iri = "Label"
-        val str = "<" + iri + ">"
-        val result = ShapeParser.parse(ShapeParser.label(state), str)
-        result.get should be(IRILabel(IRI(iri)))
-      }
-
-      it("Should parse qualified labels ") {
-        val prefix = "http://example.org/"
-        val localName = "a"
-        val alias = "ex"
-        val str = alias + ":" + localName
-        val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
-        val result = ShapeParser.parse(ShapeParser.label(state), str)
-        result.get should be(IRILabel(IRI(prefix + localName)))
-      }
-
-      it("Should parse openParen") {
-        val str = "("
-        val result = ShapeParser.parse(ShapeParser.openParen, str)
-        result.get should be("(")
-      }
-
-      it("Should parse fixedValues with qualified value type") {
-        val prefix = "http://example.org/"
-        val localName = "a"
-        val alias = "ex"
-        val str = alias + ":" + localName
-        val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
-        val result = ShapeParser.parse(ShapeParser.fixedValues(state), str)
-        result.get._1 should be(ValueType(IRI(prefix + localName)))
-      }
-
-      /*     it("Should parse fixedValues with a set of one qualified value") {
+    /*     it("Should parse fixedValues with a set of one qualified value") {
        val prefix = "http://example.org/"
        val a = "a"
        val alias = "ex"
@@ -213,15 +207,15 @@ class ShaclParserSuite extends ShaclParser
        result.get._1 should be (ValueSet(Seq(IRI(prefix + a), IRI(prefix + b))))
      } */
 
-      it("Should parse fixedValues with a reference ") {
+    /*      it("Should parse fixedValues with a reference ") {
         val label = "http://example.org/a"
         val str = "@<" + label + ">"
         val state = ShapeParserState.initial
         val result = ShapeParser.parse(ShapeParser.fixedValues(state), str)
         result.get._1 should be(ValueReference(IRILabel(IRI(label))))
-      }
+      } */
 
-      it("Should parse nameClassAndValue - single iri ") {
+    /*      it("Should parse nameClassAndValue - single iri ") {
         val prefix = "http://example.org/"
         val a = "a"
         val b = "b"
@@ -259,27 +253,33 @@ class ShaclParserSuite extends ShaclParser
           n = NameTerm(IRI(prefix + a)),
           v = ValueType(IRI(prefix + b)))
         result.get._1 should be(expected)
-      }
+      } */
 
-      it("Should parse a single shape") {
-        val prefix = "http://example.org/"
-        val a = "a"
-        val b = "b"
-        val c = "c"
-        val alias = "ex"
-        val str = alias + ":" + a + " [ " + alias + ":" + b + " " + alias + ":" + c + " ]"
-        val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
-        val result = ShapeParser.parse(ShapeParser.shape(state), str)
-        val expected: Shape =
-          Shape(label = IRILabel(IRI(prefix + a)),
-            rule = ArcRule(id = None,
-              n = NameTerm(IRI(prefix + b)),
-              v = ValueType(IRI(prefix + c)))
-          )
-        result.get._1 should be(expected)
-      }
+    it("Should parse a single shape") {
+      val prefix = "http://example.org/"
+      val a = "a"
+      val b = "b"
+      val c = "c"
+      val alias = "ex"
+      val str = alias + ":" + a + " { " + alias + ":" + b + " " + alias + ":" + c + " }"
+      val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
+      val expected: Rule =
+        Rule(label = IRILabel(IRI(prefix + a)),
+          shapeDefinition =
+            OpenShape(id = None,
+              shape = TripleConstraint(
+                id = None,
+                iri = IRI(prefix + b),
+                value = LiteralDatatype(IRI(prefix + c), List()),
+                card = defaultCardinality
+              ),
+              inclPropSet = Set()),
+          extensionCondition = List()
+        )
+      shouldParseIgnoreState(rule, state, str, expected)
+    }
 
-      it("Should parse several shapes") {
+    /*    it("Should parse several shapes") {
         val prefix = "http://example.org/"
         val a = "a"
         val b = "b"
@@ -542,6 +542,8 @@ class ShaclParserSuite extends ShaclParser
 
   }
 */
+  }
+
   def shouldParse[A](p: Parser[A], s: String, a: A) {
     val result = parseAll(p, s) match {
       case Success(x, _) => x

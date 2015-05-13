@@ -95,7 +95,23 @@ trait ShaclParser
   }
 
   def shapeDefinition(s: ShapeParserState): Parser[(ShapeDefinition, ShapeParserState)] =
+    closedShapeDefinition(s) | openShapeDefinition(s)
+
+  def closedShapeDefinition(s: ShapeParserState): Parser[(ShapeDefinition, ShapeParserState)] =
+    ignorecase("CLOSED") ~> typeSpec(s) ^^ {
+      case (shape, s1) => (ClosedShape(None, shape), s1)
+    }
+
+  def openShapeDefinition(s: ShapeParserState): Parser[(ShapeDefinition, ShapeParserState)] = {
+    // inclPropSet ~ 
+    typeSpec(s) ^^ {
+      case (shape, s1) => (OpenShape(None, shape, emptyInclPropSet), s1)
+    }
+  }
+
+  /*  def inclPropSet(s: ShapeParserState): Parser[(Set[IRI], ShapeParserState)] = {
     ???
+  } */
 
   def typeSpec(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
     "{" ~> opt(WS) ~> opt(choiceExpr(s)) <~ opt(WS) <~ "}" ^^
@@ -110,10 +126,8 @@ trait ShaclParser
       repS(arrowState(choiceExpr, symbol("|")))
     )(s) ^^
       {
-        case (shape ~ shapes, s1) => (
-          OneOfShape(shape :: shapes),
-          s1
-        )
+        case (shape ~ List(), s1) => (shape, s1)
+        case (shape ~ shapes, s1) => (OneOfShape(shape :: shapes), s1)
       }
 
   }
@@ -123,10 +137,8 @@ trait ShaclParser
       repS(arrowState(sequenceExpr, symbol(",")))
     )(s) ^^
       {
-        case (shape ~ shapes, s1) => (
-          GroupShape(shape :: shapes),
-          s1
-        )
+        case (shape ~ List(), s1) => (shape, s1)
+        case (shape ~ shapes, s1) => (GroupShape(shape :: shapes), s1)
       }
   }
 
@@ -146,7 +158,7 @@ trait ShaclParser
   def cardinality: Parser[Cardinality] =
     opt(repeatCount) ^^ {
       case Some(c) => c
-      case None => UnboundedCardinalityFrom(1)
+      case None => defaultCardinality
     }
 
   def valueClass(s: ShapeParserState): Parser[(ValueClass, ShapeParserState)] = {

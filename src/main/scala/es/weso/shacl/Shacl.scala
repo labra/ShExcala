@@ -171,4 +171,6 @@ object Shacl {
   lazy val star = UnboundedCardinalityFrom(0)
   lazy val plus = UnboundedCardinalityFrom(1)
   lazy val optional = RangeCardinality(0, 1)
+  lazy val defaultCardinality = UnboundedCardinalityFrom(1)
+  lazy val emptyInclPropSet: Set[IRI] = Set()
 }
