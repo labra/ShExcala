@@ -30,7 +30,7 @@ object Schema2RDF extends Logging {
   }
 
   def rules2RDF(
-    rules: Set[Rule],
+    rules: Seq[Rule],
     schemaNode: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
     for (rule <- rules) {

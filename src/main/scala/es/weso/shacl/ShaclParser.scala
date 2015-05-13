@@ -39,7 +39,7 @@ trait ShaclParser
   def schemaParser(s: ShapeParserState): Parser[(Schema, ShapeParserState)] =
     shaclSchemaParser(s) <~ opt(WS) ^^
       { case (shaclSchema, s) => (Schema(s.namespaces, shaclSchema), s) }
-    
+
   def shaclSchemaParser(s: ShapeParserState): Parser[(SHACLSchema, ShapeParserState)] =
     opt(WS) ~> repState(s, statement) ^^ {
       case (lsOpt, s1) => {
@@ -47,21 +47,21 @@ trait ShaclParser
           if (s1.starts.isEmpty) None
           else Some(IRILabel(s1.starts.last))
         (SHACLSchema(
-            id = None,
-            rules = lsOpt.flatten,
-            start = startLabel), s1)
+          id = None,
+          rules = lsOpt.flatten,
+          start = startLabel), s1)
       }
-    } 
-    
-    def statement(s: ShapeParserState): Parser[(Option[Rule], ShapeParserState)] =
+    }
+
+  def statement(s: ShapeParserState): Parser[(Option[Rule], ShapeParserState)] =
     (directive(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
       | rule(s) ^^ { case (rule, s1) => (Some(rule), s1) }
       | start(s) ^^ { case s1 => (None, s1) }
     )
 
   def directive(s: ShapeParserState): Parser[ShapeParserState] =
-    ( prefixDirective(s)
-    | baseDirective(s)
+    (prefixDirective(s)
+      | baseDirective(s)
     )
 
   def start(s: ShapeParserState): Parser[ShapeParserState] = {
@@ -87,16 +87,16 @@ trait ShaclParser
 
   def rule(s: ShapeParserState): Parser[(Rule, ShapeParserState)] =
     opt(WS) ~> label(s) ~ (opt(WS) ~> shapeDefinition(s)) ^^
-      { case (l ~ next) => (Rule(l, next._1,noExtension), next._2) }
-  
+      { case (l ~ next) => (Rule(l, next._1, noExtension), next._2) }
+
   def label(s: ShapeParserState): Parser[Label] = {
-     iri(s.namespaces) ^^ { case iri => IRILabel(iri) }
+    iri(s.namespaces) ^^ { case iri => IRILabel(iri) }
     // TODO: Add possibility of BNode
   }
 
   def shapeDefinition(s: ShapeParserState): Parser[(ShapeDefinition, ShapeParserState)] =
-     ???
-     
+    ???
+
   def typeSpec(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
     "{" ~> opt(WS) ~> opt(choiceExpr(s)) <~ opt(WS) <~ "}" ^^
       {
@@ -107,7 +107,7 @@ trait ShaclParser
 
   def choiceExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
     seqState(sequenceExpr,
-             repS(arrowState(choiceExpr,symbol("|")))
+      repS(arrowState(choiceExpr, symbol("|")))
     )(s) ^^
       {
         case (shape ~ shapes, s1) => (
@@ -115,12 +115,12 @@ trait ShaclParser
           s1
         )
       }
-    
+
   }
-     
+
   def sequenceExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
     seqState(unaryExpr,
-             repS(arrowState(sequenceExpr,symbol(",")))
+      repS(arrowState(sequenceExpr, symbol(",")))
     )(s) ^^
       {
         case (shape ~ shapes, s1) => (
@@ -129,36 +129,67 @@ trait ShaclParser
         )
       }
   }
-  
-def unaryExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
-    ( arc(s)
-    | symbol("(") ~> choiceExpr(s) <~ symbol(")")  // TODO: add cardinalities to groups?
-    ) 
-}
-    
-def arc(s:ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
-  opt(symbol("^")) ~ predicate ~ opt(repeatCount) ^^    
-}
 
-def predicate(s: ShapeParserState): Parser[((IRI, ValueClass), ShapeParserState)] =
-  (iri(s.namespaces) ~ fixedValues(s) ^^ {
-      case (is ~ ((v, s))) => {
-        if (is.isStem) ((NameStem(is), v), s)
-        else ((NameTerm(is.iri), v), s)
-      }
+  def unaryExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
+    (arc(s)
+      | symbol("(") ~> choiceExpr(s) <~ symbol(")") // TODO: add cardinalities to groups?
+    )
+  }
+
+  def arc(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
+    opt(symbol("^")) ~ predicate(s) ~ valueClass(s) ~ cardinality ^^ {
+      case (Some(_) ~ p ~ ((s: ShapeConstr, s1)) ~ c) => (InverseTripleConstraint(None, p, s, c), s1)
+      case (None ~ p ~ ((v: ValueClass, s1)) ~ c) => (TripleConstraint(None, p, v, c), s1)
     }
-| symbol("a") ~> fixedValues(s) ^^ {
-        case (v, s1) => ((NameTerm(rdf_type), v), s1)
-}
-)
+  }
 
+  def cardinality: Parser[Cardinality] =
+    opt(repeatCount) ^^ {
+      case Some(c) => c
+      case None => UnboundedCardinalityFrom(1)
+    }
 
+  def valueClass(s: ShapeParserState): Parser[(ValueClass, ShapeParserState)] = {
+    (ignorecase("LITERAL") ^^^ (LiteralKind, s)
+      | ignorecase("IRI") ^^^ (IRIKind, s)
+      | ignorecase("BNODE") ^^^ (BNodeKind, s)
+      | ignorecase("NONLITERAL") ^^^ (NonLiteralKind, s)
+      | opt(WS) ~> iri(s.namespaces) ~ xsfacets(s) <~ opt(WS) ^^ {
+        case iri ~ facets => (LiteralDatatype(iri, facets), s)
+      }
+    )
+  }
 
-def repeatCount: Parser[Cardinality] = {
-    ( symbol("*") ^^^ star 
-    | symbol("+") ^^^ plus
-    | symbol("?") ^^^ optional
-    | symbol("{") ~> integer ~
+  def xsfacets(s: ShapeParserState): Parser[Seq[XSFacet]] = {
+    repsep(xsfacet(s), WS)
+  }
+
+  def xsfacet(s: ShapeParserState): Parser[XSFacet] = {
+    ((ignorecase("PATTERN") ~> regexChars) ^^ {
+      case regex => Pattern(regex)
+    }
+      | ignorecase("MININCLUSIVE") ~> integer ^^ { case n => MinInclusive(n) }
+      | ignorecase("MINEXCLUSIVE") ~> integer ^^ { case n => MinExclusive(n) }
+      | ignorecase("MAXINCLUSIVE") ~> integer ^^ { case n => MaxInclusive(n) }
+      | ignorecase("MAXEXCLUSIVE") ~> integer ^^ { case n => MaxExclusive(n) }
+      | ignorecase("LENGTH") ~> integer ^^ { case n => Length(n) }
+      | ignorecase("MINLENGTH") ~> integer ^^ { case n => MinLength(n) }
+      | ignorecase("MAXLENGTH") ~> integer ^^ { case n => MaxLength(n) }
+      | ignorecase("TOTALDIGITS") ~> integer ^^ { case n => TotalDigits(n) }
+      | ignorecase("FRACTIONDIGITS") ~> integer ^^ { case n => FractionDigits(n) }
+    )
+  }
+
+  def predicate(s: ShapeParserState): Parser[IRI] =
+    (iri(s.namespaces)
+      | symbol("a") ^^^ rdf_type
+    )
+
+  def repeatCount: Parser[Cardinality] = {
+    (symbol("*") ^^^ star
+      | symbol("+") ^^^ plus
+      | symbol("?") ^^^ optional
+      | symbol("{") ~> integer ~
       opt(symbol(",") ~> integer) <~ symbol("}") ^^
       {
         case m ~ maybeN =>
@@ -173,11 +204,19 @@ def repeatCount: Parser[Cardinality] = {
     )
   }
 
-def dot = symbol(".")
+  def dot = symbol(".")
 
-def integer: Parser[Int] = {
+  def integer: Parser[Int] = {
     """\d\d*""".r ^^ (s => s.toInt)
-}
+  }
+
+  def regexChars: Parser[Regex] = {
+    "/" ~> acceptRegex("regex", """[a-zA-Z0-9\.\+\*\(\)\[\]\-\{\}]*""".r) <~ "/" ^^ {
+      case str => {
+        str.r
+      }
+    }
+  }
 
   // Parsing symbols skipping spaces...
   // TODO: should refactor to other file 

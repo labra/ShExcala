@@ -24,14 +24,14 @@ case class ShaclDoc(prefixMap: PrefixMap) {
     )
   }
 
-  def rulesDoc(rules: Set[Rule]): Document = {
-    setDocWithSep(rules, "\n", ruleDoc)
+  def rulesDoc(rules: Seq[Rule]): Document = {
+    seqDocWithSep(rules, "\n", ruleDoc)
   }
 
   def ruleDoc(rule: Rule): Document = {
     labelDoc(rule.label) ::
       shapeDefinitionDoc(rule.shapeDefinition) ::
-      extensionConditionDoc(rule.extensionCondition)
+      extensionConditionsDoc(rule.extensionCondition)
   }
 
   def shapeDefinitionDoc(shapeDefn: ShapeDefinition): Document = {
@@ -59,35 +59,59 @@ case class ShaclDoc(prefixMap: PrefixMap) {
 
   def shapeExprDoc(s: ShapeExpr): Document = {
     s match {
-      case t: TripleConstraintValue => tripleConstraintValueDoc(t)
-      case t: TripleConstraintShape => tripleConstraintShapeDoc(t)
+      case t: TripleConstraint => tripleConstraintDoc(t)
       case t: InverseTripleConstraint => inverseTripleConstraintDoc(t)
     }
   }
 
-  def tripleConstraintValueDoc(t: TripleConstraintValue): Document = {
-    iriDoc(t.iri) :: space :: valueDoc(t.value) :: cardDoc(t.card)
-  }
-
-  def tripleConstraintShapeDoc(t: TripleConstraintShape): Document = {
-    iriDoc(t.iri) :: space :: shapeDoc(t.shape) :: cardDoc(t.card)
+  def tripleConstraintDoc(t: TripleConstraint): Document = {
+    iriDoc(t.iri) :: space :: valueClassDoc(t.value) :: cardDoc(t.card)
   }
 
   def inverseTripleConstraintDoc(t: InverseTripleConstraint): Document = {
     "^" :: iriDoc(t.iri) :: space :: shapeDoc(t.shape) :: cardDoc(t.card)
   }
 
+  def extensionConditionsDoc(es: Seq[ExtensionCondition]): Document = {
+    seqDocWithSep(es, "\n", extensionConditionDoc)
+  }
+
   def extensionConditionDoc(e: ExtensionCondition): Document = {
     "%" :: labelDoc(e.extLangName) :: "{" :: text(e.extDefinition) :: text("}")
   }
 
+  def valueClassDoc(v: ValueClass): Document = {
+    v match {
+      case vc: ValueConstr => valueDoc(vc)
+      case sc: ShapeConstr => shapeDoc(sc)
+    }
+  }
+
   def valueDoc(v: ValueConstr): Document = {
     v match {
-      case LiteralDatatype(v, None) => rdfNodeDoc(v)
-      case LiteralDatatype(v, Some(f)) => ???
+      case LiteralDatatype(v, facets) => rdfNodeDoc(v) :: facetsDoc(facets)
       case ValueSet(s) => "(" ::
         nest(3, seqDocWithSep(s, " ", valueObjectDoc)) :: text(")")
       case n: NodeKind => text(n.token)
+    }
+  }
+
+  def facetsDoc(facets: Seq[XSFacet]): Document = {
+    seqDocWithSep(facets, " ", facetDoc)
+  }
+
+  def facetDoc(facet: XSFacet): Document = {
+    facet match {
+      case Pattern(regex) => "PATTERN " :: text(regex.toString)
+      case MinInclusive(n) => "MININCLUSIVE " :: text(n.toString)
+      case MaxInclusive(n) => "MAXINCLUSIVE " :: text(n.toString)
+      case MaxExclusive(n) => "MINEXCLUSIVE " :: text(n.toString)
+      case MaxExclusive(n) => "MAXEXCLUSIVE " :: text(n.toString)
+      case Length(n) => "LENGTH " :: text(n.toString)
+      case MinLength(n) => "MINLENGTH " :: text(n.toString)
+      case MaxLength(n) => "MAXLENGTH " :: text(n.toString)
+      case TotalDigits(n) => "TOTALDIGITS " :: text(n.toString)
+      case FractionDigits(n) => "FRACTIONDIGITS " :: text(n.toString)
     }
   }
 
@@ -102,7 +126,7 @@ case class ShaclDoc(prefixMap: PrefixMap) {
   def cardDoc(v: Cardinality): Document = {
     v match {
       case RangeCardinality(m, n) => "{" :: m.toString :: "," :: n.toString :: text("}")
-      case UnboundedCardinality(m) =>
+      case UnboundedCardinalityFrom(m) =>
         m match {
           case 0 => text("*")
           case 1 => text("+")

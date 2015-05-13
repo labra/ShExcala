@@ -47,17 +47,10 @@ object Shacl {
 
   sealed trait ShapeExpr extends Positional
 
-  case class TripleConstraintValue(
+  case class TripleConstraint(
     id: Option[Label],
     iri: IRI,
-    value: ValueConstr,
-    card: Cardinality)
-      extends ShapeExpr
-
-  case class TripleConstraintShape(
-    id: Option[Label],
-    iri: IRI,
-    shape: ShapeConstr,
+    value: ValueClass,
     card: Cardinality)
       extends ShapeExpr
 
@@ -66,6 +59,8 @@ object Shacl {
     iri: IRI,
     shape: ShapeConstr,
     card: Cardinality) extends ShapeExpr
+
+  trait ValueClass extends Positional
 
   case class SomeOfShape(shapes: Seq[ShapeExpr]) extends ShapeExpr
   case class OneOfShape(shapes: Seq[ShapeExpr]) extends ShapeExpr
@@ -88,10 +83,12 @@ object Shacl {
     IRILabel(IRI(str))
   }
 
-  sealed trait ValueConstr extends Positional
+  sealed trait ValueConstr
+    extends ValueClass
+    with Positional
   case class LiteralDatatype(
     v: RDFNode,
-    facet: Option[XSFacet]) extends ValueConstr
+    facets: Seq[XSFacet]) extends ValueConstr
 
   case class ValueSet(s: Seq[ValueObject]) extends ValueConstr
 
@@ -116,8 +113,21 @@ object Shacl {
   }
 
   sealed trait XSFacet extends Positional
+  case class Pattern(regex: Regex) extends XSFacet
+  case class MinInclusive(n: Integer) extends XSFacet
+  case class MinExclusive(n: Integer) extends XSFacet
+  case class MaxInclusive(n: Integer) extends XSFacet
+  case class MaxExclusive(n: Integer) extends XSFacet
+  case class Length(n: Integer) extends XSFacet
+  case class MinLength(n: Integer) extends XSFacet
+  case class MaxLength(n: Integer) extends XSFacet
+  case class TotalDigits(n: Integer) extends XSFacet
+  case class FractionDigits(n: Integer) extends XSFacet
 
-  sealed trait ShapeConstr extends Positional
+  sealed trait ShapeConstr
+    extends ValueClass
+    with Positional
+
   case class DisjShapeConstr(shapes: Set[Label]) extends ShapeConstr
   case class ConjShapeConstr(shapes: Set[Label]) extends ShapeConstr
   case class NotShapeConstr(shape: ShapeConstr) extends ShapeConstr
@@ -156,9 +166,9 @@ object Shacl {
 
   // lazy val NoId : Label = IRILabel(iri = IRI(""))
 
-  lazy val typeXsdString = LiteralDatatype(xsd_string, None)
+  lazy val typeXsdString = LiteralDatatype(xsd_string, List())
   lazy val noExtension: Seq[ExtensionCondition] = List()
   lazy val star = UnboundedCardinalityFrom(0)
   lazy val plus = UnboundedCardinalityFrom(1)
-  lazy val optional = RangeCardinality(0,1)
+  lazy val optional = RangeCardinality(0, 1)
 }
