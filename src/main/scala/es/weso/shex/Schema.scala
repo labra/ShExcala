@@ -15,10 +15,6 @@ import org.slf4j._
 import es.weso.utils.IO._
 import es.weso.rdf.jena.RDFAsJenaModel
 
-/**
- * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
- *
- */
 
 trait SchemaImpl
 

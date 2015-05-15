@@ -53,12 +53,20 @@ object ShapeSyntax {
     override def getNode = iri
   }
 
-  case class BNodeLabel(bnodeId: Int) extends Label {
-    override def getNode = BNodeId(bnodeId)
+  case class BNodeLabel(bnode: BNodeId) extends Label {
+    override def getNode = bnode
   }
 
   def mkLabel(str: String): IRILabel = {
     IRILabel(IRI(str))
+  }
+
+  def mkLabel(node: RDFNode): Label = {
+    node match {
+      case b: BNodeId => BNodeLabel(b)
+      case i: IRI => IRILabel(i)
+      case _ => throw new Exception("Cannot convert node " + node + " to Label")
+    }
   }
 
   sealed trait NameClass

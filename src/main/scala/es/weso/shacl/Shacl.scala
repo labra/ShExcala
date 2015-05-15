@@ -6,6 +6,7 @@ import es.weso.rdf._
 import scala.util.parsing.input.Positional
 import scala.util.matching.Regex
 import es.weso.shex.PREFIXES._
+import util._
 
 /**
  * The following definitions follow: http://w3c.github.io/data-shapes/semantics/
@@ -34,15 +35,15 @@ object Shacl {
     shapeDefinition: ShapeDefinition,
     extensionCondition: Seq[ExtensionCondition]) extends Positional
 
-  sealed trait ShapeDefinition extends Positional
+  sealed trait ShapeDefinition extends Positional {
+    val shape: ShapeExpr
+  }
 
   case class OpenShape(
-    id: Option[Label],
     shape: ShapeExpr,
     inclPropSet: Set[IRI]) extends ShapeDefinition
 
   case class ClosedShape(
-    id: Option[Label],
     shape: ShapeExpr) extends ShapeDefinition
 
   sealed trait ShapeExpr extends Positional
@@ -60,13 +61,15 @@ object Shacl {
     shape: ShapeConstr,
     card: Cardinality) extends ShapeExpr
 
-  trait ValueClass extends Positional
 
   case class SomeOfShape(shapes: Seq[ShapeExpr]) extends ShapeExpr
   case class OneOfShape(shapes: Seq[ShapeExpr]) extends ShapeExpr
   case class GroupShape(shapes: Seq[ShapeExpr]) extends ShapeExpr
   case object EmptyShape extends ShapeExpr
 
+  /**
+   * Labels
+   */
   sealed trait Label {
     def getNode(): RDFNode
   }
@@ -75,13 +78,26 @@ object Shacl {
     override def getNode = iri
   }
 
-  case class BNodeLabel(bnodeId: Int) extends Label {
-    override def getNode = BNodeId(bnodeId)
+  case class BNodeLabel(bnode: BNodeId) extends Label {
+    override def getNode = bnode
   }
 
   def mkLabel(str: String): IRILabel = {
     IRILabel(IRI(str))
   }
+  
+  def mkLabel(node: RDFNode): Label = {
+    node match {
+      case b: BNodeId => BNodeLabel(b)
+      case i: IRI => IRILabel(i)
+      case _ => throw new Exception("Cannot convert node " + node + " to Label")
+    }
+  }
+
+  /**
+   * ValueClass 
+   */
+  trait ValueClass extends Positional
 
   sealed trait ValueConstr
     extends ValueClass
@@ -111,6 +127,16 @@ object Shacl {
   case object NonLiteralKind extends NodeKind {
     override def token = "NonLiteral"
   }
+  
+  def nodeKindfromIRI(iri: IRI): Try[NodeKind] = {
+    iri match {
+      case `sh_IRI` => Success(IRIKind)
+      case `sh_BNode` => Success(BNodeKind)
+      case `sh_Literal` => Success(LiteralKind)
+      case `sh_NonLiteral` => Success(NonLiteralKind)
+      case _ => Failure(new Exception("nodeKindFromIRI: unsupported IRI: " + iri))
+    }
+  }
 
   sealed trait XSFacet extends Positional
   case class Pattern(regex: Regex) extends XSFacet
@@ -128,6 +154,7 @@ object Shacl {
     extends ValueClass
     with Positional
 
+  case class SingleShape(shape: Label) extends ShapeConstr 
   case class DisjShapeConstr(shapes: Set[Label]) extends ShapeConstr
   case class ConjShapeConstr(shapes: Set[Label]) extends ShapeConstr
   case class NotShapeConstr(shape: ShapeConstr) extends ShapeConstr
@@ -172,5 +199,8 @@ object Shacl {
   lazy val plus = UnboundedCardinalityFrom(1)
   lazy val optional = RangeCardinality(0, 1)
   lazy val defaultCardinality = UnboundedCardinalityFrom(1)
+  lazy val emptyFacets : Seq[XSFacet] = Seq() 
+  def defaultMaxCardinality(m:Int) = RangeCardinality(1,m)
+    
   lazy val emptyInclPropSet: Set[IRI] = Set()
 }

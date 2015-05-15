@@ -57,9 +57,9 @@ object Schema2RDF extends Logging {
       }
       case EmptyRule => { rdf }
       case OpenRule(r) => rule2RDF(r, label, rdf)
-      case PlusRule(r) => ???
-      case OptRule(r) => ???
-      case StarRule(r) => ???
+      case PlusRule(r) => throw new Exception("PlusRule not implemented")
+      case OptRule(r) => throw new Exception("OptRule not implemented")
+      case StarRule(r) => throw new Exception("StarRule not implemented")
       case ArcRule(id, n, v) => {
         val arcNode: RDFNode =
           id match {
@@ -76,7 +76,7 @@ object Schema2RDF extends Logging {
   def name2RDF(n: NameClass, arcNode: RDFNode, rdf: RDFBuilder): RDFBuilder = {
     n match {
       case NameTerm(t) => rdf.addTriple(RDFTriple(arcNode, sh_predicate, t))
-      case _ => ???
+      case _ => throw new Exception("name2RDF not implemented")
     }
   }
 
@@ -89,8 +89,8 @@ object Schema2RDF extends Logging {
         }
         rdf
       }
-      case ValueAny(excl) => ???
-      case ValueStem(s) => ???
+      case ValueAny(excl) => throw new Exception("ValueAny not implemented")
+      case ValueStem(s) => throw new Exception("valueStem not implemented")
       case ValueReference(l) => rdf.addTriple(RDFTriple(arcNode, sh_valueShape, l.getNode))
     }
 
@@ -99,7 +99,7 @@ object Schema2RDF extends Logging {
   def valueObject2RDF(vo: ValueObject, arcNode: RDFNode, rdf: RDFBuilder): RDFBuilder = {
     vo match {
       case RDFNodeObject(node) => rdf.addTriple(RDFTriple(arcNode, sh_allowedValue, node))
-      case _ => ???
+      case _ => throw new Exception("ValueObject2RDf not implemented")
     }
   }
 

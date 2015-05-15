@@ -36,13 +36,13 @@ case class ShaclDoc(prefixMap: PrefixMap) {
 
   def shapeDefinitionDoc(shapeDefn: ShapeDefinition): Document = {
     shapeDefn match {
-      case OpenShape(id, s, inclSet) =>
+      case OpenShape(s, inclSet) =>
         space :: "{" :: space ::
           nest(3,
             group(shapeExprDoc(s))) ::
             space ::
             text("}")
-      case ClosedShape(id, s) =>
+      case ClosedShape(s) =>
         space :: "[" :: space ::
           nest(3, group(shapeExprDoc(s))) ::
           space ::

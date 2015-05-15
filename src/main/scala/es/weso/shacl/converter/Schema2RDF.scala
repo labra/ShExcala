@@ -26,7 +26,7 @@ object Schema2RDF extends Logging {
     val (schemaNode, _) = rdf.createBNode
     rdf.addTriple(RDFTriple(schemaNode, rdf_type, sh_Schema))
     rules2RDF(shaclSchema.rules, schemaNode, rdf)
-    //    start2RDF(shex.start, rdf)
+    start2RDF(shaclSchema.start, schemaNode, rdf)
   }
 
   def rules2RDF(
@@ -38,81 +38,222 @@ object Schema2RDF extends Logging {
     }
     rdf
   }
+  
+  def start2RDF(
+      start: Option[Label],
+      schemaNode: RDFNode,
+      rdf: RDFBuilder): RDFBuilder = {
+    start match {
+      case None => rdf
+      case Some(label) => {
+        addTriple(rdf,(schemaNode,sh_start,label.getNode))
+      }
+    }
+  }
 
   def rule2RDF(
     rule: Rule,
     schemaNode: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
-    val labelNode = rule.label.getNode
-    rdf.addTriple(RDFTriple(labelNode, rdf_type, sh_Shape))
-    rdf.addTriple(RDFTriple(labelNode, sh_schema, schemaNode))
-    //    rule2RDF(rule.rule, labelNode, rdf)
+    val ruleNode = rule.label.getNode
+//    rdf.addTriple(RDFTriple(ruleNode, rdf_type, sh_Shape))
+    rdf.addTriple(RDFTriple(ruleNode, sh_schema, schemaNode))
+    shapeDefinition2RDF(rule.shapeDefinition, ruleNode, rdf)
+    extensionConditions2RDF(rule.extensionCondition, ruleNode, rdf)
   }
 
-  /*
-  def rule2RDF(rule: Rule, label: RDFNode, rdf: RDFBuilder): RDFBuilder = {
-    rule match {
-      case AndRule(r1, r2) => {
-        rule2RDF(r1, label, rdf)
-        rule2RDF(r2, label, rdf)
+  def shapeDefinition2RDF(
+      shape: ShapeDefinition, 
+      shapeNode: RDFNode, 
+      rdf: RDFBuilder): RDFBuilder = {
+    shape2RDF(shape.shape, shapeNode,rdf)
+    shape match {
+      case OpenShape(_,incls) => {
+        addTriple(rdf,(shapeNode,rdf_type,sh_OpenShape))
+        inclPropSet2RDF(incls,shapeNode,rdf)
       }
-      case OrRule(r1, r2) => {
-        val (choiceNode, _) = rdf.createBNode
-        rdf.addTriple(RDFTriple(label, sh_choice, choiceNode))
-        rule2RDF(r1, choiceNode, rdf)
-        rule2RDF(r2, choiceNode, rdf)
-      }
-      case EmptyRule => { rdf }
-      case OpenRule(r) => rule2RDF(r, label, rdf)
-      case PlusRule(r) => ???
-      case OptRule(r) => ???
-      case StarRule(r) => ???
-      case ArcRule(id, n, v) => {
-        val arcNode: RDFNode =
-          id match {
-            case None => rdf.createBNode._1
-            case Some(label) => label.getNode()
-          }
-        rdf.addTriple(RDFTriple(label, sh_property, arcNode))
-        name2RDF(n, arcNode, rdf)
-        value2RDF(v, arcNode, rdf)
+      case ClosedShape(_) => {
+        addTriple(rdf,(shapeNode,rdf_type,sh_ClosedShape))
       }
     }
-  }
-
-  def name2RDF(n: NameClass, arcNode: RDFNode, rdf: RDFBuilder): RDFBuilder = {
-    n match {
-      case NameTerm(t) => rdf.addTriple(RDFTriple(arcNode, sh_predicate, t))
-      case _ => ???
-    }
-  }
-
-  def value2RDF(v: ValueClass, arcNode: RDFNode, rdf: RDFBuilder): RDFBuilder = {
-    v match {
-      case ValueType(v) => rdf.addTriple(RDFTriple(arcNode, sh_valueType, v))
-      case ValueSet(set) => {
-        for (vo <- set) {
-          valueObject2RDF(vo, arcNode, rdf)
+  } 
+      
+  def shape2RDF(
+      shape: ShapeExpr,
+      node: RDFNode,
+      rdf: RDFBuilder): RDFBuilder = {
+    shape match {
+      case TripleConstraint(id,iri,value,card) => {
+        val tripleNode = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(tripleNode,rdf_type,sh_PropertyConstraint))
+        addTriple(rdf,(node,sh_property,tripleNode))
+        addTriple(rdf,(tripleNode,sh_predicate,iri))
+        value2RDF(value,tripleNode,rdf)
+        cardinality2RDF(card,tripleNode,rdf)
+      }
+      case InverseTripleConstraint(id,iri,valueShape,card) => {
+        val tripleNode = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(tripleNode,rdf_type,sh_InversePropertyConstraint))
+        addTriple(rdf,(node,sh_inverseProperty,tripleNode))
+        addTriple(rdf,(tripleNode,sh_predicate,iri))
+        valueShape2RDF(valueShape,tripleNode,rdf)
+        cardinality2RDF(card,tripleNode,rdf)
+      }
+      case EmptyShape => { }
+      case GroupShape(shapes) => {
+        for (shape <- shapes) {
+          shape2RDF(shape,node,rdf)
         }
-        rdf
       }
-      case ValueAny(excl) => ???
-      case ValueStem(s) => ???
-      case ValueReference(l) => rdf.addTriple(RDFTriple(arcNode, sh_valueShape, l.getNode))
+      case SomeOfShape(shapes) => {
+        val (someOfNode,_) = rdf.createBNode
+        addTriple(rdf,(node,sh_someOf,someOfNode))
+        for (shape <- shapes) {
+          shape2RDF(shape,someOfNode,rdf)
+        }
+      }
+      case OneOfShape(shapes) => {
+        val (oneOfNode,_) = rdf.createBNode
+        addTriple(rdf,(node,sh_someOf,oneOfNode))
+        for (shape <- shapes) {
+          shape2RDF(shape,oneOfNode,rdf)
+        }
+      }
     }
-
-  }
-
-  def valueObject2RDF(vo: ValueObject, arcNode: RDFNode, rdf: RDFBuilder): RDFBuilder = {
-    vo match {
-      case RDFNodeObject(node) => rdf.addTriple(RDFTriple(arcNode, sh_allowedValue, node))
-      case _ => ???
-    }
-  }
-
-  // TODO: Add start declaration
-  def start2RDF(label: Option[Label], rdf: RDFBuilder): RDFBuilder = {
     rdf
   }
-*/
+  
+  def value2RDF(
+      value: ValueClass,
+      node: RDFNode,
+      rdf: RDFBuilder
+      ): RDFBuilder = {
+    value match {
+      case LiteralDatatype(v,facets) => {
+        addTriple(rdf,(node,sh_valueType,v))
+        facets2RDF(facets,node, rdf)
+      }
+      case ValueSet(s) => {
+        valueSet2RDF(s,node,rdf)
+      }
+      case nk: NodeKind => {
+        nodeKind2RDF(nk,node,rdf)
+      }
+      case vs: ShapeConstr => {
+        valueShape2RDF(vs,node,rdf)
+      }
+    }
+    rdf
+  }
+  
+  def valueShape2RDF(
+      valueShape: ShapeConstr,
+      node: RDFNode,
+      rdf: RDFBuilder
+      ): RDFBuilder = {
+    // TODO
+    rdf
+  } 
+  
+  def valueSet2RDF(
+      values: Seq[ValueObject],
+      node: RDFNode,
+      rdf: RDFBuilder): RDFBuilder = {
+    for { vo <- values } {
+      valueObject2RDF(vo,node,rdf)
+    }
+    rdf
+  }
+
+  def nodeKind2RDF(
+      nodeKind: NodeKind,
+      node: RDFNode,
+      rdf: RDFBuilder): RDFBuilder = {
+     nodeKind match {
+       case IRIKind => addTriple(rdf,(node,sh_nodeKind,sh_IRI))
+       case BNodeKind => addTriple(rdf,(node,sh_nodeKind,sh_BNode))     
+       case LiteralKind => addTriple(rdf,(node,sh_nodeKind,sh_Literal))
+       case NonLiteralKind => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
+      }
+  }
+    
+  def valueObject2RDF(
+    value: ValueObject,
+    node: RDFNode,
+    rdf: RDFBuilder): RDFBuilder = {
+    value match {
+      case ValueIRI(iri) => {
+        addTriple(rdf,(node,sh_allowedValues,iri))
+      }
+      case ValueLiteral(literal) => {
+        addTriple(rdf,(node,sh_allowedValues,literal))
+      }
+      case ValueLang(lang) => {
+        // TODO (How can we represent language constraints?)
+      }
+    }
+    rdf
+  }
+  def facets2RDF(
+      facets: Seq[XSFacet],
+      node: RDFNode,
+      rdf: RDFBuilder): RDFBuilder = {
+    // TODO
+    rdf
+  }
+  
+  def cardinality2RDF(
+      card: Cardinality,
+      node: RDFNode,
+      rdf: RDFBuilder
+      ): RDFBuilder = {
+    card match {
+      case RangeCardinality(m,n) => {
+        addTripleInteger(rdf,(node,sh_minCount,m))
+        addTripleInteger(rdf,(node,sh_maxCount,n))
+      }
+      case UnboundedCardinalityFrom(m) => {
+        addTripleInteger(rdf,(node,sh_minCount,m))
+      }
+    }
+    rdf
+  }
+  
+  def inclPropSet2RDF(
+      incl: Set[IRI],
+      node: RDFNode,
+      rdf: RDFBuilder): RDFBuilder = {
+    // TODO
+    rdf
+  }
+  
+  def extensionConditions2RDF(
+        ec: Seq[ExtensionCondition], 
+        node: RDFNode, 
+        rdf: RDFBuilder): RDFBuilder = {
+    /// TODO
+    rdf 
+  }
+
+ def nodeFromOptionalLabel(optionalLabel: Option[Label], rdf:RDFBuilder): RDFNode = {
+   optionalLabel match {
+     case Some(l) => l.getNode
+     case None => rdf.createBNode._1
+   }
+ } 
+ 
+ /**
+  * addTriple 
+  */
+ def addTriple(rdf: RDFBuilder, triple:(RDFNode, IRI, RDFNode)): RDFBuilder = {
+  rdf.addTriple(RDFTriple(triple._1,triple._2,triple._3))
+ }
+
+ /**
+  * addTriple with an integer literal 
+  */
+ def addTripleInteger(rdf: RDFBuilder, triple:(RDFNode, IRI, Integer)): RDFBuilder = {
+  rdf.addTriple(RDFTriple(triple._1,triple._2,IntegerLiteral(triple._3)))
+ }
+
 }

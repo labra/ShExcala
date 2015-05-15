@@ -13,7 +13,7 @@ import es.weso.rdf.PrefixMap
 object RDF2Schema {
   def rdf2Schema(rdf: RDFReader): Try[(Schema, PrefixMap)] = {
     val pm = rdf.getPrefixMap
-    val schema: Schema = ???
+    val schema: Schema = throw new Exception("ShEx: RDF2Schema not implemented")
     Success((schema, pm))
   }
 

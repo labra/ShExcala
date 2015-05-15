@@ -29,7 +29,7 @@ import es.weso.rdfgraph._
 case class ShapeParserState(
     val namespaces: PrefixMap,
     val bNodeLabels: BNodeTable,
-    val starts: List[IRI],
+    val starts: List[RDFNode],
     val baseIRI: IRI) {
 
   def newTable(table: BNodeTable): ShapeParserState =
@@ -51,7 +51,7 @@ case class ShapeParserState(
   def newBase(newIRI: IRI) =
     copy(baseIRI = newIRI)
 
-  def addStart(label: IRI) =
+  def addStart(label: RDFNode) =
     copy(starts = starts :+ label)
 
 }

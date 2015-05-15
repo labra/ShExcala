@@ -47,7 +47,7 @@ trait ShapeParser
       case (lsOpt, s1) => {
         val startLabel =
           if (s1.starts.isEmpty) None
-          else Some(IRILabel(s1.starts.last))
+          else Some(mkLabel(s1.starts.last))
         (ShEx(rules = lsOpt.flatten,
           start = startLabel), s1)
       }

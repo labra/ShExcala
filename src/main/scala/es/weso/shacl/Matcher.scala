@@ -1,31 +1,31 @@
-package es.weso.shex
+package es.weso.shacl
 
 import es.weso.monads._
 import es.weso.rdf._
-import es.weso.shex.ShapeSyntax._
+import es.weso.shacl.Shacl._
 import es.weso.rdfgraph.nodes._
 import java.lang._
 import es.weso.utils.Logging
 
+
 case class Matcher(
     schema: Schema, 
     rdf: RDFReader, 
-    validateIncoming: Boolean = false, 
-    withAny: Boolean = false, 
-    validator: ShapeValidator = ShapeValidatorWithDeriv
+    validator: ShaclValidator 
    ) extends Logging {
 
   val subjects: List[RDFNode] = rdf.subjects.toList
 
-  val shex_extended =
-    if (withAny) schema.addAny.shEx
-    else schema.shEx
-
-  val ctx =
-    Context(rdf = rdf, shEx = shex_extended, Typing.emptyTyping, schema.pm, validateIncoming
-    )
-
-  def matchIRI_Label(iri: RDFNode)(lbl: Label): Result[Typing] = {
+  
+/*  val ctx =
+    Context(rdf = rdf, 
+        schema = schema, 
+        Typing.emptyTyping, 
+        schema.pm, 
+        validateIncoming
+    ) */
+/*
+  def matchIRI_Label(iri: IRI)(lbl: Label): Result[Typing] = {
     log.debug("Matching " + iri + " with label " + lbl)
     try {
       for (
@@ -42,11 +42,11 @@ case class Matcher(
     }
   }
 
-  def matchLabel_IRI(lbl: Label)(iri: RDFNode): Result[Typing] = {
+  def matchLabel_IRI(lbl: Label)(iri: IRI): Result[Typing] = {
     matchIRI_Label(iri)(lbl)
   }
 
-  def matchIRI_AllLabels(iri: RDFNode): Result[Typing] = {
+  def matchIRI_AllLabels(iri: IRI): Result[Typing] = {
     Result.passSome(schema.getLabels, matchIRI_Label(iri))
   }
 
@@ -60,5 +60,5 @@ case class Matcher(
 
   def matchAllIRIs_AllLabels(): Result[Typing] = {
     Result.combineAll(subjects, matchIRI_AllLabels, comb)
-  }
-}
+  } */ 
+} 
