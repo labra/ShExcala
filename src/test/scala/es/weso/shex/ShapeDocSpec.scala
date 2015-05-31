@@ -7,7 +7,8 @@ import es.weso.rdfgraph._
 import org.scalatest._
 import org.scalatest.prop._
 import es.weso.rdf.PrefixMap
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
+import es.weso.shacl.PrefixMaps
 
 class ShapeDocSpec
     extends FunSpec
@@ -51,7 +52,7 @@ class ShapeDocSpec
         id = None)
 
       val shape = Shape(IRILabel(IRI("test")), AndRule(or_names, mboxRule))
-      val pm = PrefixMaps.commonShex
+      val pm = PrefixMaps.commonShacl
       val schema = Schema(pm = pm, shEx = ShEx(rules = Seq(shape), start = None))
       info("Schema: " + schema.toString)
     }

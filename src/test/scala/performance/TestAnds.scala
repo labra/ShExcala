@@ -6,7 +6,7 @@ import es.weso.shex.Matcher
 import es.weso.shex.Typing
 import es.weso.rdf.RDFTriples
 import es.weso.rdfgraph.statements.RDFTriple
-import es.weso.shex.PrefixMaps
+import es.weso.shacl.PrefixMaps
 import org.scalameter.api._
 
 object TestAnds extends PerformanceTest.Quickbenchmark {

@@ -6,7 +6,7 @@ import es.weso.rdfgraph._
 import scala.util._
 import es.weso.rdf._
 import es.weso.shacl.Schema
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.rdf.PrefixMap
 import es.weso.utils._

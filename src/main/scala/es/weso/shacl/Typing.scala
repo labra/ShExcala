@@ -146,9 +146,9 @@ case class Typing(map: Map[RDFNode, ShapeType]) {
     } yield Typing(newMap)
   }
 
-/*  def hasTypes(n: RDFNode, nodes: Set[RDFNode]): Boolean = {
-    hasType(n) == nodes
-  } */
+  def containsType(n: RDFNode, label: Label): Boolean = {
+    hasShapes(n) contains label
+  } 
 
 /*  def showTyping(implicit pm: PrefixMap): String = {
     val sb = new StringBuilder

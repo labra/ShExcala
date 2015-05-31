@@ -9,7 +9,7 @@ import es.weso.shex.ShapeDoc._
 import es.weso.shex.ShapeParserState
 import es.weso.shacl.Shacl._
 import scala.Either._
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 
 class ShaclParserSuite extends ShaclParser
     with FunSpecLike

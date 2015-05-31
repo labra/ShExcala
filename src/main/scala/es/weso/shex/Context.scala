@@ -9,6 +9,7 @@ import es.weso.rdfgraph.nodes.IRI
 import org.slf4j._
 import es.weso.rdfgraph.nodes.RDFNode
 import es.weso.rdf.PrefixMap
+import es.weso.shacl.PrefixMaps
 
 case class Context(
     rdf: RDFReader, shEx: ShEx, typing: Typing, pm: PrefixMap, validateIncoming: Boolean = false) {
@@ -59,11 +60,11 @@ case class Context(
 
 object Context {
   def emptyContext: Context =
-    Context(RDFTriples.noTriples, ShEx(rules = Seq(), start = None), Typing.emptyTyping, pm = PrefixMaps.commonShex, validateIncoming = false
+    Context(RDFTriples.noTriples, ShEx(rules = Seq(), start = None), Typing.emptyTyping, pm = PrefixMaps.commonShacl, validateIncoming = false
     )
 
   def emptyContextWithRev: Context =
-    Context(rdf = RDFTriples.noTriples, shEx = ShEx(rules = Seq(), start = None), Typing.emptyTyping, pm = PrefixMaps.commonShex, validateIncoming = true
+    Context(rdf = RDFTriples.noTriples, shEx = ShEx(rules = Seq(), start = None), Typing.emptyTyping, pm = PrefixMaps.commonShacl, validateIncoming = true
     )
 
 }

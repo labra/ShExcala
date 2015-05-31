@@ -7,13 +7,15 @@ import es.weso.shex.ShapeSyntax._
 import es.weso.shex.ShapeParser._
 import es.weso.shex.converter._
 import es.weso.shex.converter._
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 import scala.util.parsing.input.Positional
 import scala.util.{ Try, Success, Failure }
 import es.weso.monads._
 import org.slf4j._
 import es.weso.utils.IO._
 import es.weso.rdf.jena.RDFAsJenaModel
+import es.weso.shacl.DataFormats
+import es.weso.shacl.SchemaFormats
 
 
 trait SchemaImpl

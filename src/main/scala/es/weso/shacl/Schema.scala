@@ -6,8 +6,7 @@ import es.weso.rdf._
 import es.weso.shacl.Shacl._
 import es.weso.shacl.ShaclParser._
 import es.weso.shacl.converter._
-import es.weso.shex.PREFIXES._
-import es.weso.shex._
+import es.weso.shacl.PREFIXES._
 import scala.util.parsing.input.Positional
 import scala.util.{ Try, Success, Failure }
 import es.weso.monads._

@@ -8,7 +8,7 @@ import scala.util.Try
 import es.weso.rdf._
 import es.weso.rdf.jena._
 import es.weso.rdf.jena.RDFAsJenaModel
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.utils._
 

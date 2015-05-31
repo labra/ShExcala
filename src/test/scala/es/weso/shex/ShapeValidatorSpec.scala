@@ -10,7 +10,7 @@ import org.scalatest.prop.Checkers
 import es.weso.shex.Typing._
 import es.weso.shex.Context._
 import es.weso.rdf._
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 
 class ShapeValidatorSpec
     extends FunSpec

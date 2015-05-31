@@ -6,7 +6,6 @@ import es.weso.rdfgraph.statements._
 import es.weso.shacl.Shacl._
 import es.weso.shacl._
 import es.weso.shacl.Typing._
-import es.weso.shex.PREFIXES._
 import es.weso.monads.Result._
 import es.weso.monads.Result
 import es.weso.rdf.PrefixMap
@@ -28,16 +27,83 @@ case class ValidationState(
     
 trait ShaclValidator extends Logging {
 
-  def id(): String // Abstract name of validator
+  def id() = "SHACL validator" 
   
-  def validate(node: RDFNode, 
-      requiredLabel: Label, 
-      schema: SHACLSchema,
-      rdf: RDFGraph 
-      ): Result[Boolean] = {
+  def matchNodeLabel(
+      node: RDFNode, 
+      label: Label, 
+      ctx: Context
+      ): Result[ValidationState] = {
+    val triples = ctx.triplesAround(node)
     for {
-     typing <- calculateTyping(node,schema,rdf) 
-    } yield typing.hasShapes(node) contains requiredLabel
+     shape <- ctx.getShape(label)
+     state <- matchTriplesRule(triples,shape,ctx) 
+    } yield state 
+  }
+  
+  def matchTriplesRule(
+      ts: Set[RDFTriple],
+      rule: Rule,
+      ctx: Context) : Result[ValidationState] = {
+    log.debug("Match triples: " + ts + " ~ " + rule.label) 
+    rule.shapeDefinition match {
+      case OpenShape(shape, propSet) => {
+        ???
+        // TODO: remaining triples don't include propSet
+      }
+      case ClosedShape(shape) => {
+        for {
+          vs <- matchTriplesShapeExpr(ts,shape,ctx)
+        } yield {
+          // TODO: Check there are no remaining triples
+          vs
+        }
+      }
+    }
+  }
+  
+  def matchTriplesShapeExpr(
+      ts: Set[RDFTriple],
+      shape: ShapeExpr,
+      ctx: Context): Result[ValidationState] = {
+    shape match {
+      case EmptyShape => 
+        if (ts.isEmpty) 
+          unit(ValidationState(
+              typing = ctx.typing, 
+              remaining = Set(), 
+              checked = Set()
+              ))
+        else {
+          val msg = "EmptyRule: non empty graph"
+          log.debug(msg)
+          failure(msg)
+        }
+    
+      case tc : TripleConstraint => 
+        matchTriples_TripleConstraint(ts,tc,ctx)
+        
+      case itc : InverseTripleConstraint => 
+        matchTriples_InverseTripleConstraint(ts,itc,ctx)
+        
+      case _ => failure("Unimplemented match triples with shape " + shape)
+    }
+    
+  }
+  
+  
+  def matchTriples_TripleConstraint(
+      ts: Set[RDFTriple],
+      tc: TripleConstraint,
+      ctx: Context): Result[ValidationState] = {
+    ???
+  }
+
+  def matchTriples_InverseTripleConstraint(
+      ts: Set[RDFTriple],
+      tc: InverseTripleConstraint,
+      ctx: Context): Result[ValidationState] = {
+    throw new ValidationException("Unimplemented match_InverseTripleConstraint")
   }
   
   def calculateTyping(n:RDFNode,

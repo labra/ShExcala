@@ -3,7 +3,7 @@ package es.weso.shacl.converter
 import org.scalatest._
 import org.scalatest.prop._
 import es.weso.rdf._
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 import es.weso.rdf.jena.RDFAsJenaModel
 import com.hp.hpl.jena.rdf.model.Model
 import es.weso.shacl._

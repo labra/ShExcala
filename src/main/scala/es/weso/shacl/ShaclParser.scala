@@ -3,7 +3,7 @@ package es.weso.shacl
 import es.weso.parser._
 import es.weso.shacl.Shacl._
 import es.weso.rdf._
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 import es.weso.shex.ShapeParserState
 import scala.util.parsing.combinator.RegexParsers
 import scala.util.parsing.input._

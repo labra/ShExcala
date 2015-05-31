@@ -9,11 +9,17 @@ import es.weso.rdfgraph.nodes.IRI
 import org.slf4j._
 import es.weso.rdfgraph.nodes.RDFNode
 import es.weso.rdf.PrefixMap
+import util._
 
 case class Context(
-    rdf: RDFReader, schema: SHACLSchema, typing: Typing, pm: PrefixMap, validateIncoming: Boolean = false) {
+    rdf: RDFReader, 
+    schema: SHACLSchema, 
+    typing: Typing, 
+    pm: PrefixMap, 
+    validateIncoming: Boolean = false) {
 
   val log = LoggerFactory.getLogger("Context")
+  
 
   def triplesWithSubject(n: RDFNode): Set[RDFTriple] = {
     rdf.triplesWithSubject(n)
@@ -29,16 +35,18 @@ case class Context(
       else Set())
   }
 
-/*  def containsType(node: RDFNode, maybeType: RDFNode): Boolean = {
-    typing.hasType(node).contains(maybeType)
+  def containsType(node: RDFNode, label: Label): Boolean = {
+    typing.containsType(node,label)
   } 
 
-  def addTyping(node: RDFNode, t: RDFNode): Result[Context] = {
-    this.typing.addType(node, t) match {
-      case None => failure("Context: cannot assign type " + t + " to iri " + node + "...current typing: " + this.typing)
-      case Some(newT) => unit(this.copy(typing = newT))
+  def addTyping(node: RDFNode, label: Label): Result[Context] = {
+    this.typing.addShape(node, label) match {
+      case Failure(e) => 
+        failure("Context: cannot assign label " + label + " to node " + node + "...current typing: " + this.typing + "\nError: " + e.getMessage)
+      case 
+        Success(newT) => unit(this.copy(typing = newT))
     } 
-  } */
+  } 
 
   def getIRIs(): List[IRI] = {
     rdf.iris().toList
@@ -58,12 +66,20 @@ case class Context(
 }
 
 object Context {
-/*  def emptyContext: Context =
-    Context(RDFTriples.noTriples, SHACLSchema(rules = Seq(), start = None), Typing.emptyTyping, pm = PrefixMaps.commonShex, validateIncoming = false
-    )
+  def emptyContext: Context =
+    Context(RDFTriples.noTriples, 
+        SHACLSchema(id = None, rules = Seq(), start = None), 
+        Typing.emptyTyping, 
+        pm = PrefixMaps.commonShacl, 
+        validateIncoming = false
+  )
 
   def emptyContextWithRev: Context =
-    Context(rdf = RDFTriples.noTriples, shEx = ShEx(rules = Seq(), start = None), Typing.emptyTyping, pm = PrefixMaps.commonShex, validateIncoming = true
+    Context(rdf = RDFTriples.noTriples, 
+        schema = SHACLSchema(id = None, rules = Seq(), start = None), 
+        Typing.emptyTyping, 
+        pm = PrefixMaps.commonShacl, 
+        validateIncoming = true
     )
-*/
+
 }

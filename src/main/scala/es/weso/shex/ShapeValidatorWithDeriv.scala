@@ -13,6 +13,7 @@ import org.slf4j._
 import scala.util.matching.Regex
 import es.weso.utils.Logging
 import es.weso.monads._
+import es.weso.shacl.PrefixMaps
 
 /**
  * Shape validator using Regular Expression Derivatives
@@ -24,7 +25,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
 
   override def id = "Validator by Derivatives 1.0"
 
-  implicit val pm: PrefixMap = PrefixMaps.commonShex
+  implicit val pm: PrefixMap = PrefixMaps.commonShacl
 
   override def matchRule(
     ctx: Context,

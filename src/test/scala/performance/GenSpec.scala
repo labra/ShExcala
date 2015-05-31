@@ -8,7 +8,7 @@ import es.weso.shex.Schema
 import es.weso.shex.Typing
 import es.weso.rdf.RDFTriples
 import es.weso.rdfgraph.statements.RDFTriple
-import es.weso.shex.PrefixMaps
+import es.weso.shacl.PrefixMaps
 import es.weso.shex.ShapeDoc
 import es.weso.shex.Matcher
 
@@ -23,7 +23,7 @@ class GenSpec
       val gen2 = GenShape.genAnds(2)
       val g = GenShape.genTriples(2)
       val t: Typing = Typing.emptyTyping.addType(IRI("x"), IRI("a")).get
-      info("Shape: " + ShapeDoc.schema2String(gen2)(PrefixMaps.commonShex))
+      info("Shape: " + ShapeDoc.schema2String(gen2)(PrefixMaps.commonShacl))
       info("Triples: " + g.serialize())
       val matcher = Matcher(gen2, g, false, false)
       val result = matcher.matchAllIRIs_AllLabels()

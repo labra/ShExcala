@@ -1,4 +1,4 @@
-package es.weso.shex
+package es.weso.shacl
 
 import org.apache.jena.riot.RDFLanguages._
 import scala.collection.JavaConversions._

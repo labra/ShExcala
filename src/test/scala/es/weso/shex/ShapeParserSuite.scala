@@ -8,7 +8,7 @@ import es.weso.rdfgraph._
 import es.weso.shex.ShapeDoc._
 import es.weso.shex.ShapeSyntax._
 import scala.Either._
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 
 class ShapeParserSuite extends ShapeParser
     with FunSpecLike

@@ -1,7 +1,8 @@
-package es.weso.shex
+package es.weso.shacl
 
 import org.apache.jena.riot.RDFLanguages._
 import scala.collection.JavaConversions._
+// import es.weso.shacl.DataFormats
 
 object SchemaFormats {
 

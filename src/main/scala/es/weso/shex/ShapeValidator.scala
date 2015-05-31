@@ -5,7 +5,7 @@ import es.weso.rdfgraph._
 import es.weso.rdfgraph.statements._
 import es.weso.shex.ShapeSyntax._
 import es.weso.shex.Typing._
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 import es.weso.monads.Result._
 import es.weso.monads.Result
 import es.weso.rdf.PrefixMap
@@ -45,9 +45,10 @@ trait ShapeValidator extends Logging {
     log.debug("matchShape, node: " + node + " with shape " + shape.label)
     val triples = ctx.triplesAround(node)
     log.debug("matchShape, triplesAround(" + node + ") = " + triples)
-    for (
-      ctx1 <- ctx.addTyping(node, shape.label.getNode); t <- matchRule(ctx1, triples, shape.rule)
-    ) yield t
+    for {
+      ctx1 <- ctx.addTyping(node, shape.label.getNode) 
+      t <- matchRule(ctx1, triples, shape.rule)
+    } yield t
   }
 
   def showTriples(g: Set[RDFTriple]): Unit = {

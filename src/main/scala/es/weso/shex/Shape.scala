@@ -5,7 +5,7 @@ import es.weso.rdfgraph._
 import es.weso.rdf._
 import scala.util.parsing.input.Positional
 import scala.util.matching.Regex
-import es.weso.shex.PREFIXES._
+import es.weso.shacl.PREFIXES._
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition

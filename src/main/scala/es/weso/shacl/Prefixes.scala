@@ -1,4 +1,4 @@
-package es.weso.shex
+package es.weso.shacl
 
 import es.weso.rdfgraph.nodes.IRI
 
