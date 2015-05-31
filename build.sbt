@@ -16,7 +16,7 @@ name := "shExcala"
 
 organization := "es.weso"
 
-version := "0.2.5"
+version := "0.3.4"
 
 scalaVersion := "2.11.6"
 
@@ -26,12 +26,13 @@ libraryDependencies ++= Seq(
   , "org.rogach" %% "scallop" % "0.9.5" 
   , "com.typesafe" % "config" % "1.0.1"
   , "org.scala-lang" % "scala-compiler" % scalaVersion.value  
-  , "org.apache.jena" % "jena-arq" % "2.10.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
-  , "org.scalaz" % "scalaz-core_2.11" % "7.1.0" 
+  , "org.apache.jena" % "jena-arq" % "2.13.0" excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "org.scalaz" % "scalaz-core_2.11" % "7.1.2" 
+  , "com.casualmiracles" %% "treelog" % "1.2.4"
   , "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test"
   ,	"org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
   , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
-  , "es.weso" % "wesin_2.11" % "0.2.9" excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "es.weso" % "wesin_2.11" % "0.3.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
 //  , "org.w3" % "banana-rdf_2.11" % "0.8.1"
 )
@@ -60,10 +61,11 @@ net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 packageArchetype.java_application
 
-resourceGenerators in Test += Def.task {
+
+ resourceGenerators in Test += Def.task {
   val location = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
   IO.unzipURL(location, resourceManaged.value / "downloadedTests").toSeq
-}.taskValue
+ }.taskValue
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 

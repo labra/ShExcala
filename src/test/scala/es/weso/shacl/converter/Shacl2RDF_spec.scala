@@ -41,6 +41,34 @@ class Shacl2RDFSpec
         case Failure(e) => fail("Exception parsing contents: " + e)
       }
     }
+    
+    it("Should be able to convert a shape in SHEXC to RDF with ValueSets") {
+
+      val shape_str = """|prefix : <http://e.o#>
+                         |:s { :p (1 2) }""".stripMargin
+
+      val rdf_str = """|@prefix : <http://e.o#> .
+                       |@prefix sh: <http://www.w3.org/ns/shacl/core#> .
+                       |:s a sh:OpenShape ;
+                       |   sh:schema [ a sh:Schema] ;
+                            |   sh:property [ a sh:PropertyConstraint ;
+                            |                 sh:predicate :p ; 
+                            |                 sh:allowedValues (1 2) ;
+                            |                 sh:minCount 1 
+                            |               ] .
+                            |""".stripMargin
+      val r = for {
+        (shape, _) <- Schema.fromString(shape_str, "SHEXC")
+        rdf_from_shape <- RDFAsJenaModel.fromChars(shape.serialize("TURTLE"), "TURTLE")
+        rdf_from_str <- RDFAsJenaModel.fromChars(rdf_str, "TURTLE")
+      } yield (rdf_from_shape, rdf_from_str)
+
+      r match {
+        case Success((r1, r2)) => shouldBeIsomorphic(r1, r2)
+        case Failure(e) => fail("Exception parsing contents: " + e)
+      }
+    }
+
   }
 
   def shouldBeIsomorphic(r1: RDFAsJenaModel, r2: RDFAsJenaModel): Unit = {

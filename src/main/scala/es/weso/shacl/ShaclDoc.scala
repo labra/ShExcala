@@ -10,10 +10,14 @@ import arq.iri
 import org.slf4j.LoggerFactory
 import es.weso.shex.PREFIXES._
 import es.weso.shacl.Shacl._
+import es.weso.utils.Logging
 
-case class ShaclDoc(prefixMap: PrefixMap) {
+case class ShapeDocException(msg:String) extends Exception
+
+case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shaclSchemaDoc(s: SHACLSchema): Document = {
+    pmDoc(prefixMap) :/: 
     rulesDoc(s.rules) // TODO: start
   }
 
@@ -61,14 +65,31 @@ case class ShaclDoc(prefixMap: PrefixMap) {
     s match {
       case t: TripleConstraint => tripleConstraintDoc(t)
       case t: InverseTripleConstraint => inverseTripleConstraintDoc(t)
+      case GroupShape(shapes) => 
+        "(" :: seqDocWithSep(shapes,",",shapeExprDoc) :: text(")")
+      case SomeOfShape(id,shapes) => 
+        log.info("Unimplemented id generation yet")
+        "(" :: seqDocWithSep(shapes,"||",shapeExprDoc) :: text(")") 
+      case OneOfShape(id,shapes) => 
+        log.info("Unimplemented id generation yet")
+        "(" :: seqDocWithSep(shapes,"|",shapeExprDoc) :: text(")") 
+      case RepetitionShape(id,shape,card) => {
+        log.info("Unimplemented id generation yet")
+        "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card)
+      }
+      case EmptyShape => text("{}") 
+        
+      case x => throw ShapeDocException("Unimplemented string conversion for " + s + " yet")
     }
   }
 
   def tripleConstraintDoc(t: TripleConstraint): Document = {
+    log.info("Unimplemented id generation yet")
     iriDoc(t.iri) :: space :: valueClassDoc(t.value) :: cardDoc(t.card)
   }
 
   def inverseTripleConstraintDoc(t: InverseTripleConstraint): Document = {
+    log.info("Unimplemented id generation yet")
     "^" :: iriDoc(t.iri) :: space :: shapeDoc(t.shape) :: cardDoc(t.card)
   }
 
@@ -92,6 +113,7 @@ case class ShaclDoc(prefixMap: PrefixMap) {
       case LiteralDatatype(v, facets) => rdfNodeDoc(v) :: facetsDoc(facets)
       case ValueSet(s) => "(" ::
         nest(3, seqDocWithSep(s, " ", valueObjectDoc)) :: text(")")
+      case AnyKind => text(".")
       case n: NodeKind => text(n.token)
     }
   }
@@ -105,7 +127,7 @@ case class ShaclDoc(prefixMap: PrefixMap) {
       case Pattern(regex) => "PATTERN " :: text(regex.toString)
       case MinInclusive(n) => "MININCLUSIVE " :: text(n.toString)
       case MaxInclusive(n) => "MAXINCLUSIVE " :: text(n.toString)
-      case MaxExclusive(n) => "MINEXCLUSIVE " :: text(n.toString)
+      case MinExclusive(n) => "MINEXCLUSIVE " :: text(n.toString)
       case MaxExclusive(n) => "MAXEXCLUSIVE " :: text(n.toString)
       case Length(n) => "LENGTH " :: text(n.toString)
       case MinLength(n) => "MINLENGTH " :: text(n.toString)

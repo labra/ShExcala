@@ -46,7 +46,7 @@ object Schema {
 
   def fromString(cs: CharSequence, format: String = "SHEXC"): Try[(Schema, PrefixMap)] = {
     format match {
-      case "SHEXC" =>
+      case "SHEXC" | "SHACLC" =>
         ShaclParser.parse(cs) match {
           case s @ Success(_) => s
           case Failure(t) => Failure(throw new Exception("Parsing schema: " + t.getMessage))

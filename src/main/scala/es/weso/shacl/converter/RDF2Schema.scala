@@ -9,23 +9,39 @@ import es.weso.shacl.Schema
 import es.weso.shex.PREFIXES._
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.rdf.PrefixMap
+import es.weso.utils._
 
+case class RDF2SchemaException(msg:String) extends Exception
 
-object RDF2Schema {
+object RDF2Schema extends Logging {
   
   type RDFParser[a] = (RDFNode, RDFReader) => Try[a]
 
   def rdf2Schema(rdf: RDFReader): Try[(Schema, PrefixMap)] = {
     val pm = rdf.getPrefixMap
+    log.info("RDF2Schema...pm = " + pm)
     for {
-      schema <- shaclSchema(rdf)
+      schema <- { 
+        val shacl = shaclSchema(rdf)
+        shacl 
+      }
     } yield (Schema(pm,schema),pm)
   }
   
   def shaclSchema(rdf: RDFReader): Try[SHACLSchema] = {
-    val shape_nodes = subjectsWithType(sh_Shape,rdf).toSeq
+    val shape_nodes = subjectsWithType(sh_Shape,rdf).toSet
+    val openShape_nodes = subjectsWithType(sh_OpenShape,rdf).toSet
+    val closedShape_nodes = subjectsWithType(sh_ClosedShape,rdf).toSet
+    val with_sh_property_nodes = subjectsWithProperty(sh_property,rdf).toSet
+    val shapeCandidates = 
+      (shape_nodes ++ 
+       openShape_nodes ++ 
+       closedShape_nodes ++ 
+       with_sh_property_nodes).toSeq
+    
+    log.info("Shape candidates = " + shapeCandidates)
     val maybeRules : Seq[Try[Rule]] = 
-      shape_nodes.map{case node => {
+      shapeCandidates.map{case node => {
       rule(node,rdf)
     }}
     for {
@@ -44,7 +60,6 @@ object RDF2Schema {
   def rule: RDFParser[Rule] = { (n,rdf) => {
     for {
       shape <- shapeDefinition(n,rdf)
-      // TODO: extensionConditions
     } yield Rule(mkLabel(n),shape,Seq())
   }
   }
@@ -115,7 +130,10 @@ object RDF2Schema {
   }
   
   def valueConstr: RDFParser[ValueConstr] = { 
-    oneOf(Seq(literalDatatype,nodeKind))
+    oneOf(Seq(literalDatatype
+             ,nodeKind
+             ,valueSet
+             ))
   }
   
   def shapeConstr: RDFParser[ShapeConstr] = { 
@@ -145,7 +163,7 @@ object RDF2Schema {
     } yield LiteralDatatype(dt,emptyFacets)
   }
   
-  
+  // TODO: fallback to (nodeKind AnyKind) if no valueClass is declared 
   def nodeKind: RDFParser[NodeKind] = { (n,rdf) =>
     for {
       nk_iri <- objectFromPredicate(sh_nodeKind)(n,rdf)
@@ -153,6 +171,33 @@ object RDF2Schema {
       nk <- nodeKindfromIRI(nk_iri.toIRI)
     } yield nk 
   }
+  
+  def valueSet: RDFParser[ValueSet] = 
+    oneOf(Seq(allowedValue,allowedValues))
+  
+  def allowedValue: RDFParser[ValueSet] = { (n,rdf) => {
+     for {
+       shapes <- objectsFromPredicate(sh_allowedValue)(n,rdf)
+       if !shapes.isEmpty
+     } yield ValueSet(shapes.map(node2valueObject).toSeq)
+   }
+  }
+    
+  def allowedValues: RDFParser[ValueSet] = { (n,rdf) => {
+     for {
+       shapes <-rdfListForPredicate(sh_allowedValues)(n,rdf) 
+     } yield ValueSet(shapes.map(node2valueObject))
+   }
+  }
+  
+  def node2valueObject(n: RDFNode): ValueObject = {
+    n match {
+      case lit: Literal => ValueLiteral(lit)
+      case iri: IRI => ValueIRI(iri)
+      case b: BNodeId => throw RDF2SchemaException("node " + n + " can't be converted to value object") 
+    }
+  }
+  
   
   def cardinality: RDFParser[Cardinality] = { (n,rdf) =>
     if (hasPredicateWithSubject(n,sh_maxCount,rdf)) {
@@ -216,6 +261,34 @@ object RDF2Schema {
     Success(objectsFromTriples(triples))
   }
   
+  def rdfList: RDFParser[List[RDFNode]] = { (n,rdf) =>
+    n match {
+      case `rdf_nil` => Success(List())
+      case x => {
+       println("rdfList...n = " + n)
+       for {
+        elem <- objectFromPredicate(rdf_first)(n,rdf)
+        next <- objectFromPredicate(rdf_rest)(n,rdf)
+        ls <- rdfList(next,rdf)
+      } yield (elem :: ls) 
+      }
+    }
+  }
+  
+  def rdfListForPredicate(p:IRI): RDFParser[List[RDFNode]] = { (n,rdf) =>
+    println("rdfList...predicate..." + p)
+    for {
+     value <- {
+      val v = objectFromPredicate(p)(n,rdf)
+      println("value..." + v)
+      v
+     }
+     ls <- { println("value found..." + value)
+       rdfList(value,rdf)
+      }
+    } yield ls
+  }
+  
   def integerLiteralForPredicate(p: IRI): RDFParser[Integer] = { (n,rdf) =>
     val ts = rdf.triplesWithSubjectPredicate(n,p)
     ts.size match {
@@ -232,6 +305,7 @@ object RDF2Schema {
       case _ => fail("getIntegerLiteral: Object " + t.obj + " must be a literal")
     }
   }
+  
   def hasNoRDFType(t: IRI): RDFParser[Boolean] = { (n,rdf) =>
     for {
       declaredTypes <- objectsFromPredicate(rdf_type)(n,rdf)
@@ -309,6 +383,10 @@ object RDF2Schema {
 
   def subjectsWithType(t: RDFNode, rdf: RDFReader): Set[RDFNode] = {
     subjectsFromTriples(rdf.triplesWithPredicateObject(rdf_type, t))
+  }
+  
+  def subjectsWithProperty(pred: IRI, rdf:RDFReader): Set[RDFNode] = {
+    subjectsFromTriples(rdf.triplesWithPredicate(pred))
   }
 
   def subjectsFromTriples(triples: Set[RDFTriple]):Set[RDFNode] = {

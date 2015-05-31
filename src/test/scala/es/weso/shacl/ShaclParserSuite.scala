@@ -385,6 +385,88 @@ class ShaclParserSuite extends ShaclParser
       shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
     }
 
+    it("Should parse with begin") {
+      val prefix = "http://example.org/"
+      val a = "a"
+      val b = "b"
+      val c = "c"
+      val alias = "ex"
+      val str = """|begin = {
+                   | <b> <c>
+                   |} """.stripMargin
+
+      val state = ShapeParserState.initial
+      val begin = IRILabel(IRI("begin"))
+      val labelB = IRILabel(IRI("b"))
+      val ruleBC = OpenShape(
+        shape = TripleConstraint(
+          id = None,
+          iri = IRI("b"),
+          value = LiteralDatatype(IRI("c"), List()),
+          card = defaultCardinality
+        ),
+        inclPropSet = Set())
+      val shape1: Rule = Rule(label = begin, shapeDefinition = ruleBC, extensionCondition = List())
+      val expected: SHACLSchema = SHACLSchema(id = None, rules = List(shape1), start = None)
+      shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
+    }
+    
+    it("Should parse statement with begin") {
+      val prefix = "http://example.org/"
+      val a = "a"
+      val b = "b"
+      val c = "c"
+      val alias = "ex"
+      val str = """|begin = { 
+                   | <http://example.org/b> <http://example.org/c> 
+                   |}""".stripMargin
+      val state = ShapeParserState.initial
+      val labelA = IRILabel(IRI(prefix + a))
+      val labelB = IRILabel(IRI(prefix + b))
+      val ruleBC = OpenShape(
+        shape = TripleConstraint(
+          id = None,
+          iri = IRI(prefix + b),
+          value = LiteralDatatype(IRI(prefix + c), List()),
+          card = defaultCardinality
+        ),
+        inclPropSet = Set())
+      val shape1: Rule = 
+        Rule(label = IRILabel(IRI("begin")), 
+                              shapeDefinition = ruleBC, 
+                              extensionCondition = List())
+      val expected = Some(shape1)
+      shouldParseIgnoreState(statement, state, str, expected)
+    }
+    
+    it("Should parse single begin") {
+      val prefix = "http://example.org/"
+      val a = "a"
+      val b = "b"
+      val c = "c"
+      val alias = "ex"
+      val str = """|begin = { 
+                   | <http://example.org/b> <http://example.org/c> 
+                   |}""".stripMargin
+
+      val state = ShapeParserState.initial
+      val labelA = IRILabel(IRI(prefix + a))
+      val labelB = IRILabel(IRI(prefix + b))
+      val ruleBC = OpenShape(
+        shape = TripleConstraint(
+          id = None,
+          iri = IRI(prefix + b),
+          value = LiteralDatatype(IRI(prefix + c), List()),
+          card = defaultCardinality
+        ),
+        inclPropSet = Set())
+      val shape1: Rule = 
+        Rule(label = IRILabel(IRI("begin")), 
+                              shapeDefinition = ruleBC, 
+                              extensionCondition = List())
+      val expected = shape1
+      shouldParseIgnoreState(begin, state, str, expected)
+    }
     /*  it("Should parse directive with shape") {
         val prefix = "http://example.org/"
         val xsd = "http://www.w3.org/2001/XMLSchema#"

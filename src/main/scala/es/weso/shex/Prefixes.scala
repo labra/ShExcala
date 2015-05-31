@@ -43,11 +43,15 @@ object PREFIXES {
   lazy val sh_valueType = add(sh, "valueType")
   lazy val sh_valueShape = add(sh, "valueShape")
   lazy val sh_start = add(sh, "start")
+  lazy val sh_group = add(sh,"group")
   lazy val rdf_langString = add(rdf, "langString")
   lazy val xsd_string = add(xsd, "string")
   lazy val xsd_integer = add(xsd, "integer")
   lazy val xsd_double = add(xsd, "double")
   lazy val rdf_type = add(rdf, "type")
+  lazy val rdf_first = add(rdf, "first")
+  lazy val rdf_rest = add(rdf, "rest")
+  lazy val rdf_nil = add(rdf, "nil")
 
   private val shMap: Map[String, IRI] =
     Map("sh" -> sh,

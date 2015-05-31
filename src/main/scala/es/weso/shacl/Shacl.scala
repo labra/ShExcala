@@ -62,9 +62,10 @@ object Shacl {
     card: Cardinality) extends ShapeExpr
 
 
-  case class SomeOfShape(shapes: Seq[ShapeExpr]) extends ShapeExpr
-  case class OneOfShape(shapes: Seq[ShapeExpr]) extends ShapeExpr
+  case class SomeOfShape(id: Option[Label],shapes: Seq[ShapeExpr]) extends ShapeExpr
+  case class OneOfShape(id:Option[Label],shapes: Seq[ShapeExpr]) extends ShapeExpr
   case class GroupShape(shapes: Seq[ShapeExpr]) extends ShapeExpr
+  case class RepetitionShape(id:Option[Label],shape: ShapeExpr, card:Cardinality) extends ShapeExpr
   case object EmptyShape extends ShapeExpr
 
   /**
@@ -128,12 +129,17 @@ object Shacl {
     override def token = "NonLiteral"
   }
   
+  case object AnyKind extends NodeKind {
+    override def token = "Any"
+  }
+
   def nodeKindfromIRI(iri: IRI): Try[NodeKind] = {
     iri match {
       case `sh_IRI` => Success(IRIKind)
       case `sh_BNode` => Success(BNodeKind)
       case `sh_Literal` => Success(LiteralKind)
       case `sh_NonLiteral` => Success(NonLiteralKind)
+      case `sh_Any` => Success(AnyKind)
       case _ => Failure(new Exception("nodeKindFromIRI: unsupported IRI: " + iri))
     }
   }

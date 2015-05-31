@@ -9,7 +9,6 @@ import es.weso.rdfgraph.nodes.IRI
 import org.slf4j._
 import es.weso.rdfgraph.nodes.RDFNode
 import es.weso.rdf.PrefixMap
-import es.weso.shex.Typing
 
 case class Context(
     rdf: RDFReader, schema: SHACLSchema, typing: Typing, pm: PrefixMap, validateIncoming: Boolean = false) {
@@ -30,16 +29,16 @@ case class Context(
       else Set())
   }
 
-  def containsType(node: RDFNode, maybeType: RDFNode): Boolean = {
+/*  def containsType(node: RDFNode, maybeType: RDFNode): Boolean = {
     typing.hasType(node).contains(maybeType)
-  }
+  } 
 
   def addTyping(node: RDFNode, t: RDFNode): Result[Context] = {
     this.typing.addType(node, t) match {
       case None => failure("Context: cannot assign type " + t + " to iri " + node + "...current typing: " + this.typing)
       case Some(newT) => unit(this.copy(typing = newT))
-    }
-  }
+    } 
+  } */
 
   def getIRIs(): List[IRI] = {
     rdf.iris().toList

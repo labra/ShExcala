@@ -5,8 +5,14 @@ import scala.collection.JavaConversions._
 
 object SchemaFormats {
 
+  /**
+   * Available list of formats
+   */
   lazy val formats = List("SHEXC") ++ DataFormats.toList
 
+  /**
+   * Check if a format is available
+   */
   def available(format: String): Boolean = {
     formats.contains(format.toUpperCase)
   }
@@ -16,4 +22,10 @@ object SchemaFormats {
   override def toString(): String = {
     toList.mkString(",")
   }
+  
+  /**
+   * Default schema format
+   */
+  def default = formats(0)
+  
 }

@@ -37,9 +37,11 @@ trait ShaclParser
    * Main entry point for parser
    */
   def schemaParser(s: ShapeParserState): Parser[(Schema, ShapeParserState)] =
-    shaclSchemaParser(s) ^^
-      { case (shaclSchema, s) => (Schema(s.namespaces, shaclSchema), s) }
-
+   shaclSchemaParser(s) ^^
+      { case (shaclSchema, s) => 
+          (Schema(s.namespaces, shaclSchema), s) 
+      }
+   
   def shaclSchemaParser(s: ShapeParserState): Parser[(SHACLSchema, ShapeParserState)] =
     opt(WS) ~> repState(s, statement) <~ opt(WS) ^^ {
       case (lsOpt, s1) => {
@@ -54,15 +56,28 @@ trait ShaclParser
     }
 
   def statement(s: ShapeParserState): Parser[(Option[Rule], ShapeParserState)] =
-    (directive(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
-      | rule(s) ^^ { case (rule, s1) => (Some(rule), s1) }
-      | start(s) ^^ { case s1 => (None, s1) }
+    ( directive(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
+    | begin(s) ^^ { case (rule,s1) => (Some(rule), s1)}
+    | rule(s) ^^ { case (rule, s1) => (Some(rule), s1) }
+    | start(s) ^^ { case s1 => (None, s1) }
     )
 
   def directive(s: ShapeParserState): Parser[ShapeParserState] =
-    (prefixDirective(s)
-      | baseDirective(s)
+    ( prefixDirective(s)
+    | baseDirective(s)
     )
+
+  def begin(s: ShapeParserState): Parser[(Rule,ShapeParserState)] = {
+    token("begin") ~> opt(WS) ~> "=" ~> opt(WS) ~> {
+     shapeDefinition(s) 
+    } ^^{
+      case (shape,s1) => {
+       (Rule(label=IRILabel(IRI("begin")), 
+               shapeDefinition = shape, 
+               extensionCondition = Seq()),s1) 
+      }
+    } 
+  }
 
   def start(s: ShapeParserState): Parser[ShapeParserState] = {
     token("start") ~> opt(WS) ~> "=" ~> opt(WS) ~>
@@ -124,20 +139,31 @@ trait ShaclParser
   } */
 
   def typeSpec(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
-    "{" ~> opt(WS) ~> opt(choiceExpr(s)) <~ opt(WS) <~ "}" ^^
+    "{" ~> opt(WS) ~> opt(oneOfExpr(s)) <~ opt(WS) <~ "}" ^^
       {
         case None => (EmptyShape, s)
         case Some((ors, s1)) => (ors, s1)
       }
   }
 
-  def choiceExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
+  def oneOfExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
     seqState(sequenceExpr,
-      repS(arrowState(choiceExpr, symbol("|")))
+      repS(arrowState(someOfExpr, symbol("|")))
     )(s) ^^
       {
         case (shape ~ List(), s1) => (shape, s1)
-        case (shape ~ shapes, s1) => (OneOfShape(shape :: shapes), s1)
+        case (shape ~ shapes, s1) => (OneOfShape(None,shape :: shapes), s1)
+      }
+
+  }
+
+  def someOfExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
+    seqState(sequenceExpr,
+      repS(arrowState(sequenceExpr, symbol("||")))
+    )(s) ^^
+      {
+        case (shape ~ List(), s1) => (shape, s1)
+        case (shape ~ shapes, s1) => (OneOfShape(None,shape :: shapes), s1)
       }
 
   }
@@ -154,7 +180,13 @@ trait ShaclParser
 
   def unaryExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
     (arc(s)
-      | symbol("(") ~> choiceExpr(s) <~ symbol(")") // TODO: add cardinalities to groups?
+    | ( symbol("(") ~> 
+        oneOfExpr(s) <~ 
+        symbol(")")
+      ) ~ cardinality ^^ {
+        case (shape,s1) ~ c => 
+          (RepetitionShape(None,shape,c),s1)
+      }
     )
   }
 
@@ -176,12 +208,58 @@ trait ShaclParser
       | ignorecase("IRI") ^^^ (IRIKind, s)
       | ignorecase("BNODE") ^^^ (BNodeKind, s)
       | ignorecase("NONLITERAL") ^^^ (NonLiteralKind, s)
+      | ignorecase("ANY") ^^^ (AnyKind, s)
+      | dot ^^^ (AnyKind, s)
       | opt(WS) ~> iri(s.namespaces) ~ xsfacets(s) <~ opt(WS) ^^ {
         case iri ~ facets => (LiteralDatatype(iri, facets), s)
       }
+      | valueSet(s)
     )
   }
 
+  def valueSet(s:ShapeParserState): Parser[(ValueSet,ShapeParserState)] = 
+      (openParen ~>
+      rep1sepState(s, valueObject, WS)
+      <~ closeParen) ^^ {
+        case (ls, s) => (ValueSet(ls), s)
+      }
+
+  def openParen: Parser[String] = symbol("(")
+  def closeParen: Parser[String] = symbol(")")
+
+  /**
+   * It corresponds to object rule in
+   *  [[http://www.w3.org/2013/ShEx/ShEx.bnf grammar]]
+   */
+  def valueObject(s: ShapeParserState): Parser[(ValueObject, ShapeParserState)] = {
+    ( // symbol("-") ~> basicValueObject(s) ^^ { case ((vo, s)) => (NoObject(vo), s) } | 
+    basicValueObject(s)
+    )
+  }
+
+  def basicValueObject(s: ShapeParserState): Parser[(ValueObject, ShapeParserState)] =
+    opt(WS) ~> (
+/*      (regexChars ~ opt(LANGTAG) ^^ {
+        case r ~ None => (RegexObject(r, None), s)
+        case r ~ Some(lang) => (RegexObject(r, Some(lang)), s)
+      } | */
+         iri(s.namespaces) ^^ {
+          case iri => (ValueIRI(iri), s)
+        }
+/*        | BlankNode(s.bNodeLabels) ^^ {
+          case (id, table) => {
+            (RDFNodeObject(id), s.newTable(table))
+          }
+        } */
+        | literal(s.namespaces) ^^ {
+          case l => (ValueLiteral(l), s)
+        }
+/*        | LANGTAG ^^ {
+          case lang => (LangObject(lang), s)
+        } */
+      ) <~ opt(WS)
+
+  
   def xsfacets(s: ShapeParserState): Parser[Seq[XSFacet]] = {
     repsep(xsfacet(s), WS)
   }
@@ -226,7 +304,7 @@ trait ShaclParser
     )
   }
 
-  def dot = symbol(".")
+  def dot = opt(WS) ~> symbol(".") <~ opt(WS)
 
   def integer: Parser[Int] = {
     """\d\d*""".r ^^ (s => s.toInt)

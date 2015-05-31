@@ -12,6 +12,13 @@ import es.weso.shex.PREFIXES._
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.utils._
 
+// TODO: These settings could be read from a properties file
+case object Settings {
+  val ValueObjectsAsLists = true 
+}
+
+case class Schema2RDFException(msg:String) extends Exception
+
 object Schema2RDF extends Logging {
 
   def schema2RDF(schema: Schema, rdf: RDFBuilder): RDFBuilder = {
@@ -105,15 +112,21 @@ object Schema2RDF extends Logging {
           shape2RDF(shape,node,rdf)
         }
       }
-      case SomeOfShape(shapes) => {
-        val (someOfNode,_) = rdf.createBNode
+      case RepetitionShape(id,shape,card) => {
+        val groupLabel = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(node,sh_group,groupLabel))
+        cardinality2RDF(card,groupLabel,rdf)
+        shape2RDF(shape,groupLabel,rdf)
+      }
+      case SomeOfShape(id,shapes) => {
+        val someOfNode = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(node,sh_someOf,someOfNode))
         for (shape <- shapes) {
           shape2RDF(shape,someOfNode,rdf)
         }
       }
-      case OneOfShape(shapes) => {
-        val (oneOfNode,_) = rdf.createBNode
+      case OneOfShape(id,shapes) => {
+        val oneOfNode = nodeFromOptionalLabel(id, rdf)
         addTriple(rdf,(node,sh_someOf,oneOfNode))
         for (shape <- shapes) {
           shape2RDF(shape,oneOfNode,rdf)
@@ -152,6 +165,7 @@ object Schema2RDF extends Logging {
       rdf: RDFBuilder
       ): RDFBuilder = {
     // TODO
+    log.error("Unimplemented valueShape2RDF")
     rdf
   } 
   
@@ -159,10 +173,37 @@ object Schema2RDF extends Logging {
       values: Seq[ValueObject],
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
-    for { vo <- values } {
-      valueObject2RDF(vo,node,rdf)
+    if (Settings.ValueObjectsAsLists) {
+      val (list,_) = nodeList2RDF(values.map{ case v => valueObject2Node(v) },rdf)
+      addTriple(rdf,(node,sh_allowedValues,list))
+    } else {
+       for { vo <- values } {
+        valueObject2RDF(vo,node,rdf)
+       }
+       rdf
     }
-    rdf
+  }
+  
+  def nodeList2RDF(nodes: Seq[RDFNode],
+      rdf:RDFBuilder): (RDFNode,RDFBuilder) = {
+    nodes match {
+      case Nil => {
+        (rdf_nil,rdf) 
+      }
+      case (x :: Nil) => {
+        val (node,_) = rdf.createBNode
+        addTriple(rdf,(node,rdf_first,x))
+        addTriple(rdf,(node,rdf_rest,rdf_nil))
+        (node,rdf)
+      }
+      case (x :: xs) => {
+        val (node,_) = rdf.createBNode
+        addTriple(rdf,(node,rdf_first,x))
+        val (rest,_) = nodeList2RDF(xs,rdf)
+        addTriple(rdf,(node,rdf_rest,rest))
+        (node,rdf)
+      }
+    }
   }
 
   def nodeKind2RDF(
@@ -174,31 +215,33 @@ object Schema2RDF extends Logging {
        case BNodeKind => addTriple(rdf,(node,sh_nodeKind,sh_BNode))     
        case LiteralKind => addTriple(rdf,(node,sh_nodeKind,sh_Literal))
        case NonLiteralKind => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
+       case AnyKind => addTriple(rdf,(node,sh_nodeKind,sh_Any))
       }
   }
+  
+  def valueObject2Node(v: ValueObject): RDFNode = {
+    v match {
+      case ValueIRI(iri) => iri
+      case ValueLiteral(literal) => literal
+      case ValueLang(lang) => 
+        throw Schema2RDFException("Unimplemented valueLang to Node conversion")
+    }
+  }
+    
     
   def valueObject2RDF(
     value: ValueObject,
     node: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
-    value match {
-      case ValueIRI(iri) => {
-        addTriple(rdf,(node,sh_allowedValues,iri))
-      }
-      case ValueLiteral(literal) => {
-        addTriple(rdf,(node,sh_allowedValues,literal))
-      }
-      case ValueLang(lang) => {
-        // TODO (How can we represent language constraints?)
-      }
-    }
+     addTriple(rdf,(node,sh_allowedValue,valueObject2Node(value)))
     rdf
   }
+  
   def facets2RDF(
       facets: Seq[XSFacet],
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
-    // TODO
+    log.info("Unimplemented facets2RDF...")
     rdf
   }
   
@@ -224,6 +267,7 @@ object Schema2RDF extends Logging {
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
     // TODO
+    log.error("Unimplemented inclPropSet")
     rdf
   }
   
@@ -232,6 +276,7 @@ object Schema2RDF extends Logging {
         node: RDFNode, 
         rdf: RDFBuilder): RDFBuilder = {
     /// TODO
+    log.error("Unimplemented ExtensionConditions2RDF")
     rdf 
   }
 
