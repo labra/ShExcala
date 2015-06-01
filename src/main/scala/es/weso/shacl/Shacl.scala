@@ -53,7 +53,11 @@ object Shacl {
     iri: IRI,
     value: ValueClass,
     card: Cardinality)
-      extends ShapeExpr
+      extends ShapeExpr {
+    def minusOne: TripleConstraint = {
+      this.copy(card = card.minusOne)
+    }
+  }
 
   case class InverseTripleConstraint(
     id: Option[Label],
@@ -181,11 +185,21 @@ object Shacl {
     extLangName: Label,
     extDefinition: String)
 
-  sealed trait Cardinality extends Positional
+  sealed trait Cardinality extends Positional {
+    def minusOne : Cardinality 
+  }
 
   case class RangeCardinality(m: Int, n: Int) extends Cardinality {
     require(m >= 0)
-    require(m < n)
+    require(m < n) 
+    
+    def minusOne = 
+      this match {
+      case RangeCardinality(0,0) => this
+      case RangeCardinality(0,n) if n > 0 => RangeCardinality(0, n - 1)
+      case RangeCardinality(m,n) if m > 0 && n > 0 => RangeCardinality(m - 1, n - 1)
+      case _ => throw new Exception("minusOne: Unexpected cardinality " + this)
+    }
   }
 
   /**
@@ -193,6 +207,13 @@ object Shacl {
    */
   case class UnboundedCardinalityFrom(m: Int) extends Cardinality {
     require(m >= 0)
+
+    def minusOne = 
+      this match {
+      case UnboundedCardinalityFrom(0) => UnboundedCardinalityFrom(0)
+      case UnboundedCardinalityFrom(n) if n > 0 => UnboundedCardinalityFrom(m - 1) 
+      case _ => throw new Exception("minusOne: Unexpected cardinality " + this)
+    }
   }
 
   lazy val NoActions: Seq[ExtensionCondition] = Seq()
@@ -204,6 +225,7 @@ object Shacl {
   lazy val star = UnboundedCardinalityFrom(0)
   lazy val plus = UnboundedCardinalityFrom(1)
   lazy val optional = RangeCardinality(0, 1)
+  
   lazy val defaultCardinality = UnboundedCardinalityFrom(1)
   lazy val emptyFacets : Seq[XSFacet] = Seq() 
   def defaultMaxCardinality(m:Int) = RangeCardinality(1,m)

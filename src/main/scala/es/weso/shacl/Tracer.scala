@@ -3,12 +3,17 @@ package es.weso.shacl
 import es.weso.rdfgraph.nodes.RDFNode
 import es.weso.shacl.Shacl._
 
-
+trait Tracing {
+  def trace(msg:String): Unit = {
+    println("Trace: " + msg)
+  }
+}
 
 trait Tracer {
   def newAttempt(attempt: Attempt): Tracer
   
   def failCurrentAttempt(reason: String): Tracer
+  
 }
 
 case class TracerImpl(attempts: Seq[(Attempt, Option[String])]) extends Tracer {

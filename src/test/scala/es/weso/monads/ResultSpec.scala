@@ -6,7 +6,7 @@ import org.scalatest.prop.Checkers
 import es.weso.monads.Result._
 import Stream._
 
-class ResultSpec
+trait ResultSpec
     extends FunSpec
     with Matchers
     with Checkers {
