@@ -1,4 +1,7 @@
+[![Stories in Ready](https://badge.waffle.io/labra/ShExcala.png?label=ready&title=Ready)](https://waffle.io/labra/ShExcala)
 # ShExcala - Shape Expressions in Scala
+
+[![Join the chat at https://gitter.im/labra/ShExcala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/labra/ShExcala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 This repository contains an RDF Shape Expressions validator implemented in Scala. 
 
