@@ -1,4 +1,4 @@
-package es.weso.shex
+package es.weso.shacl
 
 import com.hp.hpl.jena.rdf.model.ModelFactory
 import com.hp.hpl.jena.rdf.model.Model

@@ -126,7 +126,7 @@ class ShaclValidatorSpec
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
             remaining = Set())
-      fails_matchTriplesShapes(ts, shape, expected)
+      fails_matchTriplesShapes(ts, shape, expected,false)
     }
   
   }

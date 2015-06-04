@@ -8,7 +8,7 @@ import scala.scalajs.sbtplugin.ScalaJSPlugin.ScalaJSKeys._
 lazy val root = (project in file(".")).
   enablePlugins(BuildInfoPlugin).
   settings(
-    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, shexTestsFolder, shaclTestsFolder),
     buildInfoPackage := "buildinfo"
   )
 
@@ -20,11 +20,20 @@ version := "0.3.4"
 
 scalaVersion := "2.11.6"
 
+lazy val shexTestsFolder = settingKey[String]("Folder where shex tests are downloaded") 
+
+lazy val shaclTestsFolder = settingKey[String]("Folder where shacl tests are downloaded")
+
+shexTestsFolder := "shexTests"
+
+shaclTestsFolder := "shaclTests" 
+
 libraryDependencies ++= Seq(
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.1"
   , "commons-configuration" % "commons-configuration" % "1.7"
   , "org.rogach" %% "scallop" % "0.9.5" 
   , "com.typesafe" % "config" % "1.0.1"
+  , "jline" % "jline" % "2.12.1"
   , "org.scala-lang" % "scala-compiler" % scalaVersion.value  
   , "org.apache.jena" % "jena-arq" % "2.13.0" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.scalaz" % "scalaz-core_2.11" % "7.1.2" 
@@ -63,8 +72,10 @@ packageArchetype.java_application
 
 
  resourceGenerators in Test += Def.task {
-  val location = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
-  IO.unzipURL(location, resourceManaged.value / "downloadedTests").toSeq
+  val shexTests = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
+  IO.unzipURL(shexTests, resourceManaged.value / shexTestsFolder.value).toSeq
+ // val shaclTests = url("https://github.com/w3c/data-shapes/raw/gh-pages/data-shapes-test-suite/tests.zip")
+ // IO.unzipURL(shaclTests, resourceManaged.value / shaclTestsFolder.value).toSeq
  }.taskValue
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)

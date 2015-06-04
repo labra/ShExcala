@@ -1,24 +1,24 @@
 package es.weso.rdf.validator
+
 import es.weso.rdf._;
 import es.weso.rdfgraph.nodes._
 import es.weso.monads.Result
 import es.weso.shex.Typing
 
-trait Matcher {
+trait RDFValidator {
   type Label
+  type ValidationResult 
+  type ValidationSchema 
   type Node = RDFNode
 
-  trait ValidationSchema {
-    def getLabels: List[Label]
-  }
-
-  trait ValidationResult {
-  }
-
+  def id: String
+  
   val rdf: RDFReader
   val schema: ValidationSchema
   
-  val subjects: List[RDFNode] = rdf.subjects.toList
+  def subjects: List[RDFNode] = rdf.subjects.toList
+  def labels: Set[Label]
+  def resultLabels(node: Node, result: ValidationResult): Set[Label] 
 
   def match_node_label(node: Node)(label: Label): Result[ValidationResult]
   
@@ -27,7 +27,7 @@ trait Matcher {
   }
   
   def match_node_AllLabels(node:Node): Result[ValidationResult] = {
-    Result.passSome(schema.getLabels, match_node_label(node))
+    Result.passSome(labels.toList, match_node_label(node))
   }
   
   def combine(t1: ValidationResult, t2: ValidationResult): ValidationResult 
@@ -41,3 +41,4 @@ trait Matcher {
   }
  
 }
+

@@ -17,7 +17,7 @@ import es.weso.utils.Logging
 import es.weso.utils.Boolean
 import scala.util._
 // import treelog.LogTreeSyntaxWithoutAnnotations._
-import scalaz._, Scalaz._
+import es.weso.rdf.validator.RDFValidator
 
 case class ValidationException(msg:String) extends Exception {
   override def toString = "ValidationException: " + msg 
@@ -26,7 +26,6 @@ case class ValidationException(msg:String) extends Exception {
 trait ShaclValidator 
  extends Logging {
 
-  def id() = "SHACL validator" 
   
   def matchNodeLabel(
       node: RDFNode, 
@@ -541,3 +540,4 @@ trait ShaclValidator
       shape: ShapeDefinition): Result[ValidationState] = 
       ???
 }
+

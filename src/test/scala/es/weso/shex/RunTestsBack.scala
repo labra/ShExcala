@@ -7,6 +7,7 @@ import java.io.FileOutputStream
 import java.io.FileInputStream
 import scala.collection.JavaConverters._
 import org.scalatest.Matchers
+import es.weso.shacl.Report
 
 class RunTestsBack extends FunSpec with Matchers {
   val runner = RunTestsFolder(ShapeValidatorBacktracking)

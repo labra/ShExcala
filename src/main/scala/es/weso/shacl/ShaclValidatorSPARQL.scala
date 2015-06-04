@@ -21,7 +21,7 @@ import es.weso.monads.Failure
  */
 trait ShaclValidatorSPARQL extends ShaclValidator with Logging {
 
-  override def id = "Validator based on SPARQL"
+  // override def id = "Validator based on SPARQL"
 
 }
 

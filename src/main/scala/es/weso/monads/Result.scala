@@ -5,6 +5,7 @@ import util.Success
 import util.Try
 import es.weso.utils.SetUtils
 import io.StdIn._ 
+import jline.console._
 
 sealed abstract class Result[+A] {
 
@@ -105,6 +106,7 @@ object Result {
   
   var interactive = true
   var traceOn = false
+  val console = new ConsoleReader()
 
   def unit[A](x: A): Result[A] = Passed(Stream(x))
 
@@ -178,7 +180,7 @@ object Result {
       println("\nTrace: " + msg)
       if (interactive) {
         println("\nAction? (n = next, r = resume):")
-        val next = readChar()
+        val next = console.readCharacter()
         next match {
         case 'n' => unit(true) 
         case 'r' => {

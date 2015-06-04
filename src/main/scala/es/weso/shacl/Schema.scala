@@ -38,6 +38,10 @@ case class Schema(
         } else "<<Unknown format: " + format + ">>"
     }
   }
+  
+  def labels: Set[Label] = {
+    shaclSchema.labels
+  }
 
 }
 

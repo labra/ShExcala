@@ -1,35 +1,33 @@
-package es.weso.shex
+package es.weso.shacl
 
-import com.hp.hpl.jena.rdf.model.{ RDFNode => JenaNode }
+import com.hp.hpl.jena.rdf.model.{ 
+  ModelFactory,
+  Model,
+  Resource,
+  Property,
+  RDFNode => JenaNode 
+  }
 import es.weso.rdfgraph.nodes._
 import es.weso.monads.Result._
 import com.typesafe.config._
-import com.hp.hpl.jena.rdf.model.ModelFactory
-import com.hp.hpl.jena.rdf.model.Model
-import com.hp.hpl.jena.rdf.model.Resource
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import scala.io.Source._
 import es.weso.rdf.jena.JenaMapper
-import com.hp.hpl.jena.rdf.model.Property
 import es.weso.parser.TurtleParser
 import java.io.IOException
 import java.io.FileNotFoundException
-import scala.util.Try._
-import scala.util.Failure
+import scala.util._
 import java.net.URI
-import scala.util.Success
 import es.weso.rdf.RDFTriples
-import scala.util.Try
 import scala.collection.JavaConverters._
 import buildinfo._
-import es.weso.shacl.Report
 
-case class RunTestsFolder(validator: ShapeValidator) {
+case class RunTestsFolder(validator: ShaclValidator) {
 
   val conf: Config = ConfigFactory.load()
 
-  val testsDir = conf.getString("shexTestsFolder")
+  val testsDir = conf.getString("shaclTestsFolder")
   val manifestFile = "file:" + testsDir + "manifest.ttl"
 
   val rdf = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -64,13 +62,13 @@ case class RunTestsFolder(validator: ShapeValidator) {
     val positiveSyntax = reportPositiveSyntax(model, positiveSyntaxRs)
     val negativeSyntax = reportNegativeSyntax(model, negativeSyntaxRs)
     val valid = reportValid(model, validRs)
-    val notValid = reportNotValid(model, notValidRs)
+//    val notValid = reportNotValid(model, notValidRs)
 
     println("Positive syntax #:" + positiveSyntaxRs.size)
     println("Negative syntax #:" + negativeSyntaxRs.size)
     println("Valid #:" + validRs.size)
     println("Not Valid #:" + notValidRs.size)
-    positiveSyntax concat negativeSyntax concat valid concat notValid
+    positiveSyntax concat negativeSyntax concat valid // concat notValid
   }
 
   def get_resources(m: Model, t: String): List[Resource] = {
@@ -93,8 +91,8 @@ case class RunTestsFolder(validator: ShapeValidator) {
   def reportValid(m: Model, rs: List[Resource]): Report =
     rs.foldLeft(Report.initial)(valid(m))
 
-  def reportNotValid(m: Model, rs: List[Resource]): Report =
-    rs.foldLeft(Report.initial)(notValid(m))
+/*  def reportNotValid(m: Model, rs: List[Resource]): Report =
+    rs.foldLeft(Report.initial)(notValid(m)) */
 
   def positiveSyntax(m: Model)(
     currentReport: Report,
@@ -153,28 +151,6 @@ case class RunTestsFolder(validator: ShapeValidator) {
         (valid(name, IRI(baseIRI), schema, instance, optIRI, shapes), name)
       }
 
-    vreport match {
-      case Success((r, name)) => {
-        r match {
-          case Success(msg) => currentReport.addTestReport(true, name, res.getLocalName, testType, msg)
-          case Failure(e) => currentReport.addTestReport(false, name, res.getLocalName, testType, e.getMessage())
-        }
-      }
-      case Failure(e) => {
-        currentReport.addTestReport(false, res.getURI, res.getLocalName, testType, e.getMessage())
-      }
-    }
-  }
-
-  def notValid(m: Model)(currentReport: Report, res: Resource): Report = {
-    val testType = "Test non Validity"
-    val vreport =
-      for (
-        schema <- getSchema(m, res); instance <- getInstance(m, res); optIRI <- getIRI(m, res); name <- getName(m, res)
-      ) yield {
-        val baseIRI = shExTestsURL + name + ".ttl" // Base URI for relative URI resolution. See http://www.w3.org/2013/TurtleTests/
-        (notValid(name, IRI(baseIRI), schema, instance, optIRI), name)
-      }
     vreport match {
       case Success((r, name)) => {
         r match {
@@ -254,59 +230,37 @@ case class RunTestsFolder(validator: ShapeValidator) {
     instance: IRI,
     optIRI: Option[IRI],
     shapes: Set[RDFNode]): Try[String] = {
-    for (
-      cs_schema <- dereference(schema.str); (schema, prefixMap) <- Schema.fromString(cs_schema); cs_instance <- dereference(instance.str); rdf <- RDFTriples.parse(cs_instance)
-    ) yield {
-      val matcher = Matcher(schema, rdf, false, false, validator)
+    for {
+      cs_schema <- dereference(schema.str) 
+      (schema, prefixMap) <- Schema.fromString(cs_schema)
+      cs_instance <- dereference(instance.str)
+      rdf <- RDFTriples.parse(cs_instance)
+    } yield {
+      val matcher = ShaclMatcher(schema, rdf)
       optIRI match {
         case None => {
-          val result = matcher.matchAllIRIs_AllLabels()
+          val result = matcher.matchAllNodes_AllLabels() 
           if (result.isValid) {
             "Valid typings " + result.toList(MAX_TYPINGS)
           } else
             throw new Exception("Result should be valid but isn't")
         }
         case Some(iri) => {
-          val result = matcher.matchIRI_AllLabels(iri)
+          val result = matcher.match_node_AllLabels(iri) 
           if (result.isValid) {
-            val typings = result.toList
-            if (typings.exists(t => t.hasTypes(iri, shapes))) {
-              "Valid typings: " + typings
+            val results = result.toList
+            if (results.exists(r => matcher.resultLabels(iri,r) == shapes)) {
+              "Valid typings: " + results
             } else {
-              throw new Exception("Result does not contain " + iri + " -> " + shapes + "\nTypings: " + typings)
+              throw new 
+                Exception("Result does not contain " + iri + " -> " + shapes + "\nResults: " + results)
             }
           } else
             throw new Exception("Non valid. \n" +
               " Result: " + result +
               "\ncs_schema:\n " + cs_schema +
-              "\nSchema: " + ShapeDoc.schema2String(schema)(prefixMap) +
+              "\nSchema: " + ShaclDoc.schema2String(schema.shaclSchema)(prefixMap) +
               "\nTriples:\n " + rdf.serialize())
-        }
-      }
-    }
-  }
-
-  def notValid(name: String,
-    baseIRI: IRI,
-    schema: IRI,
-    instance: IRI,
-    optIRI: Option[IRI]): Try[String] = {
-    for (
-      cs_schema <- dereference(schema.str); (schema, prefixMap) <- Schema.fromString(cs_schema); cs_instance <- dereference(instance.str); rdf <- RDFTriples.parse(cs_instance)
-    ) yield {
-      val matcher = Matcher(schema, rdf, false, false, validator)
-      optIRI match {
-        case None => {
-          val result = matcher.matchAllIRIs_AllLabels()
-          if (result.isValid) {
-            throw new Exception("Result valid with typings: " + result.toList(MAX_TYPINGS) + " but should not be valid")
-          } else "Not valid and should not be"
-        }
-        case Some(iri) => {
-          val result = matcher.matchIRI_AllLabels(iri)
-          if (result.isValid) {
-            throw new Exception("Result valid with typings: " + result.toList(MAX_TYPINGS) + " but should not be valid")
-          } else "Not valid and should not be"
         }
       }
     }

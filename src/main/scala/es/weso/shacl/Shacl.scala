@@ -28,6 +28,10 @@ object Shacl {
       if (rs.size == 1) Some(rs.head)
       else None
     }
+    
+    def labels: Set[Label] = {
+      rules.map(_.label).toSet
+    }
   }
 
   case class Rule(
