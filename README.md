@@ -1,9 +1,10 @@
-[![Stories in Ready](https://badge.waffle.io/labra/ShExcala.png?label=ready&title=Ready)](https://waffle.io/labra/ShExcala)
 # ShExcala - Shape Expressions in Scala
 
-[![Join the chat at https://gitter.im/labra/ShExcala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/labra/ShExcala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 This repository contains an RDF Shape Expressions validator implemented in Scala. 
+
+[![Build Status](https://travis-ci.org/labra/ShExcala.svg?branch=master)](https://travis-ci.org/labra/ShExcala)
+[![Stories in Ready](https://badge.waffle.io/labra/ShExcala.png?label=ready&title=Ready)](https://waffle.io/labra/ShExcala)
+[![Join the chat at https://gitter.im/labra/ShExcala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/labra/ShExcala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Compiling from sources
 
@@ -55,7 +56,7 @@ ShExcala can be used as a command line tool or as a library. Given that it has b
 * [ShEx by example](http://www.w3.org/2014/Talks/1209-shex-egp)
 * [Binaries](https://bintray.com/weso/weso-releases/shExcala/view)
 * [Release Notes](https://github.com/labra/ShExcala/tree/master/notes)
-* [![Build Status](https://travis-ci.org/labra/ShExcala.svg?branch=master)](https://travis-ci.org/labra/ShExcala)
+ 
 
 ## Author
 
