@@ -25,7 +25,6 @@ case class ValidationException(msg:String) extends Exception {
 
 trait ShaclValidator 
  extends Logging {
-
   
   def matchNodeLabel(
       node: RDFNode, 
@@ -43,11 +42,14 @@ trait ShaclValidator
       ts: Set[RDFTriple],
       rule: Rule,
       ctx: Context) : Result[ValidationState] = {
-    trace("Match triples: " + ts + " ~ " + rule.label) 
+    trace("Match triples: " + ts + " ~ " + rule) 
     rule.shapeDefinition match {
       case OpenShape(shape, propSet) => {
-        ???
-        // TODO: remaining triples don't include propSet
+        for {
+          vs <- matchTriplesShapeExpr(ts,shape,ctx)
+        } yield {
+          vs
+        }
       }
       case ClosedShape(shape) => {
         for {
@@ -286,7 +288,7 @@ trait ShaclValidator
   def calculateTyping(n:RDFNode,
       schema: SHACLSchema,
       rdf: RDFGraph): Result[Typing] = {
-    ???
+    failure("unimplemented calculate typing")
   }
 /*  
   def matchShapeExpr(
@@ -538,6 +540,6 @@ trait ShaclValidator
       ctx: Context,
       g: Set[RDFTriple],
       shape: ShapeDefinition): Result[ValidationState] = 
-      ???
+      failure("unimplemented matchShape")
 }
 

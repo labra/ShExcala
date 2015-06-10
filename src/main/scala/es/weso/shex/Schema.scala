@@ -73,9 +73,10 @@ object Schema {
   }
 
   def fromFile(fileName: String, format: String): Try[(Schema, PrefixMap)] = {
-    for (
-      cs <- getContents(fileName); (schema, prefixMap) <- Schema.fromString(cs, format)
-    ) yield (schema, prefixMap)
+    for {
+      cs <- getContents(fileName)
+      (schema, prefixMap) <- Schema.fromString(cs, format)
+    } yield (schema, prefixMap)
   }
 
 }

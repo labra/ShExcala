@@ -8,11 +8,20 @@ import io.StdIn._
 import jline.console._
 
 sealed abstract class Result[+A] {
-
-  def run(): Stream[A] = {
+  
+  def toSingle: Try[A] = {
     this match {
-      case Passed(rs) => rs
-      case Failure(msg) => throw new ResultException(msg)
+      case Passed(rs) => 
+        if (rs.size == 1) Success(rs.head)
+        else TryFailure(ResultException("More than one result"))
+      case Failure(msg) => TryFailure(ResultException(msg))
+    }
+  }
+
+  def run(): Try[Stream[A]] = {
+    this match {
+      case Passed(rs) => Success(rs)
+      case Failure(msg) => TryFailure(ResultException(msg))
     }
   }
 

@@ -163,7 +163,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
         if (matchName(ctx, triple.pred, n).isValid) {
           val mv = matchValue(ctx, triple.obj, v)
           if (mv.isValid) {
-            (EmptyRule, mv.run)
+            (EmptyRule, mv.run.get)
           } else {
             (FailRule("Does not match value " + triple.obj +
               " with ArcRule " + showRule(rule)(ctx.pm) + " Msg: " + mv.failMsg),
@@ -178,7 +178,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
         if (matchName(ctx, triple.pred, n).isValid) {
           val mv = matchValue(ctx, triple.subj, v)
           if (mv.isValid) {
-            (EmptyRule, mv.run)
+            (EmptyRule, mv.run.get)
           } else {
             (FailRule("Does not match value " + triple.subj +
               " with RevArcRule " + showRule(rule)(ctx.pm) + " Msg: " + mv.failMsg),
@@ -195,7 +195,7 @@ trait ShapeValidatorWithDeriv extends ShapeValidator with Logging {
         val mv2 = matchValue(ctx, triple.obj, v1)
         if (mv1.isValid) {
           if (mv2.isValid)
-            (EmptyRule, mv1.run ++ mv2.run)
+            (EmptyRule, mv1.run.get ++ mv2.run.get)
           else {
             (FailRule("Does not match value " + triple.obj +
               " with RelationRule " + showRule(rule)(ctx.pm) + " Msg: " + mv2.failMsg),

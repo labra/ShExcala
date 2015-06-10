@@ -7,6 +7,7 @@ import es.weso.rdfgraph.nodes._
 import java.lang._
 import es.weso.utils.Logging
 import es.weso.rdf.validator.RDFValidator
+import es.weso.monads.Result._
 
 case class ShaclMatcher(
     schema: Schema, 
@@ -42,7 +43,10 @@ def match_node_label
     pm = schema.pm, 
     validateIncoming = true
   )
-  matchNodeLabel(node, label, ctx)
+  for {
+//   _ <- setTrace(true)
+   vs <- matchNodeLabel(node, label, ctx) 
+  } yield vs
 } 
   
                    

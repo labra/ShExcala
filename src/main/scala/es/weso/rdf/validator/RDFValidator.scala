@@ -36,7 +36,7 @@ trait RDFValidator {
     Result.combineAll(subjects, match_label_node(lbl), combine)
   }
 
-  def matchAllNodes_AllLabels(): Result[ValidationResult] = {
+  def matchAllNodes_AllLabels: Result[ValidationResult] = {
     Result.combineAll(subjects, match_node_AllLabels, combine)
   }
  

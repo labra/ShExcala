@@ -144,7 +144,7 @@ class ShaclValidatorSpec
     } yield r
     
     if (result.isValid) {
-      val sol1 = result.run.head
+      val sol1 = result.run.get.head
       sol1 should be(expectedState)
     } else {
       info("matching triples: " + ts + " with " + shape)

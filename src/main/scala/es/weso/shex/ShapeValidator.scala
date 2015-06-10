@@ -115,7 +115,7 @@ trait ShapeValidator extends Logging {
 
       case ValueSet(s) => {
         val evalSet = Result.passSome(s.toList, matchValueObject(obj))
-        if (evalSet.run.filter(x => x == true).size > 0) {
+        if (evalSet.run.get.filter(x => x == true).size > 0) {
           unit(ctx.typing)
         } else {
           val msg = "matchValue: obj" + obj + " is not in set " + s

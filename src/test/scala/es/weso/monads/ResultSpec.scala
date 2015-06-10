@@ -177,13 +177,13 @@ trait ResultSpec
 
       it("pSet of 1,2") {
         val bm = parts(Set(1, 2))
-        bm.run.toSet should be
+        bm.run.get.toSet should be
         Set((Set(1, 2), Set()), (Set(1), Set(2)), (Set(2), Set(1)), (Set(), Set(1, 2)))
       }
 
       it("pSet of 1,2,3") {
         val bm = parts(Set(1, 2, 3))
-        bm.run.toSet should be(
+        bm.run.get.toSet should be(
           Set((Set(1, 2, 3), Set()),
             (Set(1, 2), Set(3)),
             (Set(1, 3), Set(2)),

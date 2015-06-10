@@ -378,7 +378,7 @@ object Main extends App with Verbosity {
         if (typings.isFailure) {
           println("<No shape typings>")
         } else
-          for ((typing, n) <- (typings.run) zip (1 to opts.cut())) {
+          for ((typing, n) <- (typings.run.get) zip (1 to opts.cut())) {
             println(s"Solution ${n}:\n" + typing.showTyping(pm))
           }
       }
