@@ -54,12 +54,15 @@ trait ShaclValidator
       case ClosedShape(shape) => {
         for {
           vs <- matchTriplesShapeExpr(ts,shape,ctx)
-        } yield {
-          // TODO: Check there are no remaining triples
-          vs
-        }
+          _ <- checkNoRemaining(vs)
+        } yield vs
       }
     }
+  }
+  
+  def checkNoRemaining(vs: ValidationState): Result[Boolean] = {
+    if (vs.hasRemaining) unit(true)
+    else failure("Closed shape has remaining triples: " + vs.remaining)
   }
   
   def matchTriplesShapeExpr(

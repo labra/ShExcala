@@ -17,17 +17,19 @@
    dc:creator "Jose Labra";
    dc:date "2015-06-02"^^<xsd:date> ;
    mf:entries (
-    <singleIRI>
-    <singleBNode_fail>
+    <singleIRI_IRI_pass>
+    <singleIRI_BNode_fail>
+    <singleBNode_IRI_fail>
+    <singleBNode_BNode_pass>
    ) .
 
-<singleIRI> a sht:MatchNodeShape ;
-   mf:name "Compact syntax: single triple IRI - triple constraint IRI (should pass)" ;
+<singleIRI_IRI_pass> a sht:MatchNodeShape ;
+   mf:name "Compact syntax: single IRI - IRI -> (pass)" ;
    mf:action [
-     sht:schema <tripleConstraintIRI.shc> ; 
-     sht:schema-format sht:SHACLC   ; 
  	 sht:data <singleIRI.ttl> ; 
  	 sht:data-format sht:TURTLE ;
+     sht:schema <tripleConstraintIRI.shc> ; 
+     sht:schema-format sht:SHACLC   ; 
  	 sht:node ex:x ;
  	 sht:shape ex:shape 
 	 ] ;
@@ -35,13 +37,27 @@
    mf:status sht:proposed
    .
 
-<singleBNode_fail> a sht:MatchNodeShape ;
-   mf:name "Compact syntax: single triple BNode - triple constraint IRI (should fail)" ;
+<singleIRI_Bnode_fail> a sht:MatchNodeShape ;
+   mf:name "Compact syntax: single IRI - BNode (fail)" ;
    mf:action [
-     sht:schema <tripleConstraintIRI.shc> ; 
+ 	 sht:data <singleIRI.ttl> ; 
+ 	 sht:data-format sht:TURTLE ;
+     sht:schema <tripleConstraintBNode.shc> ; 
      sht:schema-format sht:SHACLC   ; 
+ 	 sht:node ex:x ;
+ 	 sht:shape ex:shape 
+	 ] ;
+   mf:result false ; 
+   mf:status sht:proposed
+   .
+
+<singleBNode_IRI_fail> a sht:MatchNodeShape ;
+   mf:name "Compact syntax: single BNode - IRI -> (fail)" ;
+   mf:action [
  	 sht:data <singleBNode.ttl> ; 
  	 sht:data-format sht:TURTLE ;
+     sht:schema <tripleConstraintIRI.shc> ; 
+     sht:schema-format sht:SHACLC   ; 
  	 sht:node ex:x ;
  	 sht:shape ex:shape 
 	 ] ;
@@ -49,4 +65,16 @@
    mf:status sht:proposed
    .
 
-   
+<singleBNode_BNode_pass> a sht:MatchNodeShape ;
+   mf:name "Compact syntax: single BNode - BNode -> (pass)" ;
+   mf:action [
+ 	 sht:data <singleBNode.ttl> ; 
+ 	 sht:data-format sht:TURTLE ;
+     sht:schema <tripleConstraintBNode.shc> ; 
+     sht:schema-format sht:SHACLC   ; 
+ 	 sht:node ex:x ;
+ 	 sht:shape ex:shape 
+	 ] ;
+   mf:result true ;
+   mf:status sht:proposed
+   .

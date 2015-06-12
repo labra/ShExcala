@@ -5,8 +5,9 @@ import org.scalatest.prop.PropertyChecks
 import org.scalatest.prop.Checkers
 import es.weso.monads.Result._
 import Stream._
+import util._
 
-trait ResultSpec
+class ResultSpec
     extends FunSpec
     with Matchers
     with Checkers {
@@ -120,7 +121,7 @@ trait ResultSpec
         val bm2 = bm1 orelse u2
         bm1.isFailure should be(true)
         bm2.isFailure should be(false)
-        bm2.run should be(List((2)).toStream)
+        bm2.run should be(Success(List((2)).toStream))
       }
 
     }

@@ -12,6 +12,9 @@ sealed trait ValidationState {
  def combine(other: ValidationState): ValidationState
  def addChecked(t: RDFTriple): Result[ValidationState] 
  def resultLabels(node: RDFNode): Set[Label]
+ def remaining: Set[RDFTriple]
+ def checked: Set[RDFTriple]
+ def hasRemaining = remaining.isEmpty
 }
 
 case class Pass(
@@ -63,7 +66,6 @@ case class Failed(
   override def combine(other: ValidationState): ValidationState = {
     this
   }
-
 
   override def combineTyping(other: Typing): Result[ValidationState] = {
     failure("Cannot combine typing: " + other + ", with state: " + this)
