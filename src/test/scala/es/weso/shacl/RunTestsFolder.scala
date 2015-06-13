@@ -40,7 +40,7 @@ class RunTestsFolder
     val maybeManifest = RDF2Manifest.read(manifestFile) 
     maybeManifest match {
       case Success(manifest) => runTests(manifest,base)
-      case Failure(e) => fail("Cannot read manifest file: " + e.getMessage)
+      case Failure(e) => fail("Exception reading manifest file (" + manifestFile + "): " + e.getMessage)
      }
     }
   }

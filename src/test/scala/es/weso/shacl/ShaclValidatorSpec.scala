@@ -11,6 +11,7 @@ import es.weso.rdf._
 import es.weso.shacl.PREFIXES._
 import es.weso.monads.Result
 import es.weso.monads.Result._
+import util._
 
 class ShaclValidatorSpec
     extends FunSpec
@@ -23,7 +24,7 @@ class ShaclValidatorSpec
       val obj: RDFNode = IRI("a")
       val iri = IRIKind
       val ctx = Context.emptyContext
-      matchNodeKind(obj, iri, ctx).run should be(Stream(true))
+      matchNodeKind(obj, iri, ctx).run should be(Success(Stream(true)))
     }
     
     it("Should not validate type IRI with a BNode") {

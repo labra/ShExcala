@@ -153,27 +153,34 @@ trait ShapeValidator extends Logging {
   }
 
   def matchType(obj: RDFNode, vtype: RDFNode): Result[Boolean] = {
-    log.debug("MatchType: " + obj + " ~ " + vtype)
+    trace("MatchType: " + obj + " with type: " + obj.toString() + " ~ " + vtype)
     obj match {
       case lit: Literal => {
+        trace("Literal...Datatype: " + lit.dataType)
         if (vtype == sh_Literal ||
           vtype == sh_NonIRI ||
           vtype == sh_NonBNode ||
           lit.dataType == vtype) {
           unit(true)
-        } else unit(false)
+        } else {
+         trace("matchType: false") 
+         unit(false) 
+        }
       }
       case iri: IRI => {
+        trace("Iri: " + iri)
         if (vtype == sh_IRI ||
           vtype == sh_NonLiteral ||
           vtype == sh_NonBNode) unit(true)
         else unit(false)
       }
-      case bnode: BNodeId =>
+      case bnode: BNodeId => {
+        trace("Bnode: " + bnode)
         if (vtype == sh_BNode ||
           vtype == sh_NonIRI ||
           vtype == sh_NonLiteral) unit(true)
         else unit(false)
+      }
     }
 
   }

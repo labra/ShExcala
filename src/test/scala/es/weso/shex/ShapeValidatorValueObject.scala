@@ -10,6 +10,7 @@ import org.scalatest.prop.Checkers
 import es.weso.shex.Typing._
 import es.weso.shex.Context._
 import es.weso.rdf._
+import util._
 
 class ShapeValidatorValueObject
     extends FunSpec
@@ -21,13 +22,13 @@ class ShapeValidatorValueObject
     it("Should validate value object") {
       val obj1: RDFNode = StringLiteral("a")
       val vobj: ValueObject = RDFNodeObject(StringLiteral("a"))
-      matchValueObject(obj1)(vobj).run should be(Stream(true))
+      matchValueObject(obj1)(vobj).run should be(Success(Stream(true)))
     }
 
     it("Should not validate value object if they are different") {
       val obj1: RDFNode = StringLiteral("a")
       val vobj: ValueObject = RDFNodeObject(StringLiteral("b"))
-      matchValueObject(obj1)(vobj).run should be(Stream(false))
+      matchValueObject(obj1)(vobj).run should be(Success(Stream(false)))
     }
 
   }

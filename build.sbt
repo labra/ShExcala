@@ -70,13 +70,20 @@ net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 packageArchetype.java_application
 
+// Code coverage
 
-// resourceGenerators in Test += Def.task {
-//  val shexTests = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
-//  IO.unzipURL(shexTests, resourceManaged.value / shexTestsFolder.value).toSeq
+// ScoverageKeys.minimumCoverage := 60
+
+// ScoverageKeys.failOnMinimumCoverage := false
+
+// Testing 
+
+resourceGenerators in Test += Def.task {
+  val shexTests = url("https://github.com/shexSpec/test-suite/raw/gh-pages/tests.zip")
+  IO.unzipURL(shexTests, resourceManaged.value / shexTestsFolder.value).toSeq
   // val shaclTests = url("https://github.com/w3c/data-shapes/raw/gh-pages/data-shapes-test-suite/tests.zip")
   // IO.unzipURL(shaclTests, resourceManaged.value / shaclTestsFolder.value).toSeq
-// }.taskValue
+}.taskValue
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 

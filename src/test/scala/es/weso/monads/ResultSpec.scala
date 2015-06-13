@@ -16,20 +16,18 @@ class ResultSpec
 
     it("Should return a value") {
       val bm: Result[Int] = unit(2)
-      bm.run should be(2 #:: Stream.empty)
+      bm.run should be(Success(2 #:: Stream.empty))
     }
 
     it("Should fail") {
       val bm: Result[Int] = failure("example failed")
-      intercept[ResultException] {
-        bm.run
-      }
+      bm.run.isFailure should be(true)
     }
 
     it("Should recover from fail") {
       val bm: Result[Int] =
         failure("example failed").orelse(unit(2))
-      bm.run should be(List(2).toStream)
+      bm.run should be(Success(List(2).toStream))
     }
 
     it("Should be able to use flatMap") {
@@ -37,14 +35,14 @@ class ResultSpec
         // for (x <- unit(2)) yield (x + 1)  
         unit(2) flatMap { x => unit(x + 1) }
 
-      bm.run should be(List(3).toStream)
+      bm.run should be(Success(List(3).toStream))
     }
 
     it("Should be able to use for's") {
       val bm: Result[Int] =
         for (x <- unit(2)) yield x + 1
 
-      bm.run should be(List(3).toStream)
+      bm.run should be(Success(List(3).toStream))
     }
 
     it("Should be able to use for to generate a pair") {
@@ -53,7 +51,7 @@ class ResultSpec
           x <- unit(2); y <- unit(x + 1)
         ) yield (x, y)
 
-      bm.run should be(List((2, 3)).toStream)
+      bm.run should be(Success(List((2, 3)).toStream))
     }
 
     it("A sequence with a fail...fails") {

@@ -11,6 +11,8 @@ import es.weso.shex.Typing._
 import es.weso.shex.Context._
 import es.weso.rdf._
 import es.weso.shacl.PREFIXES._
+import es.weso.monads.Result._
+import util._
 
 class ShapeValidatorSpec
     extends FunSpec
@@ -22,37 +24,49 @@ class ShapeValidatorSpec
     it("Should validate type IRI") {
       val obj: RDFNode = IRI("a")
       val vtype: RDFNode = sh_IRI
-      matchType(obj, vtype).run should be(Stream(true))
+      matchType(obj, vtype).run should be(Success(Stream(true)))
+    }
+
+    it("Should validate type IRI with BNode (should fail)") {
+      val obj: RDFNode = BNodeId("1")
+      val vtype: RDFNode = sh_IRI
+      matchType(obj, vtype).run should be(Success(Stream(false)))
     }
 
     it("Should validate type xsd_string") {
       val obj: RDFNode = StringLiteral("a")
       val vtype = xsd_string
-      matchType(obj, vtype).run should be(Stream(true))
+      matchType(obj, vtype).run should be(Success(Stream(true)))
     }
 
+    it("Should validate type xsd_string with Int (should fail)") {
+      val obj: RDFNode = IntegerLiteral(23)
+      val vtype = xsd_string
+      matchType(obj,vtype).run should be(Success(Stream(false)))
+    }
+    
     it("Should validate type xsd_integer") {
       val obj: RDFNode = IntegerLiteral(23)
       val vtype = xsd_integer
-      matchType(obj, vtype).run should be(Stream(true))
+      matchType(obj, vtype).run should be(Success(Stream(true)))
     }
 
     it("Should validate type xsd_double") {
       val obj = DoubleLiteral(23.5)
       val vtype = xsd_double
-      matchType(obj, vtype).run should be(Stream(true))
+      matchType(obj, vtype).run should be(Success(Stream(true)))
     }
 
     it("Should validate type xsd_double by datatype") {
       val obj: RDFNode = DatatypeLiteral("23.5", xsd_double)
       val vtype = xsd_double
-      matchType(obj, vtype).run should be(Stream(true))
+      matchType(obj, vtype).run should be(Success(Stream(true)))
     }
 
     it("Should not validate type xsd_double with xsd_integer by datatype") {
       val obj: RDFNode = DatatypeLiteral("23.5", xsd_double)
       val vtype = xsd_integer
-      matchType(obj, vtype).run should be(Stream(false))
+      matchType(obj, vtype).run should be(Success(Stream(false)))
     }
 
   }
@@ -62,7 +76,7 @@ class ShapeValidatorSpec
       val ctx = emptyContext
       val g: Set[RDFTriple] = Set()
       val r = EmptyRule
-      matchRule(ctx, g, r).run should be(Stream(emptyTyping))
+      matchRule(ctx, g, r).isValid should be(true)
     }
 
     it("Should not validate rule with an arc with empty triples") {

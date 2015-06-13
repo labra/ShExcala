@@ -11,6 +11,7 @@ import es.weso.shex.Typing._
 import es.weso.shex.Context._
 import es.weso.rdf.PrefixMap
 import es.weso.rdf.RDFTriples
+import util._
 
 class ShapeValidatorAny
     extends FunSpec
@@ -33,7 +34,7 @@ class ShapeValidatorAny
       val t0 = Typing.emptyTyping
       val t1 = t0.addType(ex("n1"), ex("a")).get
       val t2 = t1.addType(ex("n3"), ex("a")).get
-      rs.run should be(Stream(t2))
+      rs.run should be(Success(Stream(t2)))
     }
 
     it("Should validate some nodes ok when some pass") {
@@ -51,7 +52,7 @@ class ShapeValidatorAny
       val t0 = Typing.emptyTyping
       val t1 = t0.addType(ex("n1"), ex("a")).get
       val t2 = t1.addType(ex("n3"), ex("a")).get
-      rs.run should be(Stream(t2))
+      rs.run should be(Success(Stream(t2)))
     }
 
   }

@@ -18,7 +18,7 @@
    dc:date "2015-06-02"^^<xsd:date> ;
    mf:entries (
     <singleIRI_IRI_pass>
-    <singleIRI_BNode_fail>
+    <singleIRI_Bnode_fail>
     <singleBNode_IRI_fail>
     <singleBNode_BNode_pass>
    ) .

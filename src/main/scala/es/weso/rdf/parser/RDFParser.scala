@@ -187,7 +187,7 @@ trait RDFParser {
             case Success(rs) => {
               parser(node, rdf) match {
                 case Success(a) => Success(a +: rs)
-                case Failure(f) => throw new Exception("group: Unimplemented") // TODO
+                case Failure(f) => throw new Exception("group: Unimplemented parsing node " + node + " Exception: " + f.getMessage) // TODO
               }
             }
             case _ => s
