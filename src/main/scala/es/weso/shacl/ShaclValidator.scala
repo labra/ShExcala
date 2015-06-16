@@ -34,7 +34,8 @@ trait ShaclValidator
     val triples = ctx.triplesAround(node)
     for {
      shape <- liftOption(ctx.getShape(label))
-     state <- matchTriplesRule(triples,shape,ctx) 
+     ctx1 <- liftTry(ctx.addTyping(node,label))
+     state <- matchTriplesRule(triples,shape,ctx1) 
     } yield state 
   }
   

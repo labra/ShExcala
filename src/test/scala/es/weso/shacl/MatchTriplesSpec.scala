@@ -13,69 +13,12 @@ import es.weso.monads.Result._
 import es.weso.monads._
 import util._
 
-class ShaclValidatorSpec
+class MatchTriplesSpec
     extends FunSpec
     with ShaclValidator
     with Matchers
     with Checkers {
 
-  describe("matchNodeKind") {
-    it("Should validate type IRI") {
-      val obj: RDFNode = IRI("a")
-      val iri = IRIKind
-      val ctx = Context.emptyContext
-      matchNodeKind(obj, iri, ctx).run should be(Success(Stream(true)))
-    }
-    
-    it("Should not validate type IRI with a BNode") {
-      val obj: RDFNode = BNodeId("a")
-      val iri = IRIKind
-      val ctx = Context.emptyContext
-      matchNodeKind(obj, iri, ctx).isValid should be(false)  
-    }
-
-    it("Should validate type BNode") {
-      val obj: RDFNode = BNodeId("a")
-      val iri = BNodeKind
-      val ctx = Context.emptyContext
-      matchNodeKind(obj, iri, ctx).isValid should be(true)
-    }
-  }
-  
-  describe("matchValueSet") {
-    
-    it("containsNode should return true if it contains a node") {
-      val obj: RDFNode = IRI("b")
-      val set = Seq(
-          ValueIRI(IRI("a")),
-          ValueIRI(IRI("b")),
-          ValueIRI(IRI("c"))
-          )
-      containsNode(obj,set) should be(true)    
-    }
-    
-    it("containsNode should return false if it doesn't contain a node") {
-      val obj: RDFNode = IRI("d")
-      val set = Seq(
-          ValueIRI(IRI("a")),
-          ValueIRI(IRI("b")),
-          ValueIRI(IRI("c"))
-          )
-      containsNode(obj,set) should be(false)    
-    }
-    
-    it("Should validate a value Set") {
-      val obj: RDFNode = IRI("b")
-      val vs = ValueSet(Seq(
-          ValueIRI(IRI("a")),
-          ValueIRI(IRI("b")),
-          ValueIRI(IRI("c"))
-          ))
-      val ctx = Context.emptyContext
-      matchValueSet(obj, vs, ctx).isValid should be(true)
-    }
-  }
-  
   describe("matchLiteralDatatype") {
     it("Should match literal Datatype") {
       val obj: RDFNode = IntegerLiteral(23)
@@ -261,7 +204,90 @@ class ShaclValidatorSpec
             remaining = Set(t2))
       fails_matchTriplesShapes(ts, shape, expected)
     }
-  }
+
+    it("Should match oneOf (a,d) - oneOf(a,b)") {
+      val t1 = RDFTriple(IRI("x"),IRI("a"),IRI("y"))
+      val t2 = RDFTriple(IRI("x"),IRI("c"),IRI("z"))
+      val ts: Set[RDFTriple] = Set(t2,t1)
+      val shape : ShapeExpr = 
+        OneOfShape(None,
+            List(TripleConstraint(None, IRI("a"), IRIKind, plus),
+                 TripleConstraint(None, IRI("b"), IRIKind, plus))
+        )
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1), 
+            remaining = Set(t2))
+      matchesTriplesShapes(ts, shape, expected)
+    }
+    it("Should match xor (a,d) - (a xor b)") {
+      val t1 = RDFTriple(IRI("x"),IRI("a"),IRI("y"))
+      val t2 = RDFTriple(IRI("x"),IRI("c"),IRI("z"))
+      val ts: Set[RDFTriple] = Set(t2,t1)
+      val shape : ShapeExpr = 
+        XOr(None,TripleConstraint(None, IRI("a"), IRIKind, plus),
+                 TripleConstraint(None, IRI("b"), IRIKind, plus))
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1), 
+            remaining = Set(t2))
+      matchesTriplesShapes(ts, shape, expected)
+    }
+    it("Should not match xor (a,b) - (a xor b)") {
+      val t1 = RDFTriple(IRI("x"),IRI("a"),IRI("y"))
+      val t2 = RDFTriple(IRI("x"),IRI("b"),IRI("z"))
+      val ts: Set[RDFTriple] = Set(t2,t1)
+      val shape : ShapeExpr = 
+        XOr(None,TripleConstraint(None, IRI("a"), IRIKind, plus),
+                 TripleConstraint(None, IRI("b"), IRIKind, plus))
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1), 
+            remaining = Set(t2))
+      fails_matchTriplesShapes(ts, shape, expected)
+    }
+    it("Should match someOf (a,d) - someOf(a,b)") {
+      val t1 = RDFTriple(IRI("x"),IRI("a"),IRI("y"))
+      val t2 = RDFTriple(IRI("x"),IRI("c"),IRI("z"))
+      val ts: Set[RDFTriple] = Set(t2,t1)
+      val shape : ShapeExpr = 
+        SomeOfShape(None,
+            List(TripleConstraint(None, IRI("a"), IRIKind, plus),
+                 TripleConstraint(None, IRI("b"), IRIKind, plus)))
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1), 
+            remaining = Set(t2))
+      matchesTriplesShapes(ts, shape, expected)
+    }
+    it("Should match or (a,d) - (a or b)") {
+      val t1 = RDFTriple(IRI("x"),IRI("a"),IRI("y"))
+      val t2 = RDFTriple(IRI("x"),IRI("c"),IRI("z"))
+      val ts: Set[RDFTriple] = Set(t2,t1)
+      val shape : ShapeExpr = 
+        Or(None,TripleConstraint(None, IRI("a"), IRIKind, plus),
+                 TripleConstraint(None, IRI("b"), IRIKind, plus))
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1), 
+            remaining = Set(t2))
+      matchesTriplesShapes(ts, shape, expected)
+    }
+    it("Should match someOf (a,b) - someOf(a,b)") {
+      val t1 = RDFTriple(IRI("x"),IRI("a"),IRI("y"))
+      val t2 = RDFTriple(IRI("x"),IRI("b"),IRI("z"))
+      val ts: Set[RDFTriple] = Set(t2,t1)
+      val shape : ShapeExpr = 
+        SomeOfShape(None,
+            List(TripleConstraint(None, IRI("a"), IRIKind, plus),
+                 TripleConstraint(None, IRI("b"), IRIKind, plus)))
+      val e1 = Pass(typing = Typing.emptyTyping,checked = Set(t1),remaining = Set(t2))
+      val e2 = Pass(typing = Typing.emptyTyping,checked = Set(t2),remaining = Set(t1))
+      val expected = Set(e1,e2)
+      val ctx = Context.emptyContext      
+      matchTriplesShapeExpr(ts, shape, ctx).run.get.toSet should be(expected)
+    }
+}
   
   
   def matchesTriplesShapes(

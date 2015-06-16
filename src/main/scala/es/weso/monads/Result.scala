@@ -101,13 +101,11 @@ sealed abstract class Result[+A] {
   }
 
   def xor[B >: A](other: => Result[B]): Result[B] = {
-    this match {
-      case Passed(rs1) => other match {
-        case Passed(rs2) => Failure("XOr: both branches passed")
-        case Failure(_) => Passed(rs1)
-      }
-      case Failure(_) => other
-    }
+    if (this.isFailure) other
+    else 
+      if (other.isFailure) this
+      else 
+        Failure("XOr: both branches passed")
   }
   
   def not: Result[Boolean] = {
@@ -229,6 +227,10 @@ object Result {
   
   def not[A](result: Result[A]): Result[Boolean] = {
     result.not
+  }
+  
+  def xor[A](result1: Result[A], result2: Result[A]): Result[A] = {
+    result1.xor(result2)
   }
   
   def anyOf[A](set:Set[A]):Result[(A,Set[A])] = {

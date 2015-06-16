@@ -7,6 +7,7 @@ import scala.util.parsing.input.Positional
 import scala.util.matching.Regex
 import es.weso.shacl.PREFIXES._
 import util._
+import es.weso.utils.PrefixMapUtils._
 
 /**
  * The following definitions follow: http://w3c.github.io/data-shapes/semantics/
@@ -97,14 +98,23 @@ object Shacl {
    */
   sealed trait Label {
     def getNode(): RDFNode
+    
+    def show(implicit pm:PrefixMap): String
   }
 
   case class IRILabel(iri: IRI) extends Label {
     override def getNode = iri
+    
+    override def show(implicit pm:PrefixMap): String = {
+      qualify(iri)
+    }
   }
 
   case class BNodeLabel(bnode: BNodeId) extends Label {
     override def getNode = bnode
+    
+    override def show(implicit pm:PrefixMap): String = 
+      "_:" + bnode.id 
   }
 
   def mkLabel(str: String): IRILabel = {

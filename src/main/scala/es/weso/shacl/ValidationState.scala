@@ -13,6 +13,12 @@ sealed trait ValidationState {
  def remaining: Set[RDFTriple]
  def checked: Set[RDFTriple]
  def hasRemaining = remaining.isEmpty
+ def containsNodeLabel(node:RDFNode,label:Label): Boolean = {
+   this match {
+     case pass: Pass => pass.typing.containsType(node, label)
+     case _ => false
+   }
+ }
 }
 
 case class Pass(

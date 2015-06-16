@@ -6,6 +6,7 @@ import es.weso.rdfgraph._
 import es.weso.rdf._
 import scala.util._
 import es.weso.shacl.Shacl._
+import es.weso.utils.PrefixMapUtils._
 
 case class TypingException(msg:String) extends Exception {
   new Exception(msg)
@@ -50,6 +51,28 @@ case class ShapeType(
   def check(msg: String, cond:Boolean): Try[Boolean] = {
     if (cond) Success(true)
     else Failure(TypingException(msg))
+  }
+  
+  def show(implicit pm: PrefixMap): String = {
+    val sb = new StringBuilder
+    if (shapes.isEmpty && negShapes.isEmpty) {
+      sb ++= "()"
+    }
+    if (!shapes.isEmpty) {
+      if (shapes.size == 1) {
+        sb ++= "+" + shapes.map(_.show).mkString
+      }
+      else {
+        sb ++= "+(" + shapes.map(_.show).mkString(",") + ")"        
+      }
+    }  
+    if (!negShapes.isEmpty) {
+      if (negShapes.size == 1) sb ++= "-" + shapes.map(_.show).mkString 
+      else {
+        sb ++= "+(" + shapes.map(_.show).mkString(",") + ")"        
+      }
+    }  
+   sb.toString  
   }
 }
 
@@ -150,10 +173,10 @@ case class Typing(map: Map[RDFNode, ShapeType]) {
     hasShapes(n) contains label
   } 
 
-/*  def showTyping(implicit pm: PrefixMap): String = {
+  def showTyping(implicit pm: PrefixMap): String = {
     val sb = new StringBuilder
     for (is <- map) {
-      sb ++= (showNode(is._1) + " -> " + showNodes(is._2) + "\n")
+      sb ++= (showNode(is._1) + " -> " + is._2.show + "\n")
     }
     sb.toString
   }
@@ -164,20 +187,10 @@ case class Typing(map: Map[RDFNode, ShapeType]) {
   }
 
   private def showNode(node: RDFNode)(implicit pm: PrefixMap): String = {
-    if (node.isIRI) showIRI(node.toIRI)
+    if (node.isIRI) qualify(node.toIRI)
     else node.toString
   }
 
-  private def showNodes(nodes: Set[RDFNode])(implicit pm: PrefixMap): String = {
-    val sb = new StringBuilder
-    sb ++= "("
-    for (n <- nodes) {
-      sb ++= (showNode(n) + " ")
-    }
-    sb ++= ")"
-    sb.toString
-  }
-*/
 }
 
 object Typing {
