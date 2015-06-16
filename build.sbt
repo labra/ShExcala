@@ -4,6 +4,7 @@ import AssemblyKeys._
 import bintray.Plugin.bintraySettings
 import bintray.Keys._
 import scala.scalajs.sbtplugin.ScalaJSPlugin.ScalaJSKeys._
+import ScoverageSbtPlugin._
 
 lazy val root = (project in file(".")).
   enablePlugins(BuildInfoPlugin).
@@ -70,11 +71,15 @@ net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 packageArchetype.java_application
 
-// Code coverage
+// Publish site info
+site.settings
 
-// ScoverageKeys.minimumCoverage := 60
+site.includeScaladoc()
 
-// ScoverageKeys.failOnMinimumCoverage := false
+lazy val scoverageSettings = Seq(
+  ScoverageKeys.coverageMinimum := 50,
+  ScoverageKeys.coverageFailOnMinimum := false
+)
 
 // Testing 
 
