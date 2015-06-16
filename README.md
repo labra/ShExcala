@@ -5,6 +5,7 @@ This repository contains an RDF Shape Expressions validator implemented in Scala
 [![Build Status](https://travis-ci.org/labra/ShExcala.svg?branch=master)](https://travis-ci.org/labra/ShExcala)
 [![Stories in Ready](https://badge.waffle.io/labra/ShExcala.png?label=ready&title=Ready)](https://waffle.io/labra/ShExcala)
 [![Join the chat at https://gitter.im/labra/ShExcala](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/labra/ShExcala?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![codecov.io](http://codecov.io/github/labra/ShExcala/coverage.svg?branch=master)](http://codecov.io/github/labra/ShExcala?branch=master)
 
 ## Compiling from sources
 
