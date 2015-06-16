@@ -32,13 +32,14 @@ trait ShapeValidatorBacktracking extends ShapeValidator with Logging {
 
     rule match {
 
-      case AndRule(r1, r2) => for (
-        (g1, g2) <- parts(g); t1 <- matchRule(ctx, g1, r1); t2 <- matchRule(ctx, g2, r2)
-      ) yield t1 combine t2
+      case AndRule(r1, r2) => for {
+        (g1, g2) <- parts(g)
+        t1 <- matchRule(ctx, g1, r1)
+        t2 <- matchRule(ctx, g2, r2)
+      } yield t1 combine t2
 
       case OrRule(r1, r2) =>
-        matchRule(ctx, g, r1) orelse
-          matchRule(ctx, g, r2)
+        matchRule(ctx, g, r1) orelse matchRule(ctx, g, r2)
 
       case PlusRule(r) => {
         matchRule(ctx, g, r) orelse

@@ -241,7 +241,7 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = OpenShape(
-              GroupShape(Seq(TripleConstraint(Some(prop1_label),
+              GroupShape(None,Seq(TripleConstraint(Some(prop1_label),
                                p,
                                LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)
                              ),
@@ -280,7 +280,7 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = OpenShape(
-              GroupShape(Seq(TripleConstraint(Some(prop1_label),
+              GroupShape(None,Seq(TripleConstraint(Some(prop1_label),
                                p,
                                LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)
                              ),

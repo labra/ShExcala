@@ -70,10 +70,26 @@ object Shacl {
     card: Cardinality) extends ShapeExpr
 
 
+  // Or(l,s1,s2) = SomeOfShape(l,List(s1,s2))
+  case class Or(id: Option[Label], shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr
+  
+  // XOr(l,s1,s2) = OneOfShape(l,List(s1,s2))
+  case class XOr(id: Option[Label], shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr
+  
+  // Group(l,s1,s2) = GroupShape(l,s1,s2)
+  case class Group2(id: Option[Label],shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr 
+  
+  // SomeOfShape(id,List(s1,s2,s3)) = Or(id,s1,Or(_,s2,Or(_,s2,EmptyShape)))
   case class SomeOfShape(id: Option[Label],shapes: Seq[ShapeExpr]) extends ShapeExpr
-  case class OneOfShape(id:Option[Label],shapes: Seq[ShapeExpr]) extends ShapeExpr
-  case class GroupShape(shapes: Seq[ShapeExpr]) extends ShapeExpr
+  
+  // SomeOfShape(id,List(s1,s2,s3)) = XOr(id,s1,XOr(_,s2,XOr(_,s2,EmptyShape)))
+  case class OneOfShape(id:Option[Label], shapes: Seq[ShapeExpr]) extends ShapeExpr
+  
+  // GroupShape(id,List(s1,s2,s3)) = Group2(id,s1,Group2(_,s2,Group2(_,s2,EmptyShape)))
+  case class GroupShape(id: Option[Label], shapes: Seq[ShapeExpr]) extends ShapeExpr
+
   case class RepetitionShape(id:Option[Label],shape: ShapeExpr, card:Cardinality) extends ShapeExpr
+  
   case object EmptyShape extends ShapeExpr
 
   /**

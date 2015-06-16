@@ -9,8 +9,8 @@ import org.scalatest.prop.PropertyChecks
 import org.scalatest.prop.Checkers
 import es.weso.rdf._
 import es.weso.shacl.PREFIXES._
-import es.weso.monads.Result
 import es.weso.monads.Result._
+import es.weso.monads._
 import util._
 
 class ShaclValidatorSpec
@@ -84,8 +84,36 @@ class ShaclValidatorSpec
       matchLiteralDatatype(obj, ld, ctx).isValid should be(true)
   }
   }
+  
+ describe("allTriplesWithSamePredicateMatch") {
+   it("allTriplesWithSamePredicateMatch. A triple with different predicate passes") {
+      val t1 = RDFTriple(IRI("a"),IRI("c"),IRI("x"))
+      val ts: Set[RDFTriple] = Set(t1)
+      val tc = TripleConstraint(None, IRI("b"), IRIKind, defaultCardinality)
+      val ctx = Context.emptyContext
+      val expected = Pass(typing = Typing.emptyTyping, checked = Set(), remaining = ts)
+      allTriplesWithSamePredicateMatch(ts,tc,ctx).run should be (Success(Stream(expected)))
+    }
+   it("allTriplesWithSamePredicateMatch. A triple with the same predicate that matches pass") {
+      val t1 = RDFTriple(IRI("a"),IRI("b"),IRI("x"))
+      val ts: Set[RDFTriple] = Set(t1)
+      val tc = TripleConstraint(None, IRI("b"), IRIKind, defaultCardinality)
+      val ctx = Context.emptyContext
+      val expected = Pass(typing = Typing.emptyTyping, checked = Set(), remaining = ts)
+      allTriplesWithSamePredicateMatch(ts,tc,ctx).run should be (Success(Stream(expected)))
+    }
+   it("allTriplesWithSamePredicateMatch. A triple with the same predicate that doesn't match fails") {
+      val t1 = RDFTriple(IRI("a"),IRI("b"),BNodeId("x"))
+      val ts: Set[RDFTriple] = Set(t1)
+      val tc = TripleConstraint(None, IRI("b"), IRIKind, defaultCardinality)
+      val ctx = Context.emptyContext
+      val expected = Pass(typing = Typing.emptyTyping, checked = Set(), remaining = ts)
+      allTriplesWithSamePredicateMatch(ts,tc,ctx).run should be (Success(Stream()))
+    }
+  }
 
-    describe("matchValueConstr") {
+
+  describe("matchValueConstr") {
     it("Should match valueConstr with a value set") {
       val obj: RDFNode = IRI("b")
       val vs = ValueSet(Seq(
@@ -129,7 +157,110 @@ class ShaclValidatorSpec
             remaining = Set())
       fails_matchTriplesShapes(ts, shape, expected,false)
     }
+    
+    
+    it("Should match group of two triples") {
+      val t1 = RDFTriple(IRI("a"),IRI("b"),IRI("x"))
+      val t2 = RDFTriple(IRI("a"),IRI("c"),IRI("x"))
+      val ts: Set[RDFTriple] = Set(t1,t2)
+      val shape : ShapeExpr = 
+        GroupShape(None,
+            List(TripleConstraint(None, IRI("b"), IRIKind, defaultCardinality)
+                ,TripleConstraint(None, IRI("c"), IRIKind, defaultCardinality)
+                )
+        )
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1,t2), 
+            remaining = Set())
+      matchesTriplesShapes(ts, shape, expected)
+    }
+
+    it("Should not match group of two triples if first doesn't match") {
+      val t1 = RDFTriple(IRI("a"),IRI("b"),BNodeId("_"))
+      val t2 = RDFTriple(IRI("a"),IRI("c"),IRI("x"))
+      val ts: Set[RDFTriple] = Set(t1,t2)
+      val shape : ShapeExpr = 
+        GroupShape(None,
+            List(TripleConstraint(None, IRI("b"), IRIKind, defaultCardinality)
+                ,TripleConstraint(None, IRI("c"), IRIKind, defaultCardinality)
+                )
+        )
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1,t2), 
+            remaining = Set())
+      fails_matchTriplesShapes(ts, shape, expected)
+    }
   
+    it("Should not match group of two triples if second doesn't match") {
+      val t1 = RDFTriple(IRI("a"),IRI("b"),BNodeId("_"))
+      val t2 = RDFTriple(IRI("a"),IRI("c"),IRI("x"))
+      val ts: Set[RDFTriple] = Set(t1,t2)
+      val shape : ShapeExpr = 
+        GroupShape(None,
+            List(TripleConstraint(None, IRI("b"), BNodeKind, defaultCardinality)
+                ,TripleConstraint(None, IRI("c"), BNodeKind, defaultCardinality)
+                )
+        )
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1,t2), 
+            remaining = Set())
+      fails_matchTriplesShapes(ts, shape, expected)
+    }
+    
+    it("Should match with remaining ") {
+      val t1 = RDFTriple(IRI("a"),IRI("b"),IRI("x"))
+      val t2 = RDFTriple(IRI("a"),IRI("c"),IRI("y"))
+      val ts: Set[RDFTriple] = Set(t1,t2)
+      val shape : ShapeExpr = 
+        TripleConstraint(None, IRI("b"), IRIKind, plus)
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1), 
+            remaining = Set(t2))
+      matchesTriplesShapes(ts, shape, expected,false)
+    }
+    
+    it("Should match with remaining - reverse order") {
+      val t1 = RDFTriple(IRI("a"),IRI("b"),IRI("x"))
+      val t2 = RDFTriple(IRI("a"),IRI("c"),IRI("y"))
+      val ts: Set[RDFTriple] = Set(t2,t1)
+      val shape : ShapeExpr = 
+        TripleConstraint(None, IRI("b"), IRIKind, plus)
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1), 
+            remaining = Set(t2))
+      matchesTriplesShapes(ts, shape, expected)
+    }
+
+    it("Should not match if matchAny extra") {
+      val t1 = RDFTriple(IRI("a"),IRI("b"),IRI("x"))
+      val t2 = RDFTriple(IRI("a"),IRI("b"),BNodeId("_"))
+      val ts: Set[RDFTriple] = Set(t1,t2)
+      val shape : ShapeExpr = 
+        TripleConstraint(None, IRI("b"), IRIKind, defaultCardinality)
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1), 
+            remaining = Set(t2))
+      fails_matchTriplesShapes(ts, shape, expected)
+    }
+
+    it("Should not match if matchAny extra with plus and reverse order") {
+      val t1 = RDFTriple(IRI("a"),IRI("b"),IRI("x"))
+      val t2 = RDFTriple(IRI("a"),IRI("b"),BNodeId("_"))
+      val ts: Set[RDFTriple] = Set(t2,t1)
+      val shape : ShapeExpr = 
+        TripleConstraint(None, IRI("b"), IRIKind, plus)
+      val expected = 
+        Pass(typing = Typing.emptyTyping, 
+            checked = Set(t1), 
+            remaining = Set(t2))
+      fails_matchTriplesShapes(ts, shape, expected)
+    }
   }
   
   
@@ -146,6 +277,11 @@ class ShaclValidatorSpec
     
     if (result.isValid) {
       val sol1 = result.run.get.head
+      if (sol1 != expectedState) {
+        info("Different than expected ")
+        info("Sol1    : " + sol1)
+        info("Expected: " + expectedState)
+      }
       sol1 should be(expectedState)
     } else {
       info("matching triples: " + ts + " with " + shape)
@@ -163,7 +299,10 @@ class ShaclValidatorSpec
       _ <- setTrace(withTrace)
       r <- matchTriplesShapeExpr(ts,shape,ctx)
     } yield r
-    
+    if (result.isValid) {
+      info("Result valid but should fail")
+      info("Result: " + result)
+    }
     result.isFailure should be(true)
   }
   

@@ -174,7 +174,7 @@ trait ShaclParser
     )(s) ^^
       {
         case (shape ~ List(), s1) => (shape, s1)
-        case (shape ~ shapes, s1) => (GroupShape(shape :: shapes), s1)
+        case (shape ~ shapes, s1) => (GroupShape(None,shape :: shapes), s1)
       }
   }
 

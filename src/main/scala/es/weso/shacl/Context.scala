@@ -11,6 +11,8 @@ import es.weso.rdfgraph.nodes.RDFNode
 import es.weso.rdf.PrefixMap
 import util._
 
+case class ContextException(msg: String) extends RuntimeException
+
 case class Context(
     rdf: RDFReader, 
     schema: SHACLSchema, 
@@ -39,12 +41,12 @@ case class Context(
     typing.containsType(node,label)
   } 
 
-  def addTyping(node: RDFNode, label: Label): Result[Context] = {
-    this.typing.addShape(node, label) match {
+  def addTyping(node: RDFNode, label: Label): Try[Context] = {
+    typing.addShape(node, label) match {
       case Failure(e) => 
-        failure("Context: cannot assign label " + label + " to node " + node + "...current typing: " + this.typing + "\nError: " + e.getMessage)
+        Failure(ContextException("Context: cannot assign label " + label + " to node " + node + "\nCurrent typing: " + this.typing + "\nError: " + e.getMessage))
       case 
-        Success(newT) => unit(this.copy(typing = newT))
+        Success(newT) => Success(this.copy(typing = newT))
     } 
   } 
 
@@ -56,11 +58,8 @@ case class Context(
     schema.rules.toList
   }
 
-  def getShape(label: Label): Result[Rule] = {
-    schema.findShape(label) match {
-      case None => failure("Not found shape with label " + label)
-      case Some(sh) => unit(sh)
-    }
+  def getShape(label: Label): Option[Rule] = {
+    schema.findShape(label) 
   }
 
 }

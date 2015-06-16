@@ -107,7 +107,9 @@ object Schema2RDF extends Logging {
         cardinality2RDF(card,tripleNode,rdf)
       }
       case EmptyShape => { }
-      case GroupShape(shapes) => {
+      
+      // TODO: Check what to do with the id...
+      case GroupShape(id,shapes) => {
         for (shape <- shapes) {
           shape2RDF(shape,node,rdf)
         }

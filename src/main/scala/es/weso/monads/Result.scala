@@ -7,6 +7,13 @@ import es.weso.utils.SetUtils
 import io.StdIn._ 
 import jline.console._
 
+
+/**
+ * Result class represents the result of a validation process
+ * The result can be: 
+ * - `Passed` with a list of values
+ * - `Failure` with a string message 
+ */
 sealed abstract class Result[+A] {
   
   def toSingle: Try[A] = {
@@ -60,9 +67,9 @@ sealed abstract class Result[+A] {
 
   // TODO: I added this declaration to avoid warning...
   // check if there is a better way to define withFilter
-  def withFilter = filter _
+  //  def withFilter = filter _
 
-  def filter(p: A => Boolean): Result[A] = {
+  def withFilter(p: A => Boolean): Result[A] = {
     this match {
       case Passed(rs) => Passed(rs.filter(p))
       case Failure(msg) => Failure(msg)
@@ -92,9 +99,24 @@ sealed abstract class Result[+A] {
       case Failure(msg) => other
     }
   }
-  
-  
 
+  def xor[B >: A](other: => Result[B]): Result[B] = {
+    this match {
+      case Passed(rs1) => other match {
+        case Passed(rs2) => Failure("XOr: both branches passed")
+        case Failure(_) => Passed(rs1)
+      }
+      case Failure(_) => other
+    }
+  }
+  
+  def not: Result[Boolean] = {
+    this match {
+      case Passed(_) => Passed(Stream(false))
+      case Failure(_) => Passed(Stream(true))
+    }
+  }
+  
 }
 
 case class Passed[+A](passed: Stream[A]) extends Result[A] {
@@ -204,10 +226,21 @@ object Result {
     } else
       unit(false)
   }
-
+  
+  def not[A](result: Result[A]): Result[Boolean] = {
+    result.not
+  }
+  
+  def anyOf[A](set:Set[A]):Result[(A,Set[A])] = {
+    Passed(set.map(x => (x, set - x)).toStream)
+  }
 
   def parts[A](set: Set[A]): Result[(Set[A], Set[A])] = {
     Passed(SetUtils.pSet(set))
+  }
+  
+  def decompose[A](set:Set[A],n:Int): Result[List[Set[A]]] = {
+    Passed(SetUtils.decompose(set,n))
   }
 
 }

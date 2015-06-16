@@ -65,7 +65,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     s match {
       case t: TripleConstraint => tripleConstraintDoc(t)
       case t: InverseTripleConstraint => inverseTripleConstraintDoc(t)
-      case GroupShape(shapes) => 
+      case GroupShape(id,shapes) => 
         "(" :: seqDocWithSep(shapes,",",shapeExprDoc) :: text(")")
       case SomeOfShape(id,shapes) => 
         log.info("Unimplemented id generation yet")

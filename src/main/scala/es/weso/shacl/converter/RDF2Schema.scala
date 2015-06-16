@@ -10,7 +10,7 @@ import es.weso.shacl.Schema
 import es.weso.shacl.PREFIXES._
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.rdf.PrefixMap
-import es.weso.utils._
+import es.weso.utils.{Success => TrySuccess,_}
 import es.weso.utils.TryUtils._
 
 case class RDF2SchemaException(msg:String) extends Exception
@@ -102,7 +102,7 @@ object RDF2Schema
           }
           case _ => for {
             shapes <- group(shapeExpr,ps.toSeq)(n,rdf)
-          } yield GroupShape(shapes)
+          } yield GroupShape(None,shapes)
         } 
       }  
       case f => 
