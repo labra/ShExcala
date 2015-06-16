@@ -136,7 +136,7 @@ case class Typing(map: Map[RDFNode, ShapeType]) {
     else Set()
   }
 
-  def hasNegShapesLabels(key: RDFNode): Set[Label] = {
+  def hasNegShapes(key: RDFNode): Set[Label] = {
     if (map contains key) map(key).negShapesLabels
     else Set()
   }
@@ -173,6 +173,10 @@ case class Typing(map: Map[RDFNode, ShapeType]) {
     hasShapes(n) contains label
   } 
 
+  def containsNegType(n: RDFNode, label: Label): Boolean = {
+    hasNegShapes(n) contains label
+  } 
+  
   def showTyping(implicit pm: PrefixMap): String = {
     val sb = new StringBuilder
     for (is <- map) {

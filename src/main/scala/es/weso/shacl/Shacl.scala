@@ -130,20 +130,33 @@ object Shacl {
   }
 
   /**
-   * ValueClass 
+   * ValueClass ::= ValueConstr | ShapeConstr
+   * 
    */
-  trait ValueClass extends Positional
+  sealed trait ValueClass extends Positional
 
-  sealed trait ValueConstr
-    extends ValueClass
+  /**
+   * ValueConstr ::= LiteralDatatype | ValueSet | NodeKind 
+   */
+  sealed trait ValueConstr extends ValueClass
     with Positional
+    
   case class LiteralDatatype(
     v: RDFNode,
     facets: Seq[XSFacet]) extends ValueConstr
+    with Positional
 
   case class ValueSet(s: Seq[ValueObject]) extends ValueConstr
+    with Positional
 
-  sealed trait NodeKind extends ValueConstr {
+  sealed trait ValueObject extends Positional
+  
+  case class ValueIRI(iri: IRI) extends ValueObject
+  case class ValueLiteral(literal: Literal) extends ValueObject
+  case class ValueLang(lang: Lang) extends ValueObject
+
+  sealed trait NodeKind extends ValueConstr 
+     with Positional {
     def token: String
   }
 
@@ -190,8 +203,10 @@ object Shacl {
   case class TotalDigits(n: Integer) extends XSFacet
   case class FractionDigits(n: Integer) extends XSFacet
 
-  sealed trait ShapeConstr
-    extends ValueClass
+  /**
+   * ShapeConstr ::= SingleShape | DisjShapeConstr | ConjShapeConstr | NotShapeConstr
+   */
+  sealed trait ShapeConstr extends ValueClass
     with Positional
 
   case class SingleShape(shape: Label) extends ShapeConstr 
@@ -199,17 +214,6 @@ object Shacl {
   case class ConjShapeConstr(shapes: Set[Label]) extends ShapeConstr
   case class NotShapeConstr(shape: ShapeConstr) extends ShapeConstr
 
-  sealed trait ValueObject extends Positional
-  case class ValueIRI(iri: IRI) extends ValueObject
-  case class ValueLiteral(literal: Literal) extends ValueObject
-  case class ValueLang(lang: Lang) extends ValueObject
-
-  /*
-  case class RDFNodeObject(node: RDFNode) extends ValueObject
-  case class LangObject(lang: Lang) extends ValueObject
-  case class RegexObject(regex: Regex, lang: Option[Lang]) extends ValueObject
-  case class NoObject(obj: ValueObject) extends ValueObject
-  case class OrObject(obj1: ValueObject, obj2: ValueObject) extends ValueObject */
 
   case class ExtensionCondition(
     extLangName: Label,

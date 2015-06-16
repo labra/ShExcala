@@ -299,7 +299,17 @@ trait ShaclValidator
       obj: RDFNode,
       v: ShapeConstr,
       ctx: Context): Result[Typing] = {
-    throw ValidationException("Unimplemented matchShapeConstr")
+    v match {
+      case SingleShape(label) => 
+        if (ctx.containsType(obj,label)) unit(ctx.typing)
+        else 
+          if (ctx.containsNegType(obj,label)) failure("Context contains negative typing for node " + obj + "/" + label)
+          else for {
+           vs <- matchNodeLabel(obj,label,ctx)
+           typing <- liftTry(vs.getTyping)
+          } yield typing
+      case _ => throw ValidationException("Unimplemented matchShapeConstr")
+    }
   }
   
   def allTriplesWithSamePredicateMatch(
@@ -458,9 +468,9 @@ trait ShaclValidator
       case SingleShape(shape) => t.hasShapes(u) contains shape
       case DisjShapeConstr(shapes) => Boolean.some(shapes.map{ case shape => t.hasShapes(u) contains shape })
       case ConjShapeConstr(shapes) => Boolean.all(shapes.map{ case shape => t.hasShapes(u) contains shape })
-      case NotShapeConstr(SingleShape(shape)) => t.hasNegShapesLabels(u) contains shape
-      case NotShapeConstr(ConjShapeConstr(shapes)) => Boolean.some(shapes.map{ case shape => t.hasNegShapesLabels(u) contains shape })
-      case NotShapeConstr(DisjShapeConstr(shapes)) => Boolean.all(shapes.map{ case shape => t.hasNegShapesLabels(u) contains shape })
+      case NotShapeConstr(SingleShape(shape)) => t.hasNegShapes(u) contains shape
+      case NotShapeConstr(ConjShapeConstr(shapes)) => Boolean.some(shapes.map{ case shape => t.hasNegShapes(u) contains shape })
+      case NotShapeConstr(DisjShapeConstr(shapes)) => Boolean.all(shapes.map{ case shape => t.hasNegShapes(u) contains shape })
       case _ => false
     }
   }

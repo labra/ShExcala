@@ -36,7 +36,33 @@ class MatchNodeLabelSpec
           extensionCondition = NoActions)
       val schema = SHACLSchema(None, rules = Seq(rule1), start = None) 
       val ctx = Context(rdf,schema,Typing.emptyTyping,PrefixMaps.commonShacl,true)
-      matchNodeLabel_shouldPass(node,labelS,ctx,false)
+      matchNodeLabel_shouldPass(node,labelS,ctx)
+  }
+    
+  it("Should match node with label (shape reference)") {
+      val rdf_str = """|@prefix : <http://example.org/>. 
+                       |:x :a :y .
+                       |:y :b :z .""".stripMargin
+      val rdf = RDFAsJenaModel.fromChars(rdf_str,"TURTLE").get
+      val ex = IRI("http://example.org/")
+      val node = ex.add("x")
+      val labelS = IRILabel(IRI("S"))
+      val labelT = IRILabel(IRI("T"))
+      val rule1 = Rule(
+          label = labelS, 
+          shapeDefinition = OpenShape(
+              shape = TripleConstraint(None, ex.add("a"), SingleShape(labelT), plus), 
+              inclPropSet = Set()),
+          extensionCondition = NoActions)
+      val rule2 = Rule(
+          label = labelT, 
+          shapeDefinition = OpenShape(
+              shape = TripleConstraint(None, ex.add("b"), IRIKind, plus), 
+              inclPropSet = Set()),
+          extensionCondition = NoActions)
+      val schema = SHACLSchema(None, rules = Seq(rule1, rule2), start = None) 
+      val ctx = Context(rdf,schema,Typing.emptyTyping,PrefixMaps.commonShacl,true)
+      matchNodeLabel_shouldPass(node,labelS,ctx)
   }
   }
   

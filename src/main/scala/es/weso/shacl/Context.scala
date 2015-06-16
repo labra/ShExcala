@@ -41,6 +41,10 @@ case class Context(
     typing.containsType(node,label)
   } 
 
+  def containsNegType(node: RDFNode, label: Label): Boolean = {
+    typing.containsNegType(node,label)
+  } 
+  
   def addTyping(node: RDFNode, label: Label): Try[Context] = {
     typing.addShape(node, label) match {
       case Failure(e) => 

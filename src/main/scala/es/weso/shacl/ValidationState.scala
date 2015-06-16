@@ -19,6 +19,7 @@ sealed trait ValidationState {
      case _ => false
    }
  }
+ def getTyping: Try[Typing]
 }
 
 case class Pass(
@@ -26,6 +27,7 @@ case class Pass(
     remaining: Set[RDFTriple],
     checked: Set[RDFTriple]
     ) extends ValidationState {
+  override def getTyping: Try[Typing] = Success(typing)
   
   override def combine(other: ValidationState): ValidationState = {
     other match {
@@ -69,6 +71,8 @@ case class Fail(
     remaining: Set[RDFTriple],
     failed: Set[(RDFTriple,RDFNode,ShapeExpr)]
 ) extends ValidationState {
+  
+  override def getTyping: Try[Typing] = Failure(new Exception("Cannot get typing of failed state: " + this))
 
   // TODO: Review this combination (it ignores the other state)
   override def combine(other: ValidationState): ValidationState = {
