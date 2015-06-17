@@ -33,13 +33,12 @@ class SingleSpec
       
       val shape_str = """|prefix : <http://example.org/>
                          |:shape {
-                         |   :a (1)?,
                          |   :b (1)?
                          |   }""".stripMargin
       val (schema,pm) = Schema.fromString(shape_str).get
       val label = IRILabel(ex.add("shape"))
       val ctx = Context(rdf,schema.shaclSchema,Typing.emptyTyping,pm,true)
-      matchNodeLabel_shouldPass(node,label,ctx,true)
+      matchNodeLabel_shouldPass(node,label,ctx,false)
   }
   }
     

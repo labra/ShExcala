@@ -66,6 +66,45 @@ class MatchNodeLabelSpec
   }
   }
   
+  describe("Algebra based tests") {
+    it("Should match node with label (single)") {
+      val rdf_str = """|@prefix : <http://example.org/>. 
+                       |:x  :b 1 .""".stripMargin
+      val rdf = RDFAsJenaModel.fromChars(rdf_str,"TURTLE").get
+      val ex = IRI("http://example.org/")
+      val node = ex.add("x")
+      
+      val shape_str = """|prefix : <http://example.org/>
+                         |:shape {
+                         |   :a (1)?,
+                         |   :b (1)?
+                         |   }""".stripMargin
+      val (schema,pm) = Schema.fromString(shape_str).get
+      val label = IRILabel(ex.add("shape"))
+      val ctx = Context(rdf,schema.shaclSchema,Typing.emptyTyping,pm,true)
+      matchNodeLabel_shouldPass(node,label,ctx)
+  }
+    
+    
+   it("Should match: b ~ a? ") {
+      val rdf_str = """|@prefix : <http://example.org/>. 
+                       |:x  :b 1 .""".stripMargin
+      val rdf = RDFAsJenaModel.fromChars(rdf_str,"TURTLE").get
+      val ex = IRI("http://example.org/")
+      val node = ex.add("x")
+      
+      val shape_str = """|prefix : <http://example.org/>
+                         |:shape {
+                         |   :a (1)?
+                         |   }""".stripMargin
+      val (schema,pm) = Schema.fromString(shape_str).get
+      val label = IRILabel(ex.add("shape"))
+      val ctx = Context(rdf,schema.shaclSchema,Typing.emptyTyping,pm,true)
+      matchNodeLabel_shouldPass(node,label,ctx)
+  }
+
+  }
+
   
   def matchNodeLabel_shouldPass(
       node: RDFNode, 
