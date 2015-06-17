@@ -1,4 +1,6 @@
 @prefix : <http://example.org/> .
 
-:x    :b 2 ;
-.
+:shape {
+    :a (1)?,
+    :b (1)
+}
