@@ -9,6 +9,7 @@
 @prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
 @prefix ex:     <http://example.org/> .
 @prefix td:  	<http://www.w3.org/2006/03/test-description#> .
+@prefix : 		<http://www.w3.org/2001/sw/DataAccess/tests/data-r2/algebra/manifest#> .
 @base <http://www.w3.org/ns/shacl#> .
  
 <> a mf:Manifest ;
@@ -21,6 +22,13 @@
     <singleIRI_Bnode_fail>
     <singleBNode_IRI_fail>
     <singleBNode_BNode_pass>
+    :ab-ab
+    :ab-0
+    :ab-a
+    :ab-b
+    :ab-_B
+    :a_OPTb_OPT-a
+    :a_OPTb_OPT-b
    ) .
 
 <singleIRI_IRI_pass> a sht:MatchNodeShape ;
@@ -78,3 +86,92 @@
    mf:result true ;
    mf:status sht:proposed
    .
+
+:ab-ab a sht:MatchNodeShape ;
+    mf:name "ab ab" ;    
+    mf:action [
+        sht:schema <ab.shc> ;
+        sht:schema-format sht:SHACLC ;
+        sht:data <ab.ttl> ;
+        sht:data-format sht:TURTLE ; 
+        sht:node ex:x ;
+        sht:shape ex:shape
+    ] ;
+    mf:result true ;
+    mf:status sht:proposed .
+
+:ab-0 a sht:MatchNodeShape ;
+    mf:name "ab 0" ;    
+    mf:action [
+        sht:schema <ab.shc> ;
+        sht:schema-format sht:SHACLC ;
+        sht:data <0.ttl> ;
+        sht:data-format sht:TURTLE ; 
+        sht:node ex:x ;
+        sht:shape ex:shape
+    ] ;
+    mf:result false ;
+    mf:status sht:proposed .
+
+:ab-a a sht:MatchNodeShape ;
+    mf:name "ab a" ;    
+    mf:action [
+        sht:schema <ab.shc> ;
+        sht:schema-format sht:SHACLC ;
+        sht:data <a.ttl> ;
+        sht:data-format sht:TURTLE ; 
+        sht:node ex:x ;
+        sht:shape ex:shape
+    ] ;
+    mf:result false ;
+    mf:status sht:proposed .
+
+:ab-b a sht:MatchNodeShape ;
+    mf:name "ab b" ;    
+    mf:action [
+        sht:schema <ab.shc> ;
+        sht:schema-format sht:SHACLC ;
+        sht:data <b.ttl> ;
+        sht:data-format sht:TURTLE ; 
+        sht:node ex:x ;
+        sht:shape ex:shape
+    ] ;
+    mf:result false ;
+    mf:status sht:proposed .
+    
+:ab-_B a sht:MatchNodeShape ;
+    mf:name "ab _B" ;    mf:action [
+        sht:schema <ab.shc> ;
+        sht:schema-format sht:SHACLC ;
+        sht:data <_B.ttl> ;
+        sht:data-format sht:TURTLE ; 
+        sht:node ex:x ;
+        sht:shape ex:shape
+    ] ;
+    mf:result false ;
+    mf:status sht:proposed .
+
+:a_OPTb_OPT-a a sht:MatchNodeShape ;
+    mf:name "a_OPTb_OPT a" ;    mf:action [
+        sht:schema <a_OPTb_OPT.shc> ;
+        sht:schema-format sht:SHACLC ;
+        sht:data <a.ttl> ;
+        sht:data-format sht:TURTLE ; 
+        sht:node ex:x ;
+        sht:shape ex:shape
+    ] ;
+    mf:result true ;
+    mf:status sht:proposed .
+
+:a_OPTb_OPT-b a sht:MatchNodeShape ;
+    mf:name "a_OPTb_OPT b" ;    mf:action [
+        sht:schema <a_OPTb_OPT.shc> ;
+        sht:schema-format sht:SHACLC ;
+        sht:data <b.ttl> ;
+        sht:data-format sht:TURTLE ; 
+        sht:node ex:x ;
+        sht:shape ex:shape
+    ] ;
+    mf:result true ;
+    mf:status sht:proposed .
+    

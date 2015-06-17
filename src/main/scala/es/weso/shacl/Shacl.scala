@@ -225,7 +225,7 @@ object Shacl {
 
   case class RangeCardinality(m: Int, n: Int) extends Cardinality {
     require(m >= 0)
-    require(m < n) 
+    require(m <= n) 
     
     def minusOne = 
       this match {
