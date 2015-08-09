@@ -18,6 +18,7 @@ case class Context(
     schema: SHACLSchema, 
     typing: Typing, 
     pm: PrefixMap, 
+    pending: List[RDFTriple],
     validateIncoming: Boolean = false) {
 
   val log = LoggerFactory.getLogger("Context")
@@ -74,6 +75,7 @@ object Context {
         SHACLSchema(id = None, rules = Seq(), start = None), 
         Typing.emptyTyping, 
         pm = PrefixMaps.commonShacl, 
+        pending = List(),
         validateIncoming = false
   )
 
@@ -82,6 +84,7 @@ object Context {
         schema = SHACLSchema(id = None, rules = Seq(), start = None), 
         Typing.emptyTyping, 
         pm = PrefixMaps.commonShacl, 
+        pending = List(),
         validateIncoming = true
     )
     

@@ -1,0 +1,9 @@
+# source: labeled_blank_node_subject.ttl
+_:PersonShape {
+   <http://a.example/p1> .
+}
+
+<http://a.example/EmployeeShape> {
+   <http://a.example/p2> @_:PersonShape
+}
+

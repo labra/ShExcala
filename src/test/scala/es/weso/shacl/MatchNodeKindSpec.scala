@@ -24,14 +24,14 @@ class MatchNodeKindSpec
       val obj: RDFNode = IRI("a")
       val iri = IRIKind
       val ctx = Context.emptyContext
-      matchNodeKind(obj, iri, ctx).run should be(Success(Stream(true)))
+      matchNodeKind(obj, iri, ctx).run should be(Success(Stream(Right(Typing(Map())))))
     }
     
     it("Should not validate type IRI with a BNode") {
       val obj: RDFNode = BNodeId("a")
       val iri = IRIKind
       val ctx = Context.emptyContext
-      matchNodeKind(obj, iri, ctx).isValid should be(false)  
+      matchNodeKind(obj, iri, ctx).run should be(Success(Stream(Left(NoNodeKind(BNodeId("a"),IRIKind)))))  
     }
 
     it("Should validate type BNode") {

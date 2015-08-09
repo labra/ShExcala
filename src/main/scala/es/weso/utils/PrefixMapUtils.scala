@@ -2,23 +2,46 @@ package es.weso.utils
 
 import es.weso.rdfgraph.nodes._
 import es.weso.rdf.PrefixMap
+import es.weso.rdfgraph.nodes._
+import es.weso.rdfgraph.statements._
 
 object PrefixMapUtils {
   
-    def qualify(iri: IRI)(implicit pm:PrefixMap): String = {
-    val map = pm.pm
-    val candidates = 
-      map.filter{ 
-        case (k,v) => iri.str.contains(v.str) 
-      }.map { 
-        case (k,v) => (k, iri.str.stripPrefix(v.str))
-      }
+   private def iri2String(iri: IRI)(implicit pm: PrefixMap): String = {
 
-    if (candidates.size > 0) { 
-      val (prefix,suffix) = candidates.head 
-      prefix + ":" + suffix  
-    } else 
-      iri.str
+    def startsWithPredicate(p: (String, IRI)): Boolean = {
+      iri.str.startsWith(p._2.str)
+    }
+
+    pm.pm.find(startsWithPredicate) match {
+      case None => "<" ++ iri.str ++ ">"
+      case Some(p) => p._1 ++ ":" ++ iri.str.stripPrefix(p._2.str)
+    }
+  } 
+
+  def qualify(iri: IRI)(implicit pm:PrefixMap): String = {
+    iri2String(iri)(pm)
+  }
+    
+    
+  def showTriples(g: Set[RDFTriple])(implicit pm: PrefixMap): String = {
+    "{ " + g.map(x => showTriple(x)(pm)).mkString(". ") + " }"
+  }
+  
+  def showTriple(t: RDFTriple)(implicit pm: PrefixMap): String = {
+    showRDFNode(t.subj)(pm) + ", " + showIRI(t.pred) + ", " + showRDFNode(t.obj)(pm)  
+  }
+  
+  def showIRI(i: IRI)(implicit pm: PrefixMap): String = {
+    qualify(i)(pm)
+  }
+  
+  def showRDFNode(n: RDFNode)(pm: PrefixMap): String = {
+    n match {
+      case i: IRI => showIRI(i)(pm)
+      case l: Literal => l.toString
+      case b: BNodeId => b.toString
+    }
   }
 
 }

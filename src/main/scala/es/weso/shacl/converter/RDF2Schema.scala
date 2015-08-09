@@ -95,9 +95,7 @@ object RDF2Schema
         ps.size match {
           case 0 => Success(EmptyShape)
           case 1 => {
-           // println("Before calling shapeExpr ps.head = " + ps.head)
            val shapeExpr = oneOf(Seq(tripleConstraint))(ps.head,rdf)
-           // println("Single ShapeExpr: " + shapeExpr)
            shapeExpr
           }
           case _ => for {
@@ -110,14 +108,14 @@ object RDF2Schema
     } 
   }
   
-  def tripleConstraint: RDFParser[TripleConstraint] = { (n,rdf) =>
+  def tripleConstraint: RDFParser[ShapeExpr] = { (n,rdf) =>
     for {
      iri <- iriFromPredicate(sh_predicate)(n,rdf)
      valueClass <- valueClass(n,rdf)
      card <- cardinality(n,rdf)
     } yield {
      // println("TripleConstraint: " + iri + " " + valueClass + " card: " + card) 
-     TripleConstraint(Some(mkLabel(n)),iri,valueClass,card) 
+     TripleConstraintCard(Some(mkLabel(n)),iri,valueClass,card) 
     }
   }
   

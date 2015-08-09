@@ -56,20 +56,28 @@ object Shacl {
   case class TripleConstraint(
     id: Option[Label],
     iri: IRI,
-    value: ValueClass,
-    card: Cardinality)
-      extends ShapeExpr {
-    def minusOne: TripleConstraint = {
-      this.copy(card = card.minusOne)
-    }
-  }
+    value: ValueClass
+    ) extends ShapeExpr 
 
   case class InverseTripleConstraint(
     id: Option[Label],
     iri: IRI,
-    shape: ShapeConstr,
-    card: Cardinality) extends ShapeExpr
+    shape: ShapeConstr
+    ) extends ShapeExpr
 
+  case class TripleConstraintCard(
+    id: Option[Label],
+    iri: IRI,
+    value: ValueClass,
+    card: Cardinality
+    ) extends ShapeExpr 
+
+  case class InverseTripleConstraintCard(
+    id: Option[Label],
+    iri: IRI,
+    shape: ShapeConstr,
+    card: Cardinality
+    ) extends ShapeExpr
 
   // Or(l,s1,s2) = SomeOfShape(l,List(s1,s2))
   case class Or(id: Option[Label], shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr
@@ -89,7 +97,14 @@ object Shacl {
   // GroupShape(id,List(s1,s2,s3)) = Group2(id,s1,Group2(_,s2,Group2(_,s2,EmptyShape)))
   case class GroupShape(id: Option[Label], shapes: Seq[ShapeExpr]) extends ShapeExpr
 
-  case class RepetitionShape(id:Option[Label],shape: ShapeExpr, card:Cardinality) extends ShapeExpr
+  case class RepetitionShape(
+      id:Option[Label],
+      shape: ShapeExpr, 
+      card:Cardinality) extends ShapeExpr  {
+    def minusOne: RepetitionShape = {
+      this.copy(card = card.minusOne)
+    }
+  }
   
   case object EmptyShape extends ShapeExpr
 

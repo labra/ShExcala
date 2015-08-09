@@ -10,7 +10,9 @@ import es.weso.rdf.jena._
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.shacl.PREFIXES._
 import es.weso.rdfgraph.statements.RDFTriple
-import es.weso.utils._
+import es.weso.utils.{
+  Logging
+}
 
 // TODO: These settings could be read from a properties file
 case object Settings {
@@ -90,25 +92,48 @@ object Schema2RDF extends Logging {
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
     shape match {
-      case TripleConstraint(id,iri,value,card) => {
+      case RepetitionShape(id,shape,card) => {
+        val node = nodeFromOptionalLabel(id,rdf)
+        cardinality2RDF(card,node,rdf)
+        shape2RDF(shape,node,rdf)
+      }
+      case TripleConstraint(id,iri,value) => {
         val tripleNode = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(tripleNode,rdf_type,sh_PropertyConstraint))
         addTriple(rdf,(node,sh_property,tripleNode))
         addTriple(rdf,(tripleNode,sh_predicate,iri))
         value2RDF(value,tripleNode,rdf)
-        cardinality2RDF(card,tripleNode,rdf)
       }
-      case InverseTripleConstraint(id,iri,valueShape,card) => {
+      case TripleConstraintCard(id,iri,value,card) => {
+        val tripleNode = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(tripleNode,rdf_type,sh_PropertyConstraint))
+        addTriple(rdf,(node,sh_property,tripleNode))
+        addTriple(rdf,(tripleNode,sh_predicate,iri))
+        cardinality2RDF(card,tripleNode,rdf)
+        value2RDF(value,tripleNode,rdf)
+      }
+      case InverseTripleConstraint(id,iri,valueShape) => {
         val tripleNode = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(tripleNode,rdf_type,sh_InversePropertyConstraint))
         addTriple(rdf,(node,sh_inverseProperty,tripleNode))
         addTriple(rdf,(tripleNode,sh_predicate,iri))
         valueShape2RDF(valueShape,tripleNode,rdf)
+      }
+      case InverseTripleConstraintCard(id,iri,valueShape,card) => {
+        val tripleNode = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(tripleNode,rdf_type,sh_InversePropertyConstraint))
+        addTriple(rdf,(node,sh_inverseProperty,tripleNode))
+        addTriple(rdf,(tripleNode,sh_predicate,iri))
         cardinality2RDF(card,tripleNode,rdf)
+        valueShape2RDF(valueShape,tripleNode,rdf)
       }
       case EmptyShape => { }
       
       // TODO: Check what to do with the id...
+      case Group2(id,shape1,shape2) => {
+        shape2RDF(shape1,node,rdf)
+        shape2RDF(shape2,node,rdf)
+      }
       case GroupShape(id,shapes) => {
         for (shape <- shapes) {
           shape2RDF(shape,node,rdf)
@@ -120,12 +145,24 @@ object Schema2RDF extends Logging {
         cardinality2RDF(card,groupLabel,rdf)
         shape2RDF(shape,groupLabel,rdf)
       }
+      case Or(id,shape1,shape2) => {
+        val someOfNode = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(node,sh_someOf,someOfNode))
+        shape2RDF(shape1,someOfNode,rdf)
+        shape2RDF(shape2,someOfNode,rdf)
+      }
       case SomeOfShape(id,shapes) => {
         val someOfNode = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(node,sh_someOf,someOfNode))
         for (shape <- shapes) {
           shape2RDF(shape,someOfNode,rdf)
         }
+      }
+      case XOr(id,shape1,shape2) => {
+        val oneOfNode = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(node,sh_oneOf,oneOfNode))
+        shape2RDF(shape1,oneOfNode,rdf)
+        shape2RDF(shape2,oneOfNode,rdf)
       }
       case OneOfShape(id,shapes) => {
         val oneOfNode = nodeFromOptionalLabel(id, rdf)

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import es.weso.shacl.PREFIXES._
 import es.weso.shacl.Shacl._
 import es.weso.utils.Logging
+import es.weso.utils.PrefixMapUtils._
 
 case class ShapeDocException(msg:String) extends Exception
 
@@ -65,6 +66,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     s match {
       case t: TripleConstraint => tripleConstraintDoc(t)
       case t: InverseTripleConstraint => inverseTripleConstraintDoc(t)
+      case t: TripleConstraintCard => tripleConstraintCardDoc(t)
       case GroupShape(id,shapes) => 
         "(" :: seqDocWithSep(shapes,",",shapeExprDoc) :: text(")")
       case SomeOfShape(id,shapes) => 
@@ -77,6 +79,12 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
         log.info("Unimplemented id generation yet")
         "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card)
       }
+      case Group2(id,shape1,shape2) => 
+        "(" :: shapeExprDoc(shape1) :: "," :: shapeExprDoc(shape2) :: text(")")
+      case Or(id,shape1,shape2) => 
+        "(" :: shapeExprDoc(shape1) :: "||" :: shapeExprDoc(shape2) :: text(")")
+      case XOr(id,shape1,shape2) => 
+        "(" :: shapeExprDoc(shape1) :: "|" :: shapeExprDoc(shape2) :: text(")")
       case EmptyShape => text("{}") 
         
       case x => throw ShapeDocException("Unimplemented string conversion for " + s + " yet")
@@ -85,10 +93,20 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def tripleConstraintDoc(t: TripleConstraint): Document = {
     log.info("Unimplemented id generation yet")
-    iriDoc(t.iri) :: space :: valueClassDoc(t.value) :: cardDoc(t.card)
+    iriDoc(t.iri) :: space :: valueClassDoc(t.value) 
   }
 
   def inverseTripleConstraintDoc(t: InverseTripleConstraint): Document = {
+    log.info("Unimplemented id generation yet")
+    "^" :: iriDoc(t.iri) :: space :: shapeDoc(t.shape) 
+  }
+
+  def tripleConstraintCardDoc(t: TripleConstraintCard): Document = {
+    log.info("Unimplemented id generation yet")
+    iriDoc(t.iri) :: space :: valueClassDoc(t.value) :: cardDoc(t.card)
+  }
+
+  def inverseTripleConstraintCardDoc(t: InverseTripleConstraintCard): Document = {
     log.info("Unimplemented id generation yet")
     "^" :: iriDoc(t.iri) :: space :: shapeDoc(t.shape) :: cardDoc(t.card)
   }
@@ -110,14 +128,21 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def valueDoc(v: ValueConstr): Document = {
     v match {
-      case LiteralDatatype(v, facets) => rdfNodeDoc(v) :: facetsDoc(facets)
-      case ValueSet(s) => "(" ::
-        nest(3, seqDocWithSep(s, " ", valueObjectDoc)) :: text(")")
+      case dt: LiteralDatatype => literalDatatypeDoc(dt) 
+      case vs: ValueSet => valueSetDoc(vs)
       case AnyKind => text(".")
       case n: NodeKind => text(n.token)
     }
   }
+  
+  def literalDatatypeDoc(dt: LiteralDatatype): Document = {
+    rdfNodeDoc(dt.v) :: facetsDoc(dt.facets)
+  }
 
+  def valueSetDoc(vs: ValueSet): Document = {
+    "(" :: nest(3, seqDocWithSep(vs.s, " ", valueObjectDoc)) :: text(")")
+  }
+  
   def facetsDoc(facets: Seq[XSFacet]): Document = {
     seqDocWithSep(facets, " ", facetDoc)
   }
@@ -158,7 +183,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
   }
 
   def rdfNodeDoc(n: RDFNode): Document = {
-    text(ShaclDoc.rdfNode2String(n)(prefixMap))
+    text(showRDFNode(n)(prefixMap))
   }
 
   def valueObjectDoc(v: ValueObject): Document = {
@@ -170,7 +195,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
   }
 
   def iriDoc(i: IRI): Document = {
-    text(ShaclDoc.iri2String(i)(prefixMap))
+    text(qualify(i)(prefixMap))
   }
 
   def pairDoc(d1: Document, d2: Document): Document =
@@ -211,6 +236,10 @@ object ShaclDoc {
     writer.toString
   }
 
+  def tripleConstraint2String(tc: TripleConstraint)(implicit pm: PrefixMap): String = {
+    prettyPrint(ShaclDoc(pm).tripleConstraintDoc(tc))
+  }
+  
   def rule2String(r: Rule)(implicit pm: PrefixMap): String = {
     prettyPrint(ShaclDoc(pm).ruleDoc(r))
   }
@@ -226,25 +255,18 @@ object ShaclDoc {
     prettyPrint(ShaclDoc(pm).ruleDoc(r))
   }
 
-  def rdfNode2String(n: RDFNode)(implicit pm: PrefixMap): String = {
-    n match {
-      case BNodeId(id) => "_:" + id
-      case iri: IRI => iri2String(iri)
-      case l: Literal => l.toString
-    }
+  def valueSet2String(vs: ValueSet)(implicit pm: PrefixMap): String = {
+    prettyPrint(ShaclDoc(pm).valueSetDoc(vs))
   }
 
-  def iri2String(iri: IRI)(implicit pm: PrefixMap): String = {
-
-    def startsWithPredicate(p: (String, IRI)): Boolean = {
-      iri.str.startsWith(p._2.str)
-    }
-
-    pm.pm.find(startsWithPredicate) match {
-      case None => "<" ++ iri.str ++ ">"
-      case Some(p) => p._1 ++ ":" ++ iri.str.stripPrefix(p._2.str)
-    }
+  def nodeKind2String(nk: NodeKind): String = nk.token
+  
+  def literalDatatype2String(dt: LiteralDatatype)(implicit pm:PrefixMap): String = {
+    prettyPrint(ShaclDoc(pm).literalDatatypeDoc(dt))
   }
-
+  
+  def label2String(label:Label)(implicit pm: PrefixMap): String = {
+    prettyPrint(ShaclDoc(pm).labelDoc(label))
+  } 
 }
 

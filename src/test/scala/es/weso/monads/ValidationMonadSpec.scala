@@ -6,6 +6,8 @@ import org.scalatest.prop.Checkers
 
 import scalaz._
 import Scalaz._
+import org.scalactic._
+import TypeCheckedTripleEquals._
 
 class ValidationMonadSpec
     extends FunSpec
@@ -49,4 +51,5 @@ class ValidationMonadSpec
     }
     
   }
+  
 }

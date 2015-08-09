@@ -192,8 +192,8 @@ trait ShaclParser
 
   def arc(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
     opt(symbol("^")) ~ predicate(s) ~ valueClass(s) ~ cardinality ^^ {
-      case (Some(_) ~ p ~ ((s: ShapeConstr, s1)) ~ c) => (InverseTripleConstraint(None, p, s, c), s1)
-      case (None ~ p ~ ((v: ValueClass, s1)) ~ c) => (TripleConstraint(None, p, v, c), s1)
+      case (Some(_) ~ p ~ ((s: ShapeConstr, s1)) ~ c) => (InverseTripleConstraintCard(None, p, s, c), s1)
+      case (None ~ p ~ ((v: ValueClass, s1)) ~ c) => (TripleConstraintCard(None, p, v, c), s1)
     }
   }
 

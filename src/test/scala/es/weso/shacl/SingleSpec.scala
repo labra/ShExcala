@@ -26,19 +26,20 @@ class SingleSpec
   describe("Single") {
     it("Should match node with label (single)") {
       val rdf_str = """|@prefix : <http://example.org/>. 
-                       |:x  :b 1 .""".stripMargin
+                       |:x  :a 1 ; :b 2 .""".stripMargin
       val rdf = RDFAsJenaModel.fromChars(rdf_str,"TURTLE").get
       val ex = IRI("http://example.org/")
       val node = ex.add("x")
       
       val shape_str = """|prefix : <http://example.org/>
                          |:shape {
+                         |   :a (1)?,
                          |   :b (1)?
                          |   }""".stripMargin
       val (schema,pm) = Schema.fromString(shape_str).get
       val label = IRILabel(ex.add("shape"))
-      val ctx = Context(rdf,schema.shaclSchema,Typing.emptyTyping,pm,true)
-      matchNodeLabel_shouldPass(node,label,ctx,false)
+      val ctx = Context(rdf,schema.shaclSchema,Typing.emptyTyping,pm,List(),true)
+      matchNodeLabel_shouldFail(node,label,ctx,false)
   }
   }
     
@@ -66,5 +67,28 @@ class SingleSpec
     }
   }
   
+  def matchNodeLabel_shouldFail(
+      node: RDFNode, 
+      label: Label,
+      ctx: Context,
+      withTrace: Boolean = false): Unit = {
+    val result: Result[ValidationState] = for {
+      _ <- setTrace(withTrace)
+      r <- matchNodeLabel(node,label,ctx)
+    } yield r
+    
+    if (result.isValid) {
+      val sol1 = result.run.get
+      val condition = sol1.filter(_.containsNodeLabel(node,label)).size > 0 
+      if (!condition) {
+        info("Result doesn't contain type " + node + "/" + label)
+        fail("Result: " + sol1.toList)
+      }
+      condition should be(true)
+    } else {
+      info("matchingNodeLabel: " + node + " with " + label)
+      info("Result: " + result + " is not valid")
+    }
+  }
 }
 

@@ -28,14 +28,14 @@ class MatchNodeLabelSpec
       val ex = IRI("http://example.org/")
       val node = ex.add("x")
       
-      val shape1 = TripleConstraint(None, ex.add("a"), IRIKind, plus)
+      val shape1 = TripleConstraintCard(None, ex.add("a"), IRIKind, plus)
       val labelS = IRILabel(IRI("S"))
       val rule1 = Rule(
           label = labelS, 
           shapeDefinition = OpenShape(shape = shape1, inclPropSet = Set()),
           extensionCondition = NoActions)
       val schema = SHACLSchema(None, rules = Seq(rule1), start = None) 
-      val ctx = Context(rdf,schema,Typing.emptyTyping,PrefixMaps.commonShacl,true)
+      val ctx = Context(rdf,schema,Typing.emptyTyping,PrefixMaps.commonShacl,List(),true)
       matchNodeLabel_shouldPass(node,labelS,ctx)
   }
     
@@ -51,17 +51,17 @@ class MatchNodeLabelSpec
       val rule1 = Rule(
           label = labelS, 
           shapeDefinition = OpenShape(
-              shape = TripleConstraint(None, ex.add("a"), SingleShape(labelT), plus), 
+              shape = TripleConstraintCard(None, ex.add("a"), SingleShape(labelT), plus), 
               inclPropSet = Set()),
           extensionCondition = NoActions)
       val rule2 = Rule(
           label = labelT, 
           shapeDefinition = OpenShape(
-              shape = TripleConstraint(None, ex.add("b"), IRIKind, plus), 
+              shape = TripleConstraintCard(None, ex.add("b"), IRIKind, plus), 
               inclPropSet = Set()),
           extensionCondition = NoActions)
       val schema = SHACLSchema(None, rules = Seq(rule1, rule2), start = None) 
-      val ctx = Context(rdf,schema,Typing.emptyTyping,PrefixMaps.commonShacl,true)
+      val ctx = Context(rdf,schema,Typing.emptyTyping,PrefixMaps.commonShacl,List(),true)
       matchNodeLabel_shouldPass(node,labelS,ctx)
   }
   }
@@ -81,7 +81,7 @@ class MatchNodeLabelSpec
                          |   }""".stripMargin
       val (schema,pm) = Schema.fromString(shape_str).get
       val label = IRILabel(ex.add("shape"))
-      val ctx = Context(rdf,schema.shaclSchema,Typing.emptyTyping,pm,true)
+      val ctx = Context(rdf,schema.shaclSchema,Typing.emptyTyping,pm,List(),true)
       matchNodeLabel_shouldPass(node,label,ctx)
   }
     
@@ -99,7 +99,7 @@ class MatchNodeLabelSpec
                          |   }""".stripMargin
       val (schema,pm) = Schema.fromString(shape_str).get
       val label = IRILabel(ex.add("shape"))
-      val ctx = Context(rdf,schema.shaclSchema,Typing.emptyTyping,pm,true)
+      val ctx = Context(rdf,schema.shaclSchema,Typing.emptyTyping,pm,List(),true)
       matchNodeLabel_shouldPass(node,label,ctx)
   }
 

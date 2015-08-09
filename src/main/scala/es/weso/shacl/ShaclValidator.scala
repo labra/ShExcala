@@ -16,6 +16,8 @@ import scala.util.matching.Regex
 import es.weso.utils.Logging
 import es.weso.utils.Boolean
 import scala.util._
+import es.weso.shacl.ShaclDoc._
+import es.weso.utils.PrefixMapUtils._
 // import treelog.LogTreeSyntaxWithoutAnnotations._
 import es.weso.rdf.validator.RDFValidator
 
@@ -43,7 +45,7 @@ trait ShaclValidator
       ts: Set[RDFTriple],
       rule: Rule,
       ctx: Context) : Result[ValidationState] = {
-    trace("Match triples: " + ts + " ~ " + rule) 
+    trace("Match triples: " + showTriples(ts)(ctx.pm) + " ~ " + rule2String(rule)(ctx.pm)) 
     rule.shapeDefinition match {
       case OpenShape(shape, propSet) => {
         for {
@@ -70,7 +72,7 @@ trait ShaclValidator
       ts: Set[RDFTriple],
       shape: ShapeExpr,
       ctx: Context): Result[ValidationState] = {
-    trace("MatchTriplesShapeExpr " + ts + " ~ " + shape)
+    trace("MatchTriplesShapeExpr " + showTriples(ts)(ctx.pm) + " ~ " + shape2String(shape)(ctx.pm))
     shape match {
       case EmptyShape => 
         if (ts.isEmpty) 
@@ -111,6 +113,9 @@ trait ShaclValidator
       case someOf: SomeOfShape => 
         matchTriplesShapeExpr(ts,toBin(someOf.shapes,or,EmptyShape),ctx)
         
+      case sc: RepetitionShape => ???
+///        matchTriples_ShapeCard(ts,sc.shape,sc.card)(ctx)
+        
       case _ => failure("Unimplemented match triples with shape " + shape)
     }
     
@@ -124,67 +129,52 @@ trait ShaclValidator
     ls.foldRight(zero)(op)
   }
   
+  def matchTriples_ShapeCard(
+       ts: Set[RDFTriple],
+       sc: ShapeExpr,
+       card: Cardinality
+      ): Result[ValidationState] = {
+     card match {
+      case RangeCardinality(0,0) => 
+        ??? /*if (ts.isEmpty) unit(Pass(... 
+        else unit Fail(...) */
+        
+      case RangeCardinality(0,n) if n > 0 => ???
+      case RangeCardinality(m,n) if m > 0 && n >= m => ??? 
+      case RangeCardinality(m,n) if m > 0 && n >= m => ??? 
+      case UnboundedCardinalityFrom(0) => ??? 
+      case UnboundedCardinalityFrom(m) if m > 0 => ??? 
+      case _ => throw ValidationException("matchTriples_TripleConstraint: Unexpected cardinality")
+    }
+    
+  }
   
   def matchTriples_TripleConstraint(
       ts: Set[RDFTriple],
       tc: TripleConstraint,
       ctx: Context): Result[ValidationState] = {
-    trace("matchTriples_TripleConstraint, ts= " + ts + " ~ " + tc)
-    tc.card match {
-      case RangeCardinality(0,0) => 
-        allTriplesWithSamePredicateMatch(ts,tc,ctx)
-      case RangeCardinality(0,n) if n > 0 => { 
-        allTriplesWithSamePredicateMatch(ts,tc,ctx) orelse 
-        matchOneAndContinue(ts,tc,ctx) 
-      }
-      case RangeCardinality(m,n) if m > 0 && n >= m => {
-        matchOneAndContinue(ts,tc,ctx)
-      }  
-      case RangeCardinality(m,n) if m > 0 && n >= m => {
-        matchOneAndContinue(ts,tc,ctx)
-      }
-      case UnboundedCardinalityFrom(0) => {
-        allTriplesWithSamePredicateMatch(ts,tc,ctx) orelse
-        matchOneAndContinue(ts,tc,ctx)
-      }
-      case UnboundedCardinalityFrom(m) if m > 0 => {
-        matchOneAndContinue(ts,tc,ctx)
-      }
-      case _ => throw ValidationException("matchTriples_TripleConstraint: Unexpected cardinality")
-    }
-  }
-  
-  def matchOneAndContinue(
-      ts:Set[RDFTriple],
-      tc: TripleConstraint,
-      ctx: Context): Result[ValidationState] = {
+    trace("matchTriples_TripleConstraint, ts= " + showTriples(ts)(ctx.pm) + " ~ " + tripleConstraint2String(tc)(ctx.pm))
     for {
-      _ <- trace("matchOneAndContinue " + ts + " ~ " + tc)
+      _ <- trace("matchOneAndContinue " + showTriples(ts)(ctx.pm) + " ~ " + tripleConstraint2String(tc)(ctx.pm))
       (t,ts1) <- removeTriple(ts) 
       typing1 <- matchTriple_TripleConstraint(t,tc, ctx)
-      _ <- trace("typing1 " + typing1)
-      state0 <- matchTriples_TripleConstraint(ts1, tc.minusOne, ctx)
-      _ <- trace("state0 " + state0)
-      state1 <- liftTry(state0.combineTyping(typing1))
-      _ <- trace("state1 " + state1)
-      state2 <- liftTry(state1.addChecked(t)) 
-      _ <- trace("state2: " + state2 + " triple checked: " + t)
-    } yield state2
+      // _ <- trace("typing1 " + typing1.showTyping(ctx.pm))
+    } yield ??? 
   }
+  
+  type ValidationTyping = Either[ValidationError,Typing]
   
   def matchTriple_TripleConstraint(
       t: RDFTriple, 
       tc: TripleConstraint,
-      ctx: Context): Result[Typing] = {
+      ctx: Context): Result[ValidationTyping] = {
     if (matchPredicate(t,tc)) {
       for {
-        _ <- trace("-> Matching triple " + t + " ~ " + tc)
-        typing <- matchValueClass(t.obj, tc.value, ctx)
-        _ <- trace("<- Triple matched with typing " + typing)
-      } yield typing
-    } else {
-      failure("matchTriple_TripleConstraint: " + t + " !~ " + tc + ". Predicates don't match")
-    }
+        _ <- trace("-> Matching triple " + showTriple(t)(ctx.pm) + " ~ " + tripleConstraint2String(tc)(ctx.pm))
+        vt <- matchValueClass(t.obj, tc.value, ctx)
+      } yield vt
+    } else 
+      unit(Left(NoMatchPredicate(t,tc)))
   }
   
   def removeTriple(
@@ -196,21 +186,17 @@ trait ShaclValidator
   def matchValueClass(
       obj: RDFNode, 
       v: ValueClass, 
-      ctx: Context): Result[Typing] = {
+      ctx: Context): Result[ValidationTyping] = {
     v match {
-      case vc: ValueConstr => for {
-        b <- matchValueConstr(obj,vc,ctx)
-        if (b)
-      } yield ctx.typing
-      case sc: ShapeConstr => 
-        matchShapeConstr(obj,sc,ctx)
+      case vc: ValueConstr => matchValueConstr(obj,vc,ctx)
+      case sc: ShapeConstr => matchShapeConstr(obj,sc,ctx)
     }
   }
 
   def matchValueConstr(
       obj: RDFNode,
       v: ValueConstr,
-      ctx:Context): Result[Boolean] = {
+      ctx:Context): Result[ValidationTyping] = {
     v match {
       case vs: ValueSet => matchValueSet(obj,vs,ctx)
       case ld: LiteralDatatype => matchLiteralDatatype(obj,ld,ctx)
@@ -221,11 +207,11 @@ trait ShaclValidator
   def matchValueSet(
       obj : RDFNode,
       values: ValueSet,
-      ctx: Context): Result[Boolean] = {
+      ctx: Context): Result[ValidationTyping] = {
     if (containsNode(obj,values.s)) 
-      unit(true)
+      successTyping(ctx)
     else 
-      failure("matchValueSet: obj " + obj + " does not match values " + values.s)
+      fail(NoMatchValueSet(obj,values))
   }
   
   def containsNode(
@@ -238,7 +224,8 @@ trait ShaclValidator
       node: RDFNode,
       vo: ValueObject): Boolean = {
     vo match {
-      case ValueIRI(iri) => node.isIRI && node.toIRI == iri
+      case ValueIRI(iri) => 
+        node.isIRI && node.toIRI == iri
       case ValueLiteral(lit) => {
         node match {
           case lit1: Literal => lit == lit1
@@ -253,20 +240,29 @@ trait ShaclValidator
       }
     }
   }
+
+  def successTyping(ctx: Context): Result[ValidationTyping] = {
+    unit(Right(ctx.typing))
+  }
+  
+  def fail[A](err: ValidationError): Result[Either[ValidationError,A]] = {
+    unit(Left(err))
+  }
   
   def matchLiteralDatatype(
       obj: RDFNode,
       ld: LiteralDatatype,
       ctx: Context
-      ): Result[Boolean] = {
+      ): Result[ValidationTyping] = {
     obj match {
       case lit: Literal => {
         // TODO...match facets
         if (lit.dataType == ld.v)
-          unit(true)
-        else failure("matchLiteralDatatype: Literal datatype " + lit.dataType + " doesn't match " + ld.v)
+          successTyping(ctx)
+        else 
+          fail(NoMatchLiteralDatatype(lit, ld)) 
       } 
-      case _ => failure("matchLiteralDatatype: obj " + obj + " must be a literal ")
+      case _ => fail(NoLiteral_MatchLiteralDatatype(obj,ld))
     }
   }
   
@@ -274,11 +270,11 @@ trait ShaclValidator
       obj: RDFNode,
       nk: NodeKind,
       ctx: Context
-      ): Result[Boolean] = {
+      ): Result[ValidationTyping] = {
     if (nodeKindOK(obj,nk)) 
-      unit(true)
+      successTyping(ctx) 
     else 
-      failure("matchNodeKind: obj = " + obj + " doesn't match " + nk)
+      fail(NoNodeKind(obj,nk))
   }   
   
   def nodeKindOK(
@@ -298,39 +294,54 @@ trait ShaclValidator
   def matchShapeConstr(
       obj: RDFNode,
       v: ShapeConstr,
-      ctx: Context): Result[Typing] = {
+      ctx: Context): Result[ValidationTyping] = {
     v match {
       case SingleShape(label) => 
-        if (ctx.containsType(obj,label)) unit(ctx.typing)
+        if (ctx.containsType(obj,label)) successTyping(ctx)
         else 
-          if (ctx.containsNegType(obj,label)) failure("Context contains negative typing for node " + obj + "/" + label)
+          if (ctx.containsNegType(obj,label)) 
+            fail(NoTypingFound(obj,label))
           else for {
            vs <- matchNodeLabel(obj,label,ctx)
            typing <- liftTry(vs.getTyping)
-          } yield typing
+          } yield Right(typing)
       case _ => throw ValidationException("Unimplemented matchShapeConstr")
     }
   }
   
+  /**
+   * checks that all triples with the same predicate match the triple constraint 
+   * @param ts set of triples to match
+   * @param tc triple constraint
+   * @param ctx context
+   * @param allowedToFail if true then failures are added to pending list
+   */
   def allTriplesWithSamePredicateMatch(
       ts: Set[RDFTriple],
       tc: TripleConstraint,
-      ctx: Context): Result[ValidationState] = {
+      ctx: Context,
+      allowedToFail: Boolean): Result[ValidationState] = {
     
     lazy val end : Result[ValidationState] = for {
      _ <- trace("allTriplesWithSamePredicateMatch: End (all passed)")  
     } yield 
-      Pass(typing = ctx.typing, remaining = ts, checked = Set())
+      Pass(typing = ctx.typing, remaining = ts, checked = Set(), pending = Set())
     
     ts.foldLeft(end){
       case (result,t) => 
         if (matchPredicate(t, tc)) {
           for {
             _ <- trace("allTriplesWithSamePredicateMatch. triple with same predicate to check: " + t)  
-            b <- matchValueClass(t.obj,tc.value,ctx)
-            _ <- trace("allTriplesWithSamePredicateMatch. passed: " + t + " ~ " + tc) 
+            vt <- matchValueClass(t.obj,tc.value,ctx)
+            _ <- trace("allTriplesWithSamePredicate. result: " + vt)
             vs <- result
-           } yield vs
+           } yield {
+             vt match {
+               case Left(err) => if (allowedToFail) ??? // vs.addPending(t)
+                                 else ??? // Fail()
+               case Right(typing) => ???
+             }
+           }
         } 
        else 
            result
@@ -430,16 +441,17 @@ trait ShaclValidator
         shapes.map{ case shape => properties(shape)}.flatten.toSet
       case RepetitionShape(id,shape,_) => 
         properties(shape)
+      case _ => throw new Exception("invProperties: Unimplemented " + expr)
     } 
   }
 
   def triplesSatisfy(neigh: Set[RDFTriple], shape: ShapeExpr, rdf: RDFReader): Boolean = {
     shape match {
       case EmptyShape => neigh.isEmpty
-      case TripleConstraint(_,iri,value,card) => {
+      case TripleConstraint(_,iri,value) => {
         throw ValidationException("Unimplemented tripleConstraint")
       }
-      case InverseTripleConstraint(_,iri,shapeConstr,card) => {
+      case InverseTripleConstraint(_,iri,shapeConstr) => {
         throw ValidationException("Unimplemented InverseTripleConstraint")
       }
       case SomeOfShape(id,shapes) => {
@@ -454,6 +466,7 @@ trait ShaclValidator
       case RepetitionShape(id,shape,card) => {
         throw ValidationException("Unimplemented RepetitionShape")
       }
+      case _ => throw new Exception("invProperties: Unimplemented " + shape)
     }
   }
 
@@ -575,12 +588,7 @@ trait ShaclValidator
     ) yield t
   }
 */
-  def showTriples(g: Set[RDFTriple]): Unit = {
-    for (t <- g) {
-      log.debug("   " + t)
-    }
-  }
-
+ 
   def showShape(shape: ShapeExpr): String = {
     ShaclDoc.shape2String(shape)(PrefixMap.empty)
   }
@@ -604,5 +612,6 @@ trait ShaclValidator
       g: Set[RDFTriple],
       shape: ShapeDefinition): Result[ValidationState] = 
       failure("unimplemented matchShape")
+      
 }
 

@@ -41,6 +41,7 @@ def match_node_label
     schema = schema.shaclSchema, 
     typing = Typing.emptyTyping, 
     pm = schema.pm, 
+    pending = List(),
     validateIncoming = true
   )
   for {

@@ -267,7 +267,7 @@ class ShaclParserSuite extends ShaclParser
         Rule(label = IRILabel(IRI(prefix + a)),
           shapeDefinition =
             OpenShape(
-              shape = TripleConstraint(
+              shape = TripleConstraintCard(
                 id = None,
                 iri = IRI(prefix + b),
                 value = LiteralDatatype(IRI(prefix + c), List()),
@@ -291,7 +291,7 @@ class ShaclParserSuite extends ShaclParser
         Rule(label = IRILabel(IRI(prefix + a)),
           shapeDefinition =
             OpenShape(
-              shape = TripleConstraint(
+              shape = TripleConstraintCard(
                 id = None,
                 iri = IRI(prefix + b),
                 value = LiteralDatatype(IRI(prefix + c), List()),
@@ -317,7 +317,7 @@ class ShaclParserSuite extends ShaclParser
         Rule(label = IRILabel(IRI(prefix + a)),
           shapeDefinition =
             OpenShape(
-              shape = TripleConstraint(
+              shape = TripleConstraintCard(
                 id = None,
                 iri = IRI(prefix + b),
                 value = LiteralDatatype(IRI(prefix + c), List()),
@@ -344,7 +344,7 @@ class ShaclParserSuite extends ShaclParser
         Rule(label = IRILabel(IRI(prefix + a)),
           shapeDefinition =
             OpenShape(
-              shape = TripleConstraint(
+              shape = TripleConstraintCard(
                 id = None,
                 iri = IRI(prefix + b),
                 value = LiteralDatatype(IRI(prefix + c), List()),
@@ -372,7 +372,7 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a))
       val labelB = IRILabel(IRI(prefix + b))
       val ruleBC = OpenShape(
-        shape = TripleConstraint(
+        shape = TripleConstraintCard(
           id = None,
           iri = IRI(prefix + b),
           value = LiteralDatatype(IRI(prefix + c), List()),
@@ -399,7 +399,7 @@ class ShaclParserSuite extends ShaclParser
       val begin = IRILabel(IRI("begin"))
       val labelB = IRILabel(IRI("b"))
       val ruleBC = OpenShape(
-        shape = TripleConstraint(
+        shape = TripleConstraintCard(
           id = None,
           iri = IRI("b"),
           value = LiteralDatatype(IRI("c"), List()),
@@ -424,7 +424,7 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a))
       val labelB = IRILabel(IRI(prefix + b))
       val ruleBC = OpenShape(
-        shape = TripleConstraint(
+        shape = TripleConstraintCard(
           id = None,
           iri = IRI(prefix + b),
           value = LiteralDatatype(IRI(prefix + c), List()),
@@ -453,7 +453,7 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a))
       val labelB = IRILabel(IRI(prefix + b))
       val ruleBC = OpenShape(
-        shape = TripleConstraint(
+        shape = TripleConstraintCard(
           id = None,
           iri = IRI(prefix + b),
           value = LiteralDatatype(IRI(prefix + c), List()),

@@ -148,7 +148,7 @@ class RDF2ShaclSpec
         c <- RDF2Schema.tripleConstraint(n,rdf)
       } yield 
         c 
-      c.success.value should be(TripleConstraint(Some(n_label),p,LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3))) 
+      c.success.value should be(TripleConstraintCard(Some(n_label),p,LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3))) 
     }
     
     it("Should parse an open shape definition ") {
@@ -175,7 +175,7 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = OpenShape(
-              TripleConstraint(Some(prop_label),
+              TripleConstraintCard(Some(prop_label),
                                p,
                                LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)),
               emptyInclPropSet
@@ -206,7 +206,7 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = OpenShape(
-              TripleConstraint(Some(prop_label),
+              TripleConstraintCard(Some(prop_label),
                                p,
                                LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)),
               emptyInclPropSet
@@ -241,11 +241,11 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = OpenShape(
-              GroupShape(None,Seq(TripleConstraint(Some(prop1_label),
+              GroupShape(None,Seq(TripleConstraintCard(Some(prop1_label),
                                p,
                                LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)
                              ),
-                             TripleConstraint(Some(prop2_label),
+                             TripleConstraintCard(Some(prop2_label),
                                q,
                                IRIKind,UnboundedCardinalityFrom(1)
                              )
@@ -280,11 +280,11 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = OpenShape(
-              GroupShape(None,Seq(TripleConstraint(Some(prop1_label),
+              GroupShape(None,Seq(TripleConstraintCard(Some(prop1_label),
                                p,
                                LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)
                              ),
-                             TripleConstraint(Some(prop2_label),
+                             TripleConstraintCard(Some(prop2_label),
                                q,
                                IRIKind,UnboundedCardinalityFrom(1)
                              )
