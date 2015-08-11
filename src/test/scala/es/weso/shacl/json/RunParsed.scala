@@ -4,12 +4,13 @@ import java.io.File
 import argonaut._, Argonaut._
 import java.nio.ByteBuffer
 import java.nio.channels.ReadableByteChannel
-import scala.util.Try
+import scala.util.{ Try, Success => TrySuccess, Failure => TryFailure }
 import scala.io._
 import scalaz.\/
 import org.scalatest.FunSpec
 import org.scalatest.Matchers
-
+import scalaz._, Scalaz._
+import es.weso.shacl.json.AST._
 
 class RunParsed extends FunSpec with Matchers {
 
@@ -17,8 +18,7 @@ class RunParsed extends FunSpec with Matchers {
   val testsDir = conf.getString("shexSyntaxTestsFolder")
   val parsedSchemasDir = testsDir + "parsedSchemas"
   val schemasDir = testsDir + "schemas"
-  val negativeSyntaxDir = testsDir +  "negativeSyntax"
-  
+  val negativeSyntaxDir = testsDir + "negativeSyntax"
 
   // method borrowed from: Alvin Alexander's Scala cookbook 
   def getFilesFromFolder(path: String): List[(File)] = {
@@ -29,54 +29,208 @@ class RunParsed extends FunSpec with Matchers {
       List[File]()
     }
   }
-  
-  def file2json(file:File): Try[Json] = {
+
+  def file2json(file: File): Try[Json] = {
     Try {
       val contents = io.Source.fromFile(file)("UTF-8")
       val parsed = JsonParser.parse(contents.mkString)
-      parsed.fold(_ => 
+      parsed.fold(_ =>
         throw new Exception(s"Error parsing ${file.getName()}: $parsed"),
         x => x)
     }
   }
-  
-  case class SchemaAST(
-      typ: String,
-      prefixes: List[(String,String)],
-      shapes: List[ShapeAST]
-  )
-  
-  case class ShapeAST(
-      label: String,
-      typ: String
-  )
-  
-  def json2AST(json:Json): Try[SchemaAST]  = {
-    ???
+
+  def file2AST(file: File): Try[SchemaAST] = {
+    Try {
+      val contents = io.Source.fromFile(file)("UTF-8")
+      val parsed = Parse.decodeValidation[SchemaAST](contents.mkString)
+      parsed.fold(_ =>
+        throw new Exception(s"Error parsing ${file.getName()}: $parsed"),
+        x => x)
+    }
   }
-  
+
   def parseFolderFiles[A](
-      folder: String, 
-      parser: File => Try[A]):List[(File,A)] = {
+    folder: String,
+    parser: File => Try[A]): List[(File, A)] = {
     val files = getFilesFromFolder(folder)
     files.map(file => {
-     val t = parser(file)
-     if (t.isFailure) {
-       println(s"Failure with file ${file.getName}: $t")
-     }
-     t.map(a => (file,a))
+      val t = parser(file)
+      if (t.isFailure) {
+        println(s"Failure with file ${file.getName}: $t")
+      }
+      t.map(a => (file, a))
     }).filter(_.isSuccess).map(_.get)
-  } 
-  
-  def getParsedSchemas(jsonSchemasDir: String):List[(File,Json)] = {
+  }
+
+  def getParsedSchemas(jsonSchemasDir: String): List[(File, Json)] = {
     parseFolderFiles(jsonSchemasDir, file2json)
   }
-  
+
   describe("Run JSON tests") {
     val parsedSchemas = getParsedSchemas(parsedSchemasDir)
-    for ((file,json) <- parsedSchemas) {
+    for ((file, json) <- parsedSchemas) {
       it(s"Should handle ${file.getName}") {
+        val trySchema = file2AST(file)
+        trySchema match {
+          case TrySuccess(schema) => info("Schema parsed")
+          case TryFailure(e)      => fail("Fail to parse " + e)
+        }
       }
+    }
+  }
+
+  describe("AST<->JSON") {
+
+    it("should parse simple valueClass with nodekind BNode") {
+      val str = """|{ "type": "valueClass",
+                   |  "nodeKind": "bnode",
+                   |  "length": 20
+                   |} """.stripMargin
+
+      val vc = ValueClassAST.empty.copy(
+        nodeKind = Some("bnode"),
+        length = Some(20),
+        maxInclusive = None)
+      checkJsonDecoder(str, vc)
+    }
+
+    it("should parse empty valueClass") {
+      val str = """|{ "type": "valueClass"
+                   |} """.stripMargin
+
+      val vc = ValueClassAST.empty
+      checkJsonDecoder(str, vc)
+    }
+
+    it("should parse single tripleConstraint") {
+      val str = """|{ "type": "tripleConstraint",
+                   |  "predicate": "http://a.example/p1",
+                   |  "value": { "type": "valueClass",
+                   |  "nodeKind": "literal",
+                   |  "maxinclusive": 5 }
+                   |}""".stripMargin
+
+      val vc = ExpressionAST.empty.copy(
+        _type = "tripleConstraint",
+        predicate = "http://a.example/p1",
+        value = ValueClassAST.empty.copy(
+          nodeKind = Some("literal"),
+          maxInclusive = Some(5)))
+      checkJsonDecoder(str, vc)
+    }
+
+    it("should parse list of prefixes") {
+      val str = """|{ "prefixes" : 
+                   |   { "p1": "prefix1",
+                   |     "p2": "prefix2" },
+                   |  "shapes": {}
+                   |}""".stripMargin
+
+      val expected =
+        SchemaAST.empty.copy(
+          prefixes = Some(Map("p1" -> "prefix1", "p2" -> "prefix2")),
+          shapes = Some(Map()))
+      checkJsonDecoder(str, expected)
+    }
+
+    it("should parse list of shapes") {
+      val str = """|{ "prefixes": {},
+                   |  "shapes" : 
+                   |   { "http://a.example/IssueShape": {
+                   |     "type": "shape",
+                   |     "expression": {
+                   |        "type": "tripleConstraint",
+                   |        "predicate": "http://a.example/p1",        
+                   |        "value": { "type": "valueClass" }
+                   |       }
+                   |     }
+                   |   }
+                   |}""".stripMargin
+
+      val expected =
+        SchemaAST.empty.copy(
+          shapes = Some(Map("http://a.example/IssueShape" ->
+            ShapeAST.empty.copy(
+              expression = Some(ExpressionAST.empty.copy(
+                _type = "tripleConstraint",
+                predicate = "http://a.example/p1",
+                value = ValueClassAST.empty))))),
+          prefixes = Some(Map()))
+      checkJsonDecoder(str, expected)
+    }
+
+    it("should parse inverse negated shapes") {
+      val str = """|{
+                   |  "type": "schema",
+                   |    "prefixes": {},
+                   |      "shapes":{
+                   |          "http://a.example/IssueShape": {
+                   |                "type": "shape",
+                   |                "expression": {
+                   |                   "type": "tripleConstraint",
+                   |                   "inverse": true,
+                   |                   "negated": true,
+                   |                   "predicate": "http://a.example/p1",
+                   |                   "value": { "type": "valueClass" }}}
+                   |}}""".stripMargin
+      val expected =
+        SchemaAST.empty.copy(
+          shapes = Some(Map("http://a.example/IssueShape" ->
+            ShapeAST.empty.copy(
+              expression = Some(ExpressionAST.empty.copy(
+                _type = "tripleConstraint",
+                predicate = "http://a.example/p1",
+                value = ValueClassAST.empty,
+                negated = Some(true),
+                inverse = Some(true)))))),
+          prefixes = Some(Map()))
+      checkJsonDecoder(str, expected)
+    }
+    
+   it("should parse references") {
+     val str = """{
+  "type": "schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/EmployeeShape": {
+      "type": "shape",
+      "expression": {
+        "type": "tripleConstraint",
+        "predicate": "http://a.example/p2",
+        "value": { "type": "valueClass", "reference": "http://a.example/PersonShape" }
+      }
+    }
+  }
+}
+"""
+ val expected =
+     SchemaAST.empty.copy(
+       shapes = 
+          Some(Map(
+            "http://a.example/EmployeeShape" ->
+            ShapeAST.empty.copy(
+              expression = Some(ExpressionAST.empty.copy(
+                _type = "tripleConstraint",
+                predicate = "http://a.example/p2",
+                value = ValueClassAST.empty.copy(
+                    reference=Some(ReferenceAST(Left("http://a.example/PersonShape")))
+                  )
+                )))                
+           )),
+          prefixes = Some(Map()))
+      checkJsonDecoder(str, expected)     
+   }
+
+  }
+
+  def checkJsonDecoder[A: DecodeJson](
+    str: String,
+    expected: A): Unit = {
+    val parsed = str.decodeValidation[A]
+    parsed match {
+      case Success(v) => v should be(expected)
+      case Failure(e) => { fail(e) }
     }
   }
 
