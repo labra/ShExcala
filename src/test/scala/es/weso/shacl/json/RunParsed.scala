@@ -71,10 +71,13 @@ class RunParsed extends FunSpec with Matchers {
     val parsedSchemas = getParsedSchemas(parsedSchemasDir)
     for ((file, json) <- parsedSchemas) {
       it(s"Should handle ${file.getName}") {
-        val trySchema = file2AST(file)
-        trySchema match {
-          case TrySuccess(schema) => info("Schema parsed")
-          case TryFailure(e)      => fail("Fail to parse " + e)
+        val tryConversion = for {
+          schemaAST <- file2AST(file)
+          schema <- AST2Schema.cnvAST(schemaAST)
+        } yield (schemaAST,schema)
+        tryConversion match {
+          case TrySuccess((schemaAST,schema)) => info("Schema parsed")
+          case TryFailure(e)      => fail("Failure: " + e)
         }
       }
     }

@@ -24,7 +24,6 @@ case class ExpressionAST(
     predicate: String,
     include: Option[String],
     value: ValueClassAST,
-    values: Option[List[Either[String,StemAST]]],
     inverse: Option[Boolean],
     negated: Option[Boolean],
     min: Option[Int],
@@ -35,6 +34,7 @@ case class ExpressionAST(
     )
 
 case class ValueClassAST(
+    values: Option[List[ValueAST]],
     nodeKind: Option[String],
     pattern: Option[String],
     reference: Option[ReferenceAST],
@@ -44,6 +44,10 @@ case class ValueClassAST(
     minExclusive: Option[Int],
     maxExclusive: Option[Int]
 ) 
+
+case class ValueAST(
+   value: Either[String,StemAST]
+)
 
 case class ReferenceAST(
     value: Either[String,OrAST]
@@ -80,7 +84,6 @@ object ExpressionAST {
         predicate="",
         include=None,
         value=ValueClassAST.empty,
-        values=None,
         inverse=None,negated=None,
         min=None,max=None,
         expressions=None,
@@ -91,6 +94,7 @@ object ExpressionAST {
 
 object ValueClassAST {
   lazy val empty = ValueClassAST(
+      values=None,
       nodeKind=None, 
       pattern=None,
       reference=None,
@@ -143,7 +147,6 @@ implicit def ExpressionEncodeJson: EncodeJson[ExpressionAST] =
       ("predicate" := n.predicate) ->: 
       ("include" := n.include) ->: 
       ("value" := n.value.asJson) ->: 
-      ("values" := n.values.asJson) ->: 
       ("inverse" := n.inverse.asJson) ->:
       ("negated" := n.negated.asJson) ->:
       ("min" := n.min.asJson) ->:
@@ -156,6 +159,7 @@ implicit def ExpressionEncodeJson: EncodeJson[ExpressionAST] =
 implicit def ValueClassEncodeJson: EncodeJson[ValueClassAST] =
     EncodeJson((n: ValueClassAST) =>
       ("type" := jString("valueClass")) ->:
+      ("values" := n.values.asJson) ->:
       ("pattern" := n.pattern.asJson) ->: 
       ("nodeKind" := n.nodeKind.asJson) ->: 
       ("reference" := n.reference.asJson) ->: 
@@ -166,6 +170,11 @@ implicit def ValueClassEncodeJson: EncodeJson[ValueClassAST] =
       ("maxExclusive" := n.maxExclusive) ->: 
       jEmptyObject)
 
+implicit def ValueEncodeJson: EncodeJson[ValueAST] =
+    EncodeJson((n: ValueAST) =>
+      n.value.asJson
+    )
+      
 implicit def ReferenceEncodeJson: EncodeJson[ReferenceAST] =
     EncodeJson((n: ReferenceAST) =>
       n.value.asJson)
@@ -217,7 +226,6 @@ implicit def ExpressionDecodeJson: DecodeJson[ExpressionAST] =
      predicate <- (c --\ "predicate").as[String]
      include <- (c --\ "include").as[Option[String]]
      value <- (c --\ "value").as[ValueClassAST]
-     values <- (c --\ "values").as[Option[List[Either[String,StemAST]]]]
      inverse <- (c --\ "inverse").as[Option[Boolean]]
      negated <- (c --\ "negated").as[Option[Boolean]]
      min <- (c --\ "min").as[Option[Int]]
@@ -225,7 +233,7 @@ implicit def ExpressionDecodeJson: DecodeJson[ExpressionAST] =
      expressions <- (c --\ "expressions").as[Option[List[ExpressionAST]]]
      annotations <- (c --\ "annotations").as[Option[List[List[String]]]]
      semAct <- (c --\ "semAct").as[Option[Map[String,String]]]
-    } yield ExpressionAST(_type,id,predicate,include,value,values,inverse,negated,min,max,expressions,annotations,semAct))
+    } yield ExpressionAST(_type,id,predicate,include,value,inverse,negated,min,max,expressions,annotations,semAct))
 
 
 /* The following declaration would be nice but generates stack overflow...
@@ -236,6 +244,7 @@ implicit def ExpressionDecodeJson: DecodeJson[ExpressionAST] =
     
 implicit def ValueClassDecodeJson: DecodeJson[ValueClassAST] =
     DecodeJson((c) => for {
+     values <- (c --\ "values").as[Option[List[ValueAST]]]
      length <- (c --\ "length").as[Option[Int]]
      pattern <- (c --\ "pattern").as[Option[String]]
      reference <- (c --\ "reference").as[Option[ReferenceAST]]
@@ -245,6 +254,7 @@ implicit def ValueClassDecodeJson: DecodeJson[ValueClassAST] =
      minExclusive <- (c --\ "minexclusive").as[Option[Int]]
      maxExclusive <- (c --\ "maxexclusive").as[Option[Int]]
     } yield ValueClassAST(
+        values,
         nodeKind,
         pattern,
         reference,
@@ -253,6 +263,11 @@ implicit def ValueClassDecodeJson: DecodeJson[ValueClassAST] =
         minExclusive,maxExclusive)
     )
 
+implicit def ValueDecodeJson: DecodeJson[ValueAST] =
+    DecodeJson((c) => 
+      (for { value <- c.as[String] } yield ValueAST(Left(value))) |||
+      (for { value <- c.as[StemAST] } yield ValueAST(Right(value)))
+      )      
  
 implicit def ReferenceDecodeJson: DecodeJson[ReferenceAST] =
     DecodeJson((c) => 
