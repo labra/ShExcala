@@ -27,25 +27,27 @@ case class ValidationException(msg:String) extends Exception {
 
 trait ShaclValidator 
  extends Logging {
-  
+
+ 
   def matchNodeLabel(
       node: RDFNode, 
       label: Label, 
       ctx: Context
       ): Result[ValidationState] = {
-    val triples = ctx.triplesAround(node)
+/*    val triples = ctx.triplesAround(node)
     for {
      shape <- liftOption(ctx.getShape(label))
      ctx1 <- liftTry(ctx.addTyping(node,label))
-     state <- matchTriplesRule(triples,shape,ctx1) 
-    } yield state 
+     state <- matchTriplesShape(triples,shape,ctx1) 
+    } yield state */
+    ???
   }
   
-  def matchTriplesRule(
+  def matchTriplesShape(
       ts: Set[RDFTriple],
-      rule: Rule,
+      shape: Shape,
       ctx: Context) : Result[ValidationState] = {
-    trace("Match triples: " + showTriples(ts)(ctx.pm) + " ~ " + rule2String(rule)(ctx.pm)) 
+/*    trace("Match triples: " + showTriples(ts)(ctx.pm) + " ~ " + shape2String(shape)(ctx.pm)) 
     rule.shapeDefinition match {
       case OpenShape(shape, propSet) => {
         for {
@@ -60,8 +62,9 @@ trait ShaclValidator
           _ <- checkNoRemaining(vs)
         } yield vs
       }
-    }
-  }
+    } */
+    ???
+  } 
   
   def checkNoRemaining(vs: ValidationState): Result[Boolean] = {
     if (vs.hasRemaining) unit(true)
@@ -400,18 +403,20 @@ trait ShaclValidator
   
   
   def expr(t: Label, s:SHACLSchema): Option[ShapeExpr] = {
-    s.findShape(t).map {
+/*    s.findShape(t).map {
       _.shapeDefinition.shape
-    }
+    } */
+    ???
   }
   
   def incl(t: Label, s: SHACLSchema): Option[Set[IRI]] = {
-    s.findShape(t).map {
+/*    s.findShape(t).map {
       case x => x.shapeDefinition match {
         case os:OpenShape => os.inclPropSet
         case _:ClosedShape => Set()
       }
-    }
+    } */
+    ???
   }
   
   def properties(expr: ShapeExpr): Set[IRI] = {
@@ -610,7 +615,7 @@ trait ShaclValidator
   def matchShape(
       ctx: Context,
       g: Set[RDFTriple],
-      shape: ShapeDefinition): Result[ValidationState] = 
+      shape: Shape): Result[ValidationState] = 
       failure("unimplemented matchShape")
       
 }

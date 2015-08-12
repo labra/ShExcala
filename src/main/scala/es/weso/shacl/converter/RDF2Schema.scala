@@ -42,7 +42,7 @@ object RDF2Schema
        with_sh_property_nodes).toSeq
     
     log.info("Shape candidates = " + shapeCandidates)
-    val maybeRules : Seq[Try[Rule]] = 
+    val maybeRules : Seq[Try[(Label,Shape)]] = 
       shapeCandidates.map{case node => {
       rule(node,rdf)
     }}
@@ -50,43 +50,41 @@ object RDF2Schema
      rules <- filterSuccess(maybeRules)
      // TODO: Parse Schema label (if any)
      // TODO: Parse start (if any)
-    } yield SHACLSchema(None,rules,None)
+    } yield {
+     SHACLSchema(None,rules.toMap,None) 
+    }
   }
   
-  def rule: RDFParser[Rule] = { (n,rdf) => {
+  def rule: RDFParser[(Label,Shape)] = { (n,rdf) => {
     for {
-      shape <- shapeDefinition(n,rdf)
-    } yield Rule(mkLabel(n),shape,Seq())
+      shape <- shape(n,rdf)
+    } yield (mkLabel(n),shape)
   }
   }
 
-  def shapeDefinition: RDFParser[ShapeDefinition] = {
-    someOf(Seq(openShape,closedShape))
-  }
-
-  def openShape: RDFParser[OpenShape] = { (n,rdf) =>
+  def shape: RDFParser[Shape] = { (n,rdf) =>
     for {
       //okTypes <- hasNoRDFType(sh_ClosedShape)(n,rdf)
       //if okTypes
       shape <- {  
          shapeExpr(n,rdf) 
       }
-      incls <- inclPropSet(n,rdf)
-    } yield OpenShape(shape,incls)
+//      incls <- inclPropSet(n,rdf)
+    } yield Shape(shape,false,Set())
   }
   
-  def inclPropSet: RDFParser[Set[IRI]] = { (n,rdf) =>
+/*  def inclPropSet: RDFParser[Set[IRI]] = { (n,rdf) =>
     // Todo: 
     Success(Set())
-  }
+  } */
 
-  def closedShape: RDFParser[ClosedShape] = { (n,rdf) =>
+/*  def closedShape: RDFParser[ClosedShape] = { (n,rdf) =>
     for {
       checkType <- hasRDFType(sh_ClosedShape)(n,rdf)
       if checkType
       shape <- shapeExpr(n,rdf)
     } yield ClosedShape(shape)
-  }
+  } */
 
   def shapeExpr: RDFParser[ShapeExpr] = { (n,rdf) =>
     objectsFromPredicate(sh_property)(n,rdf) match {

@@ -22,21 +22,7 @@ class MatchNodeLabelSpec
 
   describe("MatchNodeLabel") {
     it("Should match node with label (single)") {
-      val rdf_str = """|@prefix : <http://example.org/>. 
-                       |:x :a :y .""".stripMargin
-      val rdf = RDFAsJenaModel.fromChars(rdf_str,"TURTLE").get
-      val ex = IRI("http://example.org/")
-      val node = ex.add("x")
-      
-      val shape1 = TripleConstraintCard(None, ex.add("a"), IRIKind, plus)
-      val labelS = IRILabel(IRI("S"))
-      val rule1 = Rule(
-          label = labelS, 
-          shapeDefinition = OpenShape(shape = shape1, inclPropSet = Set()),
-          extensionCondition = NoActions)
-      val schema = SHACLSchema(None, rules = Seq(rule1), start = None) 
-      val ctx = Context(rdf,schema,Typing.emptyTyping,PrefixMaps.commonShacl,List(),true)
-      matchNodeLabel_shouldPass(node,labelS,ctx)
+    }
   }
     
   it("Should match node with label (shape reference)") {
@@ -48,22 +34,7 @@ class MatchNodeLabelSpec
       val node = ex.add("x")
       val labelS = IRILabel(IRI("S"))
       val labelT = IRILabel(IRI("T"))
-      val rule1 = Rule(
-          label = labelS, 
-          shapeDefinition = OpenShape(
-              shape = TripleConstraintCard(None, ex.add("a"), SingleShape(labelT), plus), 
-              inclPropSet = Set()),
-          extensionCondition = NoActions)
-      val rule2 = Rule(
-          label = labelT, 
-          shapeDefinition = OpenShape(
-              shape = TripleConstraintCard(None, ex.add("b"), IRIKind, plus), 
-              inclPropSet = Set()),
-          extensionCondition = NoActions)
-      val schema = SHACLSchema(None, rules = Seq(rule1, rule2), start = None) 
-      val ctx = Context(rdf,schema,Typing.emptyTyping,PrefixMaps.commonShacl,List(),true)
-      matchNodeLabel_shouldPass(node,labelS,ctx)
-  }
+      (pending)
   }
   
   describe("Algebra based tests") {

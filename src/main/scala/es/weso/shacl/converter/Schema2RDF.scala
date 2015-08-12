@@ -34,12 +34,12 @@ object Schema2RDF extends Logging {
   def shaclSchema2RDF(shaclSchema: SHACLSchema, rdf: RDFBuilder): RDFBuilder = {
     val (schemaNode, _) = rdf.createBNode
     rdf.addTriple(RDFTriple(schemaNode, rdf_type, sh_Schema))
-    rules2RDF(shaclSchema.rules, schemaNode, rdf)
+    rules2RDF(shaclSchema.shapes, schemaNode, rdf)
     start2RDF(shaclSchema.start, schemaNode, rdf)
   }
 
   def rules2RDF(
-    rules: Seq[Rule],
+    rules: Map[Label,Shape],
     schemaNode: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
     for (rule <- rules) {
@@ -61,30 +61,21 @@ object Schema2RDF extends Logging {
   }
 
   def rule2RDF(
-    rule: Rule,
+    rule: (Label,Shape),
     schemaNode: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
-    val ruleNode = rule.label.getNode
+    val ruleNode = rule._1.getNode
 //    rdf.addTriple(RDFTriple(ruleNode, rdf_type, sh_Shape))
     rdf.addTriple(RDFTriple(ruleNode, sh_schema, schemaNode))
-    shapeDefinition2RDF(rule.shapeDefinition, ruleNode, rdf)
-    extensionConditions2RDF(rule.extensionCondition, ruleNode, rdf)
+    shapeDefn2RDF(rule._2, ruleNode, rdf)
+//    extensionConditions2RDF(rule.extensionCondition, ruleNode, rdf)
   }
 
-  def shapeDefinition2RDF(
-      shape: ShapeDefinition, 
+  def shapeDefn2RDF(
+      shape: Shape, 
       shapeNode: RDFNode, 
       rdf: RDFBuilder): RDFBuilder = {
-    shape2RDF(shape.shape, shapeNode,rdf)
-    shape match {
-      case OpenShape(_,incls) => {
-        addTriple(rdf,(shapeNode,rdf_type,sh_OpenShape))
-        inclPropSet2RDF(incls,shapeNode,rdf)
-      }
-      case ClosedShape(_) => {
-        addTriple(rdf,(shapeNode,rdf_type,sh_ClosedShape))
-      }
-    }
+    shape2RDF(shape.shapeExpr, shapeNode,rdf)
   } 
       
   def shape2RDF(

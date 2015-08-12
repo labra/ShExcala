@@ -10,7 +10,7 @@ import util._
 import es.weso.utils.PrefixMapUtils._
 
 /**
- * The following definitions follow: http://w3c.github.io/data-shapes/semantics/
+ * Shacl Abstract Syntax 
  */
 object Shacl {
 
@@ -19,37 +19,35 @@ object Shacl {
    */
   case class SHACLSchema(
     id: Option[Label],
-    rules: Seq[Rule],
+    shapes: Map[Label,Shape],
     start: Option[Label])
       extends Positional // Positional helps Parser Combinators to show positions 
       {
 
-    def findShape(label: Label): Option[Rule] = {
-      val rs = rules.filter(_.label == label)
-      if (rs.size == 1) Some(rs.head)
-      else None
+    def findShape(label: Label): Option[Shape] = {
+      shapes.get(label)
     }
     
     def labels: Set[Label] = {
-      rules.map(_.label).toSet
+      shapes.keySet
     }
   }
+  
+  type Shapes = Map[Label,Shape] 
 
-  case class Rule(
-    label: Label,
-    shapeDefinition: ShapeDefinition,
-    extensionCondition: Seq[ExtensionCondition]) extends Positional
-
-  sealed trait ShapeDefinition extends Positional {
-    val shape: ShapeExpr
+  case class Shape(
+    shapeExpr: ShapeExpr,
+    isClosed: Boolean,
+    inherit: Set[IRI]
+  ) extends Positional
+  
+  object Shape {
+    
+    lazy val empty: Shape = 
+       Shape(shapeExpr = EmptyShape, 
+           isClosed=false, 
+           Set())
   }
-
-  case class OpenShape(
-    shape: ShapeExpr,
-    inclPropSet: Set[IRI]) extends ShapeDefinition
-
-  case class ClosedShape(
-    shape: ShapeExpr) extends ShapeDefinition
 
   sealed trait ShapeExpr extends Positional
 

@@ -50,10 +50,16 @@ trait ShaclParser
           else Some(mkLabel(s1.starts.last))
         (SHACLSchema(
           id = None,
-          rules = lsOpt.flatten,
+          shapes = rules2Map(lsOpt),
           start = startLabel), s1)
       }
     }
+    
+  def rules2Map(rules: List[Option[Rule]]): Map[Label,Shape] = {
+    rules.flatten.toMap
+  }
+  
+  type Rule = (Label,Shape)
 
   def statement(s: ShapeParserState): Parser[(Option[Rule], ShapeParserState)] =
     ( directive(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
@@ -69,12 +75,10 @@ trait ShaclParser
 
   def begin(s: ShapeParserState): Parser[(Rule,ShapeParserState)] = {
     token("begin") ~> opt(WS) ~> "=" ~> opt(WS) ~> {
-     shapeDefinition(s) 
+     shape(s) 
     } ^^{
       case (shape,s1) => {
-       (Rule(label=IRILabel(IRI("begin")), 
-               shapeDefinition = shape, 
-               extensionCondition = Seq()),s1) 
+       ((IRILabel(IRI("begin")),shape),s1) 
       }
     } 
   }
@@ -102,8 +106,8 @@ trait ShaclParser
   }
 
   def rule(s: ShapeParserState): Parser[(Rule, ShapeParserState)] =
-    seqState(label, shapeDefinition)(s) ^^
-      { case (l ~ shape,s) => (Rule(l, shape, noExtension), s) }
+    seqState(label, shape)(s) ^^
+      { case (l ~ shape,s) => ((l, shape), s) }
 
   def label(s: ShapeParserState): Parser[(Label,ShapeParserState)] = {
     opt(WS) ~> 
@@ -116,27 +120,16 @@ trait ShaclParser
     )
   }
 
-  def shapeDefinition(s: ShapeParserState): Parser[(ShapeDefinition, ShapeParserState)] =
-    opt(WS) ~> 
-        ( closedShapeDefinition(s) 
-        | openShapeDefinition(s)
-        )
-
-  def closedShapeDefinition(s: ShapeParserState): Parser[(ShapeDefinition, ShapeParserState)] =
-    ignorecase("CLOSED") ~> typeSpec(s) ^^ {
-      case (shape, s1) => (ClosedShape(shape), s1)
+  // TODO: Handle CLOSED and inherit
+  def shape(s: ShapeParserState): Parser[(Shape, ShapeParserState)] =
+    opt(WS) ~> typeSpec(s) ^^ {
+      case (shape, s1) => (Shape(shape,false,Set()), s1)
     }
 
-  def openShapeDefinition(s: ShapeParserState): Parser[(ShapeDefinition, ShapeParserState)] = {
-    // inclPropSet ~ 
-    typeSpec(s) ^^ {
-      case (shape, s1) => (OpenShape(shape, emptyInclPropSet), s1)
+  def shapeExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] =
+    opt(WS) ~> typeSpec(s) ^^ {
+      case (shape, s1) => (shape, s1)
     }
-  }
-
-  /*  def inclPropSet(s: ShapeParserState): Parser[(Set[IRI], ShapeParserState)] = {
-    ???
-  } */
 
   def typeSpec(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
     "{" ~> opt(WS) ~> opt(oneOfExpr(s)) <~ opt(WS) <~ "}" ^^

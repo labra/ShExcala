@@ -19,7 +19,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shaclSchemaDoc(s: SHACLSchema): Document = {
     pmDoc(prefixMap) :/: 
-    rulesDoc(s.rules) // TODO: start
+    shapesDoc(s.shapes) // TODO: start
   }
 
   def pmDoc(pm: PrefixMap): Document = {
@@ -29,30 +29,17 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     )
   }
 
-  def rulesDoc(rules: Seq[Rule]): Document = {
-    seqDocWithSep(rules, "\n", ruleDoc)
+  def shapesDoc(shapes: Map[Label,Shape]): Document = {
+    iterDocWithSep(shapes, "\n", labelShapeDoc)
+  }
+  
+  def labelShapeDoc(pair: (Label,Shape)): Document = {
+    labelDoc(pair._1) :: shapeDoc(pair._2)
   }
 
-  def ruleDoc(rule: Rule): Document = {
-    labelDoc(rule.label) ::
-      shapeDefinitionDoc(rule.shapeDefinition) ::
-      extensionConditionsDoc(rule.extensionCondition)
-  }
-
-  def shapeDefinitionDoc(shapeDefn: ShapeDefinition): Document = {
-    shapeDefn match {
-      case OpenShape(s, inclSet) =>
-        space :: "{" :: space ::
-          nest(3,
-            group(shapeExprDoc(s))) ::
-            space ::
-            text("}")
-      case ClosedShape(s) =>
-        space :: "[" :: space ::
-          nest(3, group(shapeExprDoc(s))) ::
-          space ::
-          text("]")
-    }
+  def shapeDoc(shape: Shape): Document = {
+      shapeExprDoc(shape.shapeExpr) 
+      // TODO: Closed and inherit
   }
 
   def labelDoc(label: Label): Document = {
@@ -223,6 +210,16 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       )
   }
 
+  def iterDocWithSep[A](m: Iterable[A],
+    sep: String,
+    toDoc: A => Document): Document = {
+    if (m.isEmpty) empty
+    else
+      m.tail.foldLeft(toDoc(m.head))(
+        (d: Document, x: A) => d :: sep :/: toDoc(x)
+      )
+  }
+
 }
 
 object ShaclDoc {
@@ -240,9 +237,6 @@ object ShaclDoc {
     prettyPrint(ShaclDoc(pm).tripleConstraintDoc(tc))
   }
   
-  def rule2String(r: Rule)(implicit pm: PrefixMap): String = {
-    prettyPrint(ShaclDoc(pm).ruleDoc(r))
-  }
 
   def schema2String(s: SHACLSchema)(implicit pm: PrefixMap): String = {
     prettyPrint(ShaclDoc(pm).shaclSchemaDoc(s))
@@ -250,10 +244,6 @@ object ShaclDoc {
 
   def shape2String(shape: ShapeExpr)(implicit pm: PrefixMap): String =
     prettyPrint(ShaclDoc(pm).shapeExprDoc(shape))
-
-  def rules2String(r: Rule)(implicit pm: PrefixMap): String = {
-    prettyPrint(ShaclDoc(pm).ruleDoc(r))
-  }
 
   def valueSet2String(vs: ValueSet)(implicit pm: PrefixMap): String = {
     prettyPrint(ShaclDoc(pm).valueSetDoc(vs))

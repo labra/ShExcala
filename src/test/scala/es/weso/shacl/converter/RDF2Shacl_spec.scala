@@ -171,14 +171,13 @@ class RDF2ShaclSpec
       val p = IRI("http://e.o#p")
       val c = for {
         rdf <- RDFAsJenaModel.fromChars(rdf_str, "TURTLE")
-        c <- RDF2Schema.openShape(n,rdf)
+        c <- RDF2Schema.shape(n,rdf)
       } yield 
         c 
-      val expected = OpenShape(
-              TripleConstraintCard(Some(prop_label),
+      val expected = Shape.empty.copy(
+              shapeExpr = TripleConstraintCard(Some(prop_label),
                                p,
-                               LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)),
-              emptyInclPropSet
+                               LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3))
           ) 
       triedMustBe(expected, c)
     } 
@@ -202,14 +201,13 @@ class RDF2ShaclSpec
       val p = IRI("http://e.o#p")
       val c = for {
         rdf <- RDFAsJenaModel.fromChars(rdf_str, "TURTLE")
-        c <- RDF2Schema.shapeDefinition(n,rdf)
+        c <- RDF2Schema.shape(n,rdf)
       } yield 
         c 
-      val expected = OpenShape(
-              TripleConstraintCard(Some(prop_label),
+      val expected = Shape.empty.copy(
+              shapeExpr = TripleConstraintCard(Some(prop_label),
                                p,
-                               LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)),
-              emptyInclPropSet
+                               LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3))
           ) 
       // We cannot compare with unknown bnodeLabels
       // triedMustBe(expected, c)
@@ -237,11 +235,11 @@ class RDF2ShaclSpec
       val q = IRI("http://e.o#p")
       val c = for {
         rdf <- RDFAsJenaModel.fromChars(rdf_str, "TURTLE")
-        c <- RDF2Schema.shapeDefinition(n,rdf)
+        c <- RDF2Schema.shape(n,rdf)
       } yield 
         c 
-      val expected = OpenShape(
-              GroupShape(None,Seq(TripleConstraintCard(Some(prop1_label),
+      val expected = Shape.empty.copy(
+              shapeExpr = GroupShape(None,Seq(TripleConstraintCard(Some(prop1_label),
                                p,
                                LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)
                              ),
@@ -249,8 +247,7 @@ class RDF2ShaclSpec
                                q,
                                IRIKind,UnboundedCardinalityFrom(1)
                              )
-                            )),
-              emptyInclPropSet
+                            ))
           ) 
       // We cannot compare with unknown bnodeLabels
       // triedMustBe(expected, c)
@@ -279,8 +276,8 @@ class RDF2ShaclSpec
         c <- RDF2Schema.rdf2Schema(rdf)
       } yield 
         c 
-      val expected = OpenShape(
-              GroupShape(None,Seq(TripleConstraintCard(Some(prop1_label),
+      val expected = Shape.empty.copy(
+              shapeExpr = GroupShape(None,Seq(TripleConstraintCard(Some(prop1_label),
                                p,
                                LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)
                              ),
@@ -288,8 +285,7 @@ class RDF2ShaclSpec
                                q,
                                IRIKind,UnboundedCardinalityFrom(1)
                              )
-                            )),
-              emptyInclPropSet
+                            ))
           ) 
       // We cannot compare with unknown bnodeLabels
       // triedMustBe(expected, c)

@@ -59,11 +59,7 @@ case class Context(
     rdf.iris().toList
   }
 
-  def getShapes(): List[Rule] = {
-    schema.rules.toList
-  }
-
-  def getShape(label: Label): Option[Rule] = {
+  def getShape(label: Label): Option[Shape] = {
     schema.findShape(label) 
   }
 
@@ -72,21 +68,12 @@ case class Context(
 object Context {
   def emptyContext: Context =
     Context(RDFTriples.noTriples, 
-        SHACLSchema(id = None, rules = Seq(), start = None), 
+        SHACLSchema(id = None, shapes = Map(), start = None), 
         Typing.emptyTyping, 
         pm = PrefixMaps.commonShacl, 
         pending = List(),
         validateIncoming = false
   )
-
-  def emptyContextWithRev: Context =
-    Context(rdf = RDFTriples.noTriples, 
-        schema = SHACLSchema(id = None, rules = Seq(), start = None), 
-        Typing.emptyTyping, 
-        pm = PrefixMaps.commonShacl, 
-        pending = List(),
-        validateIncoming = true
-    )
     
 
 }
