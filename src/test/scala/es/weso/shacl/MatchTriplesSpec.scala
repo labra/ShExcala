@@ -32,7 +32,7 @@ class MatchTriplesSpec
    it("allTriplesWithSamePredicateMatch. A triple with different predicate passes") {
       val t1 = RDFTriple(IRI("a"),IRI("c"),IRI("x"))
       val ts: Set[RDFTriple] = Set(t1)
-      val tc = TripleConstraint(None, IRI("b"), IRIKind)
+      val tc = TripleConstraintCard(None, IRI("b"), IRIKind,defaultCardinality)
       val ctx = Context.emptyContext
       val expected = Pass(typing = Typing.emptyTyping, checked = Set(), remaining = ts,pending=Set())
       allTriplesWithSamePredicateMatch(ts,tc,ctx,false).run should be (Success(Stream(expected)))
@@ -40,7 +40,7 @@ class MatchTriplesSpec
    it("allTriplesWithSamePredicateMatch. A triple with the same predicate that matches pass") {
       val t1 = RDFTriple(IRI("a"),IRI("b"),IRI("x"))
       val ts: Set[RDFTriple] = Set(t1)
-      val tc = TripleConstraint(None, IRI("b"), IRIKind)
+      val tc = TripleConstraintCard(None, IRI("b"), IRIKind,defaultCardinality)
       val ctx = Context.emptyContext
       val expected = Pass(typing = Typing.emptyTyping, checked = Set(), remaining = ts,pending=Set())
       allTriplesWithSamePredicateMatch(ts,tc,ctx,false).run should be (Success(Stream(expected)))
@@ -48,7 +48,7 @@ class MatchTriplesSpec
    it("allTriplesWithSamePredicateMatch. A triple with the same predicate that doesn't match fails") {
       val t1 = RDFTriple(IRI("a"),IRI("b"),BNodeId("x"))
       val ts: Set[RDFTriple] = Set(t1)
-      val tc = TripleConstraint(None, IRI("b"), IRIKind)
+      val tc = TripleConstraintCard(None, IRI("b"), IRIKind,defaultCardinality)
       val ctx = Context.emptyContext
       val expected = Pass(typing = Typing.emptyTyping, checked = Set(), remaining = ts,pending=Set())
       allTriplesWithSamePredicateMatch(ts,tc,ctx,false).run should be (Success(Stream()))

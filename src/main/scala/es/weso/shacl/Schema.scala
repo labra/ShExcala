@@ -23,7 +23,15 @@ case class Schema(
     pm: PrefixMap,
     shaclSchema: SHACLSchema) extends Positional {
 
-  override def toString(): String = {
+  /* override def toString(): String = {
+    ShaclDoc.schema2String(shaclSchema)(pm)
+  } */
+  
+  def showShapes: String = {
+    shaclSchema.shapes.toString
+  }
+
+  def show: String = {
     ShaclDoc.schema2String(shaclSchema)(pm)
   }
 

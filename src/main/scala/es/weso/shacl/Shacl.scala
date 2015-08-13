@@ -51,11 +51,11 @@ object Shacl {
 
   sealed trait ShapeExpr extends Positional
 
-  case class TripleConstraint(
+/*  case class TripleConstraint(
     id: Option[Label],
     iri: IRI,
     value: ValueClass
-    ) extends ShapeExpr 
+    ) extends ShapeExpr */ 
 
   case class InverseTripleConstraint(
     id: Option[Label],

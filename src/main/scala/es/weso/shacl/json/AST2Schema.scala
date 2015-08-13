@@ -49,17 +49,17 @@ object AST2Schema {
        val id = expr.id.map(str => mkLabel(str))
        val value = cnvValueClass(expr.value)
        val card = cnvCard(expr)
-       TripleConstraint(id = id, iri = iri, value = value)
+       TripleConstraintCard(id = id, iri = iri, value = value, card= card)
      }
    }
  }
  
  def cnvCard(expr: ExpressionAST): Cardinality = {
-   val min = expr.min.getOrElse(1)
-   if (expr.max.isDefined) {
-     RangeCardinality(min,expr.max.get)
-   } else {
-     UnboundedCardinalityFrom(min)
+   (expr.min, expr.max) match {
+     case (None,None) => defaultCardinality
+     case (Some(min),None) => UnboundedCardinalityFrom(min)
+     case (None,Some(max)) => RangeCardinality(1,max)
+     case (Some(min),Some(max)) => RangeCardinality(min,max)
    }
  }
  
@@ -68,7 +68,15 @@ object AST2Schema {
      val valueSet = cnvValues(vc.values.get)
      ValueSet(valueSet)
    } else {
-     AnyKind
+     if (vc.nodeKind.isDefined) {
+       vc.nodeKind.get match {
+         case "literal" => LiteralKind
+         case "bnode" => BNodeKind
+         case "iri" => IRIKind
+         case s@_ => throw new Exception(s"Unsupported nodeKind $s")
+       }
+     } else
+       AnyKind
    }  
  }
  
@@ -93,13 +101,48 @@ object AST2Schema {
  lazy val literalDatatype = """\"(.*)\"\^\^(.*)""".r
  lazy val literalLang = """\"(.*)\"@(.*)""".r
 
+ lazy val xsd = "http://www.w3.org/2001/XMLSchema#"
+ lazy val xsd_boolean = xsd + "boolean"
+ lazy val xsd_integer = xsd + "integer"
+ lazy val xsd_decimal = xsd + "decimal"
+ lazy val xsd_double = xsd + "double"
+ 
  def cnvLiteral(l: String): ValueObject = {
    l match {
-     case literalDatatype(lex,datatype) => ValueLiteral(DatatypeLiteral(lex,IRI(datatype)))
+     case literalDatatype(lex,datatype) => {
+       datatype match {
+         case `xsd_boolean` => cnvBoolean(lex)
+         case `xsd_integer` => cnvInteger(lex)
+         case `xsd_decimal` => cnvDecimal(lex)
+         case `xsd_double` => cnvDouble(lex)
+         case _ => ValueLiteral(DatatypeLiteral(lex,IRI(datatype))) 
+       }
+       
+     }
      case literalLang(lex,lang) => ValueLiteral(LangLiteral(lex,Lang(lang)))
      case literal(lex) => ValueLiteral(StringLiteral(lex))
      case _ => throw new Exception(s"Literal |$l| doesn't match" )
    } 
+ }
+
+ def cnvInteger(str:String): ValueObject = {
+   ValueLiteral(IntegerLiteral(Integer.parseInt(str)))
+ }
+ 
+ def cnvDouble(str:String): ValueObject = {
+   ValueLiteral(DoubleLiteral(str.toDouble))
+ }
+ 
+ def cnvDecimal(str:String): ValueObject = {
+   ValueLiteral(DecimalLiteral(BigDecimal(str)))
+ }
+ 
+ def cnvBoolean(str:String): ValueObject = {
+   str match {
+     case "false" => ValueLiteral(BooleanLiteral(false))
+     case "true" => ValueLiteral(BooleanLiteral(true))
+     case _ => throw new Exception(s"cnvBoolean: Unsupported value $str")
+   }
  }
  
  def prefixes2prefixMap(prefixes: Map[String,String]): PrefixMap = {

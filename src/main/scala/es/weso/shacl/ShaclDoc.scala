@@ -51,7 +51,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shapeExprDoc(s: ShapeExpr): Document = {
     s match {
-      case t: TripleConstraint => tripleConstraintDoc(t)
+//      case t: TripleConstraint => tripleConstraintDoc(t)
       case t: InverseTripleConstraint => inverseTripleConstraintDoc(t)
       case t: TripleConstraintCard => tripleConstraintCardDoc(t)
       case GroupShape(id,shapes) => 
@@ -78,10 +78,10 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     }
   }
 
-  def tripleConstraintDoc(t: TripleConstraint): Document = {
+/*  def tripleConstraintDoc(t: TripleConstraint): Document = {
     log.info("Unimplemented id generation yet")
     iriDoc(t.iri) :: space :: valueClassDoc(t.value) 
-  }
+  } */
 
   def inverseTripleConstraintDoc(t: InverseTripleConstraint): Document = {
     log.info("Unimplemented id generation yet")
@@ -232,11 +232,6 @@ object ShaclDoc {
     d.format(1, writer)
     writer.toString
   }
-
-  def tripleConstraint2String(tc: TripleConstraint)(implicit pm: PrefixMap): String = {
-    prettyPrint(ShaclDoc(pm).tripleConstraintDoc(tc))
-  }
-  
 
   def schema2String(s: SHACLSchema)(implicit pm: PrefixMap): String = {
     prettyPrint(ShaclDoc(pm).shaclSchemaDoc(s))

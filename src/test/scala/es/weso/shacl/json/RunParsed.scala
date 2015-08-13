@@ -90,19 +90,16 @@ class RunParsed extends FunSpec with Matchers {
       (schema,prefixMap) <- Schema.fromString(io.Source.fromFile(file)("UTF-8").mkString)
   } yield schema
   
-  def schemasEqual(s1: Schema, s2:Schema): Unit = {
-    if (s1 == s2) {
+  def schemasEqual(fromast: Schema, parsed:Schema): Unit = {
+    if (fromast == parsed) {
       info("Schemas are equal")
     } else {
-      fail(s"Schemas are different\n${s1}\n${s2}")
+      fail(s"Schemas different\nFrom AST:${fromast.showShapes}\nParsed  :${parsed.showShapes}")
     }
   }
-
-  describe("Run JSON tests") {
-    val parsedSchemas = getParsedSchemas(parsedSchemasDir)
-    for ((file, json) <- parsedSchemas) {
-      it(s"Should handle ${file.getName}") {
-        val tryConversion = for {
+  
+  def testFile(file: File): Unit = {
+    val tryConversion = for {
           schemaAST <- file2AST(file)
           schema <- AST2Schema.cnvAST(schemaAST)
           shaclFile <- lookupFileWithSameName(file,schemasDir,"shex")
@@ -114,6 +111,21 @@ class RunParsed extends FunSpec with Matchers {
           }
           case TryFailure(e)      => fail("Failure: " + e)
         }
+  }
+  
+  describe("Run specific JSON test") {
+    val name = "1dotLNex"
+    val file = new File(parsedSchemasDir + "/" + name + ".json")
+    it (s"should pass file $name") {
+     testFile(file) 
+    }
+  }
+
+  describe("Run JSON tests") {
+    val parsedSchemas = getParsedSchemas(parsedSchemasDir)
+    for ((file, json) <- parsedSchemas) {
+      it(s"Should handle ${file.getName}") {
+        testFile(file)
       }
     }
   }

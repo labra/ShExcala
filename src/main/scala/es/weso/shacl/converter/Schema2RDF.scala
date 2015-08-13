@@ -88,13 +88,6 @@ object Schema2RDF extends Logging {
         cardinality2RDF(card,node,rdf)
         shape2RDF(shape,node,rdf)
       }
-      case TripleConstraint(id,iri,value) => {
-        val tripleNode = nodeFromOptionalLabel(id,rdf)
-        addTriple(rdf,(tripleNode,rdf_type,sh_PropertyConstraint))
-        addTriple(rdf,(node,sh_property,tripleNode))
-        addTriple(rdf,(tripleNode,sh_predicate,iri))
-        value2RDF(value,tripleNode,rdf)
-      }
       case TripleConstraintCard(id,iri,value,card) => {
         val tripleNode = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(tripleNode,rdf_type,sh_PropertyConstraint))

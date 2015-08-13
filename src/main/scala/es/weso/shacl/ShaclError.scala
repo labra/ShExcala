@@ -11,11 +11,6 @@ sealed abstract class ValidationError {
   def show(implicit pm:PrefixMap): String 
 }
 
-final case class NoMatchPredicate(t: RDFTriple, tc: TripleConstraint) extends ValidationError {
-  override def show(implicit pm: PrefixMap): String = 
-    "No match predicate of triple " + showTriple(t)(pm) + " with triple constraint " + tripleConstraint2String(tc)(pm)
-}
-
 final case class NoMatchValueSet(n: RDFNode, vs: ValueSet) extends ValidationError {
   override def show(implicit pm: PrefixMap): String = 
     "No match valueSet " + showRDFNode(n)(pm) + " ~ values: " + valueSet2String(vs)(pm)

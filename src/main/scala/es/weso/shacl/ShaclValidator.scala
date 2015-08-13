@@ -87,8 +87,8 @@ trait ShaclValidator
           failure(msg)
         }
     
-      case tc : TripleConstraint => 
-        matchTriples_TripleConstraint(ts,tc,ctx) 
+      case tc : TripleConstraintCard => 
+        matchTriples_TripleConstraintCard(ts,tc,ctx) 
         
       case itc : InverseTripleConstraint => 
         matchTriples_InverseTripleConstraint(ts,itc,ctx)
@@ -152,32 +152,34 @@ trait ShaclValidator
     
   }
   
-  def matchTriples_TripleConstraint(
+  def matchTriples_TripleConstraintCard(
       ts: Set[RDFTriple],
-      tc: TripleConstraint,
+      tc: TripleConstraintCard,
       ctx: Context): Result[ValidationState] = {
-    trace("matchTriples_TripleConstraint, ts= " + showTriples(ts)(ctx.pm) + " ~ " + tripleConstraint2String(tc)(ctx.pm))
+    ???
+/*    trace("matchTriples_TripleConstraint, ts= " + showTriples(ts)(ctx.pm) + " ~ " + tripleConstraint2String(tc)(ctx.pm))
     for {
       _ <- trace("matchOneAndContinue " + showTriples(ts)(ctx.pm) + " ~ " + tripleConstraint2String(tc)(ctx.pm))
       (t,ts1) <- removeTriple(ts) 
       typing1 <- matchTriple_TripleConstraint(t,tc, ctx)
       // _ <- trace("typing1 " + typing1.showTyping(ctx.pm))
-    } yield ??? 
+    } yield ??? */ 
   }
   
   type ValidationTyping = Either[ValidationError,Typing]
   
-  def matchTriple_TripleConstraint(
+  def matchTriple_TripleConstraintCard(
       t: RDFTriple, 
-      tc: TripleConstraint,
+      tc: TripleConstraintCard,
       ctx: Context): Result[ValidationTyping] = {
-    if (matchPredicate(t,tc)) {
+    ???
+/*    if (matchPredicate(t,tc)) {
       for {
         _ <- trace("-> Matching triple " + showTriple(t)(ctx.pm) + " ~ " + tripleConstraint2String(tc)(ctx.pm))
         vt <- matchValueClass(t.obj, tc.value, ctx)
       } yield vt
     } else 
-      unit(Left(NoMatchPredicate(t,tc)))
+      unit(Left(NoMatchPredicate(t,tc))) */
   }
   
   def removeTriple(
@@ -321,11 +323,11 @@ trait ShaclValidator
    */
   def allTriplesWithSamePredicateMatch(
       ts: Set[RDFTriple],
-      tc: TripleConstraint,
+      tc: TripleConstraintCard,
       ctx: Context,
       allowedToFail: Boolean): Result[ValidationState] = {
     
-    lazy val end : Result[ValidationState] = for {
+/*    lazy val end : Result[ValidationState] = for {
      _ <- trace("allTriplesWithSamePredicateMatch: End (all passed)")  
     } yield 
       Pass(typing = ctx.typing, remaining = ts, checked = Set(), pending = Set())
@@ -348,10 +350,11 @@ trait ShaclValidator
         } 
        else 
            result
-    }
+    } */
+    ???
   }
   
-  def matchPredicate(t:RDFTriple, tc: TripleConstraint): Boolean = {
+  def matchPredicate(t:RDFTriple, tc: TripleConstraintCard): Boolean = {
     t.pred == tc.iri
   } 
 
@@ -421,7 +424,7 @@ trait ShaclValidator
   
   def properties(expr: ShapeExpr): Set[IRI] = {
     expr match {
-      case t: TripleConstraint => Set(t.iri)
+      case t: TripleConstraintCard => Set(t.iri)
       case _: InverseTripleConstraint => Set()
       case SomeOfShape(_,shapes) => 
         shapes.map{ case shape => properties(shape)}.flatten.toSet
@@ -436,7 +439,7 @@ trait ShaclValidator
   
   def invProperties(expr: ShapeExpr): Set[IRI] = {
     expr match {
-      case _: TripleConstraint => Set()
+      case _: TripleConstraintCard => Set()
       case t: InverseTripleConstraint => Set(t.iri)
       case SomeOfShape(id,shapes) => 
         shapes.map{ case shape => properties(shape)}.flatten.toSet
@@ -453,7 +456,7 @@ trait ShaclValidator
   def triplesSatisfy(neigh: Set[RDFTriple], shape: ShapeExpr, rdf: RDFReader): Boolean = {
     shape match {
       case EmptyShape => neigh.isEmpty
-      case TripleConstraint(_,iri,value) => {
+      case TripleConstraintCard(_,iri,value,card) => {
         throw ValidationException("Unimplemented tripleConstraint")
       }
       case InverseTripleConstraint(_,iri,shapeConstr) => {
@@ -494,7 +497,7 @@ trait ShaclValidator
   }
   
   
- def matching(n:RDFNode,t: Typing, constr: TripleConstraint, rdf:RDFReader): Set[RDFTriple] = {
+ def matching(n:RDFNode,t: Typing, constr: TripleConstraintCard, rdf:RDFReader): Set[RDFTriple] = {
    constr.value match {
      case vc: ValueConstr => matchingValueConstr(n, t, vc, rdf)
      case sc: ShapeConstr => matchingShapeConstr(n, t, sc, rdf)

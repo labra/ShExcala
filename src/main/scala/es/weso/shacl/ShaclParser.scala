@@ -176,9 +176,11 @@ trait ShaclParser
     | ( symbol("(") ~> 
         oneOfExpr(s) <~ 
         symbol(")")
-      ) ~ cardinality ^^ {
-        case (shape,s1) ~ c => 
-          (RepetitionShape(None,shape,c),s1)
+      ) ~ opt(cardinality) ^^ {
+        case (shape,s1) ~ c => c match {
+          case Some(card) => (RepetitionShape(None,shape,card),s1)
+          case None => (shape,s1)
+        } 
       }
     )
   }
@@ -287,7 +289,7 @@ trait ShaclParser
       {
         case m ~ maybeN =>
           (m, maybeN) match {
-            case (m, None) => UnboundedCardinalityFrom(m)
+            case (m, None) => RangeCardinality(m,m)
             case (m, Some(n)) => {
               // TODO: Add error checking here? (m > n...)
               RangeCardinality(m, n)
