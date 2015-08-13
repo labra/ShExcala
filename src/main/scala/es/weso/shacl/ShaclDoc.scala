@@ -98,12 +98,13 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     "^" :: iriDoc(t.iri) :: space :: shapeDoc(t.shape) :: cardDoc(t.card)
   }
 
-  def extensionConditionsDoc(es: Seq[ExtensionCondition]): Document = {
-    seqDocWithSep(es, "\n", extensionConditionDoc)
+  def actionsDoc(as: Map[Label,String]): Document = {
+    iterDocWithSep(as, "\n", actionDoc)
   }
+  
 
-  def extensionConditionDoc(e: ExtensionCondition): Document = {
-    "%" :: labelDoc(e.extLangName) :: "{" :: text(e.extDefinition) :: text("}")
+  def actionDoc(a: (Label,String)): Document = {
+    "%" :: labelDoc(a._1) :: "{" :: text(a._2) :: text("}")
   }
 
   def valueClassDoc(v: ValueClass): Document = {
@@ -154,6 +155,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       case DisjShapeConstr(shapes) => setDocWithSep(shapes, ",", labelDoc)
       case ConjShapeConstr(shapes) => setDocWithSep(shapes, "|", labelDoc)
       case NotShapeConstr(shape) => "!" :: shapeDoc(s)
+      case _ => throw new Exception(s"shapeDoc: unsupported $s")
     }
   }
 

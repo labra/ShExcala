@@ -68,7 +68,7 @@ case class Context(
 object Context {
   def emptyContext: Context =
     Context(RDFTriples.noTriples, 
-        SHACLSchema(id = None, shapes = Map(), start = None), 
+        SHACLSchema.empty, 
         Typing.emptyTyping, 
         pm = PrefixMaps.commonShacl, 
         pending = List(),

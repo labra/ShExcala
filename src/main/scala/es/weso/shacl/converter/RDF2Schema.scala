@@ -47,11 +47,11 @@ object RDF2Schema
       rule(node,rdf)
     }}
     for {
-     rules <- filterSuccess(maybeRules)
+     shapes <- filterSuccess(maybeRules)
      // TODO: Parse Schema label (if any)
      // TODO: Parse start (if any)
     } yield {
-     SHACLSchema(None,rules.toMap,None) 
+     SHACLSchema.empty.copy(shapes = shapes.toMap) 
     }
   }
   

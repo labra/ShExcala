@@ -9,12 +9,12 @@ import scala.util.{ Try, Success => TrySuccess, Failure => TryFailure }
 import scala.io._
 import scalaz.\/
 import org.scalatest.FunSpec
-import org.scalatest.Matchers
+import org.scalatest._
 import scalaz._, Scalaz._
 import es.weso.shacl.json.AST._
 import es.weso.shacl._
 
-class RunParsed extends FunSpec with Matchers {
+class RunParsed extends FunSpec with Matchers with TryValues {
 
   val conf: Config = ConfigFactory.load()
   val testsDir = conf.getString("shexSyntaxTestsFolder")
@@ -121,7 +121,7 @@ class RunParsed extends FunSpec with Matchers {
     }
   }
 
-  describe("Run JSON tests") {
+  describe("Run positive JSON tests (parsedSchemas should be equal to parsed Json in test-suite)") {
     val parsedSchemas = getParsedSchemas(parsedSchemasDir)
     for ((file, json) <- parsedSchemas) {
       it(s"Should handle ${file.getName}") {
@@ -130,6 +130,19 @@ class RunParsed extends FunSpec with Matchers {
     }
   }
 
+  describe("Negative JSON tests (parser should complain...)") {
+    val negativeSyntaxFiles = getFilesFromFolder(negativeSyntaxDir)
+    for (file <- negativeSyntaxFiles) {
+      it(s"Should fail to parse ${file.getName}") {
+        val t = Try {
+          parseShaclSchema(file)  
+        }
+        if (t.isSuccess) fail(s"Parsed ok. Result: ${t.get}")
+        else info("Failed to parse as expected")
+      }
+    }
+  }
+  
   describe("AST<->JSON") {
 
     it("should parse simple valueClass with nodekind BNode") {

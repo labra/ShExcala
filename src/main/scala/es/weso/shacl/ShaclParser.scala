@@ -41,18 +41,44 @@ trait ShaclParser
       { case (shaclSchema, s) => 
           (Schema(s.namespaces, shaclSchema), s) 
       }
+  
+  def starts(s:ShapeParserState): Parser[(List[(IRI,String)],ShapeParserState)] = {
+    repState(s,action)
+  }
+  
+  def action(s: ShapeParserState): Parser[((IRI,String),ShapeParserState)] = {
+    symbol("%") ~> iri(s.namespaces) ~ codeDecl ^^ {
+      case (iri ~ str) => ((iri,str),s)
+    } 
+  }
+  
+  def codeDecl: Parser[String] = {
+   acceptRegex("Code Decl", "\\{[[^%]*\\}".r)  
+  }
+  
+  def anyCharExceptPercent: Parser[String] = ???
+  
+  
+  type StateParser[S,A] = S => Parser[(A,S)]
+  
+  def seqRepState[S,A,B](p1: StateParser[S,A], p2: StateParser[S,B]): StateParser[S,A ~ List[B]] = { s =>
+    for {
+      (x,s1) <- p1(s)
+      (ys,s2) <- repState(s1,p2)
+    } yield (new ~(x,ys), s2)
+  }
    
   def shaclSchemaParser(s: ShapeParserState): Parser[(SHACLSchema, ShapeParserState)] =
-    opt(WS) ~> repState(s, statement) <~ opt(WS) ^^ {
-      case (lsOpt, s1) => {
+    opt(WS) ~> seqRepState(starts, statement)(s) <~ opt(WS) ^^ { 
+      case (starts ~ lsOpt, s1) => {
         val startLabel =
           if (s1.starts.isEmpty) None
           else Some(mkLabel(s1.starts.last))
-        (SHACLSchema(
-          id = None,
+        (SHACLSchema.empty.copy(
           shapes = rules2Map(lsOpt),
-          start = startLabel), s1)
-      }
+          start = startLabel,
+          startActions = starts.toMap), s1)
+      } 
     }
     
   def rules2Map(rules: List[Option[Rule]]): Map[Label,Shape] = {

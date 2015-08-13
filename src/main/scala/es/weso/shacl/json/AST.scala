@@ -8,8 +8,8 @@ object AST {
 case class SchemaAST(
       prefixes: Option[Map[String,String]],
       shapes: Option[Map[String,ShapeAST]],
-      startAct: Option[Map[String,String]],
-      start: Option[String]
+      start: Option[String],
+      startActions: Option[Map[String,String]]
 )
 
 case class ShapeAST(
@@ -70,7 +70,11 @@ case class StemAST(
 // Empty initializers
 // There should be a better way to do this    
 object SchemaAST {
-  def empty = SchemaAST(prefixes = None, shapes=None, startAct=None,start=None)
+  def empty = SchemaAST(prefixes = None, 
+      shapes=None, 
+      start=None,
+      startActions=None
+      )
 }
 object ShapeAST {
   def empty = ShapeAST(None,None,None)
@@ -126,8 +130,8 @@ implicit def SchemaEncodeJson: EncodeJson[SchemaAST] =
     EncodeJson((n: SchemaAST) =>
       ("prefixes" := n.prefixes.asJson) ->:
       ("shapes" := n.shapes.asJson) ->:
-      ("startAct" := n.startAct.asJson) ->:
       ("start" := n.start.asJson) ->:
+      ("startAct" := n.startActions.asJson) ->:
        jEmptyObject
       )
 
@@ -206,9 +210,9 @@ implicit def SchemaDecodeJson: DecodeJson[SchemaAST] =
     DecodeJson((c) => for {
       prefixes <- (c --\ "prefixes").as[Option[Map[String,String]]] 
       shapes <- (c --\ "shapes").as[Option[Map[String,ShapeAST]]]
-      startAct <- (c --\ "startAct").as[Option[Map[String,String]]]
       start <- (c --\ "start").as[Option[String]]
-    } yield SchemaAST(prefixes,shapes,startAct,start)
+      startActions <- (c --\ "startAct").as[Option[Map[String,String]]]
+    } yield SchemaAST(prefixes,shapes,start, startActions)
     )
 
 implicit def ShapeDecodeJson: DecodeJson[ShapeAST] = {

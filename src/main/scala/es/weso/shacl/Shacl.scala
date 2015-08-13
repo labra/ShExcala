@@ -20,7 +20,8 @@ object Shacl {
   case class SHACLSchema(
     id: Option[Label],
     shapes: Map[Label,Shape],
-    start: Option[Label])
+    start: Option[Label],
+    startActions: Map[IRI,String])
       extends Positional // Positional helps Parser Combinators to show positions 
       {
 
@@ -31,6 +32,15 @@ object Shacl {
     def labels: Set[Label] = {
       shapes.keySet
     }
+  }
+  
+  object SHACLSchema {
+    def empty : SHACLSchema = SHACLSchema(
+        id = None,
+        shapes = Map(),
+        start = None,
+        startActions = Map()
+        ) 
   }
   
   type Shapes = Map[Label,Shape] 
@@ -228,9 +238,9 @@ object Shacl {
   case class NotShapeConstr(shape: ShapeConstr) extends ShapeConstr
 
 
-  case class ExtensionCondition(
-    extLangName: Label,
-    extDefinition: String)
+  case class Action(
+      label: Label,
+      action: String)
 
   sealed trait Cardinality extends Positional {
     def minusOne : Cardinality 
@@ -263,12 +273,11 @@ object Shacl {
     }
   }
 
-  lazy val NoActions: Seq[ExtensionCondition] = Seq()
+  lazy val NoActions: Seq[Action] = Seq()
 
   // lazy val NoId : Label = IRILabel(iri = IRI(""))
 
   lazy val typeXsdString = LiteralDatatype(xsd_string, List())
-  lazy val noExtension: Seq[ExtensionCondition] = List()
   lazy val star = UnboundedCardinalityFrom(0)
   lazy val plus = UnboundedCardinalityFrom(1)
   lazy val optional = RangeCardinality(0, 1)

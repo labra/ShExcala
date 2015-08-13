@@ -293,7 +293,7 @@ class ShaclParserSuite extends ShaclParser
                 value = LiteralDatatype(IRI(prefix + c), List()),
                 card = defaultCardinality
               ))
-      val expected = SHACLSchema(None, shapes = Map(labelA -> shapeBC), start = None)
+      val expected = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC))
       shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
     }
 
@@ -316,7 +316,7 @@ class ShaclParserSuite extends ShaclParser
                 card = defaultCardinality
               ))
       val expected = 
-        SHACLSchema(None, shapes = Map(labelA -> shapeBC), start = None)
+        SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC))
       shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
     }
 
@@ -339,7 +339,7 @@ class ShaclParserSuite extends ShaclParser
                 value = LiteralDatatype(IRI(prefix + c), List()),
                 card = defaultCardinality
               ))
-      val expected = SHACLSchema(None, shapes = Map(labelA -> shapeBC), start = None)
+      val expected = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC))
       shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
     }
 
@@ -364,7 +364,7 @@ class ShaclParserSuite extends ShaclParser
           value = LiteralDatatype(IRI(prefix + c), List()),
           card = defaultCardinality
         ))
-      val expected: SHACLSchema = SHACLSchema(id = None, shapes = Map(labelA -> shapeBC, labelB -> shapeBC), start = None)
+      val expected: SHACLSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC, labelB -> shapeBC))
       shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
     }
 

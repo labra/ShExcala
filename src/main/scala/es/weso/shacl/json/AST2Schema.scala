@@ -20,13 +20,22 @@ object AST2Schema {
      val start = ast.start.map(str => toLabel(str))
      val rules = shapes2rules(ast.shapes.getOrElse(Map()))
      val prefixMap = prefixes2prefixMap(ast.prefixes.getOrElse(Map()))
+     val actions = cnvActions(ast.startActions)
      val id = None
-     val shaclSchema = SHACLSchema(id,rules,start)
-     // TODO: Extract startAct 
+     val shaclSchema = SHACLSchema(id,rules,start,actions)
      Schema(prefixMap, shaclSchema)   
    }
  }
 
+ def cnvActions(actions: Option[Map[String,String]]): Map[IRI,String] = {
+   val as = actions.getOrElse(Map())
+   as.map(cnvAction)
+ }
+ 
+ def cnvAction(pair: (String,String)): (IRI,String) = {
+   (IRI(pair._1),pair._2)
+ }
+ 
  def shapes2rules(shapes: Map[String,ShapeAST]): Shapes = {
    shapes.map { case (str,shapeAST) => (toLabel(str), cnvShape(shapeAST))}
  }

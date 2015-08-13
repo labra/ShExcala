@@ -295,7 +295,7 @@ object Schema2RDF extends Logging {
   }
   
   def extensionConditions2RDF(
-        ec: Seq[ExtensionCondition], 
+        ec: Map[Label,String], 
         node: RDFNode, 
         rdf: RDFBuilder): RDFBuilder = {
     /// TODO
