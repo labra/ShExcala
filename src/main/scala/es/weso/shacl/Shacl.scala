@@ -273,7 +273,7 @@ object Shacl {
   lazy val plus = UnboundedCardinalityFrom(1)
   lazy val optional = RangeCardinality(0, 1)
   
-  lazy val defaultCardinality = UnboundedCardinalityFrom(1)
+  lazy val defaultCardinality = RangeCardinality(1,1)
   lazy val emptyFacets : Seq[XSFacet] = Seq() 
   def defaultMaxCardinality(m:Int) = RangeCardinality(1,m)
     

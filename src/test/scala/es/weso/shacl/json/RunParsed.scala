@@ -1,4 +1,5 @@
 package es.weso.shacl.json
+
 import com.typesafe.config._
 import java.io.File
 import argonaut._, Argonaut._
@@ -11,6 +12,7 @@ import org.scalatest.FunSpec
 import org.scalatest.Matchers
 import scalaz._, Scalaz._
 import es.weso.shacl.json.AST._
+import es.weso.shacl._
 
 class RunParsed extends FunSpec with Matchers {
 
@@ -66,6 +68,35 @@ class RunParsed extends FunSpec with Matchers {
   def getParsedSchemas(jsonSchemasDir: String): List[(File, Json)] = {
     parseFolderFiles(jsonSchemasDir, file2json)
   }
+  
+  def nameWithoutExtension(file: File): String = {
+    val name = file.getName
+    if (name.contains('.')) 
+        name.substring(0,name.lastIndexOf('.'))
+    else
+      name
+  }
+  
+  def lookupFileWithSameName(file:File, otherPath: String, extension: String): Try[File] = {
+    Try {
+      val newFileName = otherPath + "/" + nameWithoutExtension(file) + "." + extension
+      val d = new File(newFileName)
+      if (d.exists && d.isFile) d
+      else throw new Exception(s"File: $newFileName not found")
+    }
+  }
+  
+  def parseShaclSchema(file: File): Try[Schema] = for {
+      (schema,prefixMap) <- Schema.fromString(io.Source.fromFile(file)("UTF-8").mkString)
+  } yield schema
+  
+  def schemasEqual(s1: Schema, s2:Schema): Unit = {
+    if (s1 == s2) {
+      info("Schemas are equal")
+    } else {
+      fail(s"Schemas are different\n${s1}\n${s2}")
+    }
+  }
 
   describe("Run JSON tests") {
     val parsedSchemas = getParsedSchemas(parsedSchemasDir)
@@ -74,9 +105,13 @@ class RunParsed extends FunSpec with Matchers {
         val tryConversion = for {
           schemaAST <- file2AST(file)
           schema <- AST2Schema.cnvAST(schemaAST)
-        } yield (schemaAST,schema)
+          shaclFile <- lookupFileWithSameName(file,schemasDir,"shex")
+          shacl <- parseShaclSchema(shaclFile)
+        } yield (schemaAST,schema,shacl)
         tryConversion match {
-          case TrySuccess((schemaAST,schema)) => info("Schema parsed")
+          case TrySuccess((schemaAST,schema, shacl)) => {
+           schemasEqual(schema,shacl) 
+          }
           case TryFailure(e)      => fail("Failure: " + e)
         }
       }
