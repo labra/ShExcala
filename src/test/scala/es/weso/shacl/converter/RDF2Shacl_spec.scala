@@ -245,7 +245,7 @@ class RDF2ShaclSpec
                              ),
                              TripleConstraintCard(Some(prop2_label),
                                q,
-                               IRIKind,UnboundedCardinalityFrom(1)
+                               iriKind,UnboundedCardinalityFrom(1)
                              )
                             ))
           ) 
@@ -283,7 +283,7 @@ class RDF2ShaclSpec
                              ),
                              TripleConstraintCard(Some(prop2_label),
                                q,
-                               IRIKind,UnboundedCardinalityFrom(1)
+                               iriKind,UnboundedCardinalityFrom(1)
                              )
                             ))
           ) 

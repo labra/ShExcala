@@ -130,7 +130,7 @@ class RunParsed extends FunSpec with Matchers with TryValues {
     }
   }
 
-  describe("Negative JSON tests (parser should complain...)") {
+  ignore("Negative JSON tests (parser should complain...)") {
     val negativeSyntaxFiles = getFilesFromFolder(negativeSyntaxDir)
     for (file <- negativeSyntaxFiles) {
       it(s"Should fail to parse ${file.getName}") {
@@ -138,7 +138,7 @@ class RunParsed extends FunSpec with Matchers with TryValues {
           parseShaclSchema(file)  
         }
         if (t.isSuccess) fail(s"Parsed ok. Result: ${t.get}")
-        else info("Failed to parse as expected")
+//        else info("Failed to parse as expected")
       }
     }
   }

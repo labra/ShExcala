@@ -36,9 +36,12 @@ object SetUtils {
     n match {
       case 1 => Stream(List(set))
       case m if m > 1 => 
-        decompose(set,m - 1).map{ case (x::xs) => {
-          pSet(x) map { case (s1,s2) => List(s1,s2) ++ xs}
-        }}.flatten
+        decompose(set,m - 1).map{ 
+          case (x::xs) => {
+            pSet(x) map { case (s1,s2) => List(s1,s2) ++ xs}
+          }
+          case Nil => throw new Exception("decompose: Unsupported Nil")
+        }.flatten
     }
   }
 }

@@ -22,12 +22,12 @@ class Shacl2RDFSpec
 
       val rdf_str = """|@prefix : <http://e.o#> .
                        |@prefix sh: <http://www.w3.org/ns/shacl/core#> .
-                       |:s a sh:OpenShape ;
-                       |   sh:schema [ a sh:Schema] ;
+                       |:s sh:schema [ a sh:Schema] ;
                        |   sh:property [ a sh:PropertyConstraint ;
                        |                 sh:predicate :p ; 
                        |                 sh:nodeKind sh:IRI ;
-                       |                 sh:minCount 1 
+                       |                 sh:minCount 1 ;
+                       |                 sh:maxCount 1
                        |               ] .
                        |""".stripMargin
       val r = for {
@@ -49,12 +49,12 @@ class Shacl2RDFSpec
 
       val rdf_str = """|@prefix : <http://e.o#> .
                        |@prefix sh: <http://www.w3.org/ns/shacl/core#> .
-                       |:s a sh:OpenShape ;
-                       |   sh:schema [ a sh:Schema] ;
+                       |:s sh:schema [ a sh:Schema] ;
                        |   sh:property [ a sh:PropertyConstraint ;
                        |                 sh:predicate :p ; 
                        |                 sh:allowedValues (1 2) ;
-                       |                 sh:minCount 1 
+                       |                 sh:minCount 1 ;
+                       |                 sh:maxCount 1
                        |               ] .
                        |""".stripMargin
       val r = for {

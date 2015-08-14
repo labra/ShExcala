@@ -87,20 +87,24 @@ object Shacl {
     card: Cardinality
     ) extends ShapeExpr
 
+  // Binary operators for convenience
+    
   // Or(l,s1,s2) = SomeOfShape(l,List(s1,s2))
   case class Or(id: Option[Label], shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr
   
-  // XOr(l,s1,s2) = OneOfShape(l,List(s1,s2))
+  // Or(l,s1,s2) = SomeOfShape(l,List(s1,s2))
   case class XOr(id: Option[Label], shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr
   
   // Group(l,s1,s2) = GroupShape(l,s1,s2)
   case class Group2(id: Option[Label],shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr 
   
-  // SomeOfShape(id,List(s1,s2,s3)) = Or(id,s1,Or(_,s2,Or(_,s2,EmptyShape)))
-  case class SomeOfShape(id: Option[Label],shapes: Seq[ShapeExpr]) extends ShapeExpr
+  // XOr(l,s1,s2) = OneOfShape(l,List(s1,s2))
+  case class OneOf(id: Option[Label], shapes: List[ShapeExpr]) extends ShapeExpr
   
-  // SomeOfShape(id,List(s1,s2,s3)) = XOr(id,s1,XOr(_,s2,XOr(_,s2,EmptyShape)))
-  case class OneOfShape(id:Option[Label], shapes: Seq[ShapeExpr]) extends ShapeExpr
+  // List-based operators (semantically, they can be defined in terms of the binary operators
+  
+  // SomeOfShape(id,List(s1,s2,s3)) = Or(id,s1,Or(_,s2,Or(_,s2,EmptyShape)))
+  case class SomeOf(id: Option[Label],shapes: Seq[ShapeExpr]) extends ShapeExpr
   
   // GroupShape(id,List(s1,s2,s3)) = Group2(id,s1,Group2(_,s2,Group2(_,s2,EmptyShape)))
   case class GroupShape(id: Option[Label], shapes: Seq[ShapeExpr]) extends ShapeExpr
@@ -183,48 +187,54 @@ object Shacl {
     def token: String
   }
 
-  case object IRIKind extends NodeKind {
+  case class IRIKind(facets: List[StringFacet]) extends NodeKind {
     override def token = "IRI"
   }
 
-  case object BNodeKind extends NodeKind {
+  case class BNodeKind(facets: List[StringFacet]) extends NodeKind {
     override def token = "BNode"
   }
 
-  case object LiteralKind extends NodeKind {
+  case class LiteralKind(facets: List[XSFacet]) extends NodeKind {
     override def token = "Literal"
   }
 
-  case object NonLiteralKind extends NodeKind {
+  case class NonLiteralKind(facets: List[XSFacet]) extends NodeKind {
     override def token = "NonLiteral"
   }
-  
+
+  // This kind is not in the spec...but it may useful
   case object AnyKind extends NodeKind {
     override def token = "Any"
   }
 
   def nodeKindfromIRI(iri: IRI): Try[NodeKind] = {
     iri match {
-      case `sh_IRI` => Success(IRIKind)
-      case `sh_BNode` => Success(BNodeKind)
-      case `sh_Literal` => Success(LiteralKind)
-      case `sh_NonLiteral` => Success(NonLiteralKind)
+      case `sh_IRI` => Success(IRIKind(List()))
+      case `sh_BNode` => Success(BNodeKind(List()))
+      case `sh_Literal` => Success(LiteralKind(List()))
+      case `sh_NonLiteral` => Success(NonLiteralKind(List()))
       case `sh_Any` => Success(AnyKind)
       case _ => Failure(new Exception("nodeKindFromIRI: unsupported IRI: " + iri))
     }
   }
 
   sealed trait XSFacet extends Positional
-  case class Pattern(regex: Regex) extends XSFacet
-  case class MinInclusive(n: Integer) extends XSFacet
-  case class MinExclusive(n: Integer) extends XSFacet
-  case class MaxInclusive(n: Integer) extends XSFacet
-  case class MaxExclusive(n: Integer) extends XSFacet
-  case class Length(n: Integer) extends XSFacet
-  case class MinLength(n: Integer) extends XSFacet
-  case class MaxLength(n: Integer) extends XSFacet
-  case class TotalDigits(n: Integer) extends XSFacet
-  case class FractionDigits(n: Integer) extends XSFacet
+  
+  sealed trait NumericFacet extends XSFacet with Positional
+  case class MinInclusive(n: Integer) extends NumericFacet
+  case class MinExclusive(n: Integer) extends NumericFacet
+  case class MaxInclusive(n: Integer) extends NumericFacet
+  case class MaxExclusive(n: Integer) extends NumericFacet
+  case class TotalDigits(n: Integer) extends NumericFacet
+  case class FractionDigits(n: Integer) extends NumericFacet
+  
+  sealed trait StringFacet extends XSFacet with Positional
+  
+  case class Pattern(regex: Regex) extends StringFacet
+  case class Length(n: Integer) extends StringFacet
+  case class MinLength(n: Integer) extends StringFacet
+  case class MaxLength(n: Integer) extends StringFacet
 
   /**
    * ShapeConstr ::= SingleShape | DisjShapeConstr | ConjShapeConstr | NotShapeConstr
@@ -276,7 +286,10 @@ object Shacl {
   lazy val NoActions: Seq[Action] = Seq()
 
   // lazy val NoId : Label = IRILabel(iri = IRI(""))
+   lazy val iriKind = IRIKind(List())
+   lazy val bnodeKind = BNodeKind(List())
 
+  
   lazy val typeXsdString = LiteralDatatype(xsd_string, List())
   lazy val star = UnboundedCardinalityFrom(0)
   lazy val plus = UnboundedCardinalityFrom(1)

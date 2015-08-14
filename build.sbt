@@ -19,7 +19,7 @@ organization := "es.weso"
 
 version := "0.3.4"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.7"
 
 lazy val shexTestsFolder = settingKey[String]("Folder where shex tests are downloaded") 
 
@@ -45,7 +45,7 @@ libraryDependencies ++= Seq(
   ,	"org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
   , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
   , "org.typelevel" %% "scalaz-scalatest" % "0.2.2" % "test"
-  , "es.weso" % "wesin_2.11" % "0.3.1" excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "es.weso" % "wesin_2.11" % "0.3.4" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
 //  , "org.w3" % "banana-rdf_2.11" % "0.8.1"
 )
@@ -65,8 +65,6 @@ parallelExecution in PerfTest := false
 seq(bintraySettings:_*)
 
 deploymentSettings
-
-publishMavenStyle := true
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
 
@@ -98,8 +96,6 @@ resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 //resolvers += "Sonatype OSS Snapshots" at
 //  "https://oss.sonatype.org/content/repositories/snapshots"
 
-resolvers += "Bintray" at "http://dl.bintray.com/weso/weso-releases"
-
 // Eclipse
 
 EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed
@@ -107,6 +103,8 @@ EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Managed
 // Publishing settings to BinTray
 
 bintraySettings
+
+publishMavenStyle := true
 
 repository in bintray := "weso-releases"
 

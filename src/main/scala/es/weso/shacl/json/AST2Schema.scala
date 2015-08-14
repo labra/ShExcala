@@ -60,7 +60,24 @@ object AST2Schema {
        val card = cnvCard(expr)
        TripleConstraintCard(id = id, iri = iri, value = value, card= card)
      }
+     case "oneOf" => {
+       val shapes = cnvExpressions(expr.expressions)
+       OneOf(None,shapes)
+     }
+     case "someOf" => {
+       val shapes = cnvExpressions(expr.expressions)
+       SomeOf(None,shapes)
+     }
+     case "" => EmptyShape
+     
+     case _=> {
+       throw new Exception("Unsupported expression conversion " + expr)
+     }
    }
+ }
+ 
+ def cnvExpressions(expressions: Option[List[ExpressionAST]]): List[ShapeExpr] = {
+   expressions.getOrElse(List()).map(cnvExpr)
  }
  
  def cnvCard(expr: ExpressionAST): Cardinality = {
@@ -79,14 +96,112 @@ object AST2Schema {
    } else {
      if (vc.nodeKind.isDefined) {
        vc.nodeKind.get match {
-         case "literal" => LiteralKind
-         case "bnode" => BNodeKind
-         case "iri" => IRIKind
+         case "literal" => {
+           val facets = collectFacets(vc)
+           LiteralKind(facets)
+         }
+         case "nonliteral" => {
+           val facets = collectFacets(vc)
+           NonLiteralKind(facets)
+         }
+         case "bnode" => {
+           val facets = collectStringFacets(vc)
+           BNodeKind(facets)
+         }
+         case "iri" => {
+           val facets = collectStringFacets(vc)
+           IRIKind(facets)
+         }
          case s@_ => throw new Exception(s"Unsupported nodeKind $s")
        }
+     } else if (vc.reference.isDefined) {
+       cnvShapeConstr(vc.reference.get)
      } else
        AnyKind
    }  
+ }
+
+  def collectStringFacets(vc: ValueClassAST): List[StringFacet] = {
+   List( collectPattern(vc)
+       , collectLength(vc)
+       , collectMinLength(vc)
+       , collectMaxLength(vc)
+       ).flatten 
+ }
+
+  def collectNumericFacets(vc: ValueClassAST): List[NumericFacet] = {
+   List( collectMinInclusive(vc)
+       , collectMaxInclusive(vc)
+       , collectMinExclusive(vc)
+       , collectMaxExclusive(vc)
+       , collectTotalDigits(vc)
+       , collectFractionDigits(vc)
+       ).flatten 
+ }
+ 
+ def collectFacets(vc: ValueClassAST): List[XSFacet] = {
+   collectNumericFacets(vc) ++ collectStringFacets(vc) 
+ }
+
+ // TODO: The following code is quite repetitive...
+ // Look for better ways to DRY!!!
+ 
+ def collectLength(vc:ValueClassAST): List[StringFacet] = {
+   if (vc.length.isDefined) List(Length(vc.length.get))
+   else List()
+ }
+ 
+ def collectMinInclusive(vc:ValueClassAST): List[NumericFacet] = {
+   if (vc.minInclusive.isDefined) List(MinInclusive(vc.minInclusive.get))
+   else List()
+ }
+ 
+ def collectMaxInclusive(vc:ValueClassAST): List[NumericFacet] = {
+   if (vc.maxInclusive.isDefined) List(MaxInclusive(vc.maxInclusive.get))
+   else List()
+ }
+ 
+ def collectMinExclusive(vc:ValueClassAST): List[NumericFacet] = {
+   if (vc.minExclusive.isDefined) List(MinExclusive(vc.minExclusive.get))
+   else List()
+ }
+ 
+ def collectMaxExclusive(vc:ValueClassAST): List[NumericFacet] = {
+   if (vc.maxExclusive.isDefined) List(MaxExclusive(vc.maxExclusive.get))
+   else List()
+ }
+ 
+ def collectPattern(vc:ValueClassAST): List[StringFacet] = {
+   if (vc.pattern.isDefined) List(Pattern(vc.pattern.get.r))
+   else List()
+ }
+ 
+ def collectMinLength(vc:ValueClassAST): List[StringFacet] = {
+   if (vc.minLength.isDefined) List(MinLength(vc.minLength.get))
+   else List()
+ }
+ 
+ def collectMaxLength(vc:ValueClassAST): List[StringFacet] = {
+   if (vc.maxLength.isDefined) List(MaxLength(vc.maxLength.get))
+   else List()
+ }
+ 
+  def collectTotalDigits(vc:ValueClassAST): List[NumericFacet] = {
+   if (vc.totalDigits.isDefined) List(TotalDigits(vc.totalDigits.get))
+   else List()
+ }
+
+  def collectFractionDigits(vc:ValueClassAST): List[NumericFacet] = {
+   if (vc.fractionDigits.isDefined) List(FractionDigits(vc.fractionDigits.get))
+   else List()
+ }
+ 
+ def cnvShapeConstr(ref: ReferenceAST): ShapeConstr = {
+   ref.value match {
+     case Left(str) => SingleShape(mkLabel(str))
+     case Right(OrAST(disjuncts)) => 
+       DisjShapeConstr(disjuncts.map(x => mkLabel(x)).toSet)  
+   }
  }
  
  def cnvValues(values: List[ValueAST]): Seq[ValueObject] = {
@@ -98,6 +213,7 @@ object AST2Schema {
  }
  
  def cnvStem(s: StemAST): ValueObject = Undefined
+ 
  def cnvString(s: String): ValueObject = {
    if (s.startsWith("\"")) {
      cnvLiteral(s)

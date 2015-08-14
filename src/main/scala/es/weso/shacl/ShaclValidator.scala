@@ -110,10 +110,10 @@ trait ShaclValidator
       case group: GroupShape => 
         matchTriplesShapeExpr(ts,toBin(group.shapes,group2,EmptyShape),ctx)
         
-      case oneOf: OneOfShape => 
+      case oneOf: OneOf => 
         matchTriplesShapeExpr(ts,toBin(oneOf.shapes,xor,EmptyShape),ctx)
         
-      case someOf: SomeOfShape => 
+      case someOf: SomeOf => 
         matchTriplesShapeExpr(ts,toBin(someOf.shapes,or,EmptyShape),ctx)
         
       case sc: RepetitionShape => ???
@@ -287,10 +287,11 @@ trait ShaclValidator
       nk: NodeKind
       ): Boolean = {
     nk match {
-     case IRIKind => obj.isIRI
-     case BNodeKind => obj.isBNode
-     case LiteralKind => isLiteral(obj)
-     case NonLiteralKind => obj.isIRI || obj.isBNode
+     // TODO: take into account facets
+     case IRIKind(facets) => obj.isIRI
+     case BNodeKind(facets) => obj.isBNode
+     case LiteralKind(facets) => isLiteral(obj) 
+     case NonLiteralKind(facets) => obj.isIRI || obj.isBNode
      case AnyKind => true
      case _ => throw ValidationException("nodeKindOK: unexpected nodeKind" + nk)
     }
@@ -426,14 +427,15 @@ trait ShaclValidator
     expr match {
       case t: TripleConstraintCard => Set(t.iri)
       case _: InverseTripleConstraint => Set()
-      case SomeOfShape(_,shapes) => 
+      case SomeOf(_,shapes) => 
         shapes.map{ case shape => properties(shape)}.flatten.toSet
-      case OneOfShape(_,shapes) => 
+      case OneOf(_,shapes) => 
         shapes.map{ case shape => properties(shape)}.flatten.toSet
       case GroupShape(_,shapes) => 
         shapes.map{ case shape => properties(shape)}.flatten.toSet
       case RepetitionShape(_,shape,_) => 
         properties(shape)
+      case _ => throw new Exception("properties: Unsupported " + expr)
     } 
   }
   
@@ -441,9 +443,9 @@ trait ShaclValidator
     expr match {
       case _: TripleConstraintCard => Set()
       case t: InverseTripleConstraint => Set(t.iri)
-      case SomeOfShape(id,shapes) => 
+      case SomeOf(id,shapes) => 
         shapes.map{ case shape => properties(shape)}.flatten.toSet
-      case OneOfShape(id,shapes) => 
+      case OneOf(id,shapes) => 
         shapes.map{ case shape => properties(shape)}.flatten.toSet
       case GroupShape(_,shapes) => 
         shapes.map{ case shape => properties(shape)}.flatten.toSet
@@ -462,10 +464,10 @@ trait ShaclValidator
       case InverseTripleConstraint(_,iri,shapeConstr) => {
         throw ValidationException("Unimplemented InverseTripleConstraint")
       }
-      case SomeOfShape(id,shapes) => {
+      case SomeOf(id,shapes) => {
         throw ValidationException("Unimplemented SomeOfShapes")
       }
-      case OneOfShape(id,shapes) => {
+      case OneOf(id,shapes) => {
         throw ValidationException("Unimplemented OneOfShapes")
       }
       case GroupShape(_,shapes) => {
@@ -535,10 +537,11 @@ trait ShaclValidator
      case ValueSet(s) => {
        s contains obj
      }
-     case IRIKind => obj.isIRI
-     case BNodeKind => obj.isBNode
-     case LiteralKind => isLiteral(obj)
-     case NonLiteralKind => obj.isIRI || obj.isBNode
+     // TODO: Take into account facets
+     case IRIKind(facets) => obj.isIRI
+     case BNodeKind(facets) => obj.isBNode
+     case LiteralKind(facets) => isLiteral(obj) 
+     case NonLiteralKind(facets) => obj.isIRI || obj.isBNode
      case AnyKind => true
      case _ => throw ValidationException("allowed: unexpected valueConstr")
    }

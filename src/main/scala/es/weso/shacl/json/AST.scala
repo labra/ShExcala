@@ -42,7 +42,11 @@ case class ValueClassAST(
     minInclusive: Option[Int],
     maxInclusive: Option[Int],
     minExclusive: Option[Int],
-    maxExclusive: Option[Int]
+    maxExclusive: Option[Int],
+    minLength: Option[Int],
+    maxLength: Option[Int],
+    totalDigits: Option[Int],
+    fractionDigits: Option[Int]
 ) 
 
 case class ValueAST(
@@ -106,7 +110,11 @@ object ValueClassAST {
       minInclusive=None,
       maxInclusive=None,
       minExclusive=None,
-      maxExclusive=None)
+      maxExclusive=None,
+      minLength=None,
+      maxLength=None,
+      totalDigits=None,
+      fractionDigits=None)
 }
 
 object ReferenceAST {
@@ -257,6 +265,10 @@ implicit def ValueClassDecodeJson: DecodeJson[ValueClassAST] =
      maxInclusive <- (c --\ "maxinclusive").as[Option[Int]]
      minExclusive <- (c --\ "minexclusive").as[Option[Int]]
      maxExclusive <- (c --\ "maxexclusive").as[Option[Int]]
+     minlength <- (c --\ "minlength").as[Option[Int]]
+     maxlength <- (c --\ "maxlength").as[Option[Int]]
+     totaldigits <- (c --\ "totaldigits").as[Option[Int]]
+     fractiondigits <- (c --\ "fractiondigits").as[Option[Int]]
     } yield ValueClassAST(
         values,
         nodeKind,
@@ -264,7 +276,9 @@ implicit def ValueClassDecodeJson: DecodeJson[ValueClassAST] =
         reference,
         length,
         minInclusive,maxInclusive,
-        minExclusive,maxExclusive)
+        minExclusive,maxExclusive,
+        minlength,maxlength,
+        totaldigits,fractiondigits)
     )
 
 implicit def ValueDecodeJson: DecodeJson[ValueAST] =

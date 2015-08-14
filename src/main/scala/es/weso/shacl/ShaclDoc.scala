@@ -56,10 +56,10 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       case t: TripleConstraintCard => tripleConstraintCardDoc(t)
       case GroupShape(id,shapes) => 
         "(" :: seqDocWithSep(shapes,",",shapeExprDoc) :: text(")")
-      case SomeOfShape(id,shapes) => 
+      case SomeOf(id,shapes) => 
         log.info("Unimplemented id generation yet")
         "(" :: seqDocWithSep(shapes,"||",shapeExprDoc) :: text(")") 
-      case OneOfShape(id,shapes) => 
+      case OneOf(id,shapes) => 
         log.info("Unimplemented id generation yet")
         "(" :: seqDocWithSep(shapes,"|",shapeExprDoc) :: text(")") 
       case RepetitionShape(id,shape,card) => {

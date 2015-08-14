@@ -135,7 +135,7 @@ object Schema2RDF extends Logging {
         shape2RDF(shape1,someOfNode,rdf)
         shape2RDF(shape2,someOfNode,rdf)
       }
-      case SomeOfShape(id,shapes) => {
+      case SomeOf(id,shapes) => {
         val someOfNode = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(node,sh_someOf,someOfNode))
         for (shape <- shapes) {
@@ -148,7 +148,7 @@ object Schema2RDF extends Logging {
         shape2RDF(shape1,oneOfNode,rdf)
         shape2RDF(shape2,oneOfNode,rdf)
       }
-      case OneOfShape(id,shapes) => {
+      case OneOf(id,shapes) => {
         val oneOfNode = nodeFromOptionalLabel(id, rdf)
         addTriple(rdf,(node,sh_someOf,oneOfNode))
         for (shape <- shapes) {
@@ -234,10 +234,11 @@ object Schema2RDF extends Logging {
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
      nodeKind match {
-       case IRIKind => addTriple(rdf,(node,sh_nodeKind,sh_IRI))
-       case BNodeKind => addTriple(rdf,(node,sh_nodeKind,sh_BNode))     
-       case LiteralKind => addTriple(rdf,(node,sh_nodeKind,sh_Literal))
-       case NonLiteralKind => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
+       // TODO: Add support to facets
+       case IRIKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_IRI))
+       case BNodeKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_BNode))     
+       case LiteralKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_Literal)) // TODO: Take into account facets
+       case NonLiteralKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
        case AnyKind => addTriple(rdf,(node,sh_nodeKind,sh_Any))
       }
   }

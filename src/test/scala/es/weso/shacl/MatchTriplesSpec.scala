@@ -32,7 +32,7 @@ class MatchTriplesSpec
    it("allTriplesWithSamePredicateMatch. A triple with different predicate passes") {
       val t1 = RDFTriple(IRI("a"),IRI("c"),IRI("x"))
       val ts: Set[RDFTriple] = Set(t1)
-      val tc = TripleConstraintCard(None, IRI("b"), IRIKind,defaultCardinality)
+      val tc = TripleConstraintCard(None, IRI("b"), IRIKind(List()),defaultCardinality)
       val ctx = Context.emptyContext
       val expected = Pass(typing = Typing.emptyTyping, checked = Set(), remaining = ts,pending=Set())
       allTriplesWithSamePredicateMatch(ts,tc,ctx,false).run should be (Success(Stream(expected)))
@@ -40,7 +40,7 @@ class MatchTriplesSpec
    it("allTriplesWithSamePredicateMatch. A triple with the same predicate that matches pass") {
       val t1 = RDFTriple(IRI("a"),IRI("b"),IRI("x"))
       val ts: Set[RDFTriple] = Set(t1)
-      val tc = TripleConstraintCard(None, IRI("b"), IRIKind,defaultCardinality)
+      val tc = TripleConstraintCard(None, IRI("b"), iriKind,defaultCardinality)
       val ctx = Context.emptyContext
       val expected = Pass(typing = Typing.emptyTyping, checked = Set(), remaining = ts,pending=Set())
       allTriplesWithSamePredicateMatch(ts,tc,ctx,false).run should be (Success(Stream(expected)))
@@ -48,7 +48,7 @@ class MatchTriplesSpec
    it("allTriplesWithSamePredicateMatch. A triple with the same predicate that doesn't match fails") {
       val t1 = RDFTriple(IRI("a"),IRI("b"),BNodeId("x"))
       val ts: Set[RDFTriple] = Set(t1)
-      val tc = TripleConstraintCard(None, IRI("b"), IRIKind,defaultCardinality)
+      val tc = TripleConstraintCard(None, IRI("b"), iriKind,defaultCardinality)
       val ctx = Context.emptyContext
       val expected = Pass(typing = Typing.emptyTyping, checked = Set(), remaining = ts,pending=Set())
       allTriplesWithSamePredicateMatch(ts,tc,ctx,false).run should be (Success(Stream()))
@@ -82,7 +82,7 @@ class MatchTriplesSpec
     it("Should match single triple with tripleConstraint") {
       val t1 = RDFTriple(IRI("a"),IRI("b"),IRI("c"))
       val ts: Set[RDFTriple] = Set(t1)
-      val shape : ShapeExpr = TripleConstraintCard(None, IRI("b"), IRIKind, defaultCardinality)
+      val shape : ShapeExpr = TripleConstraintCard(None, IRI("b"), iriKind, defaultCardinality)
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -94,7 +94,7 @@ class MatchTriplesSpec
     it("Should not match single triple with tripleConstraint") {
       val t1 = RDFTriple(IRI("a"),IRI("b"),BNodeId("_1"))
       val ts: Set[RDFTriple] = Set(t1)
-      val shape : ShapeExpr = TripleConstraintCard(None, IRI("b"), IRIKind, defaultCardinality)
+      val shape : ShapeExpr = TripleConstraintCard(None, IRI("b"), iriKind, defaultCardinality)
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -110,8 +110,8 @@ class MatchTriplesSpec
       val ts: Set[RDFTriple] = Set(t1,t2)
       val shape : ShapeExpr = 
         GroupShape(None,
-            List(TripleConstraintCard(None, IRI("b"), IRIKind, defaultCardinality)
-                ,TripleConstraintCard(None, IRI("c"), IRIKind, defaultCardinality)
+            List(TripleConstraintCard(None, IRI("b"), iriKind, defaultCardinality)
+                ,TripleConstraintCard(None, IRI("c"), iriKind, defaultCardinality)
                 )
         )
       val expected = 
@@ -128,8 +128,8 @@ class MatchTriplesSpec
       val ts: Set[RDFTriple] = Set(t1,t2)
       val shape : ShapeExpr = 
         GroupShape(None,
-            List(TripleConstraintCard(None, IRI("b"), IRIKind, defaultCardinality)
-                ,TripleConstraintCard(None, IRI("c"), IRIKind, defaultCardinality)
+            List(TripleConstraintCard(None, IRI("b"), iriKind, defaultCardinality)
+                ,TripleConstraintCard(None, IRI("c"), iriKind, defaultCardinality)
                 )
         )
       val expected = 
@@ -146,8 +146,8 @@ class MatchTriplesSpec
       val ts: Set[RDFTriple] = Set(t1,t2)
       val shape : ShapeExpr = 
         GroupShape(None,
-            List(TripleConstraintCard(None, IRI("b"), BNodeKind, defaultCardinality)
-                ,TripleConstraintCard(None, IRI("c"), BNodeKind, defaultCardinality)
+            List(TripleConstraintCard(None, IRI("b"), bnodeKind, defaultCardinality)
+                ,TripleConstraintCard(None, IRI("c"), bnodeKind, defaultCardinality)
                 )
         )
       val expected = 
@@ -163,7 +163,7 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("a"),IRI("c"),IRI("y"))
       val ts: Set[RDFTriple] = Set(t1,t2)
       val shape : ShapeExpr =
-        TripleConstraintCard(None, IRI("b"), IRIKind, plus)
+        TripleConstraintCard(None, IRI("b"), iriKind, plus)
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -177,7 +177,7 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("a"),IRI("c"),IRI("y"))
       val ts: Set[RDFTriple] = Set(t2,t1)
       val shape : ShapeExpr = 
-        TripleConstraintCard(None, IRI("b"), IRIKind, plus)
+        TripleConstraintCard(None, IRI("b"), iriKind, plus)
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -191,7 +191,7 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("a"),IRI("b"),BNodeId("_"))
       val ts: Set[RDFTriple] = Set(t1,t2)
       val shape : ShapeExpr = 
-        TripleConstraintCard(None, IRI("b"), IRIKind, defaultCardinality)
+        TripleConstraintCard(None, IRI("b"), iriKind, defaultCardinality)
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -205,7 +205,7 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("a"),IRI("b"),BNodeId("_"))
       val ts: Set[RDFTriple] = Set(t2,t1)
       val shape : ShapeExpr = 
-        TripleConstraintCard(None, IRI("b"), IRIKind, plus)
+        TripleConstraintCard(None, IRI("b"), iriKind, plus)
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -219,9 +219,9 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("x"),IRI("c"),IRI("z"))
       val ts: Set[RDFTriple] = Set(t2,t1)
       val shape : ShapeExpr = 
-        OneOfShape(None,
-            List(TripleConstraintCard(None, IRI("a"), IRIKind, plus),
-                 TripleConstraintCard(None, IRI("b"), IRIKind, plus))
+        OneOf(None,
+            List(TripleConstraintCard(None, IRI("a"), iriKind, plus),
+                 TripleConstraintCard(None, IRI("b"), iriKind, plus))
         )
       val expected = 
         Pass(typing = Typing.emptyTyping, 
@@ -235,8 +235,8 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("x"),IRI("c"),IRI("z"))
       val ts: Set[RDFTriple] = Set(t2,t1)
       val shape : ShapeExpr = 
-        XOr(None,TripleConstraintCard(None, IRI("a"), IRIKind, plus),
-                 TripleConstraintCard(None, IRI("b"), IRIKind, plus))
+        XOr(None,TripleConstraintCard(None, IRI("a"), iriKind, plus),
+                 TripleConstraintCard(None, IRI("b"), iriKind, plus))
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -249,8 +249,8 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("x"),IRI("b"),IRI("z"))
       val ts: Set[RDFTriple] = Set(t2,t1)
       val shape : ShapeExpr = 
-        XOr(None,TripleConstraintCard(None, IRI("a"), IRIKind, plus),
-                 TripleConstraintCard(None, IRI("b"), IRIKind, plus))
+        XOr(None,TripleConstraintCard(None, IRI("a"), iriKind, plus),
+                 TripleConstraintCard(None, IRI("b"), iriKind, plus))
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -263,9 +263,9 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("x"),IRI("c"),IRI("z"))
       val ts: Set[RDFTriple] = Set(t2,t1)
       val shape : ShapeExpr = 
-        SomeOfShape(None,
-            List(TripleConstraintCard(None, IRI("a"), IRIKind, plus),
-                 TripleConstraintCard(None, IRI("b"), IRIKind, plus)))
+        SomeOf(None,
+            List(TripleConstraintCard(None, IRI("a"), iriKind, plus),
+                 TripleConstraintCard(None, IRI("b"), iriKind, plus)))
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -278,8 +278,8 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("x"),IRI("c"),IRI("z"))
       val ts: Set[RDFTriple] = Set(t2,t1)
       val shape : ShapeExpr = 
-        Or(None,TripleConstraintCard(None, IRI("a"), IRIKind, plus),
-                TripleConstraintCard(None, IRI("b"), IRIKind, plus))
+        Or(None,TripleConstraintCard(None, IRI("a"), iriKind, plus),
+                TripleConstraintCard(None, IRI("b"), iriKind, plus))
       val expected = 
         Pass(typing = Typing.emptyTyping, 
             checked = Set(t1), 
@@ -292,9 +292,9 @@ class MatchTriplesSpec
       val t2 = RDFTriple(IRI("x"),IRI("b"),IRI("z"))
       val ts: Set[RDFTriple] = Set(t2,t1)
       val shape : ShapeExpr = 
-        SomeOfShape(None,
-            List(TripleConstraintCard(None, IRI("a"), IRIKind, plus),
-                 TripleConstraintCard(None, IRI("b"), IRIKind, plus)))
+        SomeOf(None,
+            List(TripleConstraintCard(None, IRI("a"), iriKind, plus),
+                 TripleConstraintCard(None, IRI("b"), iriKind, plus)))
       val e1 = Pass(typing = Typing.emptyTyping,checked = Set(t1),remaining = Set(t2),pending=Set())
       val e2 = Pass(typing = Typing.emptyTyping,checked = Set(t2),remaining = Set(t1),pending=Set())
       val expected = Set(e1,e2)
