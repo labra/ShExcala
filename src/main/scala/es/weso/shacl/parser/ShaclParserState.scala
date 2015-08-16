@@ -1,23 +1,11 @@
-package es.weso.shex
+package es.weso.shacl.parser
 
-import util.parsing.combinator.JavaTokenParsers
-import scala.util.parsing.combinator.{ Parsers, RegexParsers }
-import scala.util.parsing.combinator.lexical.Lexical
-import scala.util.parsing.input.Positional
 import scala.util.parsing.input._
-import util.parsing.input.CharSequenceReader.EofCh
-import scala.util.parsing.combinator.PackratParsers
-import scala.util.parsing.combinator.lexical.StdLexical
-import scala.util.parsing.combinator.syntactical.StdTokenParsers
-import scala.io.Codec
-import scala.util.matching.Regex
-import scala.collection.immutable.Map
-import scala.language.postfixOps
 import es.weso.parser._
 import es.weso.rdf._
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
-
+import es.weso.shacl.Shacl._
 
 /*
  * State of Shape parser
@@ -26,12 +14,14 @@ import es.weso.rdfgraph._
  * - a list of bNodeLabels 
  * - a list of starts
  * - current baseIRI
+ * - a map of shape definitions
  */
 case class ShapeParserState(
     val namespaces: PrefixMap,
     val bNodeLabels: BNodeTable,
     val starts: List[RDFNode],
-    val baseIRI: IRI) {
+    val baseIRI: IRI,
+    val createdShapes: Map[Label,Shape]) {
 
   def newTable(table: BNodeTable): ShapeParserState =
     copy(bNodeLabels = table)
@@ -54,6 +44,12 @@ case class ShapeParserState(
 
   def addStart(label: RDFNode) =
     copy(starts = starts :+ label)
+    
+  def newShape(shape: Shape): (Label, ShapeParserState) = {
+    val (bnode,s1) = newBNode
+    val label = BNodeLabel(bnode)
+    (label, s1.copy(createdShapes = createdShapes + (label -> shape)))
+  }    
 
 }
 
@@ -61,6 +57,6 @@ object ShapeParserState {
 
   def initial: ShapeParserState = initial(IRI(""))
   def initial(baseIRI: IRI) =
-    ShapeParserState(PrefixMap.empty, BNodeTable.empty, List(), baseIRI)
+    ShapeParserState(PrefixMap.empty, BNodeTable.empty, List(), baseIRI, Map())
 
 }

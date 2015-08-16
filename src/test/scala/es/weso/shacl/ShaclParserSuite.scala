@@ -2,11 +2,11 @@ package es.weso.shacl
 
 import org.scalatest._
 import org.scalatest.prop._
-
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import es.weso.shex.ShapeDoc._
-import es.weso.shex.ShapeParserState
+import es.weso.shacl.parser._
+import es.weso.shacl.parser.ShaclParser._
 import es.weso.shacl.Shacl._
 import scala.Either._
 import es.weso.shacl.PREFIXES._
@@ -263,8 +263,8 @@ class ShaclParserSuite extends ShaclParser
       val alias = "ex"
       val str = """ex:a {ex:b ex:c }"""
       val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
-      val expected: Rule =
-        (IRILabel(IRI(prefix + a)),
+      val expected: ShapeRule =
+        ShapeRule(IRILabel(IRI(prefix + a)),
           Shape.empty.copy(
               shapeExpr = TripleConstraintCard(
                 id = None,
@@ -273,7 +273,7 @@ class ShaclParserSuite extends ShaclParser
                 card = defaultCardinality
               ))
         )
-      shouldParseIgnoreState(rule, state, str, expected)
+      shouldParseIgnoreState(shapeRule, state, str, expected)
     }
 
     it("Should parse a single shape (shaclSchemaParser)") {

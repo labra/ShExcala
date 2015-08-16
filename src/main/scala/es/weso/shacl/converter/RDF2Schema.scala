@@ -62,6 +62,11 @@ object RDF2Schema
   }
   }
 
+  // TODO: closed
+  // TODO: virtual
+  // TODO: extras
+  // TODO: inherit
+  // TODO: Actions
   def shape: RDFParser[Shape] = { (n,rdf) =>
     for {
       //okTypes <- hasNoRDFType(sh_ClosedShape)(n,rdf)
@@ -70,7 +75,13 @@ object RDF2Schema
          shapeExpr(n,rdf) 
       }
 //      incls <- inclPropSet(n,rdf)
-    } yield Shape(shape,false,Set())
+    } yield Shape(
+        shapeExpr = shape,
+        isClosed = false,
+        isVirtual = false,
+        inherit = Set(),
+        extras = Set(),
+        actions = Map())
   }
   
 /*  def inclPropSet: RDFParser[Set[IRI]] = { (n,rdf) =>

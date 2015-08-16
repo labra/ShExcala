@@ -19,6 +19,7 @@ import es.weso.rdfgraph._
 import scala.util.Try
 import org.slf4j._
 
+
 /**
  * Shape parser. This parser follows
  *  [[http://www.w3.org/2013/ShEx/ShEx.bnf this grammar]]

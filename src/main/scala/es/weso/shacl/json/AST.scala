@@ -14,16 +14,19 @@ case class SchemaAST(
 
 case class ShapeAST(
       expression: Option[ExpressionAST],
+      virtual: Option[Boolean],
       closed: Option[Boolean],
-      inherit: Option[List[String]]
+      inherit: Option[List[String]],
+      extra: Option[List[String]],
+      semAct: Option[Map[String,String]]
   )
 
 case class ExpressionAST(
     _type: String,
     id: Option[String],
-    predicate: String,
+    predicate: Option[String],
     include: Option[String],
-    value: ValueClassAST,
+    value: Option[ValueClassAST],
     inverse: Option[Boolean],
     negated: Option[Boolean],
     min: Option[Int],
@@ -50,7 +53,7 @@ case class ValueClassAST(
 ) 
 
 case class ValueAST(
-   value: Either[String,StemAST]
+   value: Either[String, StemRangeAST]
 )
 
 case class ReferenceAST(
@@ -62,13 +65,24 @@ case class OrAST(
 ) 
 
 case class StemRangeAST(
-    stem: Either[String,StemAST],
-    exclusions: Option[List[StemAST]]
+    _type: Option[String],
+    stem: Option[StemAST],
+    exclusions: Option[List[ExclusionAST]]
+) 
+
+case class ExclusionAST(
+    value: Either[String, StemAST]
 ) 
 
 case class StemAST(
-    _type: Option[String]
-) 
+    value: Either[String, WildCardAST]
+)
+
+case class WildCardAST(
+    _type: Option[String],
+    stem: Option[StemAST]
+)
+
 
 
 // Empty initializers
@@ -81,7 +95,7 @@ object SchemaAST {
       )
 }
 object ShapeAST {
-  def empty = ShapeAST(None,None,None)
+  def empty = ShapeAST(None,None,None,None,None,None)
 }
 
 object ExpressionAST {
@@ -89,9 +103,9 @@ object ExpressionAST {
     ExpressionAST(
         _type="",
         id = None,
-        predicate="",
+        predicate=None,
         include=None,
-        value=ValueClassAST.empty,
+        value=None,
         inverse=None,negated=None,
         min=None,max=None,
         expressions=None,
@@ -126,11 +140,15 @@ object OrAST {
 }
 
 object StemRangeAST {
-  lazy val empty = StemRangeAST(stem=Left(""),exclusions=None)
+  lazy val empty = StemRangeAST(_type=None,stem=None,exclusions=None)
+}
+
+object ExclusionAST {
+  lazy val empty = ExclusionAST(Left(""))
 }
 
 object StemAST {
-  lazy val empty = StemAST(None)
+  lazy val empty = StemAST(Left(""))
 }
 
 // JSON Encoders
@@ -147,8 +165,11 @@ implicit def ShapeEncodeJson: EncodeJson[ShapeAST] =
     EncodeJson((n: ShapeAST) =>
       ("type" := jString("shape")) ->:
        ("expression" := n.expression.asJson) ->:
+       ("virtual" := n.virtual.asJson) ->:
        ("closed" := n.closed.asJson) ->:
        ("inherit" := n.inherit.asJson) ->:
+       ("extra" := n.extra.asJson) ->:
+       ("semAct" := n.semAct.asJson) ->:
        jEmptyObject
       )
 
@@ -156,7 +177,7 @@ implicit def ExpressionEncodeJson: EncodeJson[ExpressionAST] =
     EncodeJson((n: ExpressionAST) =>
       ("type" := n._type) ->:
       ("id" := n.id.asJson) ->:
-      ("predicate" := n.predicate) ->: 
+      ("predicate" := n.predicate.asJson) ->: 
       ("include" := n.include) ->: 
       ("value" := n.value.asJson) ->: 
       ("inverse" := n.inverse.asJson) ->:
@@ -207,12 +228,21 @@ implicit def StemRangeEncodeJson: EncodeJson[StemRangeAST] =
       jEmptyObject
       )
 
-implicit def StemEncodeJson: EncodeJson[StemAST] =
-    EncodeJson((n: StemAST) =>
-      ("type" := n._type.asJson) ->:
-      jEmptyObject
+implicit def ExclusionEncodeJson: EncodeJson[ExclusionAST] =
+    EncodeJson((n: ExclusionAST) =>
+      n.value.asJson
       )
       
+implicit def StemEncodeJson: EncodeJson[StemAST] =
+    EncodeJson((n: StemAST) =>
+      n.value.asJson
+      )
+
+implicit def WildCardEncodeJson: EncodeJson[WildCardAST] =
+    EncodeJson((n: WildCardAST) =>
+      ("type" := jString("wildcard")) ->:
+      jEmptyObject
+      )
 // Json decoders
 implicit def SchemaDecodeJson: DecodeJson[SchemaAST] =
     DecodeJson((c) => for {
@@ -226,18 +256,21 @@ implicit def SchemaDecodeJson: DecodeJson[SchemaAST] =
 implicit def ShapeDecodeJson: DecodeJson[ShapeAST] = {
   DecodeJson((c) => for {
     expression <- (c --\ "expression").as[Option[ExpressionAST]]
+    virtual <- (c --\ "virtual").as[Option[Boolean]]
     closed <- (c --\ "closed").as[Option[Boolean]]
     inherit <- (c --\ "inherit").as[Option[List[String]]]
-  } yield ShapeAST(expression,closed,inherit))
+    extra <- (c --\ "extra").as[Option[List[String]]]
+    semAct <- (c --\ "semAct").as[Option[Map[String,String]]]
+  } yield ShapeAST(expression,virtual,closed,inherit,extra,semAct))
 }
   
 implicit def ExpressionDecodeJson: DecodeJson[ExpressionAST] =
     DecodeJson((c) => for {
      _type <- (c --\ "type").as[String]
      id <- (c --\ "id").as[Option[String]]
-     predicate <- (c --\ "predicate").as[String]
+     predicate <- (c --\ "predicate").as[Option[String]]
      include <- (c --\ "include").as[Option[String]]
-     value <- (c --\ "value").as[ValueClassAST]
+     value <- (c --\ "value").as[Option[ValueClassAST]]
      inverse <- (c --\ "inverse").as[Option[Boolean]]
      negated <- (c --\ "negated").as[Option[Boolean]]
      min <- (c --\ "min").as[Option[Int]]
@@ -284,7 +317,7 @@ implicit def ValueClassDecodeJson: DecodeJson[ValueClassAST] =
 implicit def ValueDecodeJson: DecodeJson[ValueAST] =
     DecodeJson((c) => 
       (for { value <- c.as[String] } yield ValueAST(Left(value))) |||
-      (for { value <- c.as[StemAST] } yield ValueAST(Right(value)))
+      (for { value <- c.as[StemRangeAST] } yield ValueAST(Right(value)))
       )      
  
 implicit def ReferenceDecodeJson: DecodeJson[ReferenceAST] =
@@ -302,13 +335,27 @@ implicit def OrDecodeJson: DecodeJson[OrAST] =
    
 implicit def StemRangeDecodeJson: DecodeJson[StemRangeAST] =
     DecodeJson((c) => for {
-     stem <- (c --\ "stem").as[Either[String,StemAST]]
-     exclusions <- (c --\ "exclusions").as[Option[List[StemAST]]]
-    } yield StemRangeAST(stem,exclusions))      
-   
+     _type <- (c --\ "type").as[Option[String]]
+     stem <- (c --\ "stem").as[Option[StemAST]]
+     exclusions <- (c --\ "exclusions").as[Option[List[ExclusionAST]]]
+    } yield StemRangeAST(_type=_type, stem= stem,exclusions=exclusions))      
+
+implicit def ExclusionDecodeJson: DecodeJson[ExclusionAST] =
+    DecodeJson((c) => 
+      (for { value <- c.as[String] } yield ExclusionAST(Left(value))) |||
+      (for { value <- c.as[StemAST] } yield ExclusionAST(Right(value)))
+      )      
+    
 implicit def StemDecodeJson: DecodeJson[StemAST] =
+    DecodeJson((c) => 
+      (for { value <- c.as[String] } yield StemAST(Left(value))) |||
+      (for { value <- c.as[WildCardAST] } yield StemAST(Right(value)))
+    )      
+
+implicit def WildCardDecodeJson: DecodeJson[WildCardAST] =
     DecodeJson((c) => for {
      _type <- (c --\ "type").as[Option[String]]
-    } yield StemAST(_type))      
-
+     stem <- (c --\ "stem").as[Option[StemAST]]
+    } yield WildCardAST(_type,stem))      
+    
 }

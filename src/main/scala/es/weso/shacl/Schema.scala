@@ -4,7 +4,7 @@ import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import es.weso.rdf._
 import es.weso.shacl.Shacl._
-import es.weso.shacl.ShaclParser._
+import es.weso.shacl.parser._
 import es.weso.shacl.converter._
 import es.weso.shacl.PREFIXES._
 import scala.util.parsing.input.Positional
@@ -13,6 +13,7 @@ import es.weso.monads._
 import org.slf4j._
 import es.weso.utils.IO._
 import es.weso.rdf.jena.RDFAsJenaModel
+
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition

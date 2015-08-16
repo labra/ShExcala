@@ -1,24 +1,20 @@
-package es.weso.shacl
+package es.weso.shacl.parser
 
 import es.weso.parser._
 import es.weso.shacl.Shacl._
 import es.weso.rdf._
 import es.weso.shacl.PREFIXES._
-import es.weso.shex.ShapeParserState
 import scala.util.parsing.combinator.RegexParsers
 import scala.util.parsing.input._
 import scala.util.parsing.input.Positional
-import scala.util.parsing.combinator.PackratParsers
-import scala.util.parsing.combinator.lexical.StdLexical
-import scala.util.parsing.combinator.syntactical.StdTokenParsers
-import scala.io.Codec
-import scala.util.matching.Regex
-import scala.collection.mutable.ListBuffer
-import scala.annotation.tailrec
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import scala.util.{ Try, Success => UtilSuccess, Failure => UtilFailure }
 import org.slf4j._
+import scala.util.{Failure => UtilFailure}
+import scala.util.{Success => UtilSuccess}
+import es.weso.shacl.Shacl._
+import es.weso.shacl._
 
 /**
  * Shacl parser. This parser follows
@@ -39,26 +35,34 @@ trait ShaclParser
   def schemaParser(s: ShapeParserState): Parser[(Schema, ShapeParserState)] =
     shaclSchemaParser(s) ^^
       {
-        case (shaclSchema, s) =>
-          (Schema(s.namespaces, shaclSchema), s)
+        case (shaclSchema, s) => {
+          val newShapes = shaclSchema.shapes ++ s.createdShapes
+          (Schema(s.namespaces, shaclSchema.copy(shapes = newShapes)), s)
+        }
+          
       }
 
-  def starts(s: ShapeParserState): Parser[(List[(IRI, String)], ShapeParserState)] = {
-    repState(s, action)
+  def startActions: StateParser[ShapeParserState, Map[IRI, String]] = {  
+    semanticActions
   }
 
+  def semanticActions: StateParser[ShapeParserState, Map[IRI, String]] = { s =>  
+    repS(action)(s) ^^ { case (as,s1) => (as.toMap,s1)}
+  }
+  
   def action(s: ShapeParserState): Parser[((IRI, String), ShapeParserState)] = {
     symbol("%") ~> iri(s.namespaces) ~ codeDecl ^^ {
       case (iri ~ str) => ((iri, str), s)
     }
   }
 
+  // TODO: Check escape sequences to represent \%
   def codeDecl: Parser[String] = {
     acceptRegex("Code Decl", """\{[^%]*\}""".r)
   }
 
   def shaclSchemaParser(s: ShapeParserState): Parser[(SHACLSchema, ShapeParserState)] =
-    opt(WS) ~> seqRepState(starts, statement)(s) <~ opt(WS) ^^ {
+    opt(WS) ~> seqRepState(startActions, statement)(s) <~ opt(WS) ^^ {
       case ((starts, lsOpt), s1) => {
         val startLabel =
           if (s1.starts.isEmpty) None
@@ -70,31 +74,32 @@ trait ShaclParser
       }
     }
 
-  def rules2Map(rules: List[Option[Rule]]): Map[Label, Shape] = {
-    rules.flatten.toMap
+  def rules2Map(rules: List[Option[ShapeRule]]): Map[Label, Shape] = {
+    rules.flatten.map(x => (x.label,x.shape)).toMap
   }
 
-  type Rule = (Label, Shape)
-
-  def statement(s: ShapeParserState): Parser[(Option[Rule], ShapeParserState)] =
+  case class ShapeRule(label : Label,shape: Shape) 
+  
+  def statement(s: ShapeParserState): Parser[(Option[ShapeRule], ShapeParserState)] =
     (directive(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
-      | begin(s) ^^ { case (rule, s1) => (Some(rule), s1) }
-      | rule(s) ^^ { case (rule, s1) => (Some(rule), s1) }
-      | start(s) ^^ { case s1 => (None, s1) })
+//      | begin(s) ^^ { case (rule, s1) => (Some(rule), s1) }
+      | shapeRule(s) ^^ { case (shape, s1) => (Some(shape), s1) }
+      | start(s) ^^ { case s1 => (None, s1) }
+      )
 
   def directive(s: ShapeParserState): Parser[ShapeParserState] =
     (prefixDirective(s)
       | baseDirective(s))
 
-  def begin(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+/*  def begin: StateParser[ShapeParserState, ShapeRule] = { s =>
     token("begin") ~> opt(WS) ~> "=" ~> opt(WS) ~> {
-      shape(s)
+      shapeExpr(s)
     } ^^ {
       case (shape, s1) => {
-        ((IRILabel(IRI("begin")), shape), s1)
+        (ShapeRule(IRILabel(IRI("begin")), shape), s1)
       }
     }
-  }
+  } */
 
   def start(s: ShapeParserState): Parser[ShapeParserState] = {
     token("start") ~> opt(WS) ~> "=" ~> opt(WS) ~>
@@ -117,11 +122,113 @@ trait ShaclParser
     }
   }
 
-  def rule(s: ShapeParserState): Parser[(Rule, ShapeParserState)] =
-    seqState(label, shape)(s) ^^
-      { case (l ~ shape, s) => ((l, shape), s) }
+  
+  case class Inclusion(
+      labels: Option[List[Label]],
+      extras: Option[List[IRI]],
+      closed: Boolean)
+  object Inclusion {
+    lazy val empty = Inclusion(
+        labels = None, 
+        extras = None, 
+        closed = false)
+  }
+  
+  lazy val closedInclusion = Inclusion.empty.copy(closed = true)
+  
+  def extrasInclusion(ps: List[IRI]) = 
+    Inclusion.empty.copy(extras = Some(ps))
+    
+  def labelsInclusion(labels: List[Label]) = 
+    Inclusion.empty.copy(labels = Some(labels))
 
-  def label(s: ShapeParserState): Parser[(Label, ShapeParserState)] = {
+  
+  type ShapeDef = (List[Inclusion], ShapeExpr)
+
+  def shapeRule: StateParser[ShapeParserState, ShapeRule] = { s => 
+    opt(ignorecase("VIRTUAL")) ~ 
+    seq3State(label, shapeDefinition,semanticActions)(s) ^^ { 
+      case (virtual ~ (((label, shapeDef, as),s1))) => 
+        (mkShapeRule(label,virtual.isDefined, shapeDef,as),s1) 
+    }
+  }
+  
+  
+  def mkShape(shapeDef: ShapeDef): Shape = {
+    val inherit = collectInherit(shapeDef)
+    val extras = collectExtras(shapeDef)
+    val closed = collectClosed(shapeDef)
+    val shape = collectShape(shapeDef)
+    Shape(shapeExpr = shape, 
+            isClosed = closed, 
+            isVirtual = false,
+            inherit = inherit,
+            extras = extras,
+            actions = Map())
+  }
+  
+  def mkShapeRule(
+      label: Label, 
+      isVirtual: Boolean,
+      shapeDef: ShapeDef,
+      as: Actions): ShapeRule = {
+    val inherit = collectInherit(shapeDef)
+    val extras = collectExtras(shapeDef)
+    val closed = collectClosed(shapeDef)
+    val shape = collectShape(shapeDef)
+    ShapeRule(label, Shape(shapeExpr = shape, 
+            isClosed = closed, 
+            isVirtual = isVirtual,
+            inherit = inherit,
+            extras = extras,
+            actions = as))
+  }
+  
+  def collectInherit(sd: ShapeDef): Set[Label] = {
+    sd._1.filter(_.labels.isDefined).map(_.labels.get).flatten.toSet
+  }
+  
+  def collectExtras(sd: ShapeDef): Set[IRI] = {
+    sd._1.filter(_.extras.isDefined).map(_.extras.get).flatten.toSet
+  }
+  
+  def collectClosed(sd: ShapeDef): Boolean = {
+    sd._1.filter(_.closed == true).length > 0
+  }
+  
+  def collectShape(sd:ShapeDef): ShapeExpr = {
+    sd._2
+  }
+  
+  def shapeInclusions: StateParser[ShapeParserState,List[Inclusion]] = { 
+    repS(shapeInclusion)
+  }
+  
+  
+  def shapeInclusion: StateParser[ShapeParserState,Inclusion] = { s =>
+   ( ignorecase("CLOSED") ^^^ (closedInclusion,s)
+   | ignorecase("EXTRA") ~> rep1State(pred)(s) ^^ {
+     case (ps,s1) => (extrasInclusion(ps),s1)
+   }
+   | symbol("&") ~> rep1State(label)(s) ^^ {
+     case (labels,s1) => (labelsInclusion(labels),s1)
+   }
+   )
+  }
+  
+  def pred: StateParser[ShapeParserState,IRI] = { s =>
+    opt(WS) ~> predicate(s) <~ opt(WS)^^ {
+      case iri => (iri,s)
+    }
+  }
+  
+  def shapeDefinition: StateParser[ShapeParserState,ShapeDef] = { s => 
+    seqState(shapeInclusions,shapeExpr)(s) ^^ {
+      case (inclusions ~ shape,s1) => ((inclusions,shape),s1) 
+    }  
+  }
+    
+  def label: StateParser[ShapeParserState, Label] = { s =>
     opt(WS) ~>
       (iri(s.namespaces) ^^ {
         case iri => (IRILabel(iri), s)
@@ -131,18 +238,14 @@ trait ShaclParser
         })
   }
 
-  // TODO: Handle CLOSED and inherit
-  def shape(s: ShapeParserState): Parser[(Shape, ShapeParserState)] =
-    opt(WS) ~> typeSpec(s) ^^ {
-      case (shape, s1) => (Shape(shape, false, Set()), s1)
-    }
-
-  def shapeExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] =
+  def shapeExpr: StateParser[ShapeParserState, ShapeExpr] = { s =>
     opt(WS) ~> typeSpec(s) ^^ {
       case (shape, s1) => (shape, s1)
     }
+  }
 
-  def typeSpec(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
+  // TODO: Rename to shapeDefinition
+  def typeSpec: StateParser[ShapeParserState, ShapeExpr] = { s =>
     "{" ~> opt(WS) ~> opt(oneOfExpr(s)) <~ opt(WS) <~ "}" ^^
       {
         case None            => (EmptyShape, s)
@@ -150,36 +253,51 @@ trait ShaclParser
       }
   }
 
-  def oneOfExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
-    seqState(sequenceExpr,
-      repS(arrowState(someOfExpr, symbol("|"))))(s) ^^
+  def oneOfExpr: StateParser[ShapeParserState, ShapeExpr] = { s =>
+    seqState(someOfExpr,
+      repS(arrowState(oneOfExpr, symbol("|"))))(s) ^^
       {
         case (shape ~ List(), s1) => (shape, s1)
         case (shape ~ shapes, s1) => (OneOf(None, shape :: shapes), s1)
       }
-
   }
 
-  def someOfExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
+  def someOfExpr: StateParser[ShapeParserState, ShapeExpr] = { s =>
     seqState(sequenceExpr,
-      repS(arrowState(sequenceExpr, symbol("||"))))(s) ^^
+      repS(arrowState(someOfExpr, symbol("||"))))(s) ^^
       {
         case (shape ~ List(), s1) => (shape, s1)
         case (shape ~ shapes, s1) => (SomeOf(None, shape :: shapes), s1)
       }
 
   }
-
-  def sequenceExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
+  
+  def sequenceExpr: StateParser[ShapeParserState, ShapeExpr] = { s => 
     seqState(unaryExpr,
-      repS(arrowState(sequenceExpr, symbol(","))))(s) ^^
+      repS(arrowState(sequenceExpr, symbol(",")))
+      )(s) <~ opt(",") ^^
       {
         case (shape ~ List(), s1) => (shape, s1)
         case (shape ~ shapes, s1) => (GroupShape(None, shape :: shapes), s1)
       }
   }
+  
+  
+  def simplifyGroup(s: ShapeExpr): ShapeExpr = {
+    val xs = collectGroupShapes(s)
+    if (xs.length > 1) {
+      GroupShape(None,xs)
+    } else s
+  }
+  
+  def collectGroupShapes(s: ShapeExpr): List[ShapeExpr] = {
+    s match {
+      case GroupShape(None,List(x,rest)) => x :: collectGroupShapes(rest)
+      case _ => List(s)
+    }
+  } 
 
-  def unaryExpr(s: ShapeParserState): Parser[(ShapeExpr, ShapeParserState)] = {
+  def unaryExpr: StateParser[ShapeParserState, ShapeExpr] = { s =>
     (arc(s)
       | (symbol("(") ~>
         oneOfExpr(s) <~
@@ -224,6 +342,13 @@ trait ShaclParser
       }
       | valueSet(s)
       | groupShapeConstr(s)
+      | shapeDefinition(s) ^^ {
+        case (shapeDef,s1) => {
+         val shape = mkShape(shapeDef)
+         val (label,s2) = s1.newShape(shape)
+         (SingleShape(label),s2)
+        }
+      }
       )
   }
 
@@ -258,25 +383,38 @@ trait ShaclParser
       basicValueObject(s))
   }
 
-  def basicValueObject(s: ShapeParserState): Parser[(ValueObject, ShapeParserState)] =
+  def basicValueObject: StateParser[ShapeParserState, ValueObject] = { s => 
     opt(WS) ~> (
-      /*      (regexChars ~ opt(LANGTAG) ^^ {
-        case r ~ None => (RegexObject(r, None), s)
-        case r ~ Some(lang) => (RegexObject(r, Some(lang)), s)
-      } | */
-      iri(s.namespaces) ^^ {
-        case iri => (ValueIRI(iri), s)
+        lift(iriRange(s.namespaces))(s) 
+      | literal(s.namespaces) ^^ { case l => (ValueLiteral(l), s) } 
+      ) <~ opt(WS)
+  }
+    
+  def valueAny: PrefixMap => Parser[ValueObject] = { pm => 
+      dot ~> rep1(exclusion(pm)) ^^ {
+        case exclusions => ValueAny(exclusions)
       }
-      /*        | BlankNode(s.bNodeLabels) ^^ {
-          case (id, table) => {
-            (RDFNodeObject(id), s.newTable(table))
-          }
-        } */
-      | literal(s.namespaces) ^^ {
-        case l => (ValueLiteral(l), s)
-      } /*        | LANGTAG ^^ {
-          case lang => (LangObject(lang), s)
-        } */ ) <~ opt(WS)
+  }
+  
+  def exclusion: PrefixMap => Parser[Exclusion] = { pm =>
+    symbol("-") ~> iri(pm) ~ opt(symbol("~")) ^^ {
+      case iri ~ None => Exclusion(iri,false)
+      case iri ~ Some(_) => Exclusion(iri,true)
+    } 
+  }
+  
+  def iriRange: PrefixMap => Parser[ValueObject] = { pm => 
+      iriOrStem(pm) | valueAny(pm) 
+    } 
+  
+  def iriOrStem:PrefixMap => Parser[ValueObject] = { pm =>
+      iri(pm) ~ rep(exclusion(pm)) ^^ {
+        case iri ~ Nil => ValueIRI(iri)
+        case iri ~ exclusions => ValueStem(iri,exclusions)
+      }
+  }
+    
+    
 
   def xsFacets(s: ShapeParserState): Parser[List[XSFacet]] = {
     repsep(xsFacet(s), WS)
@@ -286,9 +424,10 @@ trait ShaclParser
     repsep(stringFacet(s), WS)
   }
 
+  // TODO: Check differences between Shacl literals and Turtle literals
   def stringFacet(s: ShapeParserState): Parser[StringFacet] = {
-    ((ignorecase("PATTERN") ~> regexChars) ^^ {
-      case regex => Pattern(regex)
+    ((ignorecase("PATTERN") ~> opt(WS) ~> string) ^^ {
+      case str => Pattern(str.r)
     }
       | ignorecase("LENGTH") ~> integer ^^ { case n => Length(n) }
       | ignorecase("MINLENGTH") ~> integer ^^ { case n => MinLength(n) }
@@ -324,8 +463,7 @@ trait ShaclParser
     (symbol("*") ^^^ star
       | symbol("+") ^^^ plus
       | symbol("?") ^^^ optional
-      | symbol("{") ~> integer ~
-      opt(symbol(",") ~> integer) <~ symbol("}") ^^
+      | symbol("{") ~> integer ~ upperBound <~ symbol("}") ^^
       {
         case m ~ maybeN =>
           (m, maybeN) match {
@@ -337,6 +475,15 @@ trait ShaclParser
           }
       })
   }
+  
+  def upperBound: Parser[Option[Int]] = {
+    ( opt(symbol(",") ~> opt(integer | symbol("*"))) ^^ {
+      case None => None
+      case Some(None) => None
+      case Some(Some(n: Integer)) => Some(n)
+      case Some(Some(_)) => None
+    })
+  }
 
   def dot = opt(WS) ~> symbol(".") <~ opt(WS)
 
@@ -344,12 +491,11 @@ trait ShaclParser
     """\d\d*""".r ^^ (s => s.toInt)
   }
 
-  def regexChars: Parser[Regex] = {
-    "/" ~> acceptRegex("regex", """[a-zA-Z0-9\.\+\*\(\)\[\]\-\{\}]*""".r) <~ "/" ^^ {
-      case str => {
-        str.r
-      }
-    }
+  def regexChars: Parser[String] = {
+    ( STRING_LITERAL_SINGLE_QUOTE 
+    | STRING_LITERAL_LONG_QUOTE
+    | STRING_LITERAL_QUOTE
+    )
   }
 
   // Parsing symbols skipping spaces...
@@ -362,6 +508,11 @@ trait ShaclParser
   // http://stackoverflow.com/questions/6080437/case-insensitive-scala-parser-combinator
   def ignorecase(str: String): Parser[String] = {
     opt(WS) ~> ("""(?i)\Q""" + str + """\E""").r <~ opt(WS)
+  }
+
+  // TODO: Move this method to StateParser
+  def lift[S,A](p:Parser[A]): StateParser[S,A] = { s =>
+    p ^^ { case v => (v,s) } 
   }
 
 }

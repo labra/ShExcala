@@ -171,7 +171,7 @@
 		  { "type": "tripleConstraint", "predicate": "http://all.example/pattern", "value": { "type": "valueClass", "values": [
 		    {
 		      "type": "stemRange",
-		      "stem": { "type": "wildcard" },
+				"stem": { "type": "wildcard" },
 		      "exclusions": [
 			{ "stem": "http://all.example/a", "type": "stem" },
 			"http://all.example/b"

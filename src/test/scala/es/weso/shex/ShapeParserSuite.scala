@@ -2,13 +2,13 @@ package es.weso.shex
 
 import org.scalatest._
 import org.scalatest.prop._
-
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import es.weso.shex.ShapeDoc._
 import es.weso.shex.ShapeSyntax._
 import scala.Either._
 import es.weso.shacl.PREFIXES._
+import es.weso.shacl.parser.ShapeParserState
 
 class ShapeParserSuite extends ShapeParser
     with FunSpecLike

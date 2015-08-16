@@ -11,10 +11,6 @@ import es.weso.rdfgraph.nodes._
 
 object AST2Schema {
   
- def Undefined : Nothing = {
-   throw new Exception("Undefined") 
- } 
-  
  def cnvAST(ast: SchemaAST): Try[Schema] = {
    Try{
      val start = ast.start.map(str => toLabel(str))
@@ -43,20 +39,36 @@ object AST2Schema {
  def cnvShape(shape: ShapeAST): Shape = {
    val shapeExpr = cnvExpr(shape.expression.getOrElse(ExpressionAST.empty))
    val isClosed = shape.closed.getOrElse(false)
-   val inherit: Set[IRI] = cnvInherit(shape.inherit.getOrElse(List()))
-   Shape(shapeExpr = shapeExpr, isClosed = isClosed, inherit = inherit)
+   val isVirtual = shape.virtual.getOrElse(false)
+   val inherit: Set[Label] = cnvInherit(shape.inherit.getOrElse(List()))
+   val extras: Set[IRI] = cnvExtras(shape.extra.getOrElse(List()))
+   val actions: Actions = cnvActions(shape.semAct)
+   Shape(shapeExpr = shapeExpr, 
+       isVirtual = isVirtual, 
+       isClosed = isClosed, 
+       inherit = inherit,
+       extras = extras,
+       actions = actions)
  }
  
- def cnvInherit(inh: List[String]): Set[IRI]= {
-   inh.map{ case str => IRI(str) }.toSet
+ def cnvInherit(inh: List[String]): Set[Label]= {
+   inh.map{ case str => toLabel(str) }.toSet
+ }
+ 
+ def cnvExtras(extra: List[String]): Set[IRI] = {
+   extra.map{ case str => IRI(str) }.toSet
+ } 
+ 
+ def cnvActions(as: Map[String,String]): Map[IRI,String]= {
+   as.map{ case (s1,s2) => (IRI(s1),s2) }
  }
  
  def cnvExpr(expr: ExpressionAST): ShapeExpr = {
    expr._type match {
      case "tripleConstraint" => {
-       val iri = IRI(expr.predicate)
-       val id = expr.id.map(str => mkLabel(str))
-       val value = cnvValueClass(expr.value)
+       val iri = IRI(expr.predicate.getOrElse(""))
+       val id = expr.id.map(str => toLabel(str))
+       val value = expr.value.fold[ValueClass](AnyKind)(cnvValueClass)
        val card = cnvCard(expr)
        TripleConstraintCard(id = id, iri = iri, value = value, card= card)
      }
@@ -68,7 +80,19 @@ object AST2Schema {
        val shapes = cnvExpressions(expr.expressions)
        SomeOf(None,shapes)
      }
+     case "group" => {
+       val shapes = cnvExpressions(expr.expressions)
+       if (expr.min.isEmpty && expr.max.isEmpty)
+         GroupShape(None,shapes)
+       else {
+         val card = cnvCard(expr)
+         RepetitionShape(None,GroupShape(None,shapes),card)
+       }
+     }
+     
      case "" => EmptyShape
+     
+     case "include" => throw new Exception("Unsupported include " ) 
      
      case _=> {
        throw new Exception("Unsupported expression conversion " + expr)
@@ -198,9 +222,9 @@ object AST2Schema {
  
  def cnvShapeConstr(ref: ReferenceAST): ShapeConstr = {
    ref.value match {
-     case Left(str) => SingleShape(mkLabel(str))
+     case Left(str) => SingleShape(toLabel(str))
      case Right(OrAST(disjuncts)) => 
-       DisjShapeConstr(disjuncts.map(x => mkLabel(x)).toSet)  
+       DisjShapeConstr(disjuncts.map(x => toLabel(x)).toSet)  
    }
  }
  
@@ -209,10 +233,51 @@ object AST2Schema {
  }
  
  def cnvValue(v: ValueAST): ValueObject = {
-   v.value.fold(cnvString,cnvStem)
+   v.value.fold(cnvString,cnvStemRange)
+ }
+
+ def cnvStemRange(s: StemRangeAST): ValueObject = {
+   val exclusions = cnvExclusions(s.exclusions)
+   val stem = cnvStem(s.stem)
+   stem match {
+     case Some(iri) => ValueStem(iri,exclusions)
+     case None => ValueAny(exclusions) 
+   } 
  }
  
- def cnvStem(s: StemAST): ValueObject = Undefined
+ def cnvExclusions(excl: Option[List[ExclusionAST]]): List[Exclusion] = {
+   excl.getOrElse(List()).map(cnvExcl)
+ }
+ 
+ def cnvExcl(excl: ExclusionAST): Exclusion = {
+   excl.value.fold(
+       str => Exclusion(IRI(str),false), 
+       s => s.value.fold(
+           str => Exclusion(IRI(str),false), 
+           wc => cnvStemExclusion(wc)
+       )
+   )
+ }
+
+ 
+ def cnvStem(s: Option[StemAST]): Option[IRI] = {
+   if (s.isEmpty) None
+   else {
+     s.get.value match {
+       case Left(str) => Some(IRI(str))
+       case Right(_) => None
+     }
+   }
+ }
+ 
+ 
+ def cnvStemExclusion(s: WildCardAST): Exclusion = {
+   s.stem match {
+     case Some(StemAST(Left(str))) => Exclusion(IRI(str),true)
+     case _ => throw new Exception("cnvStemExclusion: Unsupported conversion..." + s)
+   }
+ }
+ 
  
  def cnvString(s: String): ValueObject = {
    if (s.startsWith("\"")) {

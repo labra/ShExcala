@@ -17,11 +17,13 @@ object Shacl {
   /**
    * Represents a SHACL Schema
    */
+  type Actions = Map[IRI,String]
+  
   case class SHACLSchema(
     id: Option[Label],
     shapes: Map[Label,Shape],
     start: Option[Label],
-    startActions: Map[IRI,String])
+    startActions: Actions)
       extends Positional // Positional helps Parser Combinators to show positions 
       {
 
@@ -48,15 +50,23 @@ object Shacl {
   case class Shape(
     shapeExpr: ShapeExpr,
     isClosed: Boolean,
-    inherit: Set[IRI]
+    isVirtual: Boolean,
+    inherit: Set[Label],
+    extras: Set[IRI],
+    actions: Actions
   ) extends Positional
   
   object Shape {
     
     lazy val empty: Shape = 
-       Shape(shapeExpr = EmptyShape, 
-           isClosed=false, 
-           Set())
+       Shape(
+           shapeExpr = EmptyShape, 
+           isClosed=false,
+           isVirtual=false,
+           inherit = Set(),
+           extras = Set(),
+           actions = Map()
+           )
   }
 
   sealed trait ShapeExpr extends Positional
@@ -107,7 +117,9 @@ object Shacl {
   case class SomeOf(id: Option[Label],shapes: Seq[ShapeExpr]) extends ShapeExpr
   
   // GroupShape(id,List(s1,s2,s3)) = Group2(id,s1,Group2(_,s2,Group2(_,s2,EmptyShape)))
-  case class GroupShape(id: Option[Label], shapes: Seq[ShapeExpr]) extends ShapeExpr
+  case class GroupShape(
+      id: Option[Label], 
+      shapes: Seq[ShapeExpr]) extends ShapeExpr
 
   case class RepetitionShape(
       id:Option[Label],
@@ -181,6 +193,10 @@ object Shacl {
   case class ValueIRI(iri: IRI) extends ValueObject
   case class ValueLiteral(literal: Literal) extends ValueObject
   case class ValueLang(lang: Lang) extends ValueObject
+  case class ValueStem(stem: IRI, exclusions: List[Exclusion]) extends ValueObject
+  case class ValueAny(exclusions: List[Exclusion]) extends ValueObject
+  
+  case class Exclusion(iri: IRI, isStem: Boolean) extends Positional
 
   sealed trait NodeKind extends ValueConstr 
      with Positional {
