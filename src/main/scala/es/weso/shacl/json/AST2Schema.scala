@@ -68,31 +68,50 @@ object AST2Schema {
      case "tripleConstraint" => {
        val iri = IRI(expr.predicate.getOrElse(""))
        val id = expr.id.map(str => toLabel(str))
-       val value = expr.value.fold[ValueClass](AnyKind)(cnvValueClass)
+       val value = expr.value.fold[ValueClass](any)(cnvValueClass)
        val card = cnvCard(expr)
-       TripleConstraintCard(id = id, iri = iri, value = value, card= card)
+       val inverse = cnvInverse(expr.inverse)
+       val negated = cnvNegated(expr.negated)
+       val annotations = cnvAnnotations(expr.annotations)
+       val actions = cnvActions(expr.semAct)
+       TripleConstraint.empty.copy(
+           id = id, 
+           iri = iri, 
+           value = value, 
+           card= card, 
+           inverse = inverse,
+           negated = negated,
+           annotations = annotations,
+           actions = actions)
      }
      case "oneOf" => {
+       val id = expr.id.map(str => toLabel(str))
        val shapes = cnvExpressions(expr.expressions)
-       OneOf(None,shapes)
+       OneOf(id,shapes)
      }
      case "someOf" => {
+             val id = expr.id.map(str => toLabel(str))
        val shapes = cnvExpressions(expr.expressions)
-       SomeOf(None,shapes)
+       SomeOf(id,shapes)
      }
      case "group" => {
-       val shapes = cnvExpressions(expr.expressions)
+      val id = expr.id.map(str => toLabel(str))
+        val shapes = cnvExpressions(expr.expressions)
        if (expr.min.isEmpty && expr.max.isEmpty)
-         GroupShape(None,shapes)
+         GroupShape(id,shapes)
        else {
          val card = cnvCard(expr)
-         RepetitionShape(None,GroupShape(None,shapes),card)
+         RepetitionShape(id,GroupShape(None,shapes),card)
        }
      }
      
-     case "" => EmptyShape
+     case "" => EmptyShape()
      
-     case "include" => throw new Exception("Unsupported include " ) 
+     case "include" => {
+      val id = expr.id.map(str => toLabel(str)) 
+      val label = expr.include.map(str => toLabel(str)).get
+      IncludeShape(id,label) 
+     } 
      
      case _=> {
        throw new Exception("Unsupported expression conversion " + expr)
@@ -103,6 +122,40 @@ object AST2Schema {
  def cnvExpressions(expressions: Option[List[ExpressionAST]]): List[ShapeExpr] = {
    expressions.getOrElse(List()).map(cnvExpr)
  }
+
+ def cnvNegated(negated: Option[Boolean]): Boolean = {
+   negated.getOrElse(false)
+ }
+
+ def cnvInverse(i: Option[Boolean]): Boolean = {
+   i.getOrElse(false)
+ }
+ 
+ def cnvAnnotations(annotations: Option[List[List[String]]]): List[Annotation]= {
+   annotations.getOrElse(List()).map(a => cnvAnnotation(a))
+ }
+ 
+ def cnvAnnotation(annotation: List[String]): Annotation = {
+   if (annotation.length != 2) throw new Exception("Unsupported annotations without 2 elements: annotation = " + annotation)
+   else {
+     val iri = cnvIRI(annotation(0))
+     val value = cnvValue(annotation(1))
+     Annotation(iri,value)
+   }
+ }
+ 
+ def cnvIRI(str: String): IRI = {
+   IRI(str)
+ }
+ 
+ def cnvValue(str: String): Either[IRI,Literal] = {
+  if (str.startsWith("\"")) {
+     Right(cnvLiteral(str))
+   } else {
+     Left(IRI(str))
+   } 
+ }
+
  
  def cnvCard(expr: ExpressionAST): Cardinality = {
    (expr.min, expr.max) match {
@@ -125,23 +178,26 @@ object AST2Schema {
            LiteralKind(facets)
          }
          case "nonliteral" => {
+           val shapeConstr = cnvShapeConstr(vc.reference)
            val facets = collectFacets(vc)
-           NonLiteralKind(facets)
+           NonLiteralKind(shapeConstr,facets)
          }
          case "bnode" => {
+           val shapeConstr = cnvShapeConstr(vc.reference)
            val facets = collectStringFacets(vc)
-           BNodeKind(facets)
+           BNodeKind(shapeConstr,facets)
          }
          case "iri" => {
+           val shapeConstr = cnvShapeConstr(vc.reference)
            val facets = collectStringFacets(vc)
-           IRIKind(facets)
+           IRIKind(shapeConstr, facets)
          }
          case s@_ => throw new Exception(s"Unsupported nodeKind $s")
        }
      } else if (vc.reference.isDefined) {
-       cnvShapeConstr(vc.reference.get)
+       cnvShapeConstr(vc.reference).get
      } else
-       AnyKind
+       any
    }  
  }
 
@@ -220,12 +276,13 @@ object AST2Schema {
    else List()
  }
  
- def cnvShapeConstr(ref: ReferenceAST): ShapeConstr = {
-   ref.value match {
+ def cnvShapeConstr(ref: Option[ReferenceAST]): Option[ShapeConstr] = {
+   ref.map(ref => 
+     ref.value match {
      case Left(str) => SingleShape(toLabel(str))
      case Right(OrAST(disjuncts)) => 
        DisjShapeConstr(disjuncts.map(x => toLabel(x)).toSet)  
-   }
+   })
  }
  
  def cnvValues(values: List[ValueAST]): Seq[ValueObject] = {
@@ -278,10 +335,9 @@ object AST2Schema {
    }
  }
  
- 
  def cnvString(s: String): ValueObject = {
    if (s.startsWith("\"")) {
-     cnvLiteral(s)
+     cnvValueLiteral(s)
    } else {
      ValueIRI(IRI(s))
    }
@@ -296,8 +352,12 @@ object AST2Schema {
  lazy val xsd_integer = xsd + "integer"
  lazy val xsd_decimal = xsd + "decimal"
  lazy val xsd_double = xsd + "double"
+
+ def cnvValueLiteral(l: String): ValueObject = {
+   ValueLiteral(cnvLiteral(l))
+ }
  
- def cnvLiteral(l: String): ValueObject = {
+ def cnvLiteral(l: String): Literal = {
    l match {
      case literalDatatype(lex,datatype) => {
        datatype match {
@@ -305,32 +365,32 @@ object AST2Schema {
          case `xsd_integer` => cnvInteger(lex)
          case `xsd_decimal` => cnvDecimal(lex)
          case `xsd_double` => cnvDouble(lex)
-         case _ => ValueLiteral(DatatypeLiteral(lex,IRI(datatype))) 
+         case _ => DatatypeLiteral(lex,IRI(datatype)) 
        }
        
      }
-     case literalLang(lex,lang) => ValueLiteral(LangLiteral(lex,Lang(lang)))
-     case literal(lex) => ValueLiteral(StringLiteral(lex))
+     case literalLang(lex,lang) => LangLiteral(lex,Lang(lang))
+     case literal(lex) => StringLiteral(lex)
      case _ => throw new Exception(s"Literal |$l| doesn't match" )
    } 
  }
 
- def cnvInteger(str:String): ValueObject = {
-   ValueLiteral(IntegerLiteral(Integer.parseInt(str)))
+ def cnvInteger(str:String): Literal = {
+   IntegerLiteral(Integer.parseInt(str))
  }
  
- def cnvDouble(str:String): ValueObject = {
-   ValueLiteral(DoubleLiteral(str.toDouble))
+ def cnvDouble(str:String): Literal = {
+   DoubleLiteral(str.toDouble)
  }
  
- def cnvDecimal(str:String): ValueObject = {
-   ValueLiteral(DecimalLiteral(BigDecimal(str)))
+ def cnvDecimal(str:String): Literal = {
+   DecimalLiteral(BigDecimal(str))
  }
  
- def cnvBoolean(str:String): ValueObject = {
+ def cnvBoolean(str:String): Literal = {
    str match {
-     case "false" => ValueLiteral(BooleanLiteral(false))
-     case "true" => ValueLiteral(BooleanLiteral(true))
+     case "false" => BooleanLiteral(false)
+     case "true" => BooleanLiteral(true)
      case _ => throw new Exception(s"cnvBoolean: Unsupported value $str")
    }
  }

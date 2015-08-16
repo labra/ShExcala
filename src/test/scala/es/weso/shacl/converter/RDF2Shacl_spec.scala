@@ -148,7 +148,12 @@ class RDF2ShaclSpec
         c <- RDF2Schema.tripleConstraint(n,rdf)
       } yield 
         c 
-      c.success.value should be(TripleConstraintCard(Some(n_label),p,LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3))) 
+      c.success.value should be(
+          TripleConstraint.empty.copy(
+              id = Some(n_label),
+              iri = p,
+              value = LiteralDatatype(xsd_string,emptyFacets),
+              card = RangeCardinality(1,3))) 
     }
     
     it("Should parse an open shape definition ") {
@@ -175,9 +180,11 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = Shape.empty.copy(
-              shapeExpr = TripleConstraintCard(Some(prop_label),
-                               p,
-                               LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3))
+              shapeExpr = TripleConstraint.empty.copy(
+                  id = Some(prop_label),
+                  iri = p,
+                  value = LiteralDatatype(xsd_string,emptyFacets),
+                  card = RangeCardinality(1,3))
           ) 
       triedMustBe(expected, c)
     } 
@@ -205,9 +212,11 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = Shape.empty.copy(
-              shapeExpr = TripleConstraintCard(Some(prop_label),
-                               p,
-                               LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3))
+              shapeExpr = TripleConstraint.empty.copy(
+                  id = Some(prop_label),
+                  iri = p,
+                  value = LiteralDatatype(xsd_string,emptyFacets),
+                  card = RangeCardinality(1,3))
           ) 
       // We cannot compare with unknown bnodeLabels
       // triedMustBe(expected, c)
@@ -239,13 +248,17 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = Shape.empty.copy(
-              shapeExpr = GroupShape(None,Seq(TripleConstraintCard(Some(prop1_label),
-                               p,
-                               LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)
-                             ),
-                             TripleConstraintCard(Some(prop2_label),
-                               q,
-                               iriKind,UnboundedCardinalityFrom(1)
+              shapeExpr = GroupShape(None,
+                  Seq(TripleConstraint.empty.copy(
+                      id = Some(prop1_label),
+                      iri = p,
+                      value = LiteralDatatype(xsd_string,emptyFacets),
+                      card = RangeCardinality(1,3)),
+                      TripleConstraint.empty.copy(
+                          id = Some(prop2_label),
+                          iri =q,
+                          value = iriKind,
+                          card = UnboundedCardinalityFrom(1)
                              )
                             ))
           ) 
@@ -277,15 +290,17 @@ class RDF2ShaclSpec
       } yield 
         c 
       val expected = Shape.empty.copy(
-              shapeExpr = GroupShape(None,Seq(TripleConstraintCard(Some(prop1_label),
-                               p,
-                               LiteralDatatype(xsd_string,emptyFacets),RangeCardinality(1,3)
-                             ),
-                             TripleConstraintCard(Some(prop2_label),
-                               q,
-                               iriKind,UnboundedCardinalityFrom(1)
-                             )
-                            ))
+              shapeExpr = GroupShape(None,Seq(
+                  TripleConstraint.empty.copy(
+                      id = Some(prop1_label),
+                      iri = p,
+                      value = LiteralDatatype(xsd_string,emptyFacets),
+                      card = RangeCardinality(1,3)),
+                   TripleConstraint.empty.copy(
+                       id = Some(prop2_label),
+                       iri = q,
+                       value = iriKind,
+                       card = UnboundedCardinalityFrom(1))))
           ) 
       // We cannot compare with unknown bnodeLabels
       // triedMustBe(expected, c)

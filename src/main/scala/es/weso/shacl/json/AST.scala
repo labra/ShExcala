@@ -106,8 +106,10 @@ object ExpressionAST {
         predicate=None,
         include=None,
         value=None,
-        inverse=None,negated=None,
-        min=None,max=None,
+        inverse=None,
+        negated=None,
+        min=None,
+        max=None,
         expressions=None,
         annotations=None,
         semAct=None

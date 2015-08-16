@@ -60,7 +60,7 @@ object Shacl {
     
     lazy val empty: Shape = 
        Shape(
-           shapeExpr = EmptyShape, 
+           shapeExpr = EmptyShape(), 
            isClosed=false,
            isVirtual=false,
            inherit = Set(),
@@ -69,57 +69,102 @@ object Shacl {
            )
   }
 
-  sealed trait ShapeExpr extends Positional
+  sealed trait ShapeExpr extends Positional {
+    def addId(label: Label): ShapeExpr
+  }
 
 /*  case class TripleConstraint(
     id: Option[Label],
     iri: IRI,
     value: ValueClass
-    ) extends ShapeExpr */ 
+    ) extends ShapeExpr 
 
   case class InverseTripleConstraint(
     id: Option[Label],
     iri: IRI,
     shape: ShapeConstr
-    ) extends ShapeExpr
+    ) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
+  } */
 
-  case class TripleConstraintCard(
+  case class TripleConstraint(
     id: Option[Label],
     iri: IRI,
     value: ValueClass,
-    card: Cardinality
-    ) extends ShapeExpr 
+    card: Cardinality,
+    inverse: Boolean,
+    negated: Boolean,
+    annotations: List[Annotation],
+    actions: Actions
+    ) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
+  }
+  
+  object TripleConstraint {
+    def empty = TripleConstraint(
+        id = None,
+        iri = rdf_type,
+        value = any,
+        card = defaultCardinality,
+        inverse = false,
+        negated = false,
+        annotations = List(),
+        actions = Map()
+        )
+  }
 
-  case class InverseTripleConstraintCard(
-    id: Option[Label],
-    iri: IRI,
-    shape: ShapeConstr,
-    card: Cardinality
-    ) extends ShapeExpr
-
+  case class Annotation(
+      iri: IRI, 
+      value: Either[IRI,Literal]
+  )
   // Binary operators for convenience
     
   // Or(l,s1,s2) = SomeOfShape(l,List(s1,s2))
-  case class Or(id: Option[Label], shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr
+  case class Or(
+      id: Option[Label], 
+      shape1: ShapeExpr, 
+      shape2: ShapeExpr) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
+  }
   
   // Or(l,s1,s2) = SomeOfShape(l,List(s1,s2))
-  case class XOr(id: Option[Label], shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr
+  case class XOr(
+      id: Option[Label], 
+      shape1: ShapeExpr, 
+      shape2: ShapeExpr) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
+  }
   
   // Group(l,s1,s2) = GroupShape(l,s1,s2)
-  case class Group2(id: Option[Label],shape1: ShapeExpr, shape2: ShapeExpr) extends ShapeExpr 
+  case class Group2(
+      id: Option[Label],
+      shape1: ShapeExpr, 
+      shape2: ShapeExpr) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
+  } 
   
   // XOr(l,s1,s2) = OneOfShape(l,List(s1,s2))
-  case class OneOf(id: Option[Label], shapes: List[ShapeExpr]) extends ShapeExpr
+  case class OneOf(
+      id: Option[Label], 
+      shapes: List[ShapeExpr]) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
+  }
   
   // List-based operators (semantically, they can be defined in terms of the binary operators
   
   // SomeOfShape(id,List(s1,s2,s3)) = Or(id,s1,Or(_,s2,Or(_,s2,EmptyShape)))
-  case class SomeOf(id: Option[Label],shapes: Seq[ShapeExpr]) extends ShapeExpr
+  case class SomeOf(
+      id: Option[Label],
+      shapes: Seq[ShapeExpr]) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
+  }
   
   // GroupShape(id,List(s1,s2,s3)) = Group2(id,s1,Group2(_,s2,Group2(_,s2,EmptyShape)))
   case class GroupShape(
       id: Option[Label], 
-      shapes: Seq[ShapeExpr]) extends ShapeExpr
+      shapes: Seq[ShapeExpr]) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
+  }
 
   case class RepetitionShape(
       id:Option[Label],
@@ -128,9 +173,28 @@ object Shacl {
     def minusOne: RepetitionShape = {
       this.copy(card = card.minusOne)
     }
+    
+    def addId(label:Label) = 
+      this.copy(id = Some(label))
+  
+  }
+
+  case class IncludeShape(
+      id: Option[Label],
+      label: Label
+  ) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
   }
   
-  case object EmptyShape extends ShapeExpr
+  case class EmptyShape (
+      id: Option[Label]
+      ) extends ShapeExpr {
+    def addId(label:Label) = this.copy(id = Some(label))
+  }
+  
+  object EmptyShape {
+    def apply(): EmptyShape = EmptyShape(id = None)
+  }
 
   /**
    * Labels
@@ -187,7 +251,7 @@ object Shacl {
 
   case class ValueSet(s: Seq[ValueObject]) extends ValueConstr
     with Positional
-
+    
   sealed trait ValueObject extends Positional
   
   case class ValueIRI(iri: IRI) extends ValueObject
@@ -202,39 +266,44 @@ object Shacl {
      with Positional {
     def token: String
   }
+  
+  lazy val any = ValueSet(Seq(ValueAny(exclusions = List())))
 
-  case class IRIKind(facets: List[StringFacet]) extends NodeKind {
+  case class IRIKind(
+      shapeConstr: Option[ShapeConstr], 
+      facets: List[StringFacet]) extends NodeKind {
     override def token = "IRI"
   }
 
-  case class BNodeKind(facets: List[StringFacet]) extends NodeKind {
+  case class BNodeKind(
+      shapeConstr: Option[ShapeConstr], 
+      facets: List[StringFacet]) extends NodeKind {
     override def token = "BNode"
   }
 
-  case class LiteralKind(facets: List[XSFacet]) extends NodeKind {
+  case class LiteralKind(
+      facets: List[XSFacet]) extends NodeKind {
     override def token = "Literal"
   }
 
-  case class NonLiteralKind(facets: List[XSFacet]) extends NodeKind {
+  case class NonLiteralKind(
+      shapeConstr: Option[ShapeConstr],
+      facets: List[XSFacet]) extends NodeKind {
     override def token = "NonLiteral"
   }
 
-  // This kind is not in the spec...but it may useful
-  case object AnyKind extends NodeKind {
-    override def token = "Any"
-  }
 
   def nodeKindfromIRI(iri: IRI): Try[NodeKind] = {
     iri match {
-      case `sh_IRI` => Success(IRIKind(List()))
-      case `sh_BNode` => Success(BNodeKind(List()))
+      case `sh_IRI` => Success(IRIKind(None,List()))
+      case `sh_BNode` => Success(BNodeKind(None,List()))
       case `sh_Literal` => Success(LiteralKind(List()))
-      case `sh_NonLiteral` => Success(NonLiteralKind(List()))
-      case `sh_Any` => Success(AnyKind)
+      case `sh_NonLiteral` => Success(NonLiteralKind(None,List()))
+//      case `sh_Any` => Success(AnyKind)
       case _ => Failure(new Exception("nodeKindFromIRI: unsupported IRI: " + iri))
     }
   }
-
+  
   sealed trait XSFacet extends Positional
   
   sealed trait NumericFacet extends XSFacet with Positional
@@ -260,8 +329,8 @@ object Shacl {
 
   case class SingleShape(shape: Label) extends ShapeConstr 
   case class DisjShapeConstr(shapes: Set[Label]) extends ShapeConstr
-  case class ConjShapeConstr(shapes: Set[Label]) extends ShapeConstr
-  case class NotShapeConstr(shape: ShapeConstr) extends ShapeConstr
+//  case class ConjShapeConstr(shapes: Set[Label]) extends ShapeConstr
+//  case class NotShapeConstr(shape: ShapeConstr) extends ShapeConstr
 
 
   case class Action(
@@ -284,6 +353,7 @@ object Shacl {
       case _ => throw new Exception("minusOne: Unexpected cardinality " + this)
     }
   }
+  
 
   /**
    * UnboundedCardinality represents ranges (m,unbounded)
@@ -302,8 +372,8 @@ object Shacl {
   lazy val NoActions: Seq[Action] = Seq()
 
   // lazy val NoId : Label = IRILabel(iri = IRI(""))
-   lazy val iriKind = IRIKind(List())
-   lazy val bnodeKind = BNodeKind(List())
+  lazy val iriKind = IRIKind(None,List())
+  lazy val bnodeKind = BNodeKind(None,List())
 
   
   lazy val typeXsdString = LiteralDatatype(xsd_string, List())

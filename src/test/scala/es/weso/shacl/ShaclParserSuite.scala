@@ -266,7 +266,7 @@ class ShaclParserSuite extends ShaclParser
       val expected: ShapeRule =
         ShapeRule(IRILabel(IRI(prefix + a)),
           Shape.empty.copy(
-              shapeExpr = TripleConstraintCard(
+              shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
                 value = LiteralDatatype(IRI(prefix + c), List()),
@@ -287,7 +287,7 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a)) 
       val shapeBC: Shape =
         Shape.empty.copy(
-              shapeExpr = TripleConstraintCard(
+              shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
                 value = LiteralDatatype(IRI(prefix + c), List()),
@@ -309,7 +309,7 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a))
       val shapeBC: Shape =
         Shape.empty.copy(
-              shapeExpr = TripleConstraintCard(
+              shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
                 value = LiteralDatatype(IRI(prefix + c), List()),
@@ -333,7 +333,7 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a))
       val shapeBC: Shape =
         Shape.empty.copy(
-              shapeExpr = TripleConstraintCard(
+              shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
                 value = LiteralDatatype(IRI(prefix + c), List()),
@@ -358,7 +358,7 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a))
       val labelB = IRILabel(IRI(prefix + b))
       val shapeBC = Shape.empty.copy(
-        shapeExpr = TripleConstraintCard(
+        shapeExpr = TripleConstraint.empty.copy(
           id = None,
           iri = IRI(prefix + b),
           value = LiteralDatatype(IRI(prefix + c), List()),

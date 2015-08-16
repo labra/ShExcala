@@ -50,16 +50,22 @@ trait ShaclParser
     repS(action)(s) ^^ { case (as,s1) => (as.toMap,s1)}
   }
   
-  def action(s: ShapeParserState): Parser[((IRI, String), ShapeParserState)] = {
-    symbol("%") ~> iri(s.namespaces) ~ codeDecl ^^ {
+  def action: StateParser[ShapeParserState, (IRI, String)] = { s => 
+    symbol("%") ~> opt(WS) ~> iri(s.namespaces) ~ codeDecl ^^ {
       case (iri ~ str) => ((iri, str), s)
     }
   }
 
-  // TODO: Check escape sequences to represent \%
   def codeDecl: Parser[String] = {
-    acceptRegex("Code Decl", """\{[^%]*\}""".r)
+    opt(WS) ~> "{" ~> code <~ symbol("%") <~ symbol("}") 
   }
+  
+  def code: Parser[String] = {
+   acceptRegex("Code Decl", ("""([^%\\]|\\[%\\]|""" + UCHAR_STR + """)*""").r) ^^ {
+     case str => unscapeUchars(str)
+   }
+  }
+   
 
   def shaclSchemaParser(s: ShapeParserState): Parser[(SHACLSchema, ShapeParserState)] =
     opt(WS) ~> seqRepState(startActions, statement)(s) <~ opt(WS) ^^ {
@@ -248,7 +254,7 @@ trait ShaclParser
   def typeSpec: StateParser[ShapeParserState, ShapeExpr] = { s =>
     "{" ~> opt(WS) ~> opt(oneOfExpr(s)) <~ opt(WS) <~ "}" ^^
       {
-        case None            => (EmptyShape, s)
+        case None            => (EmptyShape(), s)
         case Some((ors, s1)) => (ors, s1)
       }
   }
@@ -278,7 +284,7 @@ trait ShaclParser
       )(s) <~ opt(",") ^^
       {
         case (shape ~ List(), s1) => (shape, s1)
-        case (shape ~ shapes, s1) => (GroupShape(None, shape :: shapes), s1)
+        case (shape ~ shapes, s1) => (simplifyGroup(GroupShape(None, shape :: shapes)), s1)
       }
   }
   
@@ -296,24 +302,119 @@ trait ShaclParser
       case _ => List(s)
     }
   } 
+  
+  def idUnaryExpr: StateParser[ShapeParserState,ShapeExpr] = { s =>
+   opt(id(s)) >> {
+     case None => unaryExpr(s)
+     case Some((idLabel,s1)) => unaryExpr(s1) ^^ {
+       case (shape,s2) => (shape.addId(idLabel),s2)
+     }
+   } 
+  }
 
   def unaryExpr: StateParser[ShapeParserState, ShapeExpr] = { s =>
-    (arc(s)
-      | (symbol("(") ~>
+    ( arc(s)
+    | (symbol("(") ~>
         oneOfExpr(s) <~
         symbol(")")) ~ opt(cardinality) ^^ {
           case (shape, s1) ~ c => c match {
-            case Some(card) => (RepetitionShape(None, shape, card), s1)
+            case Some(card) => if (card == defaultCardinality) 
+                (shape,s1)
+              else
+                (RepetitionShape(None, shape, card), s1)
             case None       => (shape, s1)
           }
-        })
+        }
+     | includeShape(s)
+     )
+  }
+  
+  def id: StateParser[ShapeParserState,Label] = { s =>
+    symbol("$") ~> label(s) ^^ {
+      case (label,s1) => (label,s1)
+    }
+  }
+  
+  def includeShape: StateParser[ShapeParserState, ShapeExpr] = { s =>
+    symbol("&") ~> label(s) ^^ {
+      case (label,s1) => (IncludeShape(None,label),s1)
+    }
+  }
+  
+  def combina6[A,B,C,D,E,F,S](
+      p1: StateParser[S,A],
+      p2: StateParser[S,B],
+      p3: StateParser[S,C],
+      p4: StateParser[S,D],
+      p5: StateParser[S,E],
+      p6: StateParser[S,F]
+      ):StateParser[S,(A,B,C,D,E,F)] = { s =>
+    for {
+      (a,s1) <- p1(s)
+      (b,s2) <- p2(s1)
+      (c,s3) <- p3(s2)
+      (d,s4) <- p4(s3)
+      (e,s5) <- p5(s4)
+      (f,s6) <- p6(s5)
+    } yield ((a,b,c,d,e,f),s6)
   }
 
   def arc: StateParser[ShapeParserState, ShapeExpr] = { s =>
-    opt(symbol("^")) ~ predicate(s) ~ valueClass(s) ~ cardinality ^^ {
-      case (Some(_) ~ p ~ ((s: ShapeConstr, s1)) ~ c) => (InverseTripleConstraintCard(None, p, s, c), s1)
-      case (None ~ p ~ ((v: ValueClass, s1)) ~ c)     => (TripleConstraintCard(None, p, v, c), s1)
+    val senseFlagsLifted: StateParser[ShapeParserState,Sense] = lift(senseFlags)
+    val cardinalityLifted: StateParser[ShapeParserState,Cardinality] = lift(cardinality)
+    combina6(
+        senseFlagsLifted, 
+        pred, 
+        valueClass, 
+        cardinalityLifted, 
+        annotations, 
+        semanticActions)(s) ^^ {
+      case ((sense, p, v, c, annotations, actions),s1) => 
+        ( TripleConstraint.empty.copy(
+                id = None, 
+                iri = p, 
+                value = v, 
+                card = c,
+                inverse = sense.inverse,
+                negated = sense.negated,
+                annotations = annotations,
+                actions = actions), s1)
     }
+  }
+  
+  case class Sense(inverse: Boolean, negated: Boolean)
+
+  
+  def annotations: StateParser[ShapeParserState, List[Annotation]] = { s => 
+    rep(annotation(s.namespaces)) ^^ {
+      case as => (as,s)
+    }
+  }
+  
+  def annotation: PrefixMap => Parser[Annotation] = { pm => 
+    symbol(";") ~> iri(pm) ~ iriOrLiteral(pm) ^^ {
+      case iri ~ value => Annotation(iri,value)
+    }
+  }
+  
+  def iriOrLiteral(pm: PrefixMap): Parser[Either[IRI,Literal]] = { 
+   ( iri(pm) ^^ { case i => Left(i) }
+   | literal(pm) ^^ { case l => Right(l) }
+   )
+  }
+  
+  def senseFlags: Parser[Sense] = {
+   opt ( symbol("^") ~ opt(symbol("!")) ^^ {
+      case (_ ~ Some(_)) => Sense(inverse = true, negated = true)
+      case (_ ~ None) => Sense(inverse = true, negated = false)
+   } |
+     symbol("!") ~ opt(symbol("^")) ^^ {
+      case (_ ~ Some(_)) => Sense(inverse = true, negated = true)
+      case (_ ~ None) => Sense(inverse = false, negated = true)
+   } ) ^^ {
+     case None => Sense(inverse = false, negated = false)
+     case Some(sense) => sense
+   }
   }
 
   def cardinality: Parser[Cardinality] =
@@ -323,20 +424,23 @@ trait ShaclParser
     }
 
   def valueClass: StateParser[ShapeParserState, ValueClass] = { s =>
-    (ignorecase("IRI") ~> WS ~> stringFacets(s) ^^ {
-      case facets => (IRIKind(facets), s)
+    (ignorecase("IRI") ~> WS ~> 
+        seqState(optState(groupShapeConstr), stringFacetsState)(s) ^^ {
+      case (shapeConstr ~ facets,s1) => (IRIKind(shapeConstr, facets), s1)
     }
-      | ignorecase("LITERAL") ~> WS ~> xsFacets(s) ^^ {
+    | ignorecase("LITERAL") ~> WS ~> xsFacets(s) ^^ {
         case facets => (LiteralKind(facets), s)
+    }
+    | ignorecase("BNODE") ~> WS ~> 
+        seqState(optState(groupShapeConstr), stringFacetsState)(s) ^^ {
+        case (shapeConstr ~ facets,s1) => (BNodeKind(shapeConstr, facets), s1)
       }
-      | ignorecase("BNODE") ~> WS ~> stringFacets(s) ^^ {
-        case facets => (BNodeKind(facets), s)
+      | ignorecase("NONLITERAL") ~> WS ~> 
+              seqState(optState(groupShapeConstr), stringFacetsState)(s) ^^ {
+        case (shapeConstr ~ facets,s1) => (NonLiteralKind(shapeConstr, facets), s1)        
       }
-      | ignorecase("NONLITERAL") ~> WS ~> stringFacets(s) ^^ {
-        case facets => (NonLiteralKind(facets), s)
-      }
-      | ignorecase("ANY") ^^^ (AnyKind, s)
-      | dot ^^^ (AnyKind, s)
+//      | ignorecase("ANY") ^^^ (AnyKind, s)
+      | dot ^^^ (any, s)
       | opt(WS) ~> iri(s.namespaces) ~ xsFacets(s) <~ opt(WS) ^^ {
         case iri ~ facets => (LiteralDatatype(iri, facets), s)
       }
@@ -408,18 +512,27 @@ trait ShaclParser
     } 
   
   def iriOrStem:PrefixMap => Parser[ValueObject] = { pm =>
-      iri(pm) ~ rep(exclusion(pm)) ^^ {
-        case iri ~ Nil => ValueIRI(iri)
-        case iri ~ exclusions => ValueStem(iri,exclusions)
+      iri(pm) ~ (opt(symbol("~") ~> rep(exclusion(pm)))) ^^ {
+        case iri ~ None => ValueIRI(iri)
+        case iri ~ Some(exclusions) => ValueStem(iri,exclusions)
       }
   }
     
-    
+
+  def xsFacetsState: StateParser[ShapeParserState, List[XSFacet]] = { s => 
+    xsFacets(s) ^^ { case fs => (fs,s) }
+  } 
+
 
   def xsFacets(s: ShapeParserState): Parser[List[XSFacet]] = {
     repsep(xsFacet(s), WS)
   }
 
+  def stringFacetsState: StateParser[ShapeParserState, List[StringFacet]] = { s => 
+    stringFacets(s) ^^ { case fs => (fs,s) }
+  } 
+    
+    
   def stringFacets(s: ShapeParserState): Parser[List[StringFacet]] = {
     repsep(stringFacet(s), WS)
   }

@@ -102,7 +102,8 @@ object RDF2Schema
       case Success(ps) => {
         // println("shapeExpr...sh_property = " + ps)
         ps.size match {
-          case 0 => Success(EmptyShape)
+          // TODO: check ids
+          case 0 => Success(EmptyShape())
           case 1 => {
            val shapeExpr = oneOf(Seq(tripleConstraint))(ps.head,rdf)
            shapeExpr
@@ -124,7 +125,11 @@ object RDF2Schema
      card <- cardinality(n,rdf)
     } yield {
      // println("TripleConstraint: " + iri + " " + valueClass + " card: " + card) 
-     TripleConstraintCard(Some(mkLabel(n)),iri,valueClass,card) 
+     TripleConstraint.empty.copy(
+         id = Some(mkLabel(n)),
+         iri = iri,
+         value = valueClass,
+         card = card) 
     }
   }
   

@@ -94,10 +94,10 @@ trait ShapeParser
       { case (l ~ r) => (Shape(l, r._1), r._2) }
 
   def shapeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    openShapeSpec(s) | closedShapeSpec(s)
+    openShapeSpec(s) 
   }
 
-  def openShapeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+  def openShapeSpec: StateParser[ShapeParserState,Rule] = { s =>
     "{" ~> opt(WS) ~> opt(orExpression(s)) <~ opt(WS) <~ "}" ^^
       {
         case None => (StarRule(AnyRule), s)
@@ -105,15 +105,7 @@ trait ShapeParser
       }
   }
 
-  def closedShapeSpec(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
-    "[" ~> opt(WS) ~> opt(orExpression(s)) <~ opt(WS) <~ "]" ^^
-      {
-        case None => (EmptyRule, s)
-        case Some((ors, s1)) => (ors, s1)
-      }
-  }
-
-  def orExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+  def orExpression: StateParser[ShapeParserState,Rule] = { s =>
     seqState(andExpression,
       repS(arrowState(orExpression,
         symbol("|")
@@ -128,13 +120,12 @@ trait ShapeParser
       }
   }
 
-  def andExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+  def andExpression: StateParser[ShapeParserState,Rule] = { s =>
     seqState(unaryExpression, repS(arrowState(andExpression, symbol(","))))(s) ^^
       { case (p, s1) => (p._2.foldLeft(p._1) { case (x, r) => AndRule(x, r) }, s1) }
   }
 
-  // TODO: Add repeatCount and CODE
-  def unaryExpression(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+  def unaryExpression: StateParser[ShapeParserState,Rule] = { s =>
     (anyRule ^^ { case r => (r, s) }
       | arc(s)
       | symbol("!") ~> unaryExpression(s) ^^ {
@@ -167,7 +158,7 @@ trait ShapeParser
     (RelationRule(None, v1, v2), s)
   }
 
-  def arc(s: ShapeParserState): Parser[(Rule, ShapeParserState)] = {
+  def arc: StateParser[ShapeParserState,Rule] = { s =>
     (symbol("^") ~> nameClassAndValue(s)
       ^^ { case ((n, v), s1) => (RevArcRule(None, n, v), s1) }
       | symbol("<>") ~> fixedValues(s) ~ fixedValues(s)

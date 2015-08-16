@@ -88,30 +88,19 @@ object Schema2RDF extends Logging {
         cardinality2RDF(card,node,rdf)
         shape2RDF(shape,node,rdf)
       }
-      case TripleConstraintCard(id,iri,value,card) => {
-        val tripleNode = nodeFromOptionalLabel(id,rdf)
+      case t:TripleConstraint => {
+        val tripleNode = nodeFromOptionalLabel(t.id,rdf)
         addTriple(rdf,(tripleNode,rdf_type,sh_PropertyConstraint))
         addTriple(rdf,(node,sh_property,tripleNode))
-        addTriple(rdf,(tripleNode,sh_predicate,iri))
-        cardinality2RDF(card,tripleNode,rdf)
-        value2RDF(value,tripleNode,rdf)
+        addTriple(rdf,(tripleNode,sh_predicate,t.iri))
+        cardinality2RDF(t.card,tripleNode,rdf)
+        value2RDF(t.value,tripleNode,rdf)
+        // TODO: Handle rest of properties...negated, inverse,...
+        log.info("TripleConstraint: Unhandled inverse, negated...yet")
       }
-      case InverseTripleConstraint(id,iri,valueShape) => {
-        val tripleNode = nodeFromOptionalLabel(id,rdf)
-        addTriple(rdf,(tripleNode,rdf_type,sh_InversePropertyConstraint))
-        addTriple(rdf,(node,sh_inverseProperty,tripleNode))
-        addTriple(rdf,(tripleNode,sh_predicate,iri))
-        valueShape2RDF(valueShape,tripleNode,rdf)
-      }
-      case InverseTripleConstraintCard(id,iri,valueShape,card) => {
-        val tripleNode = nodeFromOptionalLabel(id,rdf)
-        addTriple(rdf,(tripleNode,rdf_type,sh_InversePropertyConstraint))
-        addTriple(rdf,(node,sh_inverseProperty,tripleNode))
-        addTriple(rdf,(tripleNode,sh_predicate,iri))
-        cardinality2RDF(card,tripleNode,rdf)
-        valueShape2RDF(valueShape,tripleNode,rdf)
-      }
-      case EmptyShape => { }
+      
+      // TODO: Handle ids
+      case EmptyShape(id) => { }
       
       // TODO: Check what to do with the id...
       case Group2(id,shape1,shape2) => {
@@ -234,12 +223,11 @@ object Schema2RDF extends Logging {
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
      nodeKind match {
-       // TODO: Add support to facets
-       case IRIKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_IRI))
-       case BNodeKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_BNode))     
+       // TODO: Add support to shapeConstr and facets
+       case IRIKind(shapeContr,facets) => addTriple(rdf,(node,sh_nodeKind,sh_IRI))
+       case BNodeKind(shapeConstr,facets) => addTriple(rdf,(node,sh_nodeKind,sh_BNode))     
        case LiteralKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_Literal)) // TODO: Take into account facets
-       case NonLiteralKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
-       case AnyKind => addTriple(rdf,(node,sh_nodeKind,sh_Any))
+       case NonLiteralKind(shapeConstr,facets) => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
       }
   }
   

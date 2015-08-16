@@ -77,7 +77,7 @@ trait ShaclValidator
       ctx: Context): Result[ValidationState] = {
     trace("MatchTriplesShapeExpr " + showTriples(ts)(ctx.pm) + " ~ " + shape2String(shape)(ctx.pm))
     shape match {
-      case EmptyShape => 
+      case e:EmptyShape => 
         if (ts.isEmpty) 
           unit(ValidationState.empty)
           
@@ -87,11 +87,9 @@ trait ShaclValidator
           failure(msg)
         }
     
-      case tc : TripleConstraintCard => 
-        matchTriples_TripleConstraintCard(ts,tc,ctx) 
+      case tc : TripleConstraint => 
+        matchTriples_TripleConstraint(ts,tc,ctx) 
         
-      case itc : InverseTripleConstraint => 
-        matchTriples_InverseTripleConstraint(ts,itc,ctx)
         
       case Group2(id,s1,s2) => for {
         (g1, g2) <- parts(ts)
@@ -108,13 +106,13 @@ trait ShaclValidator
         matchTriplesShapeExpr(ts, s2, ctx)
         
       case group: GroupShape => 
-        matchTriplesShapeExpr(ts,toBin(group.shapes,group2,EmptyShape),ctx)
+        matchTriplesShapeExpr(ts,toBin(group.shapes,group2,EmptyShape()),ctx)
         
       case oneOf: OneOf => 
-        matchTriplesShapeExpr(ts,toBin(oneOf.shapes,xor,EmptyShape),ctx)
+        matchTriplesShapeExpr(ts,toBin(oneOf.shapes,xor,EmptyShape()),ctx)
         
       case someOf: SomeOf => 
-        matchTriplesShapeExpr(ts,toBin(someOf.shapes,or,EmptyShape),ctx)
+        matchTriplesShapeExpr(ts,toBin(someOf.shapes,or,EmptyShape()),ctx)
         
       case sc: RepetitionShape => ???
 ///        matchTriples_ShapeCard(ts,sc.shape,sc.card)(ctx)
@@ -152,9 +150,9 @@ trait ShaclValidator
     
   }
   
-  def matchTriples_TripleConstraintCard(
+  def matchTriples_TripleConstraint(
       ts: Set[RDFTriple],
-      tc: TripleConstraintCard,
+      tc: TripleConstraint,
       ctx: Context): Result[ValidationState] = {
     ???
 /*    trace("matchTriples_TripleConstraint, ts= " + showTriples(ts)(ctx.pm) + " ~ " + tripleConstraint2String(tc)(ctx.pm))
@@ -168,9 +166,9 @@ trait ShaclValidator
   
   type ValidationTyping = Either[ValidationError,Typing]
   
-  def matchTriple_TripleConstraintCard(
+  def matchTriple_TripleConstraint(
       t: RDFTriple, 
-      tc: TripleConstraintCard,
+      tc: TripleConstraint,
       ctx: Context): Result[ValidationTyping] = {
     ???
 /*    if (matchPredicate(t,tc)) {
@@ -288,11 +286,10 @@ trait ShaclValidator
       ): Boolean = {
     nk match {
      // TODO: take into account facets
-     case IRIKind(facets) => obj.isIRI
-     case BNodeKind(facets) => obj.isBNode
+     case IRIKind(_,facets) => obj.isIRI
+     case BNodeKind(_,facets) => obj.isBNode
      case LiteralKind(facets) => isLiteral(obj) 
-     case NonLiteralKind(facets) => obj.isIRI || obj.isBNode
-     case AnyKind => true
+     case NonLiteralKind(_,facets) => obj.isIRI || obj.isBNode
      case _ => throw ValidationException("nodeKindOK: unexpected nodeKind" + nk)
     }
   }
@@ -324,7 +321,7 @@ trait ShaclValidator
    */
   def allTriplesWithSamePredicateMatch(
       ts: Set[RDFTriple],
-      tc: TripleConstraintCard,
+      tc: TripleConstraint,
       ctx: Context,
       allowedToFail: Boolean): Result[ValidationState] = {
     
@@ -355,17 +352,10 @@ trait ShaclValidator
     ???
   }
   
-  def matchPredicate(t:RDFTriple, tc: TripleConstraintCard): Boolean = {
+  def matchPredicate(t:RDFTriple, tc: TripleConstraint): Boolean = {
     t.pred == tc.iri
   } 
 
-  def matchTriples_InverseTripleConstraint(
-      ts: Set[RDFTriple],
-      tc: InverseTripleConstraint,
-      ctx: Context): Result[ValidationState] = {
-    throw new ValidationException("Unimplemented match_InverseTripleConstraint")
-  }
-  
   def calculateTyping(n:RDFNode,
       schema: SHACLSchema,
       rdf: RDFGraph): Result[Typing] = {
@@ -423,63 +413,6 @@ trait ShaclValidator
     ???
   }
   
-  def properties(expr: ShapeExpr): Set[IRI] = {
-    expr match {
-      case t: TripleConstraintCard => Set(t.iri)
-      case _: InverseTripleConstraint => Set()
-      case SomeOf(_,shapes) => 
-        shapes.map{ case shape => properties(shape)}.flatten.toSet
-      case OneOf(_,shapes) => 
-        shapes.map{ case shape => properties(shape)}.flatten.toSet
-      case GroupShape(_,shapes) => 
-        shapes.map{ case shape => properties(shape)}.flatten.toSet
-      case RepetitionShape(_,shape,_) => 
-        properties(shape)
-      case _ => throw new Exception("properties: Unsupported " + expr)
-    } 
-  }
-  
-  def invProperties(expr: ShapeExpr): Set[IRI] = {
-    expr match {
-      case _: TripleConstraintCard => Set()
-      case t: InverseTripleConstraint => Set(t.iri)
-      case SomeOf(id,shapes) => 
-        shapes.map{ case shape => properties(shape)}.flatten.toSet
-      case OneOf(id,shapes) => 
-        shapes.map{ case shape => properties(shape)}.flatten.toSet
-      case GroupShape(_,shapes) => 
-        shapes.map{ case shape => properties(shape)}.flatten.toSet
-      case RepetitionShape(id,shape,_) => 
-        properties(shape)
-      case _ => throw new Exception("invProperties: Unimplemented " + expr)
-    } 
-  }
-
-  def triplesSatisfy(neigh: Set[RDFTriple], shape: ShapeExpr, rdf: RDFReader): Boolean = {
-    shape match {
-      case EmptyShape => neigh.isEmpty
-      case TripleConstraintCard(_,iri,value,card) => {
-        throw ValidationException("Unimplemented tripleConstraint")
-      }
-      case InverseTripleConstraint(_,iri,shapeConstr) => {
-        throw ValidationException("Unimplemented InverseTripleConstraint")
-      }
-      case SomeOf(id,shapes) => {
-        throw ValidationException("Unimplemented SomeOfShapes")
-      }
-      case OneOf(id,shapes) => {
-        throw ValidationException("Unimplemented OneOfShapes")
-      }
-      case GroupShape(_,shapes) => {
-        throw ValidationException("Unimplemented GroupShape")
-      }
-      case RepetitionShape(id,shape,card) => {
-        throw ValidationException("Unimplemented RepetitionShape")
-      }
-      case _ => throw new Exception("invProperties: Unimplemented " + shape)
-    }
-  }
-
   /**
    *  The typing of a node satisfies a ShapeConstr 
    */
@@ -490,25 +423,18 @@ trait ShaclValidator
     sc match {
       case SingleShape(shape) => t.hasShapes(u) contains shape
       case DisjShapeConstr(shapes) => Boolean.some(shapes.map{ case shape => t.hasShapes(u) contains shape })
-      case ConjShapeConstr(shapes) => Boolean.all(shapes.map{ case shape => t.hasShapes(u) contains shape })
-      case NotShapeConstr(SingleShape(shape)) => t.hasNegShapes(u) contains shape
-      case NotShapeConstr(ConjShapeConstr(shapes)) => Boolean.some(shapes.map{ case shape => t.hasNegShapes(u) contains shape })
-      case NotShapeConstr(DisjShapeConstr(shapes)) => Boolean.all(shapes.map{ case shape => t.hasNegShapes(u) contains shape })
       case _ => false
     }
   }
   
   
- def matching(n:RDFNode,t: Typing, constr: TripleConstraintCard, rdf:RDFReader): Set[RDFTriple] = {
+ def matching(n:RDFNode,t: Typing, constr: TripleConstraint, rdf:RDFReader): Set[RDFTriple] = {
    constr.value match {
      case vc: ValueConstr => matchingValueConstr(n, t, vc, rdf)
      case sc: ShapeConstr => matchingShapeConstr(n, t, sc, rdf)
    }
  }
 
- def matching(n:RDFNode,t: Typing, constr: InverseTripleConstraint,rdf: RDFReader): Set[RDFTriple] = {
-   throw ValidationException("unimplemented matching inverseTripleConstraint")   
- }
  
  def matchingShapeConstr(n: RDFNode, t:Typing, sc: ShapeConstr, rdf: RDFReader) : Set[RDFTriple] = {
    for {
@@ -538,11 +464,10 @@ trait ShaclValidator
        s contains obj
      }
      // TODO: Take into account facets
-     case IRIKind(facets) => obj.isIRI
-     case BNodeKind(facets) => obj.isBNode
+     case IRIKind(_,facets) => obj.isIRI
+     case BNodeKind(_,facets) => obj.isBNode
      case LiteralKind(facets) => isLiteral(obj) 
-     case NonLiteralKind(facets) => obj.isIRI || obj.isBNode
-     case AnyKind => true
+     case NonLiteralKind(_,facets) => obj.isIRI || obj.isBNode
      case _ => throw ValidationException("allowed: unexpected valueConstr")
    }
  }

@@ -52,8 +52,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
   def shapeExprDoc(s: ShapeExpr): Document = {
     s match {
 //      case t: TripleConstraint => tripleConstraintDoc(t)
-      case t: InverseTripleConstraint => inverseTripleConstraintDoc(t)
-      case t: TripleConstraintCard => tripleConstraintCardDoc(t)
+      case t: TripleConstraint => tripleConstraintDoc(t)
       case GroupShape(id,shapes) => 
         "(" :: seqDocWithSep(shapes,",",shapeExprDoc) :: text(")")
       case SomeOf(id,shapes) => 
@@ -72,7 +71,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
         "(" :: shapeExprDoc(shape1) :: "||" :: shapeExprDoc(shape2) :: text(")")
       case XOr(id,shape1,shape2) => 
         "(" :: shapeExprDoc(shape1) :: "|" :: shapeExprDoc(shape2) :: text(")")
-      case EmptyShape => text("{}") 
+      case EmptyShape(id) => text("{}") 
         
       case x => throw ShapeDocException("Unimplemented string conversion for " + s + " yet")
     }
@@ -83,25 +82,40 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     iriDoc(t.iri) :: space :: valueClassDoc(t.value) 
   } */
 
-  def inverseTripleConstraintDoc(t: InverseTripleConstraint): Document = {
-    log.info("Unimplemented id generation yet")
-    "^" :: iriDoc(t.iri) :: space :: shapeDoc(t.shape) 
+  def tripleConstraintDoc(t: TripleConstraint): Document = {
+    idDoc(t.id) ::
+    inverseDoc(t.inverse) :: 
+    negatedDoc(t.negated) :: 
+    iriDoc(t.iri) :: space :: 
+    valueClassDoc(t.value) :: 
+    cardDoc(t.card) ::
+    annotationsDoc(t.annotations)
   }
+  
+  def idDoc(id: Option[Label]): Document = 
+    id.fold(text(""))(
+        label => "$" :: labelDoc(label) :: space
+    )
+  
+  def inverseDoc(i: Boolean): Document = 
+    if (i) text("^")
+    else text("")
 
-  def tripleConstraintCardDoc(t: TripleConstraintCard): Document = {
-    log.info("Unimplemented id generation yet")
-    iriDoc(t.iri) :: space :: valueClassDoc(t.value) :: cardDoc(t.card)
-  }
-
-  def inverseTripleConstraintCardDoc(t: InverseTripleConstraintCard): Document = {
-    log.info("Unimplemented id generation yet")
-    "^" :: iriDoc(t.iri) :: space :: shapeDoc(t.shape) :: cardDoc(t.card)
-  }
+  def negatedDoc(i: Boolean): Document = 
+    if (i) text("!")
+    else text("")
 
   def actionsDoc(as: Map[Label,String]): Document = {
     iterDocWithSep(as, "\n", actionDoc)
   }
   
+  def annotationsDoc(as: List[Annotation]): Document = {
+    iterDocWithSep(as, "\n", annotationDoc)
+  }
+  
+  def annotationDoc(a: Annotation): Document =
+    ";" :: space :: iriDoc(a.iri) :: 
+    a.value.fold(i => iriDoc(i), l => rdfNodeDoc(l))
 
   def actionDoc(a: (Label,String)): Document = {
     "%" :: labelDoc(a._1) :: "{" :: text(a._2) :: text("}")
@@ -117,8 +131,8 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
   def valueDoc(v: ValueConstr): Document = {
     v match {
       case dt: LiteralDatatype => literalDatatypeDoc(dt) 
+      case `any` => text(".")
       case vs: ValueSet => valueSetDoc(vs)
-      case AnyKind => text(".")
       case n: NodeKind => text(n.token)
     }
   }
@@ -152,9 +166,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shapeDoc(s: ShapeConstr): Document = {
     s match {
-      case DisjShapeConstr(shapes) => setDocWithSep(shapes, ",", labelDoc)
-      case ConjShapeConstr(shapes) => setDocWithSep(shapes, "|", labelDoc)
-      case NotShapeConstr(shape) => "!" :: shapeDoc(s)
+      case DisjShapeConstr(shapes) => setDocWithSep(shapes, "OR", labelDoc)
       case _ => throw new Exception(s"shapeDoc: unsupported $s")
     }
   }
@@ -180,6 +192,8 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       case ValueIRI(iri) => iriDoc(iri)
       case ValueLiteral(l) => rdfNodeDoc(l)
       case ValueLang(lang) => text("@") :: text(lang.lang)
+      case ValueStem(stem,exclusions) => throw new Exception("Unsupported valuestem")
+      case ValueAny(exclusions) => throw new Exception("Unsupported valueAny")
     }
   }
 
