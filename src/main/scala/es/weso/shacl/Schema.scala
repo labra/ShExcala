@@ -14,7 +14,6 @@ import org.slf4j._
 import es.weso.utils.IO._
 import es.weso.rdf.jena.RDFAsJenaModel
 
-
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
  *
@@ -27,7 +26,7 @@ case class Schema(
   /* override def toString(): String = {
     ShaclDoc.schema2String(shaclSchema)(pm)
   } */
-  
+
   def showShapes: String = {
     shaclSchema.shapes.toString
   }
@@ -47,7 +46,7 @@ case class Schema(
         } else "<<Unknown format: " + format + ">>"
     }
   }
-  
+
   def labels: Set[Label] = {
     shaclSchema.labels
   }
@@ -56,12 +55,16 @@ case class Schema(
 
 object Schema {
 
+  def empty = Schema(
+    pm = PrefixMap.empty,
+    shaclSchema = SHACLSchema.empty)
+
   def fromString(cs: CharSequence, format: String = "SHEXC"): Try[(Schema, PrefixMap)] = {
     format match {
       case "SHEXC" | "SHACLC" =>
         ShaclParser.parse(cs) match {
           case s @ Success(_) => s
-          case Failure(t) => Failure(throw new Exception("Parsing schema: " + t.getMessage))
+          case Failure(t)     => Failure(throw new Exception("Parsing schema: " + t.getMessage))
         }
       case x =>
         if (SchemaFormats.available(x)) {

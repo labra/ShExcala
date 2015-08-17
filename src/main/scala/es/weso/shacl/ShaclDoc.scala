@@ -61,9 +61,9 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       case OneOf(id,shapes) => 
         log.info("Unimplemented id generation yet")
         "(" :: seqDocWithSep(shapes,"|",shapeExprDoc) :: text(")") 
-      case RepetitionShape(id,shape,card) => {
+      case RepetitionShape(id,shape,card,actions) => {
         log.info("Unimplemented id generation yet")
-        "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card)
+        "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card) :: actionsDoc(actions)
       }
       case Group2(id,shape1,shape2) => 
         "(" :: shapeExprDoc(shape1) :: "," :: shapeExprDoc(shape2) :: text(")")
@@ -105,7 +105,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     if (i) text("!")
     else text("")
 
-  def actionsDoc(as: Map[Label,String]): Document = {
+  def actionsDoc(as: Actions): Document = {
     iterDocWithSep(as, "\n", actionDoc)
   }
   
@@ -117,8 +117,8 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     ";" :: space :: iriDoc(a.iri) :: 
     a.value.fold(i => iriDoc(i), l => rdfNodeDoc(l))
 
-  def actionDoc(a: (Label,String)): Document = {
-    "%" :: labelDoc(a._1) :: "{" :: text(a._2) :: text("}")
+  def actionDoc(a: (IRI,String)): Document = {
+    "%" :: iriDoc(a._1) :: "{" :: text(a._2) :: text("}")
   }
 
   def valueClassDoc(v: ValueClass): Document = {
@@ -130,15 +130,15 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def valueDoc(v: ValueConstr): Document = {
     v match {
-      case dt: LiteralDatatype => literalDatatypeDoc(dt) 
+      case dt: Datatype => datatypeDoc(dt) 
       case `any` => text(".")
       case vs: ValueSet => valueSetDoc(vs)
       case n: NodeKind => text(n.token)
     }
   }
   
-  def literalDatatypeDoc(dt: LiteralDatatype): Document = {
-    rdfNodeDoc(dt.v) :: facetsDoc(dt.facets)
+  def datatypeDoc(dt: Datatype): Document = {
+    iriDoc(dt.v) :: facetsDoc(dt.facets)
   }
 
   def valueSetDoc(vs: ValueSet): Document = {
@@ -262,8 +262,8 @@ object ShaclDoc {
 
   def nodeKind2String(nk: NodeKind): String = nk.token
   
-  def literalDatatype2String(dt: LiteralDatatype)(implicit pm:PrefixMap): String = {
-    prettyPrint(ShaclDoc(pm).literalDatatypeDoc(dt))
+  def datatype2String(dt: Datatype)(implicit pm:PrefixMap): String = {
+    prettyPrint(ShaclDoc(pm).datatypeDoc(dt))
   }
   
   def label2String(label:Label)(implicit pm: PrefixMap): String = {

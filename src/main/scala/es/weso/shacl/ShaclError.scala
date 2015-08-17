@@ -21,14 +21,14 @@ final case class NoNodeKind(n: RDFNode, nk: NodeKind) extends ValidationError {
     "No match nodeKind " + showRDFNode(n)(pm) + " ~ nodeKind: " + nodeKind2String(nk)
 }
 
-final case class NoMatchLiteralDatatype(l: Literal, ld: LiteralDatatype) extends ValidationError {
+final case class NoMatchLiteralDatatype(l: Literal, ld: Datatype) extends ValidationError {
   override def show(implicit pm: PrefixMap): String = 
-    "no match Literal datatype. Literal: " + l + " ~ Datatype: " + literalDatatype2String(ld)(pm)
+    "no match Literal datatype. Literal: " + l + " ~ Datatype: " + datatype2String(ld)(pm)
 }
 
-final case class NoLiteral_MatchLiteralDatatype(obj: RDFNode,ld: LiteralDatatype) extends ValidationError {
+final case class NoLiteral_MatchLiteralDatatype(obj: RDFNode,ld: Datatype) extends ValidationError {
   override def show(implicit pm: PrefixMap): String = 
-    "no Literal to match literalDatatype. Object: " + showRDFNode(obj)(pm) + " ~ Datatype: " + literalDatatype2String(ld)(pm)
+    "no Literal to match literalDatatype. Object: " + showRDFNode(obj)(pm) + " ~ Datatype: " + datatype2String(ld)(pm)
 }
 
 final case class NoTypingFound(obj: RDFNode,label: Label) extends ValidationError {

@@ -169,7 +169,8 @@ object Shacl {
   case class RepetitionShape(
       id:Option[Label],
       shape: ShapeExpr, 
-      card:Cardinality) extends ShapeExpr  {
+      card:Cardinality,
+      actions: Actions) extends ShapeExpr  {
     def minusOne: RepetitionShape = {
       this.copy(card = card.minusOne)
     }
@@ -244,9 +245,9 @@ object Shacl {
   sealed trait ValueConstr extends ValueClass
     with Positional
     
-  case class LiteralDatatype(
-    v: RDFNode,
-    facets: Seq[XSFacet]) extends ValueConstr
+  case class Datatype(
+    v: IRI,
+    facets: List[XSFacet]) extends ValueConstr
     with Positional
 
   case class ValueSet(s: Seq[ValueObject]) extends ValueConstr
@@ -316,7 +317,7 @@ object Shacl {
   
   sealed trait StringFacet extends XSFacet with Positional
   
-  case class Pattern(regex: Regex) extends StringFacet
+  case class Pattern(regex: String) extends StringFacet
   case class Length(n: Integer) extends StringFacet
   case class MinLength(n: Integer) extends StringFacet
   case class MaxLength(n: Integer) extends StringFacet
@@ -376,13 +377,13 @@ object Shacl {
   lazy val bnodeKind = BNodeKind(None,List())
 
   
-  lazy val typeXsdString = LiteralDatatype(xsd_string, List())
+  lazy val typeXsdString = Datatype(xsd_string, List())
   lazy val star = UnboundedCardinalityFrom(0)
   lazy val plus = UnboundedCardinalityFrom(1)
   lazy val optional = RangeCardinality(0, 1)
   
   lazy val defaultCardinality = RangeCardinality(1,1)
-  lazy val emptyFacets : Seq[XSFacet] = Seq() 
+  lazy val emptyFacets : List[XSFacet] = List() 
   def defaultMaxCardinality(m:Int) = RangeCardinality(1,m)
     
   lazy val emptyInclPropSet: Set[IRI] = Set()

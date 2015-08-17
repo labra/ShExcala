@@ -34,7 +34,7 @@ class ShaclParserSuite extends ShaclParser
 
         val state: ShapeParserState = ShapeParserState.initial
         val result = ShaclParser.parse(ShaclParser.valueClass(state), str)
-        result.get._1 should be(LiteralDatatype(IRI("http://example.org/string"), List()))
+        result.get._1 should be(Datatype(IRI("http://example.org/string"), List()))
         result.get._2 should be(state)
       }
 
@@ -45,7 +45,7 @@ class ShaclParserSuite extends ShaclParser
         val str = alias + ":" + localName
         val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
         val result = ShaclParser.parse(ShaclParser.valueClass(state), str)
-        result.get._1 should be(LiteralDatatype(IRI(prefix + localName), List()))
+        result.get._1 should be(Datatype(IRI(prefix + localName), List()))
       }
 
     }
@@ -269,7 +269,7 @@ class ShaclParserSuite extends ShaclParser
               shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
-                value = LiteralDatatype(IRI(prefix + c), List()),
+                value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
               ))
         )
@@ -290,11 +290,11 @@ class ShaclParserSuite extends ShaclParser
               shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
-                value = LiteralDatatype(IRI(prefix + c), List()),
+                value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
               ))
-      val expected = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC))
-      shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
+      val expected = Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
+      shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
     it("Should parse a single shape with a prefix (shaclSchemaParser)") {
@@ -312,12 +312,12 @@ class ShaclParserSuite extends ShaclParser
               shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
-                value = LiteralDatatype(IRI(prefix + c), List()),
+                value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
               ))
       val expected = 
-        SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC))
-      shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
+        Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
+      shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
     it("Should parse a single shape with a prefix and a blank line (shaclSchemaParser)") {
@@ -336,11 +336,11 @@ class ShaclParserSuite extends ShaclParser
               shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
-                value = LiteralDatatype(IRI(prefix + c), List()),
+                value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
               ))
-      val expected = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC))
-      shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
+      val expected = Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
+      shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
     it("Should parse several shapes") {
@@ -361,11 +361,11 @@ class ShaclParserSuite extends ShaclParser
         shapeExpr = TripleConstraint.empty.copy(
           id = None,
           iri = IRI(prefix + b),
-          value = LiteralDatatype(IRI(prefix + c), List()),
+          value = Datatype(IRI(prefix + c), List()),
           card = defaultCardinality
         ))
       val expected: SHACLSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC, labelB -> shapeBC))
-      shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
+      shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
 /*    it("Should parse with begin") {

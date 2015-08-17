@@ -19,7 +19,7 @@ import es.weso.shacl.Shacl._
 case class ShapeParserState(
     val namespaces: PrefixMap,
     val bNodeLabels: BNodeTable,
-    val starts: List[RDFNode],
+    val starts: List[Label],
     val baseIRI: IRI,
     val createdShapes: Map[Label,Shape]) {
 
@@ -42,7 +42,7 @@ case class ShapeParserState(
   def newBase(newIRI: IRI) =
     copy(baseIRI = newIRI)
 
-  def addStart(label: RDFNode) =
+  def addStart(label: Label) =
     copy(starts = starts :+ label)
     
   def newShape(shape: Shape): (Label, ShapeParserState) = {

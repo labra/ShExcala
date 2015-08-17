@@ -202,7 +202,7 @@ trait ShaclValidator
       ctx:Context): Result[ValidationTyping] = {
     v match {
       case vs: ValueSet => matchValueSet(obj,vs,ctx)
-      case ld: LiteralDatatype => matchLiteralDatatype(obj,ld,ctx)
+      case ld: Datatype => matchLiteralDatatype(obj,ld,ctx)
       case nk: NodeKind => matchNodeKind(obj,nk,ctx)
     }
   }
@@ -254,7 +254,7 @@ trait ShaclValidator
   
   def matchLiteralDatatype(
       obj: RDFNode,
-      ld: LiteralDatatype,
+      ld: Datatype,
       ctx: Context
       ): Result[ValidationTyping] = {
     obj match {
@@ -452,7 +452,7 @@ trait ShaclValidator
  
  def allowed(obj: RDFNode, vc: ValueConstr): Boolean = {
    vc match {
-     case LiteralDatatype(v,facets) => {
+     case Datatype(v,facets) => {
        obj match {
          case lit: Literal =>
            // TODO...match facets

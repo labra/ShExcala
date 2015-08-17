@@ -97,11 +97,12 @@ object AST2Schema {
      case "group" => {
       val id = expr.id.map(str => toLabel(str))
         val shapes = cnvExpressions(expr.expressions)
-       if (expr.min.isEmpty && expr.max.isEmpty)
+       if (expr.min.isEmpty && expr.max.isEmpty && expr.semAct.isEmpty)
          GroupShape(id,shapes)
        else {
          val card = cnvCard(expr)
-         RepetitionShape(id,GroupShape(None,shapes),card)
+         val actions = cnvActions(expr.semAct)
+         RepetitionShape(id,GroupShape(None,shapes),card,actions)
        }
      }
      
@@ -196,6 +197,10 @@ object AST2Schema {
        }
      } else if (vc.reference.isDefined) {
        cnvShapeConstr(vc.reference).get
+     } else if (vc.datatype.isDefined) {
+       val facets = collectFacets(vc)
+       val node = IRI(vc.datatype.get)
+       Datatype(node,facets)
      } else
        any
    }  
@@ -252,7 +257,9 @@ object AST2Schema {
  }
  
  def collectPattern(vc:ValueClassAST): List[StringFacet] = {
-   if (vc.pattern.isDefined) List(Pattern(vc.pattern.get.r))
+   if (vc.pattern.isDefined) {
+    List(Pattern(vc.pattern.get))
+   }
    else List()
  }
  

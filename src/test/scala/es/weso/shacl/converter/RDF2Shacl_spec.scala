@@ -63,7 +63,7 @@ class RDF2ShaclSpec
         c <- RDF2Schema.literalDatatype(n,rdf)
       } yield 
         c 
-      c.success.value should be(LiteralDatatype(xsd_string,emptyFacets))
+      c.success.value should be(Datatype(xsd_string,emptyFacets))
     }
     
     it("Should be able to extract a nodeKind IRI") {
@@ -95,7 +95,7 @@ class RDF2ShaclSpec
         c <- RDF2Schema.valueConstr(n,rdf)
       } yield 
         c 
-      c.success.value should be(LiteralDatatype(xsd_string,emptyFacets))
+      c.success.value should be(Datatype(xsd_string,emptyFacets))
     }
     
     it("Should be able to extract a valueConstr with nodeKind IRI") {
@@ -152,7 +152,7 @@ class RDF2ShaclSpec
           TripleConstraint.empty.copy(
               id = Some(n_label),
               iri = p,
-              value = LiteralDatatype(xsd_string,emptyFacets),
+              value = Datatype(xsd_string,emptyFacets),
               card = RangeCardinality(1,3))) 
     }
     
@@ -183,7 +183,7 @@ class RDF2ShaclSpec
               shapeExpr = TripleConstraint.empty.copy(
                   id = Some(prop_label),
                   iri = p,
-                  value = LiteralDatatype(xsd_string,emptyFacets),
+                  value = Datatype(xsd_string,emptyFacets),
                   card = RangeCardinality(1,3))
           ) 
       triedMustBe(expected, c)
@@ -215,7 +215,7 @@ class RDF2ShaclSpec
               shapeExpr = TripleConstraint.empty.copy(
                   id = Some(prop_label),
                   iri = p,
-                  value = LiteralDatatype(xsd_string,emptyFacets),
+                  value = Datatype(xsd_string,emptyFacets),
                   card = RangeCardinality(1,3))
           ) 
       // We cannot compare with unknown bnodeLabels
@@ -252,7 +252,7 @@ class RDF2ShaclSpec
                   Seq(TripleConstraint.empty.copy(
                       id = Some(prop1_label),
                       iri = p,
-                      value = LiteralDatatype(xsd_string,emptyFacets),
+                      value = Datatype(xsd_string,emptyFacets),
                       card = RangeCardinality(1,3)),
                       TripleConstraint.empty.copy(
                           id = Some(prop2_label),
@@ -294,7 +294,7 @@ class RDF2ShaclSpec
                   TripleConstraint.empty.copy(
                       id = Some(prop1_label),
                       iri = p,
-                      value = LiteralDatatype(xsd_string,emptyFacets),
+                      value = Datatype(xsd_string,emptyFacets),
                       card = RangeCardinality(1,3)),
                    TripleConstraint.empty.copy(
                        id = Some(prop2_label),

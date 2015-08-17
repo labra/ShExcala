@@ -17,7 +17,7 @@ import es.weso.shacl._
 class RunParsedSingle extends Driver {
   
   describe("Run specific JSON test") {
-    val name = "1dotcode1"
+    val name = "open1dotclosecardOpt"
     val file = new File(parsedSchemasDir + "/" + name + ".json")
     it (s"should pass file $name") {
      testFile(file) 

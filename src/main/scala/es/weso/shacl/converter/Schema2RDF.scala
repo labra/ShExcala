@@ -83,11 +83,6 @@ object Schema2RDF extends Logging {
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
     shape match {
-      case RepetitionShape(id,shape,card) => {
-        val node = nodeFromOptionalLabel(id,rdf)
-        cardinality2RDF(card,node,rdf)
-        shape2RDF(shape,node,rdf)
-      }
       case t:TripleConstraint => {
         val tripleNode = nodeFromOptionalLabel(t.id,rdf)
         addTriple(rdf,(tripleNode,rdf_type,sh_PropertyConstraint))
@@ -112,11 +107,12 @@ object Schema2RDF extends Logging {
           shape2RDF(shape,node,rdf)
         }
       }
-      case RepetitionShape(id,shape,card) => {
+      case RepetitionShape(id,shape,card,actions) => {
         val groupLabel = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(node,sh_group,groupLabel))
         cardinality2RDF(card,groupLabel,rdf)
         shape2RDF(shape,groupLabel,rdf)
+//TODO:        actions2RDF(actions,node,rdf)
       }
       case Or(id,shape1,shape2) => {
         val someOfNode = nodeFromOptionalLabel(id,rdf)
@@ -154,7 +150,7 @@ object Schema2RDF extends Logging {
       rdf: RDFBuilder
       ): RDFBuilder = {
     value match {
-      case LiteralDatatype(v,facets) => {
+      case Datatype(v,facets) => {
         addTriple(rdf,(node,sh_valueType,v))
         facets2RDF(facets,node, rdf)
       }

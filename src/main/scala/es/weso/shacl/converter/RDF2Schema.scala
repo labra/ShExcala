@@ -159,7 +159,7 @@ object RDF2Schema
     } yield SingleShape(mkLabel(label))
   }
   
-  def literalDatatype: RDFParser[LiteralDatatype] = { (n,rdf) =>
+  def literalDatatype: RDFParser[Datatype] = { (n,rdf) =>
     for {
       dt <- {
        // println("literalDatatype: looking for valueType: " + n)
@@ -167,8 +167,13 @@ object RDF2Schema
        // println("objectFromPredicate valueType = " + obj)
        obj
       }
-      // TODO: Parse facets
-    } yield LiteralDatatype(dt,emptyFacets)
+      // TODO: Parse facets and check errors
+    } yield {
+      if (dt.isIRI)
+        Datatype(dt.toIRI,emptyFacets)
+      else 
+        throw RDF2SchemaException(s"literalDatatype: datatype must be an IRI. node: $n,  rdf: $rdf, datatype: $dt")
+    }
   }
   
   // TODO: fallback to (nodeKind AnyKind) if no valueClass is declared 

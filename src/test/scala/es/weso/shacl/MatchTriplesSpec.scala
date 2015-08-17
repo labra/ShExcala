@@ -22,7 +22,7 @@ class MatchTriplesSpec
   describe("matchLiteralDatatype") {
     it("Should match literal Datatype") {
       val obj: RDFNode = IntegerLiteral(23)
-      val ld : LiteralDatatype = LiteralDatatype(xsd_integer,Seq())
+      val ld : Datatype = Datatype(xsd_integer,List())
       val ctx = Context.emptyContext
       matchLiteralDatatype(obj, ld, ctx).isValid should be(true)
   }
