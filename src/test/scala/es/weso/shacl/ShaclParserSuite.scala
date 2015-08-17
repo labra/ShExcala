@@ -2,11 +2,11 @@ package es.weso.shacl
 
 import org.scalatest._
 import org.scalatest.prop._
-
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import es.weso.shex.ShapeDoc._
-import es.weso.shex.ShapeParserState
+import es.weso.shacl.parser._
+import es.weso.shacl.parser.ShaclParser._
 import es.weso.shacl.Shacl._
 import scala.Either._
 import es.weso.shacl.PREFIXES._
@@ -34,7 +34,7 @@ class ShaclParserSuite extends ShaclParser
 
         val state: ShapeParserState = ShapeParserState.initial
         val result = ShaclParser.parse(ShaclParser.valueClass(state), str)
-        result.get._1 should be(LiteralDatatype(IRI("http://example.org/string"), List()))
+        result.get._1 should be(Datatype(IRI("http://example.org/string"), List()))
         result.get._2 should be(state)
       }
 
@@ -45,7 +45,7 @@ class ShaclParserSuite extends ShaclParser
         val str = alias + ":" + localName
         val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
         val result = ShaclParser.parse(ShaclParser.valueClass(state), str)
-        result.get._1 should be(LiteralDatatype(IRI(prefix + localName), List()))
+        result.get._1 should be(Datatype(IRI(prefix + localName), List()))
       }
 
     }
@@ -263,20 +263,17 @@ class ShaclParserSuite extends ShaclParser
       val alias = "ex"
       val str = """ex:a {ex:b ex:c }"""
       val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
-      val expected: Rule =
-        Rule(label = IRILabel(IRI(prefix + a)),
-          shapeDefinition =
-            OpenShape(
-              shape = TripleConstraint(
+      val expected: ShapeRule =
+        ShapeRule(IRILabel(IRI(prefix + a)),
+          Shape.empty.copy(
+              shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
-                value = LiteralDatatype(IRI(prefix + c), List()),
+                value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
-              ),
-              inclPropSet = Set()),
-          extensionCondition = List()
+              ))
         )
-      shouldParseIgnoreState(rule, state, str, expected)
+      shouldParseIgnoreState(shapeRule, state, str, expected)
     }
 
     it("Should parse a single shape (shaclSchemaParser)") {
@@ -287,21 +284,17 @@ class ShaclParserSuite extends ShaclParser
       val alias = "ex"
       val str = "<http://example.org/a> { <http://example.org/b> <http://example.org/c> }"
       val state = ShapeParserState.initial
-      val ruleBC: Rule =
-        Rule(label = IRILabel(IRI(prefix + a)),
-          shapeDefinition =
-            OpenShape(
-              shape = TripleConstraint(
+      val labelA = IRILabel(IRI(prefix + a)) 
+      val shapeBC: Shape =
+        Shape.empty.copy(
+              shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
-                value = LiteralDatatype(IRI(prefix + c), List()),
+                value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
-              ),
-              inclPropSet = Set()),
-          extensionCondition = List()
-        )
-      val expected = SHACLSchema(None, rules = List(ruleBC), start = None)
-      shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
+              ))
+      val expected = Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
+      shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
     it("Should parse a single shape with a prefix (shaclSchemaParser)") {
@@ -313,21 +306,18 @@ class ShaclParserSuite extends ShaclParser
       val str = """|prefix : <http://example.org/>
                    |:a {:b :c }""".stripMargin
       val state = ShapeParserState.initial
-      val ruleBC: Rule =
-        Rule(label = IRILabel(IRI(prefix + a)),
-          shapeDefinition =
-            OpenShape(
-              shape = TripleConstraint(
+      val labelA = IRILabel(IRI(prefix + a))
+      val shapeBC: Shape =
+        Shape.empty.copy(
+              shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
-                value = LiteralDatatype(IRI(prefix + c), List()),
+                value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
-              ),
-              inclPropSet = Set()),
-          extensionCondition = List()
-        )
-      val expected = SHACLSchema(None, rules = List(ruleBC), start = None)
-      shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
+              ))
+      val expected = 
+        Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
+      shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
     it("Should parse a single shape with a prefix and a blank line (shaclSchemaParser)") {
@@ -340,21 +330,17 @@ class ShaclParserSuite extends ShaclParser
                    |:a {:b :c }
                    |""".stripMargin
       val state = ShapeParserState.initial
-      val ruleBC: Rule =
-        Rule(label = IRILabel(IRI(prefix + a)),
-          shapeDefinition =
-            OpenShape(
-              shape = TripleConstraint(
+      val labelA = IRILabel(IRI(prefix + a))
+      val shapeBC: Shape =
+        Shape.empty.copy(
+              shapeExpr = TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
-                value = LiteralDatatype(IRI(prefix + c), List()),
+                value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
-              ),
-              inclPropSet = Set()),
-          extensionCondition = List()
-        )
-      val expected = SHACLSchema(None, rules = List(ruleBC), start = None)
-      shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
+              ))
+      val expected = Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
+      shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
     it("Should parse several shapes") {
@@ -371,21 +357,18 @@ class ShaclParserSuite extends ShaclParser
       val state = ShapeParserState.initial
       val labelA = IRILabel(IRI(prefix + a))
       val labelB = IRILabel(IRI(prefix + b))
-      val ruleBC = OpenShape(
-        shape = TripleConstraint(
+      val shapeBC = Shape.empty.copy(
+        shapeExpr = TripleConstraint.empty.copy(
           id = None,
           iri = IRI(prefix + b),
-          value = LiteralDatatype(IRI(prefix + c), List()),
+          value = Datatype(IRI(prefix + c), List()),
           card = defaultCardinality
-        ),
-        inclPropSet = Set())
-      val shape1: Rule = Rule(label = labelA, shapeDefinition = ruleBC, extensionCondition = List())
-      val shape2: Rule = Rule(label = labelB, shapeDefinition = ruleBC, extensionCondition = List())
-      val expected: SHACLSchema = SHACLSchema(id = None, rules = List(shape1, shape2), start = None)
-      shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
+        ))
+      val expected: SHACLSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC, labelB -> shapeBC))
+      shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
-    it("Should parse with begin") {
+/*    it("Should parse with begin") {
       val prefix = "http://example.org/"
       val a = "a"
       val b = "b"
@@ -399,7 +382,7 @@ class ShaclParserSuite extends ShaclParser
       val begin = IRILabel(IRI("begin"))
       val labelB = IRILabel(IRI("b"))
       val ruleBC = OpenShape(
-        shape = TripleConstraint(
+        shape = TripleConstraintCard(
           id = None,
           iri = IRI("b"),
           value = LiteralDatatype(IRI("c"), List()),
@@ -409,7 +392,7 @@ class ShaclParserSuite extends ShaclParser
       val shape1: Rule = Rule(label = begin, shapeDefinition = ruleBC, extensionCondition = List())
       val expected: SHACLSchema = SHACLSchema(id = None, rules = List(shape1), start = None)
       shouldParseIgnoreState(shaclSchemaParser, state, str, expected)
-    }
+    } 
     
     it("Should parse statement with begin") {
       val prefix = "http://example.org/"
@@ -424,7 +407,7 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a))
       val labelB = IRILabel(IRI(prefix + b))
       val ruleBC = OpenShape(
-        shape = TripleConstraint(
+        shape = TripleConstraintCard(
           id = None,
           iri = IRI(prefix + b),
           value = LiteralDatatype(IRI(prefix + c), List()),
@@ -453,7 +436,7 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a))
       val labelB = IRILabel(IRI(prefix + b))
       val ruleBC = OpenShape(
-        shape = TripleConstraint(
+        shape = TripleConstraintCard(
           id = None,
           iri = IRI(prefix + b),
           value = LiteralDatatype(IRI(prefix + c), List()),
@@ -466,7 +449,7 @@ class ShaclParserSuite extends ShaclParser
                               extensionCondition = List())
       val expected = shape1
       shouldParseIgnoreState(begin, state, str, expected)
-    }
+    } */
     /*  it("Should parse directive with shape") {
         val prefix = "http://example.org/"
         val xsd = "http://www.w3.org/2001/XMLSchema#"

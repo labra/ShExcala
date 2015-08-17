@@ -74,6 +74,7 @@ case class ShapeType(
     }  
    sb.toString  
   }
+  
 }
 
 object ShapeType {

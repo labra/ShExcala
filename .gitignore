@@ -12,6 +12,8 @@ project/plugins/project/
 # Scala-IDE specific
 .scala_dependencies
 
+.cache-main
+.cache-tests
 .settings
 .settings/*
 .project

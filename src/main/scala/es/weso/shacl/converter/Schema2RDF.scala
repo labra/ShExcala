@@ -10,7 +10,9 @@ import es.weso.rdf.jena._
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.shacl.PREFIXES._
 import es.weso.rdfgraph.statements.RDFTriple
-import es.weso.utils._
+import es.weso.utils.{
+  Logging
+}
 
 // TODO: These settings could be read from a properties file
 case object Settings {
@@ -32,12 +34,12 @@ object Schema2RDF extends Logging {
   def shaclSchema2RDF(shaclSchema: SHACLSchema, rdf: RDFBuilder): RDFBuilder = {
     val (schemaNode, _) = rdf.createBNode
     rdf.addTriple(RDFTriple(schemaNode, rdf_type, sh_Schema))
-    rules2RDF(shaclSchema.rules, schemaNode, rdf)
+    rules2RDF(shaclSchema.shapes, schemaNode, rdf)
     start2RDF(shaclSchema.start, schemaNode, rdf)
   }
 
   def rules2RDF(
-    rules: Seq[Rule],
+    rules: Map[Label,Shape],
     schemaNode: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
     for (rule <- rules) {
@@ -59,30 +61,21 @@ object Schema2RDF extends Logging {
   }
 
   def rule2RDF(
-    rule: Rule,
+    rule: (Label,Shape),
     schemaNode: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
-    val ruleNode = rule.label.getNode
+    val ruleNode = rule._1.getNode
 //    rdf.addTriple(RDFTriple(ruleNode, rdf_type, sh_Shape))
     rdf.addTriple(RDFTriple(ruleNode, sh_schema, schemaNode))
-    shapeDefinition2RDF(rule.shapeDefinition, ruleNode, rdf)
-    extensionConditions2RDF(rule.extensionCondition, ruleNode, rdf)
+    shapeDefn2RDF(rule._2, ruleNode, rdf)
+//    extensionConditions2RDF(rule.extensionCondition, ruleNode, rdf)
   }
 
-  def shapeDefinition2RDF(
-      shape: ShapeDefinition, 
+  def shapeDefn2RDF(
+      shape: Shape, 
       shapeNode: RDFNode, 
       rdf: RDFBuilder): RDFBuilder = {
-    shape2RDF(shape.shape, shapeNode,rdf)
-    shape match {
-      case OpenShape(_,incls) => {
-        addTriple(rdf,(shapeNode,rdf_type,sh_OpenShape))
-        inclPropSet2RDF(incls,shapeNode,rdf)
-      }
-      case ClosedShape(_) => {
-        addTriple(rdf,(shapeNode,rdf_type,sh_ClosedShape))
-      }
-    }
+    shape2RDF(shape.shapeExpr, shapeNode,rdf)
   } 
       
   def shape2RDF(
@@ -90,44 +83,57 @@ object Schema2RDF extends Logging {
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
     shape match {
-      case TripleConstraint(id,iri,value,card) => {
-        val tripleNode = nodeFromOptionalLabel(id,rdf)
+      case t:TripleConstraint => {
+        val tripleNode = nodeFromOptionalLabel(t.id,rdf)
         addTriple(rdf,(tripleNode,rdf_type,sh_PropertyConstraint))
         addTriple(rdf,(node,sh_property,tripleNode))
-        addTriple(rdf,(tripleNode,sh_predicate,iri))
-        value2RDF(value,tripleNode,rdf)
-        cardinality2RDF(card,tripleNode,rdf)
+        addTriple(rdf,(tripleNode,sh_predicate,t.iri))
+        cardinality2RDF(t.card,tripleNode,rdf)
+        value2RDF(t.value,tripleNode,rdf)
+        // TODO: Handle rest of properties...negated, inverse,...
+        log.info("TripleConstraint: Unhandled inverse, negated...yet")
       }
-      case InverseTripleConstraint(id,iri,valueShape,card) => {
-        val tripleNode = nodeFromOptionalLabel(id,rdf)
-        addTriple(rdf,(tripleNode,rdf_type,sh_InversePropertyConstraint))
-        addTriple(rdf,(node,sh_inverseProperty,tripleNode))
-        addTriple(rdf,(tripleNode,sh_predicate,iri))
-        valueShape2RDF(valueShape,tripleNode,rdf)
-        cardinality2RDF(card,tripleNode,rdf)
-      }
-      case EmptyShape => { }
+      
+      // TODO: Handle ids
+      case EmptyShape(id) => { }
       
       // TODO: Check what to do with the id...
+      case Group2(id,shape1,shape2) => {
+        shape2RDF(shape1,node,rdf)
+        shape2RDF(shape2,node,rdf)
+      }
       case GroupShape(id,shapes) => {
         for (shape <- shapes) {
           shape2RDF(shape,node,rdf)
         }
       }
-      case RepetitionShape(id,shape,card) => {
+      case RepetitionShape(id,shape,card,actions) => {
         val groupLabel = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(node,sh_group,groupLabel))
         cardinality2RDF(card,groupLabel,rdf)
         shape2RDF(shape,groupLabel,rdf)
+//TODO:        actions2RDF(actions,node,rdf)
       }
-      case SomeOfShape(id,shapes) => {
+      case Or(id,shape1,shape2) => {
+        val someOfNode = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(node,sh_someOf,someOfNode))
+        shape2RDF(shape1,someOfNode,rdf)
+        shape2RDF(shape2,someOfNode,rdf)
+      }
+      case SomeOf(id,shapes) => {
         val someOfNode = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(node,sh_someOf,someOfNode))
         for (shape <- shapes) {
           shape2RDF(shape,someOfNode,rdf)
         }
       }
-      case OneOfShape(id,shapes) => {
+      case XOr(id,shape1,shape2) => {
+        val oneOfNode = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(node,sh_oneOf,oneOfNode))
+        shape2RDF(shape1,oneOfNode,rdf)
+        shape2RDF(shape2,oneOfNode,rdf)
+      }
+      case OneOf(id,shapes) => {
         val oneOfNode = nodeFromOptionalLabel(id, rdf)
         addTriple(rdf,(node,sh_someOf,oneOfNode))
         for (shape <- shapes) {
@@ -144,7 +150,7 @@ object Schema2RDF extends Logging {
       rdf: RDFBuilder
       ): RDFBuilder = {
     value match {
-      case LiteralDatatype(v,facets) => {
+      case Datatype(v,facets) => {
         addTriple(rdf,(node,sh_valueType,v))
         facets2RDF(facets,node, rdf)
       }
@@ -213,11 +219,11 @@ object Schema2RDF extends Logging {
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
      nodeKind match {
-       case IRIKind => addTriple(rdf,(node,sh_nodeKind,sh_IRI))
-       case BNodeKind => addTriple(rdf,(node,sh_nodeKind,sh_BNode))     
-       case LiteralKind => addTriple(rdf,(node,sh_nodeKind,sh_Literal))
-       case NonLiteralKind => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
-       case AnyKind => addTriple(rdf,(node,sh_nodeKind,sh_Any))
+       // TODO: Add support to shapeConstr and facets
+       case IRIKind(shapeContr,facets) => addTriple(rdf,(node,sh_nodeKind,sh_IRI))
+       case BNodeKind(shapeConstr,facets) => addTriple(rdf,(node,sh_nodeKind,sh_BNode))     
+       case LiteralKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_Literal)) // TODO: Take into account facets
+       case NonLiteralKind(shapeConstr,facets) => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
       }
   }
   
@@ -274,7 +280,7 @@ object Schema2RDF extends Logging {
   }
   
   def extensionConditions2RDF(
-        ec: Seq[ExtensionCondition], 
+        ec: Map[Label,String], 
         node: RDFNode, 
         rdf: RDFBuilder): RDFBuilder = {
     /// TODO

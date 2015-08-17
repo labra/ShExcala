@@ -42,62 +42,70 @@ object RDF2Schema
        with_sh_property_nodes).toSeq
     
     log.info("Shape candidates = " + shapeCandidates)
-    val maybeRules : Seq[Try[Rule]] = 
+    val maybeRules : Seq[Try[(Label,Shape)]] = 
       shapeCandidates.map{case node => {
       rule(node,rdf)
     }}
     for {
-     rules <- filterSuccess(maybeRules)
+     shapes <- filterSuccess(maybeRules)
      // TODO: Parse Schema label (if any)
      // TODO: Parse start (if any)
-    } yield SHACLSchema(None,rules,None)
+    } yield {
+     SHACLSchema.empty.copy(shapes = shapes.toMap) 
+    }
   }
   
-  def rule: RDFParser[Rule] = { (n,rdf) => {
+  def rule: RDFParser[(Label,Shape)] = { (n,rdf) => {
     for {
-      shape <- shapeDefinition(n,rdf)
-    } yield Rule(mkLabel(n),shape,Seq())
+      shape <- shape(n,rdf)
+    } yield (mkLabel(n),shape)
   }
   }
 
-  def shapeDefinition: RDFParser[ShapeDefinition] = {
-    someOf(Seq(openShape,closedShape))
-  }
-
-  def openShape: RDFParser[OpenShape] = { (n,rdf) =>
+  // TODO: closed
+  // TODO: virtual
+  // TODO: extras
+  // TODO: inherit
+  // TODO: Actions
+  def shape: RDFParser[Shape] = { (n,rdf) =>
     for {
       //okTypes <- hasNoRDFType(sh_ClosedShape)(n,rdf)
       //if okTypes
       shape <- {  
          shapeExpr(n,rdf) 
       }
-      incls <- inclPropSet(n,rdf)
-    } yield OpenShape(shape,incls)
+//      incls <- inclPropSet(n,rdf)
+    } yield Shape(
+        shapeExpr = shape,
+        isClosed = false,
+        isVirtual = false,
+        inherit = Set(),
+        extras = Set(),
+        actions = Map())
   }
   
-  def inclPropSet: RDFParser[Set[IRI]] = { (n,rdf) =>
+/*  def inclPropSet: RDFParser[Set[IRI]] = { (n,rdf) =>
     // Todo: 
     Success(Set())
-  }
+  } */
 
-  def closedShape: RDFParser[ClosedShape] = { (n,rdf) =>
+/*  def closedShape: RDFParser[ClosedShape] = { (n,rdf) =>
     for {
       checkType <- hasRDFType(sh_ClosedShape)(n,rdf)
       if checkType
       shape <- shapeExpr(n,rdf)
     } yield ClosedShape(shape)
-  }
+  } */
 
   def shapeExpr: RDFParser[ShapeExpr] = { (n,rdf) =>
     objectsFromPredicate(sh_property)(n,rdf) match {
       case Success(ps) => {
         // println("shapeExpr...sh_property = " + ps)
         ps.size match {
-          case 0 => Success(EmptyShape)
+          // TODO: check ids
+          case 0 => Success(EmptyShape())
           case 1 => {
-           // println("Before calling shapeExpr ps.head = " + ps.head)
            val shapeExpr = oneOf(Seq(tripleConstraint))(ps.head,rdf)
-           // println("Single ShapeExpr: " + shapeExpr)
            shapeExpr
           }
           case _ => for {
@@ -110,14 +118,18 @@ object RDF2Schema
     } 
   }
   
-  def tripleConstraint: RDFParser[TripleConstraint] = { (n,rdf) =>
+  def tripleConstraint: RDFParser[ShapeExpr] = { (n,rdf) =>
     for {
      iri <- iriFromPredicate(sh_predicate)(n,rdf)
      valueClass <- valueClass(n,rdf)
      card <- cardinality(n,rdf)
     } yield {
      // println("TripleConstraint: " + iri + " " + valueClass + " card: " + card) 
-     TripleConstraint(Some(mkLabel(n)),iri,valueClass,card) 
+     TripleConstraint.empty.copy(
+         id = Some(mkLabel(n)),
+         iri = iri,
+         value = valueClass,
+         card = card) 
     }
   }
   
@@ -147,7 +159,7 @@ object RDF2Schema
     } yield SingleShape(mkLabel(label))
   }
   
-  def literalDatatype: RDFParser[LiteralDatatype] = { (n,rdf) =>
+  def literalDatatype: RDFParser[Datatype] = { (n,rdf) =>
     for {
       dt <- {
        // println("literalDatatype: looking for valueType: " + n)
@@ -155,8 +167,13 @@ object RDF2Schema
        // println("objectFromPredicate valueType = " + obj)
        obj
       }
-      // TODO: Parse facets
-    } yield LiteralDatatype(dt,emptyFacets)
+      // TODO: Parse facets and check errors
+    } yield {
+      if (dt.isIRI)
+        Datatype(dt.toIRI,emptyFacets)
+      else 
+        throw RDF2SchemaException(s"literalDatatype: datatype must be an IRI. node: $n,  rdf: $rdf, datatype: $dt")
+    }
   }
   
   // TODO: fallback to (nodeKind AnyKind) if no valueClass is declared 

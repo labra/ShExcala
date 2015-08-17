@@ -18,6 +18,7 @@ import es.weso.rdf._
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 
+
 /*
  * State of Shape parser
  * State is composed of:

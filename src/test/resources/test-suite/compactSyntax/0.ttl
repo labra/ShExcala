@@ -1,0 +1,5 @@
+@prefix : <http://example.org/> .
+
+# A single triple where x is predicate so it doesn't have outgoing or incoming triples
+:y :x :y .
+

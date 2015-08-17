@@ -1,0 +1,7 @@
+# source: default_namespace_IRI.ttl
+
+PREFIX : <http://a.example/>
+
+:IssueShape {
+   :p1 .
+}

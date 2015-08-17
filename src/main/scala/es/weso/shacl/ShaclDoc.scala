@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import es.weso.shacl.PREFIXES._
 import es.weso.shacl.Shacl._
 import es.weso.utils.Logging
+import es.weso.utils.PrefixMapUtils._
 
 case class ShapeDocException(msg:String) extends Exception
 
@@ -18,7 +19,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shaclSchemaDoc(s: SHACLSchema): Document = {
     pmDoc(prefixMap) :/: 
-    rulesDoc(s.rules) // TODO: start
+    shapesDoc(s.shapes) // TODO: start
   }
 
   def pmDoc(pm: PrefixMap): Document = {
@@ -28,30 +29,17 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     )
   }
 
-  def rulesDoc(rules: Seq[Rule]): Document = {
-    seqDocWithSep(rules, "\n", ruleDoc)
+  def shapesDoc(shapes: Map[Label,Shape]): Document = {
+    iterDocWithSep(shapes, "\n", labelShapeDoc)
+  }
+  
+  def labelShapeDoc(pair: (Label,Shape)): Document = {
+    labelDoc(pair._1) :: shapeDoc(pair._2)
   }
 
-  def ruleDoc(rule: Rule): Document = {
-    labelDoc(rule.label) ::
-      shapeDefinitionDoc(rule.shapeDefinition) ::
-      extensionConditionsDoc(rule.extensionCondition)
-  }
-
-  def shapeDefinitionDoc(shapeDefn: ShapeDefinition): Document = {
-    shapeDefn match {
-      case OpenShape(s, inclSet) =>
-        space :: "{" :: space ::
-          nest(3,
-            group(shapeExprDoc(s))) ::
-            space ::
-            text("}")
-      case ClosedShape(s) =>
-        space :: "[" :: space ::
-          nest(3, group(shapeExprDoc(s))) ::
-          space ::
-          text("]")
-    }
+  def shapeDoc(shape: Shape): Document = {
+      shapeExprDoc(shape.shapeExpr) 
+      // TODO: Closed and inherit
   }
 
   def labelDoc(label: Label): Document = {
@@ -63,42 +51,74 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shapeExprDoc(s: ShapeExpr): Document = {
     s match {
+//      case t: TripleConstraint => tripleConstraintDoc(t)
       case t: TripleConstraint => tripleConstraintDoc(t)
-      case t: InverseTripleConstraint => inverseTripleConstraintDoc(t)
       case GroupShape(id,shapes) => 
         "(" :: seqDocWithSep(shapes,",",shapeExprDoc) :: text(")")
-      case SomeOfShape(id,shapes) => 
+      case SomeOf(id,shapes) => 
         log.info("Unimplemented id generation yet")
         "(" :: seqDocWithSep(shapes,"||",shapeExprDoc) :: text(")") 
-      case OneOfShape(id,shapes) => 
+      case OneOf(id,shapes) => 
         log.info("Unimplemented id generation yet")
         "(" :: seqDocWithSep(shapes,"|",shapeExprDoc) :: text(")") 
-      case RepetitionShape(id,shape,card) => {
+      case RepetitionShape(id,shape,card,actions) => {
         log.info("Unimplemented id generation yet")
-        "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card)
+        "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card) :: actionsDoc(actions)
       }
-      case EmptyShape => text("{}") 
+      case Group2(id,shape1,shape2) => 
+        "(" :: shapeExprDoc(shape1) :: "," :: shapeExprDoc(shape2) :: text(")")
+      case Or(id,shape1,shape2) => 
+        "(" :: shapeExprDoc(shape1) :: "||" :: shapeExprDoc(shape2) :: text(")")
+      case XOr(id,shape1,shape2) => 
+        "(" :: shapeExprDoc(shape1) :: "|" :: shapeExprDoc(shape2) :: text(")")
+      case EmptyShape(id) => text("{}") 
         
       case x => throw ShapeDocException("Unimplemented string conversion for " + s + " yet")
     }
   }
 
+/*  def tripleConstraintDoc(t: TripleConstraint): Document = {
+    log.info("Unimplemented id generation yet")
+    iriDoc(t.iri) :: space :: valueClassDoc(t.value) 
+  } */
+
   def tripleConstraintDoc(t: TripleConstraint): Document = {
-    log.info("Unimplemented id generation yet")
-    iriDoc(t.iri) :: space :: valueClassDoc(t.value) :: cardDoc(t.card)
+    idDoc(t.id) ::
+    inverseDoc(t.inverse) :: 
+    negatedDoc(t.negated) :: 
+    iriDoc(t.iri) :: space :: 
+    valueClassDoc(t.value) :: 
+    cardDoc(t.card) ::
+    annotationsDoc(t.annotations)
   }
+  
+  def idDoc(id: Option[Label]): Document = 
+    id.fold(text(""))(
+        label => "$" :: labelDoc(label) :: space
+    )
+  
+  def inverseDoc(i: Boolean): Document = 
+    if (i) text("^")
+    else text("")
 
-  def inverseTripleConstraintDoc(t: InverseTripleConstraint): Document = {
-    log.info("Unimplemented id generation yet")
-    "^" :: iriDoc(t.iri) :: space :: shapeDoc(t.shape) :: cardDoc(t.card)
+  def negatedDoc(i: Boolean): Document = 
+    if (i) text("!")
+    else text("")
+
+  def actionsDoc(as: Actions): Document = {
+    iterDocWithSep(as, "\n", actionDoc)
   }
-
-  def extensionConditionsDoc(es: Seq[ExtensionCondition]): Document = {
-    seqDocWithSep(es, "\n", extensionConditionDoc)
+  
+  def annotationsDoc(as: List[Annotation]): Document = {
+    iterDocWithSep(as, "\n", annotationDoc)
   }
+  
+  def annotationDoc(a: Annotation): Document =
+    ";" :: space :: iriDoc(a.iri) :: 
+    a.value.fold(i => iriDoc(i), l => rdfNodeDoc(l))
 
-  def extensionConditionDoc(e: ExtensionCondition): Document = {
-    "%" :: labelDoc(e.extLangName) :: "{" :: text(e.extDefinition) :: text("}")
+  def actionDoc(a: (IRI,String)): Document = {
+    "%" :: iriDoc(a._1) :: "{" :: text(a._2) :: text("}")
   }
 
   def valueClassDoc(v: ValueClass): Document = {
@@ -110,14 +130,21 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def valueDoc(v: ValueConstr): Document = {
     v match {
-      case LiteralDatatype(v, facets) => rdfNodeDoc(v) :: facetsDoc(facets)
-      case ValueSet(s) => "(" ::
-        nest(3, seqDocWithSep(s, " ", valueObjectDoc)) :: text(")")
-      case AnyKind => text(".")
+      case dt: Datatype => datatypeDoc(dt) 
+      case `any` => text(".")
+      case vs: ValueSet => valueSetDoc(vs)
       case n: NodeKind => text(n.token)
     }
   }
+  
+  def datatypeDoc(dt: Datatype): Document = {
+    iriDoc(dt.v) :: facetsDoc(dt.facets)
+  }
 
+  def valueSetDoc(vs: ValueSet): Document = {
+    "(" :: nest(3, seqDocWithSep(vs.s, " ", valueObjectDoc)) :: text(")")
+  }
+  
   def facetsDoc(facets: Seq[XSFacet]): Document = {
     seqDocWithSep(facets, " ", facetDoc)
   }
@@ -139,9 +166,8 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shapeDoc(s: ShapeConstr): Document = {
     s match {
-      case DisjShapeConstr(shapes) => setDocWithSep(shapes, ",", labelDoc)
-      case ConjShapeConstr(shapes) => setDocWithSep(shapes, "|", labelDoc)
-      case NotShapeConstr(shape) => "!" :: shapeDoc(s)
+      case DisjShapeConstr(shapes) => setDocWithSep(shapes, "OR", labelDoc)
+      case _ => throw new Exception(s"shapeDoc: unsupported $s")
     }
   }
 
@@ -158,7 +184,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
   }
 
   def rdfNodeDoc(n: RDFNode): Document = {
-    text(ShaclDoc.rdfNode2String(n)(prefixMap))
+    text(showRDFNode(n)(prefixMap))
   }
 
   def valueObjectDoc(v: ValueObject): Document = {
@@ -166,11 +192,13 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       case ValueIRI(iri) => iriDoc(iri)
       case ValueLiteral(l) => rdfNodeDoc(l)
       case ValueLang(lang) => text("@") :: text(lang.lang)
+      case ValueStem(stem,exclusions) => throw new Exception("Unsupported valuestem")
+      case ValueAny(exclusions) => throw new Exception("Unsupported valueAny")
     }
   }
 
   def iriDoc(i: IRI): Document = {
-    text(ShaclDoc.iri2String(i)(prefixMap))
+    text(qualify(i)(prefixMap))
   }
 
   def pairDoc(d1: Document, d2: Document): Document =
@@ -198,6 +226,16 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       )
   }
 
+  def iterDocWithSep[A](m: Iterable[A],
+    sep: String,
+    toDoc: A => Document): Document = {
+    if (m.isEmpty) empty
+    else
+      m.tail.foldLeft(toDoc(m.head))(
+        (d: Document, x: A) => d :: sep :/: toDoc(x)
+      )
+  }
+
 }
 
 object ShaclDoc {
@@ -211,10 +249,6 @@ object ShaclDoc {
     writer.toString
   }
 
-  def rule2String(r: Rule)(implicit pm: PrefixMap): String = {
-    prettyPrint(ShaclDoc(pm).ruleDoc(r))
-  }
-
   def schema2String(s: SHACLSchema)(implicit pm: PrefixMap): String = {
     prettyPrint(ShaclDoc(pm).shaclSchemaDoc(s))
   }
@@ -222,29 +256,18 @@ object ShaclDoc {
   def shape2String(shape: ShapeExpr)(implicit pm: PrefixMap): String =
     prettyPrint(ShaclDoc(pm).shapeExprDoc(shape))
 
-  def rules2String(r: Rule)(implicit pm: PrefixMap): String = {
-    prettyPrint(ShaclDoc(pm).ruleDoc(r))
+  def valueSet2String(vs: ValueSet)(implicit pm: PrefixMap): String = {
+    prettyPrint(ShaclDoc(pm).valueSetDoc(vs))
   }
 
-  def rdfNode2String(n: RDFNode)(implicit pm: PrefixMap): String = {
-    n match {
-      case BNodeId(id) => "_:" + id
-      case iri: IRI => iri2String(iri)
-      case l: Literal => l.toString
-    }
+  def nodeKind2String(nk: NodeKind): String = nk.token
+  
+  def datatype2String(dt: Datatype)(implicit pm:PrefixMap): String = {
+    prettyPrint(ShaclDoc(pm).datatypeDoc(dt))
   }
-
-  def iri2String(iri: IRI)(implicit pm: PrefixMap): String = {
-
-    def startsWithPredicate(p: (String, IRI)): Boolean = {
-      iri.str.startsWith(p._2.str)
-    }
-
-    pm.pm.find(startsWithPredicate) match {
-      case None => "<" ++ iri.str ++ ">"
-      case Some(p) => p._1 ++ ":" ++ iri.str.stripPrefix(p._2.str)
-    }
-  }
-
+  
+  def label2String(label:Label)(implicit pm: PrefixMap): String = {
+    prettyPrint(ShaclDoc(pm).labelDoc(label))
+  } 
 }
 

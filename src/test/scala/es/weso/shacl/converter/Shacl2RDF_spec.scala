@@ -21,15 +21,15 @@ class Shacl2RDFSpec
                          |:s { :p IRI }""".stripMargin
 
       val rdf_str = """|@prefix : <http://e.o#> .
-                            |@prefix sh: <http://www.w3.org/ns/shacl/core#> .
-                            |:s a sh:OpenShape ;
-                            |   sh:schema [ a sh:Schema] ;
-                            |   sh:property [ a sh:PropertyConstraint ;
-                            |                 sh:predicate :p ; 
-                            |                 sh:nodeKind sh:IRI ;
-                            |                 sh:minCount 1 
-                            |               ] .
-                            |""".stripMargin
+                       |@prefix sh: <http://www.w3.org/ns/shacl/core#> .
+                       |:s sh:schema [ a sh:Schema] ;
+                       |   sh:property [ a sh:PropertyConstraint ;
+                       |                 sh:predicate :p ; 
+                       |                 sh:nodeKind sh:IRI ;
+                       |                 sh:minCount 1 ;
+                       |                 sh:maxCount 1
+                       |               ] .
+                       |""".stripMargin
       val r = for {
         (shape, _) <- Schema.fromString(shape_str, "SHEXC")
         rdf_from_shape <- RDFAsJenaModel.fromChars(shape.serialize("TURTLE"), "TURTLE")
@@ -49,14 +49,14 @@ class Shacl2RDFSpec
 
       val rdf_str = """|@prefix : <http://e.o#> .
                        |@prefix sh: <http://www.w3.org/ns/shacl/core#> .
-                       |:s a sh:OpenShape ;
-                       |   sh:schema [ a sh:Schema] ;
-                            |   sh:property [ a sh:PropertyConstraint ;
-                            |                 sh:predicate :p ; 
-                            |                 sh:allowedValues (1 2) ;
-                            |                 sh:minCount 1 
-                            |               ] .
-                            |""".stripMargin
+                       |:s sh:schema [ a sh:Schema] ;
+                       |   sh:property [ a sh:PropertyConstraint ;
+                       |                 sh:predicate :p ; 
+                       |                 sh:allowedValues (1 2) ;
+                       |                 sh:minCount 1 ;
+                       |                 sh:maxCount 1
+                       |               ] .
+                       |""".stripMargin
       val r = for {
         (shape, _) <- Schema.fromString(shape_str, "SHEXC")
         rdf_from_shape <- RDFAsJenaModel.fromChars(shape.serialize("TURTLE"), "TURTLE")
