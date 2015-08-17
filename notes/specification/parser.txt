@@ -18,4 +18,12 @@ My parser recognizes it as a value set with two values:
    I think, the grammar doesn't impose to include a space between two literals 
    so it may be ok
    
-   
+3.- Language tag normalization
+
+It seems that language tags are stored lower-cased (it should be documented somewhere)
+
+4.- BNode generation
+
+The serialization to JSOn asumes that there is a Bnode generator starting from _:b0
+
+

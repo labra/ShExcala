@@ -13,11 +13,13 @@ import org.scalatest._
 import scalaz._, Scalaz._
 import es.weso.shacl.json.AST._
 import es.weso.shacl._
+import es.weso.shacl.Shacl._
+import es.weso.rdfgraph.nodes._
 
 class RunASTSingle extends Driver {
   
   describe("Run specific JSON test") {
-    val name = "1val1dotMinusiri3"
+    val name = "1val1STRING_LITERAL_LONG2_with_subtag"
     val file = new File(parsedSchemasDir + "/" + name + ".json")
     val contents = io.Source.fromFile(file)("UTF-8").mkString
     val json = Parse.parse(contents).getOrElse(jEmptyObject)
@@ -39,6 +41,11 @@ class RunASTSingle extends Driver {
            shacl
           }
         } yield (schemaAST,schema,shacl)
+        
+        val literal1 = ValueLiteral(LangLiteral("pepe",Lang("es")))
+        val literal2 = ValueLiteral(LangLiteral("pepe",Lang("es")))
+        println("Literals equal? " + (literal1 == literal2))
+        
         tryConversion match {
           case TrySuccess((schemaAST,schema, shacl)) => {
            schemasEqual(schema,shacl) 

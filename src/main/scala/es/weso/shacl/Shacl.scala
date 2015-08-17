@@ -73,20 +73,6 @@ object Shacl {
     def addId(label: Label): ShapeExpr
   }
 
-/*  case class TripleConstraint(
-    id: Option[Label],
-    iri: IRI,
-    value: ValueClass
-    ) extends ShapeExpr 
-
-  case class InverseTripleConstraint(
-    id: Option[Label],
-    iri: IRI,
-    shape: ShapeConstr
-    ) extends ShapeExpr {
-    def addId(label:Label) = this.copy(id = Some(label))
-  } */
-
   case class TripleConstraint(
     id: Option[Label],
     iri: IRI,
@@ -117,8 +103,10 @@ object Shacl {
       iri: IRI, 
       value: Either[IRI,Literal]
   )
+
   // Binary operators for convenience
-    
+
+  
   // Or(l,s1,s2) = SomeOfShape(l,List(s1,s2))
   case class Or(
       id: Option[Label], 
@@ -127,7 +115,7 @@ object Shacl {
     def addId(label:Label) = this.copy(id = Some(label))
   }
   
-  // Or(l,s1,s2) = SomeOfShape(l,List(s1,s2))
+  // XOr(l,s1,s2) = OneOfShape(l,List(s1,s2))
   case class XOr(
       id: Option[Label], 
       shape1: ShapeExpr, 
@@ -135,7 +123,7 @@ object Shacl {
     def addId(label:Label) = this.copy(id = Some(label))
   }
   
-  // Group(l,s1,s2) = GroupShape(l,s1,s2)
+  // Group2(l,s1,s2) = Group(l,s1,s2)
   case class Group2(
       id: Option[Label],
       shape1: ShapeExpr, 
@@ -143,7 +131,7 @@ object Shacl {
     def addId(label:Label) = this.copy(id = Some(label))
   } 
   
-  // XOr(l,s1,s2) = OneOfShape(l,List(s1,s2))
+  // OneOf(l,s1,s2) = OneOf(l,List(s1,s2))
   case class OneOf(
       id: Option[Label], 
       shapes: List[ShapeExpr]) extends ShapeExpr {

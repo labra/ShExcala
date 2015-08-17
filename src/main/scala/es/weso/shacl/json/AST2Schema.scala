@@ -102,7 +102,10 @@ object AST2Schema {
        else {
          val card = cnvCard(expr)
          val actions = cnvActions(expr.semAct)
-         RepetitionShape(id,GroupShape(None,shapes),card,actions)
+         if (shapes.length == 1)
+           RepetitionShape(id,shapes.head,card,actions)
+         else
+           RepetitionShape(id,GroupShape(None,shapes),card,actions)
        }
      }
      
@@ -352,7 +355,7 @@ object AST2Schema {
 
  lazy val literal = """\"(.*)\"""".r
  lazy val literalDatatype = """\"(.*)\"\^\^(.*)""".r
- lazy val literalLang = """\"(.*)\"@(.*)""".r
+ lazy val literalLang = """"(.*)"@(.*)""".r
 
  lazy val xsd = "http://www.w3.org/2001/XMLSchema#"
  lazy val xsd_boolean = xsd + "boolean"
@@ -376,8 +379,14 @@ object AST2Schema {
        }
        
      }
-     case literalLang(lex,lang) => LangLiteral(lex,Lang(lang))
-     case literal(lex) => StringLiteral(lex)
+     case literalLang(lex,lang) => {
+      val lit = LangLiteral(lex,Lang(lang))
+      lit
+     }
+     case literal(lex) => {
+      println("LiteralLang: lex: " + lex)
+      StringLiteral(lex) 
+     }
      case _ => throw new Exception(s"Literal |$l| doesn't match" )
    } 
  }

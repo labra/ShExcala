@@ -510,7 +510,9 @@ trait ShaclParser
   def basicValueObject: StateParser[ShapeParserState, ValueObject] = { s => 
     opt(WS) ~> (
         lift(iriRange(s.namespaces))(s) 
-      | literal(s.namespaces) ^^ { case l => (ValueLiteral(l), s) } 
+      | literal(s.namespaces) ^^ { case l => {
+       (ValueLiteral(l), s) 
+      } } 
       ) <~ opt(WS)
   }
     
@@ -564,6 +566,7 @@ trait ShaclParser
        Pattern(str) 
       }
     }
+      | (symbol("~") ~> opt(WS) ~> string) ^^ Pattern
       | ignorecase("LENGTH") ~> integer ^^ { case n => Length(n) }
       | ignorecase("MINLENGTH") ~> integer ^^ { case n => MinLength(n) }
       | ignorecase("MAXLENGTH") ~> integer ^^ { case n => MaxLength(n) })
