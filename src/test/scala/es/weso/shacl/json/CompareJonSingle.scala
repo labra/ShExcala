@@ -14,7 +14,7 @@ import scalaz._, Scalaz._
 import es.weso.shacl.json.AST._
 import es.weso.shacl._
 
-class RunParsedSingle extends Driver {
+class CompareJsonSingle extends Driver {
   
   describe("Run specific JSON test") {
     val name = "1val1STRING_LITERAL_LONG2_with_subtag"

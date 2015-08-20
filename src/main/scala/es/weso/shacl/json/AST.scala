@@ -158,58 +158,58 @@ object StemAST {
 // JSON Encoders
 implicit def SchemaEncodeJson: EncodeJson[SchemaAST] =
     EncodeJson((n: SchemaAST) =>
-      ("prefixes" := n.prefixes.asJson) ->:
-      ("shapes" := n.shapes.asJson) ->:
-      ("start" := n.start.asJson) ->:
-      ("startAct" := n.startActions.asJson) ->:
+      ("prefixes" :=? n.prefixes) ->?:
+      ("shapes" :=? n.shapes) ->?:
+      ("start" :=? n.start) ->?:
+      ("startAct" :=? n.startActions) ->?:
        jEmptyObject
       )
 
 implicit def ShapeEncodeJson: EncodeJson[ShapeAST] =
     EncodeJson((n: ShapeAST) =>
       ("type" := jString("shape")) ->:
-       ("expression" := n.expression.asJson) ->:
-       ("virtual" := n.virtual.asJson) ->:
-       ("closed" := n.closed.asJson) ->:
-       ("inherit" := n.inherit.asJson) ->:
-       ("extra" := n.extra.asJson) ->:
-       ("semAct" := n.semAct.asJson) ->:
+       ("expression" :=? n.expression) ->?:
+       ("virtual" :=? n.virtual) ->?:
+       ("closed" :=? n.closed) ->?:
+       ("inherit" :=? n.inherit) ->?:
+       ("extra" :=? n.extra) ->?:
+       ("semAct" :=? n.semAct) ->?:
        jEmptyObject
       )
 
 implicit def ExpressionEncodeJson: EncodeJson[ExpressionAST] =
     EncodeJson((n: ExpressionAST) =>
       ("type" := n._type) ->:
-      ("id" := n.id.asJson) ->:
-      ("predicate" := n.predicate.asJson) ->: 
-      ("include" := n.include) ->: 
-      ("value" := n.value.asJson) ->: 
-      ("inverse" := n.inverse.asJson) ->:
-      ("negated" := n.negated.asJson) ->:
-      ("min" := n.min.asJson) ->:
-      ("max" := n.max.asJson) ->:
-      ("expressions" := n.expressions.asJson) ->:
-      ("annotations" := n.annotations.asJson) ->:
-      ("semAct" := n.semAct.asJson) ->:
+      ("id" :=? n.id) ->?:
+      ("predicate" :=? n.predicate) ->?: 
+      ("include" :=? n.include) ->?: 
+      ("value" :=? n.value) ->?: 
+      ("inverse" :=? n.inverse) ->?:
+      ("negated" :=? n.negated) ->?:
+      ("min" :=? n.min) ->?:
+      ("max" :=? n.max) ->?:
+      ("expressions" :=? n.expressions) ->?:
+      ("annotations" :=? n.annotations) ->?:
+      ("semAct" :=? n.semAct) ->?:
       jEmptyObject)
       
 implicit def ValueClassEncodeJson: EncodeJson[ValueClassAST] =
     EncodeJson((n: ValueClassAST) =>
       ("type" := jString("valueClass")) ->:
-      ("values" := n.values.asJson) ->:
-      ("pattern" := n.pattern.asJson) ->: 
-      ("nodeKind" := n.nodeKind.asJson) ->: 
-      ("reference" := n.reference.asJson) ->: 
-      ("length" := n.length) ->: 
-      ("minInclusive" := n.minInclusive) ->: 
-      ("maxInclusive" := n.maxInclusive) ->: 
-      ("minExclusive" := n.minExclusive) ->: 
-      ("maxExclusive" := n.maxExclusive) ->: 
-      ("minLength" := n.minLength) ->: 
-      ("maxLength" := n.maxLength) ->: 
-      ("totalDigits" := n.totalDigits) ->: 
-      ("fractionDigits" := n.fractionDigits) ->: 
-      ("datatype" := n.datatype) ->: 
+      ("values" :=? n.values) ->?:
+      ("pattern" :=? n.pattern) ->?: 
+      ("nodeKind" :=? n.nodeKind) ->?: 
+      ("reference" :=? n.reference) ->?: 
+      ("length" :=? n.length) ->?: 
+      ("minInclusive" :=? n.minInclusive) ->?: 
+      ("maxInclusive" :=? n.maxInclusive) ->?: 
+      ("minExclusive" :=? n.minExclusive) ->?: 
+      ("maxExclusive" :=? n.maxExclusive) ->?: 
+      ("minLength" :=? n.minLength) ->?: 
+      ("maxLength" :=? n.maxLength) ->?: 
+      ("totalDigits" :=? n.totalDigits) ->?: 
+      ("fractionDigits" :=? n.fractionDigits) ->?: 
+      ("datatype" :=? n.datatype) ->?: 
       jEmptyObject)
 
 implicit def ValueEncodeJson: EncodeJson[ValueAST] =
@@ -224,7 +224,7 @@ implicit def ReferenceEncodeJson: EncodeJson[ReferenceAST] =
 implicit def OrEncodeJson: EncodeJson[OrAST] =
     EncodeJson((n: OrAST) =>
       ("type" := jString("or")) ->:
-      ("disjuncts" := n.disjuncts.asJson) ->: 
+      ("disjuncts" := n.disjuncts) ->: 
       jEmptyObject
       )
       

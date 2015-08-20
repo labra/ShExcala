@@ -1,0 +1,48 @@
+[0]     codeDecl              ::= '%' iri? CODE
+
+[0]     codeDecl              ::= '%' iri? (iri|literal)* CODE?
+
+- Allows to have a list of IRIs/literals after the code decl label 
+- Allows to not have code block
+
+It would be possible to have some processor that 
+ allows to define common use cases: import another schema, declare version, define macros
+ 
+
+Examples:
+
+%sh:import <other.shex>
+%sh:version "1.0"
+%sh:define :add :x :y { x + y }
+
+%sh:call :add 2 3
+
+
+
+% sh:import <other.shex>
+
+<EUCoutry> = ( "Spain" 
+  "France" 
+  ...
+  "Germany" 
+)
+
+
+<EUcitizen> {
+ :birthCountry $<EUCountry>
+}
+
+<EUCompany> {
+ :locationCountry $<EUCountry>
+}
+
+<id> KEY {
+  :firstName <xsd:string>
+, :lastName <xsd:string>
+}
+
+<Person> &<id> { 
+, :age <xsd:string>
+}
+
+Month = (1 .. 31)

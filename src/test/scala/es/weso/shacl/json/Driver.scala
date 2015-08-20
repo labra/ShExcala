@@ -41,6 +41,25 @@ class Driver extends FunSpec with Matchers with TryValues {
         x => x)
     }
   }
+  
+  def str2AST(str: String): Try[SchemaAST] = {
+    Try{
+      val parsed = Parse.decodeValidation[SchemaAST](str)
+      parsed.fold(_ =>
+        throw new Exception(s"Error parsing : $str"),
+        x => x)
+    }
+  }
+
+  def jsonFile(file: File): Try[Json] = {
+    Try {
+      val contents = io.Source.fromFile(file)("UTF-8").mkString
+      val parsed = Parse.parse(contents)
+      parsed.fold(_ =>
+        throw new Exception(s"Error parsing ${file.getName()}: $parsed"),
+        x => x)
+    }
+  }
 
   def file2AST(file: File): Try[SchemaAST] = {
     Try {
@@ -98,6 +117,13 @@ class Driver extends FunSpec with Matchers with TryValues {
     }
   }
   
+  def jsonsEqual(json1: Json, json2:Json): Unit = {
+    if (json1 == json2) {
+    } else {
+      fail(s"JSons are different \nFrom File:${json1.spaces2}\nFrom ShEx:${json2.spaces2}")
+    }
+  }
+  
   def trying[A](msg: String, t: Try[A]): Try[A] = {
     t match {
       case TrySuccess(v) => t
@@ -108,6 +134,10 @@ class Driver extends FunSpec with Matchers with TryValues {
     }
   }
   
+  def str2SchemaAST(str: String): Try[SchemaAST] = {
+    trying("Reading AST", str2AST(str))
+  }
+
   def astFile(file: File): Try[SchemaAST] = {
     trying("Reading AST", file2AST(file))
   }
@@ -116,7 +146,7 @@ class Driver extends FunSpec with Matchers with TryValues {
     trying("AST->Schema", AST2Schema.cnvAST(ast))
   }
   
-  def testFile(file: File): Unit = {
+  def testComparingSchemas(file: File): Unit = {
     val tryConversion = for {
           schemaAST <- astFile(file)
           schema <- astSchema(schemaAST)
@@ -130,5 +160,22 @@ class Driver extends FunSpec with Matchers with TryValues {
           case TryFailure(e)      => fail("Failure: " + e)
         }
   }
+  
+  
+   def testComparingJsons(file: File): Unit = {
+    val tryConversion = for {
+          json <- jsonFile(file)
+          shaclFile <- lookupFileWithSameName(file,schemasDir,"shex")
+          shacl <- trying("Parsing SHACL", parseShaclSchema(shaclFile))
+          ast <- Schema2AST.cnvSchema(shacl)
+        } yield (json,ast)
+     tryConversion match {
+          case TrySuccess((json,ast)) => {
+           jsonsEqual(json, ast.asJson) 
+          }
+          case TryFailure(e)      => fail("Failure: " + e)
+        }
+  }
+
  
 }

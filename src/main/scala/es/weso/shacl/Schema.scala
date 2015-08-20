@@ -13,6 +13,10 @@ import es.weso.monads._
 import org.slf4j._
 import es.weso.utils.IO._
 import es.weso.rdf.jena.RDFAsJenaModel
+import es.weso.shacl.json.AST._
+import es.weso.shacl.json._
+import argonaut._
+import Argonaut._
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
@@ -36,8 +40,16 @@ case class Schema(
   }
 
   def serialize(format: String): String = {
-    format match {
-      case "SHEXC" => toString
+    format.toUpperCase match {
+      case "SHEXC" => show
+      case "JSONAST" => {
+       Schema2AST.cnvSchema(this) match {
+         case Success(ast) => {
+           ast.asJson.spaces2
+         } 
+         case Failure(e) => throw new Exception(s"Cannot convert schema $this to format $format")
+       }
+      }
       case x =>
         if (DataFormats.available(x)) {
           val rdf = RDFAsJenaModel.empty
@@ -58,14 +70,29 @@ object Schema {
   def empty = Schema(
     pm = PrefixMap.empty,
     shaclSchema = SHACLSchema.empty)
+    
+    def str2AST(str: String): Try[SchemaAST] = {
+    Try{
+      val parsed = Parse.decodeValidation[SchemaAST](str)
+      parsed.fold(_ =>
+        throw new Exception(s"Error parsing : $str"),
+        x => x)
+    }
+  }
+ 
 
   def fromString(cs: CharSequence, format: String = "SHEXC"): Try[(Schema, PrefixMap)] = {
-    format match {
+    format.toUpperCase match {
       case "SHEXC" | "SHACLC" =>
         ShaclParser.parse(cs) match {
           case s @ Success(_) => s
           case Failure(t)     => Failure(throw new Exception("Parsing schema: " + t.getMessage))
         }
+        
+      case ("JSONAST" | "JSON") => for {
+        schemaAST <- str2AST(cs.toString)
+        schema <- AST2Schema.cnvAST(schemaAST)
+      } yield (schema,schema.pm)
       case x =>
         if (SchemaFormats.available(x)) {
           for {

@@ -10,7 +10,7 @@ Failed tests that pass:
 2.- STRING_LITERAL_LONG1-ending-APOSTROPHE 
 
 <http://a.example/IssueShape> {
-   <http://a.example/p1> ('''abc')
+   <http://a.example/p1> ('' 'abc')
 }
 
 My parser recognizes it as a value set with two values: 

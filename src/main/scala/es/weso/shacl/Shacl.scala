@@ -327,7 +327,9 @@ object Shacl {
       action: String)
 
   sealed trait Cardinality extends Positional {
-    def minusOne : Cardinality 
+    def minusOne : Cardinality
+    def getMin: Int
+    def getMax: Option[Int]
   }
 
   case class RangeCardinality(m: Int, n: Int) extends Cardinality {
@@ -341,6 +343,10 @@ object Shacl {
       case RangeCardinality(m,n) if m > 0 && n > 0 => RangeCardinality(m - 1, n - 1)
       case _ => throw new Exception("minusOne: Unexpected cardinality " + this)
     }
+    
+    def getMin = m
+    
+    def getMax = Some(n)
   }
   
 
@@ -356,6 +362,10 @@ object Shacl {
       case UnboundedCardinalityFrom(n) if n > 0 => UnboundedCardinalityFrom(m - 1) 
       case _ => throw new Exception("minusOne: Unexpected cardinality " + this)
     }
+    
+    def getMin = m
+    
+    def getMax = None
   }
 
   lazy val NoActions: Seq[Action] = Seq()

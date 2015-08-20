@@ -9,7 +9,7 @@ object SchemaFormats {
   /**
    * Available list of formats
    */
-  lazy val formats = List("SHEXC") ++ DataFormats.toList
+  lazy val formats = List("SHEXC", "JSONAST") ++ DataFormats.toList
 
   /**
    * Check if a format is available

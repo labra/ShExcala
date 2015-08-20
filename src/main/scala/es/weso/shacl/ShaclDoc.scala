@@ -34,12 +34,38 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
   }
   
   def labelShapeDoc(pair: (Label,Shape)): Document = {
-    labelDoc(pair._1) :: shapeDoc(pair._2)
+    virtualDoc(pair._2.isVirtual) :: 
+    labelDoc(pair._1) :: space :: shapeDoc(pair._2)   
   }
 
   def shapeDoc(shape: Shape): Document = {
-      shapeExprDoc(shape.shapeExpr) 
-      // TODO: Closed and inherit
+    inheritDoc(shape.inherit) ::
+    extrasDoc(shape.extras) ::
+    closedDoc(shape.isClosed) :: 
+    text("{") :: space :: 
+    shapeExprDoc(shape.shapeExpr) :: 
+    text("}") 
+  }
+  
+  def inheritDoc(inherit: Set[Label]): Document = {
+    if (inherit.isEmpty) text("")
+    else text("&") :: setDocWithSep(inherit, " ", labelDoc) :: space
+  }
+  
+  def extrasDoc(extras: Set[IRI]): Document = {
+    if (extras.isEmpty) text("")
+    else text("EXTRA") :: setDocWithSep(extras," ", iriDoc) :: space
+  }
+  
+  def closedDoc(isClosed: Boolean): Document = {
+    if (isClosed) text("CLOSED") :: space
+    else text("")
+  }
+  
+  def virtualDoc(isVirtual: Boolean): Document = {
+    if (isVirtual) {
+      text("VIRTUAL") :: space
+    } else text("")
   }
 
   def labelDoc(label: Label): Document = {
@@ -51,36 +77,31 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shapeExprDoc(s: ShapeExpr): Document = {
     s match {
-//      case t: TripleConstraint => tripleConstraintDoc(t)
-      case t: TripleConstraint => tripleConstraintDoc(t)
+      case t: TripleConstraint => 
+        tripleConstraintDoc(t)
       case GroupShape(id,shapes) => 
-        "(" :: seqDocWithSep(shapes,",",shapeExprDoc) :: text(")")
+        idDoc(id) :: "(" :: seqDocWithSep(shapes,",",shapeExprDoc) :: text(")")
       case SomeOf(id,shapes) => 
-        log.info("Unimplemented id generation yet")
-        "(" :: seqDocWithSep(shapes,"||",shapeExprDoc) :: text(")") 
+        idDoc(id) :: "(" :: seqDocWithSep(shapes,"||",shapeExprDoc) :: text(")") 
       case OneOf(id,shapes) => 
-        log.info("Unimplemented id generation yet")
-        "(" :: seqDocWithSep(shapes,"|",shapeExprDoc) :: text(")") 
+        idDoc(id) :: "(" :: seqDocWithSep(shapes,"|",shapeExprDoc) :: text(")") 
       case RepetitionShape(id,shape,card,actions) => {
-        log.info("Unimplemented id generation yet")
-        "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card) :: actionsDoc(actions)
+        idDoc(id) :: "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card) :: actionsDoc(actions)
       }
       case Group2(id,shape1,shape2) => 
-        "(" :: shapeExprDoc(shape1) :: "," :: shapeExprDoc(shape2) :: text(")")
+        idDoc(id) :: "(" :: shapeExprDoc(shape1) :: "," :: shapeExprDoc(shape2) :: text(")")
       case Or(id,shape1,shape2) => 
-        "(" :: shapeExprDoc(shape1) :: "||" :: shapeExprDoc(shape2) :: text(")")
+        idDoc(id) :: "(" :: shapeExprDoc(shape1) :: "||" :: shapeExprDoc(shape2) :: text(")")
       case XOr(id,shape1,shape2) => 
-        "(" :: shapeExprDoc(shape1) :: "|" :: shapeExprDoc(shape2) :: text(")")
-      case EmptyShape(id) => text("{}") 
-        
+        idDoc(id) :: "(" :: shapeExprDoc(shape1) :: "|" :: shapeExprDoc(shape2) :: text(")")
+      case EmptyShape(id) => idDoc(id) :: text("{}") 
+      case IncludeShape(id,label) => {
+        idDoc(id) :: text("&") :: labelDoc(label)
+      }  
       case x => throw ShapeDocException("Unimplemented string conversion for " + s + " yet")
     }
   }
 
-/*  def tripleConstraintDoc(t: TripleConstraint): Document = {
-    log.info("Unimplemented id generation yet")
-    iriDoc(t.iri) :: space :: valueClassDoc(t.value) 
-  } */
 
   def tripleConstraintDoc(t: TripleConstraint): Document = {
     idDoc(t.id) ::
@@ -167,7 +188,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
   def shapeDoc(s: ShapeConstr): Document = {
     s match {
       case DisjShapeConstr(shapes) => setDocWithSep(shapes, "OR", labelDoc)
-      case _ => throw new Exception(s"shapeDoc: unsupported $s")
+      case SingleShape(shape) => labelDoc(shape)
     }
   }
 
@@ -192,11 +213,24 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       case ValueIRI(iri) => iriDoc(iri)
       case ValueLiteral(l) => rdfNodeDoc(l)
       case ValueLang(lang) => text("@") :: text(lang.lang)
-      case ValueStem(stem,exclusions) => throw new Exception("Unsupported valuestem")
-      case ValueAny(exclusions) => throw new Exception("Unsupported valueAny")
+      case ValueStem(stem,exclusions) => 
+        iriDoc(stem) :: text("~") :: exclusionsDoc(exclusions)
+      case ValueAny(exclusions) => 
+        text(".") :: exclusionsDoc(exclusions)
     }
   }
 
+  def exclusionsDoc(exclusions: List[Exclusion]): Document = {
+   seqDocWithSep(exclusions," ",exclusionDoc) 
+  }
+  
+  def exclusionDoc(exclusion: Exclusion): Document = {
+    val textStem = 
+      if (exclusion.isStem) text("~")
+      else text("")
+    text("-") :: iriDoc(exclusion.iri) :: textStem 
+  }
+  
   def iriDoc(i: IRI): Document = {
     text(qualify(i)(prefixMap))
   }
