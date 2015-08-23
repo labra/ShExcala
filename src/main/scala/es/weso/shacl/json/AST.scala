@@ -158,82 +158,83 @@ object StemAST {
 // JSON Encoders
 implicit def SchemaEncodeJson: EncodeJson[SchemaAST] =
     EncodeJson((n: SchemaAST) =>
-      ("prefixes" :=? n.prefixes) ->?:
-      ("shapes" :=? n.shapes) ->?:
-      ("start" :=? n.start) ->?:
       ("startAct" :=? n.startActions) ->?:
+      ("start" :=? n.start) ->?:
+      ("shapes" :=? n.shapes) ->?:
+      ("prefixes" := n.prefixes.getOrElse(Map())) ->:
+      ("type" := jString("schema")) ->:
        jEmptyObject
       )
 
 implicit def ShapeEncodeJson: EncodeJson[ShapeAST] =
     EncodeJson((n: ShapeAST) =>
+      ("semAct" :=? n.semAct) ->?:
+      ("extra" :=? n.extra) ->?:
+      ("inherit" :=? n.inherit) ->?:
+      ("closed" :=? n.closed) ->?:
+      ("virtual" :=? n.virtual) ->?:
+      ("expression" :=? n.expression) ->?:
       ("type" := jString("shape")) ->:
-       ("expression" :=? n.expression) ->?:
-       ("virtual" :=? n.virtual) ->?:
-       ("closed" :=? n.closed) ->?:
-       ("inherit" :=? n.inherit) ->?:
-       ("extra" :=? n.extra) ->?:
-       ("semAct" :=? n.semAct) ->?:
        jEmptyObject
       )
 
 implicit def ExpressionEncodeJson: EncodeJson[ExpressionAST] =
     EncodeJson((n: ExpressionAST) =>
-      ("type" := n._type) ->:
-      ("id" :=? n.id) ->?:
-      ("predicate" :=? n.predicate) ->?: 
-      ("include" :=? n.include) ->?: 
-      ("value" :=? n.value) ->?: 
-      ("inverse" :=? n.inverse) ->?:
-      ("negated" :=? n.negated) ->?:
-      ("min" :=? n.min) ->?:
-      ("max" :=? n.max) ->?:
-      ("expressions" :=? n.expressions) ->?:
-      ("annotations" :=? n.annotations) ->?:
       ("semAct" :=? n.semAct) ->?:
+      ("annotations" :=? n.annotations) ->?:
+      ("expressions" :=? n.expressions) ->?:
+      ("max" :=? n.max) ->?:
+      ("min" :=? n.min) ->?:
+      ("negated" :=? n.negated) ->?:
+      ("inverse" :=? n.inverse) ->?:
+      ("value" :=? n.value) ->?: 
+      ("include" :=? n.include) ->?: 
+      ("predicate" :=? n.predicate) ->?: 
+      ("id" :=? n.id) ->?:
+      ("type" := n._type) ->:
       jEmptyObject)
       
 implicit def ValueClassEncodeJson: EncodeJson[ValueClassAST] =
     EncodeJson((n: ValueClassAST) =>
-      ("type" := jString("valueClass")) ->:
-      ("values" :=? n.values) ->?:
-      ("pattern" :=? n.pattern) ->?: 
-      ("nodeKind" :=? n.nodeKind) ->?: 
-      ("reference" :=? n.reference) ->?: 
+      ("mininclusive" :=? n.minInclusive) ->?: 
+      ("maxinclusive" :=? n.maxInclusive) ->?: 
+      ("minexclusive" :=? n.minExclusive) ->?: 
+      ("maxexclusive" :=? n.maxExclusive) ->?: 
+      ("minlength" :=? n.minLength) ->?: 
+      ("maxlength" :=? n.maxLength) ->?: 
+      ("totaldigits" :=? n.totalDigits) ->?: 
+      ("fractiondigits" :=? n.fractionDigits) ->?: 
       ("length" :=? n.length) ->?: 
-      ("minInclusive" :=? n.minInclusive) ->?: 
-      ("maxInclusive" :=? n.maxInclusive) ->?: 
-      ("minExclusive" :=? n.minExclusive) ->?: 
-      ("maxExclusive" :=? n.maxExclusive) ->?: 
-      ("minLength" :=? n.minLength) ->?: 
-      ("maxLength" :=? n.maxLength) ->?: 
-      ("totalDigits" :=? n.totalDigits) ->?: 
-      ("fractionDigits" :=? n.fractionDigits) ->?: 
+      ("reference" :=? n.reference) ->?: 
       ("datatype" :=? n.datatype) ->?: 
+      ("nodeKind" :=? n.nodeKind) ->?: 
+      ("pattern" :=? n.pattern) ->?: 
+      ("values" :=? n.values) ->?:
+      ("type" := jString("valueClass")) ->:
       jEmptyObject)
 
 implicit def ValueEncodeJson: EncodeJson[ValueAST] =
     EncodeJson((n: ValueAST) =>
-      n.value.asJson
+      n.value.fold(_.asJson,_.asJson) 
     )
       
 implicit def ReferenceEncodeJson: EncodeJson[ReferenceAST] =
     EncodeJson((n: ReferenceAST) =>
-      n.value.asJson)
+      n.value.fold(_.asJson,_.asJson))
 
 implicit def OrEncodeJson: EncodeJson[OrAST] =
     EncodeJson((n: OrAST) =>
-      ("type" := jString("or")) ->:
       ("disjuncts" := n.disjuncts) ->: 
+      ("type" := jString("or")) ->:
       jEmptyObject
       )
       
 
 implicit def StemRangeEncodeJson: EncodeJson[StemRangeAST] =
     EncodeJson((n: StemRangeAST) =>
+      ("exclusions" :=? n.exclusions) ->?: 
+      ("stem" :=? n.stem) ->?: 
       ("type" := jString("stemRange")) ->:
-      ("stem" := n.stem.asJson) ->: 
-      ("exclusions" := n.exclusions.asJson) ->: 
       jEmptyObject
       )
 

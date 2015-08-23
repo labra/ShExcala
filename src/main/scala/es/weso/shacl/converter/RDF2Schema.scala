@@ -75,13 +75,7 @@ object RDF2Schema
          shapeExpr(n,rdf) 
       }
 //      incls <- inclPropSet(n,rdf)
-    } yield Shape(
-        shapeExpr = shape,
-        isClosed = false,
-        isVirtual = false,
-        inherit = Set(),
-        extras = Set(),
-        actions = Map())
+    } yield Shape.empty
   }
   
 /*  def inclPropSet: RDFParser[Set[IRI]] = { (n,rdf) =>

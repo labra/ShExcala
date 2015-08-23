@@ -39,9 +39,20 @@ object PrefixMapUtils {
   def showRDFNode(n: RDFNode)(pm: PrefixMap): String = {
     n match {
       case i: IRI => showIRI(i)(pm)
-      case l: Literal => l.toString
       case b: BNodeId => b.toString
+      case s: StringLiteral => escapeLexicalForm(s.lexicalForm)
+      case s: DatatypeLiteral => escapeLexicalForm(s.lexicalForm) + "^^" + s.dataType.toString 
+      case l: Literal => l.toString
+
     }
   }
 
+  def escapeLexicalForm(lex: String): String = {
+    if (lex.contains("\"\'\\")) {
+      tripleQuote + lex + tripleQuote
+    } else "\"" + lex + "\""
+  }
+  
+  lazy val tripleQuote = "\"\"\""
+  
 }

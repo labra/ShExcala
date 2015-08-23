@@ -17,7 +17,7 @@ trait RDFValidator {
   val schema: ValidationSchema
   
   def subjects: List[RDFNode] = rdf.subjects.toList
-  def labels: Set[Label]
+  def labels: List[Label]
   def resultLabels(node: Node, result: ValidationResult): Set[Label] 
 
   def match_node_label(node: Node)(label: Label): Result[ValidationResult]

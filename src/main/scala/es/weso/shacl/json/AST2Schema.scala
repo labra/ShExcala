@@ -40,9 +40,9 @@ object AST2Schema {
    val shapeExpr = cnvExpr(shape.expression.getOrElse(ExpressionAST.empty))
    val isClosed = shape.closed.getOrElse(false)
    val isVirtual = shape.virtual.getOrElse(false)
-   val inherit: Set[Label] = cnvInherit(shape.inherit.getOrElse(List()))
-   val extras: Set[IRI] = cnvExtras(shape.extra.getOrElse(List()))
-   val actions: Actions = cnvActions(shape.semAct)
+   val inherit = cnvInherit(shape.inherit.getOrElse(List()))
+   val extras = cnvExtras(shape.extra.getOrElse(List()))
+   val actions = cnvActions(shape.semAct)
    Shape(shapeExpr = shapeExpr, 
        isVirtual = isVirtual, 
        isClosed = isClosed, 
@@ -51,12 +51,12 @@ object AST2Schema {
        actions = actions)
  }
  
- def cnvInherit(inh: List[String]): Set[Label]= {
-   inh.map{ case str => toLabel(str) }.toSet
+ def cnvInherit(inh: List[String]): List[Label]= {
+   inh.map{ case str => toLabel(str) }
  }
  
- def cnvExtras(extra: List[String]): Set[IRI] = {
-   extra.map{ case str => IRI(str) }.toSet
+ def cnvExtras(extra: List[String]): List[IRI] = {
+   extra.map{ case str => IRI(str) }
  } 
  
  def cnvActions(as: Map[String,String]): Map[IRI,String]= {
@@ -291,7 +291,7 @@ object AST2Schema {
      ref.value match {
      case Left(str) => SingleShape(toLabel(str))
      case Right(OrAST(disjuncts)) => 
-       DisjShapeConstr(disjuncts.map(x => toLabel(x)).toSet)  
+       DisjShapeConstr(disjuncts.map(x => toLabel(x)))  
    })
  }
  
@@ -384,7 +384,6 @@ object AST2Schema {
       lit
      }
      case literal(lex) => {
-      println("LiteralLang: lex: " + lex)
       StringLiteral(lex) 
      }
      case _ => throw new Exception(s"Literal |$l| doesn't match" )

@@ -8,11 +8,15 @@ import scala.util.matching.Regex
 import es.weso.shacl.PREFIXES._
 import util._
 import es.weso.utils.PrefixMapUtils._
+import org.slf4j._
+
 
 /**
  * Shacl Abstract Syntax 
  */
 object Shacl {
+
+  val log = LoggerFactory.getLogger("Shacl")
 
   /**
    * Represents a SHACL Schema
@@ -31,8 +35,8 @@ object Shacl {
       shapes.get(label)
     }
     
-    def labels: Set[Label] = {
-      shapes.keySet
+    def labels: List[Label] = {
+      shapes.keys.toList
     }
   }
   
@@ -51,8 +55,8 @@ object Shacl {
     shapeExpr: ShapeExpr,
     isClosed: Boolean,
     isVirtual: Boolean,
-    inherit: Set[Label],
-    extras: Set[IRI],
+    inherit: List[Label],
+    extras: List[IRI],
     actions: Actions
   ) extends Positional
   
@@ -63,8 +67,8 @@ object Shacl {
            shapeExpr = EmptyShape(), 
            isClosed=false,
            isVirtual=false,
-           inherit = Set(),
-           extras = Set(),
+           inherit = List(),
+           extras = List(),
            actions = Map()
            )
   }
@@ -309,7 +313,32 @@ object Shacl {
   case class Length(n: Integer) extends StringFacet
   case class MinLength(n: Integer) extends StringFacet
   case class MaxLength(n: Integer) extends StringFacet
+  
+  
+  // Does this function already exist?
+  def all[A](ls: List[A], check: A =>Boolean): Boolean = {
+    ls.foldLeft(true){case (rest,a) => check(a) && rest}
+  }
+  
+  def ok_facets(iri:IRI, facets: List[XSFacet]): Boolean = {
+    facets.forall{ case f => ok_facet(f, iri) }
+  }
 
+  def ok_facet(facet: XSFacet, iri: IRI): Boolean = {
+    //TODO: verify the conditions for ok facets
+    // At this moment, it allows numeric facets to 
+    // builtin datatypes and any facet to other datatypes
+    facet match {
+      case _: NumericFacet => 
+        builtinTypes.contains(iri)
+      case _: StringFacet =>
+        true // builtinTypes.contains(iri)
+      case _ => {
+        log.info(s"ok_facet: Unsupported facet type: $facet")
+        false
+      }
+    }
+  }
   /**
    * ShapeConstr ::= SingleShape | DisjShapeConstr | ConjShapeConstr | NotShapeConstr
    */
@@ -317,7 +346,7 @@ object Shacl {
     with Positional
 
   case class SingleShape(shape: Label) extends ShapeConstr 
-  case class DisjShapeConstr(shapes: Set[Label]) extends ShapeConstr
+  case class DisjShapeConstr(shapes: List[Label]) extends ShapeConstr
 //  case class ConjShapeConstr(shapes: Set[Label]) extends ShapeConstr
 //  case class NotShapeConstr(shape: ShapeConstr) extends ShapeConstr
 
@@ -376,6 +405,8 @@ object Shacl {
 
   
   lazy val typeXsdString = Datatype(xsd_string, List())
+  lazy val builtinTypes = List(xsd_integer, xsd_double, xsd_string)
+  
   lazy val star = UnboundedCardinalityFrom(0)
   lazy val plus = UnboundedCardinalityFrom(1)
   lazy val optional = RangeCardinality(0, 1)
@@ -384,5 +415,5 @@ object Shacl {
   lazy val emptyFacets : List[XSFacet] = List() 
   def defaultMaxCardinality(m:Int) = RangeCardinality(1,m)
     
-  lazy val emptyInclPropSet: Set[IRI] = Set()
+  lazy val emptyInclPropSet: List[IRI] = List()
 }

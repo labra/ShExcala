@@ -28,7 +28,7 @@ trait ShaclParser
     extends Positional
     with RegexParsers
     with StateParser
-    with W3cTokens
+    with W3cTokens 
     with TurtleParser {
 
   val log = LoggerFactory.getLogger("ShapeParser")
@@ -206,12 +206,12 @@ trait ShaclParser
             actions = as))
   }
   
-  def collectInherit(sd: ShapeDef): Set[Label] = {
-    sd._1.filter(_.labels.isDefined).map(_.labels.get).flatten.toSet
+  def collectInherit(sd: ShapeDef): List[Label] = {
+    sd._1.filter(_.labels.isDefined).map(_.labels.get).flatten
   }
   
-  def collectExtras(sd: ShapeDef): Set[IRI] = {
-    sd._1.filter(_.extras.isDefined).map(_.extras.get).flatten.toSet
+  def collectExtras(sd: ShapeDef): List[IRI] = {
+    sd._1.filter(_.extras.isDefined).map(_.extras.get).flatten
   }
   
   def collectClosed(sd: ShapeDef): Boolean = {
@@ -461,9 +461,7 @@ trait ShaclParser
       }
 //      | ignorecase("ANY") ^^^ (AnyKind, s)
       | dot ^^^ (any, s)
-      | opt(WS) ~> iri(s.namespaces) ~ xsFacets(s) <~ opt(WS) ^^ {
-        case iri ~ facets => (Datatype(iri, facets), s)
-      }
+      | iriFacetsChecked(s)
       | valueSet(s)
       | groupShapeConstr(s)
       | shapeDefinition(s) ^^ {
@@ -475,11 +473,46 @@ trait ShaclParser
       }
       )
   }
+  
+  def iriFacetsChecked:StateParser[ShapeParserState,Datatype] = { s =>
+    parseCond(iriFacets, okFacets, "Datatype must pass facets")(s) ^^ {
+      case (((iri,facets),s)) => (Datatype(iri,facets),s)
+    }    
+  }
+  
+  def iriFacets: StateParser[ShapeParserState,(IRI,List[XSFacet])] = { s =>
+      opt(WS) ~> iri(s.namespaces) ~ xsFacets(s) <~ opt(WS) ^^ {
+        case iri ~ facets => {
+         ((iri, facets), s)
+        }
+      }
+    }
+  
+  def okFacets(pair: (IRI, List[XSFacet])): Boolean = {
+   ok_facets(pair._1,pair._2) 
+  }
+  
+  def parseCond[A,S](
+      p:StateParser[S,A], 
+      cond: A => Boolean, 
+      msg: String): StateParser[S,A] = { s =>
+      p(s) >> {
+        case ((v,s)) => if (cond(v)) {
+          success((v,s))
+        } else {
+          failure(s"Failed parsing condition with value $v: Condition: $msg")
+        }
+      }
+/*      for {
+        (v,s) <- p(s)
+        if (cond(v))
+      } yield (v,s) */
+    }
 
   def groupShapeConstr: StateParser[ShapeParserState,ShapeConstr] = { s =>
    rep1sepState(shapeOrRef,symbol("OR"))(s) ^^ {
      case (shapes,s1) => if (shapes.length == 1) (SingleShape(shapes.head),s1)
-     else (DisjShapeConstr(shapes.toSet),s1)
+     else (DisjShapeConstr(shapes),s1)
    } 
   } 
   
@@ -682,14 +715,14 @@ def unscapePercent(s: String): String = {
     | STRING_LITERAL_QUOTE
     )
   }
-
+  
   // Parsing symbols skipping spaces...
   // TODO: should refactor to other file 
   def symbol(str: Parser[String]): Parser[String] = {
     opt(WS) ~> str <~ opt(WS)
   }
 
-  // The trick to parse ignoring cases was taken from: 
+  // The following trick to parse ignoring cases was taken from: 
   // http://stackoverflow.com/questions/6080437/case-insensitive-scala-parser-combinator
   def ignorecase(str: String): Parser[String] = {
     opt(WS) ~> ("""(?i)\Q""" + str + """\E""").r <~ opt(WS)

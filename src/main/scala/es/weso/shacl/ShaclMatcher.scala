@@ -31,7 +31,7 @@ def combine(
   t1.combine(t2)
 } 
       
-def labels: Set[Label] = schema.labels
+def labels = schema.labels
 
 def match_node_label
       (node: RDFNode)
@@ -49,7 +49,5 @@ def match_node_label
    vs <- matchNodeLabel(node, label, ctx) 
   } yield vs
 } 
-  
-                   
  
 } 

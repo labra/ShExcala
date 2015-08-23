@@ -14,8 +14,14 @@ object Schema2AST {
     Try {
       val ps = cnvPrefix(schema.pm)
       val s = schema.shaclSchema
+      val shapes = cnvShapes(s.shapes)
+      val actions = cnvActions(s.startActions)
+      val start = s.start.map(cnvLabel)
       SchemaAST.empty.copy(
-        prefixes = ps, start = s.start.map(_.toString), startActions = cnvActions(s.startActions), shapes = cnvShapes(s.shapes))
+        prefixes = ps, 
+        start = start, 
+        startActions = actions, 
+        shapes = shapes)
     }
   }
 
@@ -23,25 +29,46 @@ object Schema2AST {
     if (shapes.isEmpty) None
     else {
       Some(shapes.map {
-        case (label, shape) => (label.toString, cnvShape(shape))
+        case (label, shape) => (cnvLabel(label), cnvShape(shape))
       })
     }
   }
 
   def cnvShape(shape: Shape): ShapeAST = {
     ShapeAST.empty.copy(
-      expression = cnvOptShapeExpr(shape.shapeExpr), virtual = cnvBoolean(shape.isVirtual), closed = if (shape.isClosed) Some(true) else None, inherit = cnvLabels(shape.inherit), extra = cnvIRIs(shape.extras), semAct = cnvActions(shape.actions))
+      expression = cnvOptShapeExpr(shape.shapeExpr), 
+      virtual = cnvBoolean(shape.isVirtual), 
+      closed = if (shape.isClosed) Some(true) else None, 
+      inherit = cnvLabels(shape.inherit), 
+      extra = cnvIRIs(shape.extras), 
+      semAct = cnvActions(shape.actions))
   }
 
-  def cnvIRIs(iris: Set[IRI]): Option[List[String]] = {
+  def cnvIRIs(iris: List[IRI]): Option[List[String]] = {
     if (iris.isEmpty) None
-    else Some(iris.map(_.toString).toList)
+    else Some(iris map cnvIRI)
   }
 
-  def cnvLabels(labels: Set[Label]): Option[List[String]] = {
-    if (labels.isEmpty) None
-    else Some(labels.map(_.toString).toList)
+  def cnvLabels(labels: List[Label]): Option[List[String]] = {
+    if (labels isEmpty) None
+    else Some(labels map cnvLabel)
   }
+  
+  def cnvLabel(label: Label): String = {
+    cnvNode(label.getNode)
+  }
+  
+  def cnvNode(node: RDFNode): String = {
+    node match {
+      case i: IRI => cnvIRI(i)
+      case b: BNodeId => cnvBNode(b)
+      case l: Literal => cnvLiteral(l)
+    }
+  }
+  
+  def cnvBNode(b:BNodeId): String = {
+    b.toString
+  } 
 
   def cnvOptShapeExpr(e: ShapeExpr): Option[ExpressionAST] = {
     e match {
@@ -85,14 +112,25 @@ object Schema2AST {
       }
       case IncludeShape(id, label) => {
         base.copy(
-          _type = "include", id = cnvID(id), include = Some(label.toString))
+          _type = "include", 
+          id = cnvID(id), 
+          include = Some(cnvLabel(label)))
       }
     }
   }
 
   def cnvTripleConstraint(tc: TripleConstraint): ExpressionAST = {
     ExpressionAST.empty.copy(
-      _type = "tripleconstraint", id = cnvID(tc.id), value = Some(cnvValueClass(tc.value)), min = cnvMinCard(tc.card), max = cnvMaxCard(tc.card), inverse = cnvBoolean(tc.inverse), negated = cnvBoolean(tc.negated), annotations = cnvAnnotations(tc.annotations), semAct = cnvActions(tc.actions))
+      _type = "tripleConstraint", 
+      id = cnvID(tc.id),
+      predicate = Some(cnvIRI(tc.iri)),
+      value = Some(cnvValueClass(tc.value)), 
+      min = cnvMinCard(tc.card), 
+      max = cnvMaxCard(tc.card), 
+      inverse = cnvBoolean(tc.inverse), 
+      negated = cnvBoolean(tc.negated), 
+      annotations = cnvAnnotations(tc.annotations), 
+      semAct = cnvActions(tc.actions))
   }
 
   def cnvAnnotations(annotations: List[Annotation]): Option[List[List[String]]] = {
@@ -103,9 +141,21 @@ object Schema2AST {
   }
 
   def cnvAnnotation(annotation: Annotation): List[String] = {
-    List(annotation.iri.toString, annotation.value.toString)
+    List(cnvIRI(annotation.iri), 
+        annotation.value.fold(cnvIRI,cnvAnnotationLiteral))
+  }
+  
+  def cnvIRI(i:IRI): String = i.str
+
+  def cnvAnnotationLiteral(l: Literal): String = {
+    "\"" + cnvLiteral(l) + "\""
+  }
+  
+  def cnvLiteral(l: Literal): String = {
+    l.toString
   }
 
+  
   def cnvBoolean(b: Boolean): Option[Boolean] = {
     if (b) Some(true)
     else None
@@ -116,27 +166,32 @@ object Schema2AST {
     else Some(card.getMin)
 
   def cnvMaxCard(card: Cardinality): Option[Int] =
-    card.getMax
+    if (card == defaultCardinality) None
+    else card.getMax
 
   def cnvValueClass(vc: ValueClass): ValueClassAST = {
     val base = ValueClassAST.empty
+    if (vc == any) base
+    else
     vc match {
       case vs: ValueSet => cnvValueSet(vs)
       case dt: Datatype => cnvDatatype(dt)
       case nk: NonLiteralKind => {
         addFacets(nk.facets,
           base.copy(
-            nodeKind = Some("nonliteral"), reference = nk.shapeConstr.map(cnvShapeConstr)))
+            nodeKind = Some("nonliteral"), 
+            reference = nk.shapeConstr.map(cnvShapeConstr)))
       }
       case ik: IRIKind => addFacets(ik.facets,
         base.copy(
-          nodeKind = Some("irikind"), reference = ik.shapeConstr.map(cnvShapeConstr)))
+          nodeKind = Some("iri"), 
+          reference = ik.shapeConstr.map(cnvShapeConstr)))
       case lk: LiteralKind => addFacets(lk.facets,
         base.copy(
-          nodeKind = Some("literalkind")))
+          nodeKind = Some("literal")))
       case bk: BNodeKind => addFacets(bk.facets,
         base.copy(
-          nodeKind = Some("bnodekind"), reference = bk.shapeConstr.map(cnvShapeConstr)))
+          nodeKind = Some("bnode"), reference = bk.shapeConstr.map(cnvShapeConstr)))
       case sc: ShapeConstr => {
         base.copy(
           reference = Some(cnvShapeConstr(sc)))
@@ -148,9 +203,9 @@ object Schema2AST {
   def cnvShapeConstr(sc: ShapeConstr): ReferenceAST = {
     sc match {
       case SingleShape(label) =>
-        ReferenceAST(Left(label.toString))
+        ReferenceAST(Left(cnvLabel(label)))
       case DisjShapeConstr(shapes) =>
-        ReferenceAST(Right(OrAST(shapes.map(_.toString).toList)))
+        ReferenceAST(Right(OrAST(shapes.map(cnvLabel).toList)))
     }
   }
 
@@ -158,9 +213,9 @@ object Schema2AST {
     addFacets(
       dt.facets,
       ValueClassAST.empty.copy(
-        datatype = Some(dt.v.toString)))
+        datatype = Some(cnvIRI(dt.v))))
   }
-
+  
   def addFacets(
     facets: List[XSFacet],
     vc: ValueClassAST): ValueClassAST = {
@@ -200,8 +255,8 @@ object Schema2AST {
 
   def cnvValue(v: ValueObject): ValueAST = {
     v match {
-      case ValueIRI(iri)   => ValueAST(Left(iri.toString))
-      case ValueLiteral(l) => ValueAST(Left(l.toString))
+      case ValueIRI(iri)   => ValueAST(Left(cnvIRI(iri)))
+      case ValueLiteral(l) => ValueAST(Left(cnvLiteral(l)))
       case ValueLang(lang) => throw new Exception(s"cnvValue: Unsupported ValueLang $v")
       case vs: ValueStem   => ValueAST(Right(cnvValueStem(vs)))
       case va: ValueAny    => ValueAST(Right(cnvValueAny(va)))
@@ -210,7 +265,9 @@ object Schema2AST {
 
   def cnvValueStem(v: ValueStem): StemRangeAST = {
     StemRangeAST.empty.copy(
-      _type = Some("stemRange"), stem = Some(StemAST(Left(v.stem.toString))), exclusions = cnvExclusions(v.exclusions))
+      _type = Some("stemRange"), 
+      stem = Some(StemAST(Left(cnvIRI(v.stem)))), 
+      exclusions = cnvExclusions(v.exclusions))
   }
 
   def cnvValueAny(v: ValueAny): StemRangeAST = {
@@ -232,19 +289,19 @@ object Schema2AST {
     
   def cnvExclusion(ex: Exclusion): ExclusionAST = {
     if (ex.isStem) 
-      ExclusionAST(Right(StemAST(Left(ex.iri.toString))))
+      ExclusionAST(Right(StemAST(Left(cnvIRI(ex.iri)))))
     else 
-      ExclusionAST(Left(ex.iri.toString))
+      ExclusionAST(Left(cnvIRI(ex.iri)))
   }  
 
   def cnvID(id: Option[Label]): Option[String] = {
-    id.map(_.toString)
+    id.map(cnvLabel)
   }
   def cnvActions(as: Actions): Option[Map[String, String]] = {
     if (as.isEmpty) None
     else {
       Some(as.map {
-        case (iri, str) => (iri.toString, str)
+        case (iri, str) => (cnvIRI(iri), str)
       })
     }
   }
@@ -253,7 +310,7 @@ object Schema2AST {
     val prefixmap = pm.pm
     if (prefixmap.isEmpty) None
     else {
-      Some(prefixmap.mapValues(_.toString))
+      Some(prefixmap.mapValues(cnvIRI))
     }
 
   }

@@ -23,7 +23,12 @@ case class BagSortedMap[A: Ordering](smap: SortedMap[A, Int])
     } else // TODO: Consider returning some kind of error 
       this
 
-  def multiplicity(elem: A): Int = smap(elem)
+  def multiplicity(elem: A): Int = {
+      if (smap.contains(elem))
+        smap(elem)
+      else 
+        0
+    }
 
   /**
    * A more efficient version of add
@@ -35,6 +40,11 @@ case class BagSortedMap[A: Ordering](smap: SortedMap[A, Int])
       BagSortedMap(smap + (elem -> n))
 
   def elems: Iterator[(A, Int)] = smap.iterator
+  
+  def delta[U >:A](symbols: Seq[U]): Bag[U] = ???
+/*  def delta(symbols: Seq[A]): BagSortedMap[A] = {
+    BagSortedMap(smap.filterKeys(symbols.contains(_)))  
+  } */
 
   def asSortedMap: SortedMap[A, Int] = smap
 

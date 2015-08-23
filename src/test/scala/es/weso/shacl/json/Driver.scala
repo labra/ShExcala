@@ -164,8 +164,8 @@ class Driver extends FunSpec with Matchers with TryValues {
   
    def testComparingJsons(file: File): Unit = {
     val tryConversion = for {
-          json <- jsonFile(file)
-          shaclFile <- lookupFileWithSameName(file,schemasDir,"shex")
+          json <- { jsonFile(file) }
+          shaclFile <- { lookupFileWithSameName(file,schemasDir,"shex")}
           shacl <- trying("Parsing SHACL", parseShaclSchema(shaclFile))
           ast <- Schema2AST.cnvSchema(shacl)
         } yield (json,ast)

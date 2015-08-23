@@ -14,15 +14,16 @@ import scalaz._, Scalaz._
 import es.weso.shacl.json.AST._
 import es.weso.shacl._
 
-class CompareJsonSingle extends Driver {
+class CompareJsonsAll extends Driver {
   
-  describe("Run specific JSON test") {
-    val name = "1dotInline1"
-    val file = new File(parsedSchemasDir + "/" + name + ".json")
-    it (s"should pass file $name") {
-     testComparingJsons(file) 
+  
+  describe("Run positive JSON tests converting ShexC -> Schema -> AST -> JSON = JSON") {
+    val parsedSchemas = getParsedSchemas(parsedSchemasDir)
+    for ((file, json) <- parsedSchemas) {
+      it(s"Should handle ${file.getName}") {
+//        testComparingJsons(file)
+      }
     }
   }
-
- 
 }
+

@@ -102,7 +102,7 @@ class MatchNodeLabelSpec
   }
   
   def fails_matchTriplesShapes(
-      ts: Set[RDFTriple], 
+      ts: List[RDFTriple], 
       shape: ShapeExpr, 
       expectedState: ValidationState,
       withTrace: Boolean = false): Unit = {

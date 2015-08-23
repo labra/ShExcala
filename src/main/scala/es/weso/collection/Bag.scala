@@ -4,15 +4,36 @@ import scala.collection.SortedMap
 
 trait Bag[A] {
 
+  /**
+   * Multiplicity of an element in a bag
+   */
   def multiplicity(elem: A): Int
 
+  /**
+   * Check if a bag contains an element
+   */
   def contains(elem: A): Boolean
 
+  /**
+   * Inserts an element in a bag and returns the new bag
+   */
   def insert(elem: A): Bag[A]
 
+  /**
+   * Deletes an element and returns the new bag
+   * It doesn't complain if the element doesn't exist 
+   */
   def delete(elem: A): Bag[A]
 
+  /**
+   * Elements of a Bag with their multiplicity
+   */
   def elems: Iterator[(A, Int)]
+  
+  /**
+   * Calculates the bag obtained by taking into account only a set of symbols
+   */
+  def delta[U >:A](symbols: Seq[U]): Bag[U] 
 
   /**
    * add an element n times to a bag
@@ -21,9 +42,15 @@ trait Bag[A] {
   def add(elem: A, n: Int): Bag[A] =
     (1 to n).toList.foldLeft(this)((s, _) => s.insert(elem))
 
+  /**
+   * Union of two bags
+   */
   def union(other: Bag[A]): Bag[A] =
     other.elems.toList.foldLeft(this)((s, p) => s.add(p._1, p._2))
 
+  /**
+   * Intersection of two bags
+   */
   def intersection(other: Bag[A]): Bag[A] = ???
 
   /**

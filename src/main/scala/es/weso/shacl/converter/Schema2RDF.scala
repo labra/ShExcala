@@ -140,6 +140,9 @@ object Schema2RDF extends Logging {
           shape2RDF(shape,oneOfNode,rdf)
         }
       }
+      case _ => {
+        log.error(s"schema2RDF: Non supported conversion to RDF. Shape = $shape")
+      }
     }
     rdf
   }
@@ -224,6 +227,10 @@ object Schema2RDF extends Logging {
        case BNodeKind(shapeConstr,facets) => addTriple(rdf,(node,sh_nodeKind,sh_BNode))     
        case LiteralKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_Literal)) // TODO: Take into account facets
        case NonLiteralKind(shapeConstr,facets) => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
+       case _ => {
+         log.error(s"schema2RDF - nodeKind2RDF: Non supported, nodeKind = $nodeKind" )
+         rdf
+       }
       }
   }
   
@@ -231,8 +238,8 @@ object Schema2RDF extends Logging {
     v match {
       case ValueIRI(iri) => iri
       case ValueLiteral(literal) => literal
-      case ValueLang(lang) => 
-        throw Schema2RDFException("Unimplemented valueLang to Node conversion")
+      case _ => 
+        throw Schema2RDFException("Unimplemented ValueObject conversion: " + v)
     }
   }
     

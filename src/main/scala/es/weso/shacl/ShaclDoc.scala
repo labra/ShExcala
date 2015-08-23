@@ -19,15 +19,31 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shaclSchemaDoc(s: SHACLSchema): Document = {
     pmDoc(prefixMap) :/: 
-    shapesDoc(s.shapes) // TODO: start
+    startActionsDoc(s.startActions) :/:
+    startDoc(s.start) :/:
+    shapesDoc(s.shapes) 
   }
-
+  
   def pmDoc(pm: PrefixMap): Document = {
     pm.pm.foldLeft(empty: Document)(
       (d, x) => d :/: text("prefix ") :: x._1 :: text(":") :: space ::
         text("<") :: text(x._2.str) :: text(">")
     )
   }
+  
+  def startDoc(s: Option[Label]): Document = {
+    if (s.isDefined) {
+      text("start = ") :: labelDoc(s.get)
+    } else
+      text("")
+  }
+  
+  def startActionsDoc(as: Actions): Document = 
+    actionsDoc(as)
+    
+/*  def actionsDoc(as:Actions): Document = {
+    mapDocWithSep(as, " ", "\n", iriDoc, x => x)
+  } */
 
   def shapesDoc(shapes: Map[Label,Shape]): Document = {
     iterDocWithSep(shapes, "\n", labelShapeDoc)
@@ -47,14 +63,14 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     text("}") 
   }
   
-  def inheritDoc(inherit: Set[Label]): Document = {
+  def inheritDoc(inherit: List[Label]): Document = {
     if (inherit.isEmpty) text("")
-    else text("&") :: setDocWithSep(inherit, " ", labelDoc) :: space
+    else text("&") :: seqDocWithSep(inherit, " ", labelDoc) :: space
   }
   
-  def extrasDoc(extras: Set[IRI]): Document = {
+  def extrasDoc(extras: List[IRI]): Document = {
     if (extras.isEmpty) text("")
-    else text("EXTRA") :: setDocWithSep(extras," ", iriDoc) :: space
+    else text("EXTRA") :: seqDocWithSep(extras," ", iriDoc) :: space
   }
   
   def closedDoc(isClosed: Boolean): Document = {
@@ -65,7 +81,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
   def virtualDoc(isVirtual: Boolean): Document = {
     if (isVirtual) {
       text("VIRTUAL") :: space
-    } else text("")
+    } else empty
   }
 
   def labelDoc(label: Label): Document = {
@@ -139,7 +155,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     a.value.fold(i => iriDoc(i), l => rdfNodeDoc(l))
 
   def actionDoc(a: (IRI,String)): Document = {
-    "%" :: iriDoc(a._1) :: "{" :: text(a._2) :: text("}")
+    "%" :: iriDoc(a._1) :: "{" :: text(a._2) :: text("%}")
   }
 
   def valueClassDoc(v: ValueClass): Document = {
@@ -154,8 +170,26 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       case dt: Datatype => datatypeDoc(dt) 
       case `any` => text(".")
       case vs: ValueSet => valueSetDoc(vs)
-      case n: NodeKind => text(n.token)
+      case n: NodeKind => nodeKindDoc(n)
     }
+  }
+  
+  def nodeKindDoc(n: NodeKind): Document = {
+    n match {
+      case IRIKind(s,facets) => kindDoc("IRI", s, facets)
+      case BNodeKind(s,facets) => kindDoc("BNode", s, facets)
+      case LiteralKind(facets) => kindDoc("Literal", None, facets)
+      case NonLiteralKind(s, facets) => kindDoc("NonLiteral", s, facets)
+    }
+  }
+  
+  def kindDoc(str: String, s: Option[ShapeConstr], facets: List[XSFacet]): Document = {
+    str :: maybeShapeDoc(s) :: facetsDoc(facets)    
+  }
+  
+  def maybeShapeDoc(s: Option[ShapeConstr]): Document = {
+    if (s.isDefined) shapeDoc(s.get) :: space
+    else empty
   }
   
   def datatypeDoc(dt: Datatype): Document = {
@@ -187,7 +221,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shapeDoc(s: ShapeConstr): Document = {
     s match {
-      case DisjShapeConstr(shapes) => setDocWithSep(shapes, "OR", labelDoc)
+      case DisjShapeConstr(shapes) => seqDocWithSep(shapes, "OR", labelDoc)
       case SingleShape(shape) => labelDoc(shape)
     }
   }
@@ -269,6 +303,26 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
         (d: Document, x: A) => d :: sep :/: toDoc(x)
       )
   }
+  
+  def pairDoc[A,B](
+      doc1 : A => Document,
+      doc2 : B => Document,
+      sep:String)(pair:(A,B)): Document = {
+    doc1(pair._1) :: sep :: doc2(pair._2)
+  }
+
+  def mapDocWithSeps[A,B](m: Map[A,B],
+    sepBetweenKeyValue: String,
+    sepBetweenPairs: String,
+    toDocKey: A => Document,
+    toDocValue: B => Document): Document = {
+      seqDocWithSep(
+          m.toList, 
+          sepBetweenPairs, 
+          pairDoc(toDocKey,toDocValue,sepBetweenKeyValue)
+      )
+  }
+
 
 }
 

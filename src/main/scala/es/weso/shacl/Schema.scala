@@ -59,7 +59,7 @@ case class Schema(
     }
   }
 
-  def labels: Set[Label] = {
+  def labels: List[Label] = {
     shaclSchema.labels
   }
 
