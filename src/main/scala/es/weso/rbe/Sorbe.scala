@@ -2,9 +2,20 @@ package es.weso.rbe
 
 import es.weso.collection._
 import Interval._
+import IntOrUnbounded._
 
 case class SorbeException(msg: String) extends Exception
 
+/**
+ * This trait defines Single Occurrence Regular Bag Expressions (SORBE)
+ * 
+ * The algorithm to check that a SORBE contains a bag is PTIME
+ * The algorithm has been described in [1] and is based on intervals
+ * 
+ * [1] Complexity and Expressiveness of ShEx for RDF, 
+ *     S. Staworko, I. Boneva, J. Labra, S. Hym, E. Prud'hommeaux, H. Solbrig
+ * 
+ */
 sealed trait Sorbe[+A] {
   
   def interval[U >: A](bag: Bag[U]): Interval = {
@@ -12,22 +23,28 @@ sealed trait Sorbe[+A] {
       case Empty => Interval(0,Unbounded)
       case Symbol(a,n,m) => {
         val wa = bag.multiplicity(a)
-        Interval(divIntLimitUp(wa, m),divIntDown(wa,n))
+        Interval(divIntLimitUp(wa, m),divIntLimitDown(wa,n))
       }
       case And(v1,v2) => v1.interval(bag) & v2.interval(bag)
       
       case Or(v1,v2) => v1.interval(bag) + v2.interval(bag)
       
       case Star(v) => {
-        val ss : Seq[A] = this.symbols
-        val wda: Bag[U] = bag.delta(this.symbols) 
-        if (wda.size == 0) Interval(0,Unbounded)
-        else v.interval(bag)
+        if (noSymbolsInBag(bag)) Interval(0,Unbounded)
+        else {
+         val ie = v.interval(bag) 
+         if (ie.isEmpty) ie
+         else Interval(1,Unbounded)
+        }
       }
       
       case Plus(v) => {
-        if (bag.delta(this.symbols).size == 0) Interval(0,0)
-        else v.interval(bag)
+        if (noSymbolsInBag(bag)) Interval(0,0)
+        else {
+         val ie = v.interval(bag) 
+         if (ie.isEmpty) ie
+          else Interval(1,Unbounded) 
+        }
       } 
       
       case _ => throw SorbeException("interval: unsupported expr " + this)  
@@ -48,6 +65,10 @@ sealed trait Sorbe[+A] {
       case Plus(v) => v.symbols
       case _ => throw SorbeException(s"symbols: unexpected Sorbe expression ${this}") 
     }
+  }
+  
+  def noSymbolsInBag[U >: A](bag: Bag[U]): Boolean = {
+    this.symbols.forall(x => bag.multiplicity(x) == 0)
   }
 } 
 

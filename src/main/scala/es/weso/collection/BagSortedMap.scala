@@ -40,11 +40,6 @@ case class BagSortedMap[A: Ordering](smap: SortedMap[A, Int])
       BagSortedMap(smap + (elem -> n))
 
   def elems: Iterator[(A, Int)] = smap.iterator
-  
-  def delta[U >:A](symbols: Seq[U]): Bag[U] = ???
-/*  def delta(symbols: Seq[A]): BagSortedMap[A] = {
-    BagSortedMap(smap.filterKeys(symbols.contains(_)))  
-  } */
 
   def asSortedMap: SortedMap[A, Int] = smap
 

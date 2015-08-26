@@ -8,6 +8,9 @@ class SorbeTest extends FunSpec with Matchers {
   
   describe("Intervals calculation") {
     equalInterval(Empty,Bag.toBag(List("a","b","a")), Interval(0,Unbounded))
+    equalInterval(Symbol("a",0,1),Bag.toBag(List("b")), Interval(0,Unbounded))
+    equalInterval(Symbol("a",0,1),Bag.toBag(List("a","b")), Interval(1,Unbounded))
+    equalInterval(Symbol("a",0,1),Bag.toBag(List("a","b","a")), Interval(2,Unbounded))
     equalInterval(Symbol("a",1,2),Bag.toBag(List("a","b","a")), Interval(1,2))
     equalInterval(Symbol("a",2,4),Bag.toBag(List("a","b","a")), Interval(1,1))
     equalInterval(Symbol("a",2,3),Bag.toBag(List("a","b","a")), Interval(1,1))
@@ -21,6 +24,12 @@ class SorbeTest extends FunSpec with Matchers {
         Bag.toBag(List("a","b","a")), Interval(1,1))
     equalInterval(And(Symbol("a",1,2),Symbol("b",2,2)),
         Bag.toBag(List("a","b","a")), Interval(1,0))
+    equalInterval(Symbol("a",0,0),Bag.toBag(List("a","b")), Interval(Unbounded,Unbounded))
+    equalInterval(Symbol("a",0,0),Bag.toBag(List("b")), Interval(0,Unbounded))
+    equalInterval(Plus(Symbol("a",1,1)),Bag.toBag(List("a","a","a")), Interval(1,Unbounded))
+    equalInterval(Plus(Symbol("a",1,1)),Bag.toBag(List("b","b","c")), Interval(0,0))
+    equalInterval(Star(Symbol("a",1,1)),Bag.toBag(List("a","a","a")), Interval(1,Unbounded))
+    equalInterval(Star(Symbol("a",1,1)),Bag.toBag(List("b","b","c")), Interval(0,Unbounded))
   }
   
   describe("Containment calculation") {
@@ -36,6 +45,24 @@ class SorbeTest extends FunSpec with Matchers {
     notContainsBag(Symbol("c",1,1),Bag.toBag(List("a","b","a","a","a","a","a")))
     containsBag(And(Symbol("a",1,2),Symbol("b",1,1)),
         Bag.toBag(List("a","b","a")))
+    notContainsBag(And(Symbol("a",1,2),Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a")))
+    containsBag(Or(Symbol("a",1,2),Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a")))
+    notContainsBag(Or(Symbol("a",3,5),Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a")))
+    notContainsBag(Or(Symbol("a",0,1),Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a")))
+    notContainsBag(Symbol("a",0,0),Bag.toBag(List("a","b","a")))
+    notContainsBag(Symbol("a",0,0),Bag.toBag(List("a","b")))
+    containsBag(Symbol("a",0,0),Bag.toBag(List("b")))
+    containsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("b")))
+    containsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("c")))
+    containsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("b","c")))
+    notContainsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("a","b")))
+    containsBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("b","c")))
+    notContainsBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("a","b","c")))
+    containsBag(Or(Symbol("a",2,2),Symbol("b",1,1)),Bag.toBag(List("a","a","c")))
   }
   
   def equalInterval[A](rbe: Sorbe[A], bag: Bag[A], expected: Interval) = {

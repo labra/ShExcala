@@ -38,13 +38,15 @@ case class ShapeType(
   
   def combine(other: ShapeType): Try[ShapeType] = {
     for {
-     check1 <- check("combine shapeType: intersection between " + other.negShapes.toString + " and " + shapes.toString + " + must be empty",
+     check1 <- check("combine shapeType: intersection between " + other.negShapes + " and " + shapes + " + must be empty",
                      other.negShapesLabels.intersect(shapes) == Set())
-     check2 <- check("combine shapeType: intersection between " + other.shapes.toString + " and " + negShapes.toString + " + must be empty",
+     check2 <- check("combine shapeType: intersection between " + other.shapes + " and " + negShapes + " + must be empty",
                      other.shapes.intersect(negShapesLabels) == Set())
                      
     } yield 
-       ShapeType(shapes = shapes ++ other.shapes, negShapes = negShapes ++ other.negShapes)
+       ShapeType(
+           shapes = shapes ++ other.shapes, 
+           negShapes = negShapes ++ other.negShapes)
   }
   
 
@@ -69,7 +71,7 @@ case class ShapeType(
     if (!negShapes.isEmpty) {
       if (negShapes.size == 1) sb ++= "-" + shapes.map(_.show).mkString 
       else {
-        sb ++= "+(" + shapes.map(_.show).mkString(",") + ")"        
+        sb ++= "-(" + shapes.map(_.show).mkString(",") + ")"        
       }
     }  
    sb.toString  
@@ -121,17 +123,6 @@ case class Typing(map: Map[RDFNode, ShapeType]) {
   }
   
   
-/*  def rmType(key: RDFNode, value: RDFNode): Option[Typing] = {
-    if ((map contains key) && (map(key) contains value)) {
-      val newSet = map(key) - value
-      if (newSet.isEmpty) {
-        Some(Typing(map - key))
-      } else {
-        Some(Typing(map.updated(key, newSet)))
-      }
-    } else None
-  } */
-
   def hasShapes(key: RDFNode): Set[Label] = {
     if (map contains key) map(key).shapes
     else Set()
@@ -181,19 +172,9 @@ case class Typing(map: Map[RDFNode, ShapeType]) {
   def showTyping(implicit pm: PrefixMap): String = {
     val sb = new StringBuilder
     for (is <- map) {
-      sb ++= (showNode(is._1) + " -> " + is._2.show + "\n")
+      sb ++= (showRDFNode(is._1)(pm) + " -> " + is._2.show + "\n")
     }
     sb.toString
-  }
-
-  // TODO: Refactor to put these 2 definitions in RDF
-  private def showIRI(iri: IRI)(implicit pm: PrefixMap): String = {
-    "<" + iri.str + ">"
-  }
-
-  private def showNode(node: RDFNode)(implicit pm: PrefixMap): String = {
-    if (node.isIRI) qualify(node.toIRI)
-    else node.toString
   }
 
 }

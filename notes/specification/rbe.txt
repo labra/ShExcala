@@ -1,0 +1,3 @@
+Interval arithmetic cases:
+
+- What happens when the intervals are (0,0) in the formula: I(a^[m;n]) = [w(a)/n;w(a)/m] (page 12 ICDT paper)

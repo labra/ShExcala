@@ -31,11 +31,6 @@ trait Bag[A] {
   def elems: Iterator[(A, Int)]
   
   /**
-   * Calculates the bag obtained by taking into account only a set of symbols
-   */
-  def delta[U >:A](symbols: Seq[U]): Bag[U] 
-
-  /**
    * add an element n times to a bag
    * This default implementation is not efficient, it should be overridden
    */
@@ -74,10 +69,20 @@ trait Bag[A] {
 }
 
 object Bag {
+  
   def empty[A: Ordering]: Bag[A] =
     BagSortedMap(SortedMap[A, Int]())
 
   def toBag[A: Ordering](t: Traversable[A]): Bag[A] = {
     empty.from(t)
   }
+  
+   /**
+   * Calculates the bag obtained by taking into account only a set of symbols
+   */
+   def delta[A: Ordering](symbols: Seq[A], bag: Bag[A]): Bag[A] = {
+    val e : Bag[A] = empty
+    symbols.foldLeft(e)((rest,x) => rest.add(x,bag.multiplicity(x)))
+  }
+    
 }
