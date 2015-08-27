@@ -1,0 +1,1 @@
+<http://a.example/Issue1> <http://a.example/p1> "1.23456"^^<http://www.w3.org/2001/XMLSchema#decimal> .

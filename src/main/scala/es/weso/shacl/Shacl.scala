@@ -120,12 +120,12 @@ object Shacl {
   }
   
   // XOr(l,s1,s2) = OneOfShape(l,List(s1,s2))
-  case class XOr(
+  /*case class XOr(
       id: Option[Label], 
       shape1: ShapeExpr, 
       shape2: ShapeExpr) extends ShapeExpr {
     def addId(label:Label) = this.copy(id = Some(label))
-  }
+  }*/
   
   // Group2(l,s1,s2) = Group(l,s1,s2)
   case class Group2(
@@ -136,11 +136,11 @@ object Shacl {
   } 
   
   // OneOf(l,s1,s2) = OneOf(l,List(s1,s2))
-  case class OneOf(
+  /*case class OneOf(
       id: Option[Label], 
       shapes: List[ShapeExpr]) extends ShapeExpr {
     def addId(label:Label) = this.copy(id = Some(label))
-  }
+  } */
   
   // List-based operators (semantically, they can be defined in terms of the binary operators
   
@@ -162,6 +162,7 @@ object Shacl {
       id:Option[Label],
       shape: ShapeExpr, 
       card:Cardinality,
+      annotations: List[Annotation],
       actions: Actions) extends ShapeExpr  {
     def minusOne: RepetitionShape = {
       this.copy(card = card.minusOne)

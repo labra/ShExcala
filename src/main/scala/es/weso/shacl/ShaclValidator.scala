@@ -102,15 +102,15 @@ trait ShaclValidator
         matchTriplesShapeExpr(ts, s1, ctx) orelse 
         matchTriplesShapeExpr(ts, s2, ctx)
       
-      case XOr(id,s1,s2) => 
-        matchTriplesShapeExpr(ts, s1, ctx) xor 
-        matchTriplesShapeExpr(ts, s2, ctx)
+/*      case XOr(id,s1,s2) => 
+        matchTriplesShapeExpr(ts, s1, ctx) xor  
+        matchTriplesShapeExpr(ts, s2, ctx) */
         
       case group: GroupShape => 
         matchTriplesShapeExpr(ts,toBin(group.shapes,group2,EmptyShape()),ctx)
         
-      case oneOf: OneOf => 
-        matchTriplesShapeExpr(ts,toBin(oneOf.shapes,xor,EmptyShape()),ctx)
+/*      case oneOf: OneOf => 
+        matchTriplesShapeExpr(ts,toBin(oneOf.shapes,xor,EmptyShape()),ctx) */
         
       case someOf: SomeOf => 
         matchTriplesShapeExpr(ts,toBin(someOf.shapes,or,EmptyShape()),ctx)
@@ -125,7 +125,7 @@ trait ShaclValidator
   
   def group2(s1: ShapeExpr,s2: ShapeExpr): ShapeExpr = Group2(None,s1,s2)
   def or(s1: ShapeExpr,s2: ShapeExpr): ShapeExpr = Or(None,s1,s2)
-  def xor(s1: ShapeExpr,s2: ShapeExpr): ShapeExpr = XOr(None,s1,s2)
+//  def xor(s1: ShapeExpr,s2: ShapeExpr): ShapeExpr = XOr(None,s1,s2)
   
   def toBin[A](ls: Seq[A], op: (A,A) => A, zero: A): A = {
     ls.foldRight(zero)(op)

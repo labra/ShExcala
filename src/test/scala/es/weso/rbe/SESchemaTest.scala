@@ -3,8 +3,9 @@ package es.weso.rbe
 import org.scalatest._
 import es.weso.collection._
 import es.weso.rbe.Interval._
+import util._
 
-class SESchemaTest extends FunSpec with Matchers {
+class SESchemaTest extends FunSpec with Matchers with TryValues {
 
   describe("Define graphs") {
 
@@ -66,6 +67,20 @@ class SESchemaTest extends FunSpec with Matchers {
      matchesNodeLabel("n1","t2",g2,s2,typing2) 
     }
     
+    describe("Calculate table") {
+//      val rbe: Sorbe[String,String,NodeShape[String,String]]
+      it("Creates a table with an And") {
+       val schema: SESchema[String,String,String] = 
+         SESchema(Map("S" -> And(Symbol((("a", Ref("t1"))), 1, 1), Symbol((("b", Ref("t2"))),1,1))))
+       val sorbe = And(Symbol(1, 1, 1), Symbol(2,1,1))
+       val table = Table(
+             constraints = Map(1 -> Ref("t1"), 2 -> Ref("t2")), 
+             edges = Map("a" -> Set(1), "b" -> Set(2)),
+             elems = 2)
+        compareResults(schema.mkTable("S"), Success((table,sorbe)))
+      }
+    }
+    
     def matchesNodeLabel[Edge,Node,Label](
         n: Node, 
         l: Label, 
@@ -73,6 +88,13 @@ class SESchemaTest extends FunSpec with Matchers {
         s : SESchema[Edge,Node,Label], t: PosNegTyping[Node,Label]): Unit = {
       it(s"Matches node $n with label $l in graph ${g} and schema ${s}") {
        s.matchNode(n,l,g) should be(t) 
+      }
+    }
+    
+
+    def compareResults[A](s1: A, s2:A) = {
+      if (s1 != s2) {
+        fail(s"Values are different\n$s1\n$s2")
       }
     }
     

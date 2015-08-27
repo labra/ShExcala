@@ -1,0 +1,70 @@
+{
+  "type": "AST",
+  "shapes": {
+    "http://a.example/IssueShape": {
+      "type": "ASTshape",
+      "expression": {
+        "type":"Group", "conjuncts": [
+          {
+            "type": "TripleConstraint", "inverse": false, "negated": false,
+            "predicate": "http://a.example/p1",
+            "value": {
+              "type": "valueClass"
+            }
+          },
+          {
+            "type": "TripleConstraint", "inverse": false, "negated": false,
+            "predicate": "http://a.example/p1",
+            "value": {
+              "type": "valueClass"
+            }
+          },
+          {
+            "type":"Choice", "disjuncts": [
+              {
+                "type":"Group", "conjuncts": 
+                [
+                  {
+                    "type": "TripleConstraint", "inverse": false, "negated": false,
+                    "predicate": "http://a.example/p1",
+                    "value": {
+                      "type": "valueClass"
+                    }
+                  },
+                  {
+                    "type":"Choice", "disjuncts": [
+                      {
+                        "type":"Group", "conjuncts":
+                        [
+                          {
+                            "type": "TripleConstraint", "inverse": false, "negated": false,
+                            "predicate": "http://a.example/p1",
+                            "value": {
+                              "type": "valueClass"
+                            }
+                          },
+                          {
+                            "type":"Choice", "disjuncts": [
+                              {
+                                "type": "TripleConstraint", "inverse": false, "negated": false,
+                                "predicate": "http://a.example/p1",
+                                "value": {
+                                  "type": "valueClass"
+                                }
+                              }, { "type": "Epsilon" }
+                            ]
+                          }
+                        ]
+                      }, { "type": "Epsilon" }
+                    ]
+                  }
+                ]
+              },
+              { "type": "Epsilon" }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "tests": [
+    {
+      "schema": "../schemas/1dot.shex",
+      "shape": "http://a.example/IssueShape",
+      "data": "1dot_pass.ttl",
+      "node": "http://a.example/Issue1",
+      "result": "1dot_pass.val"
+    },
+    {
+      "schema": "../schemas/1literalFractiondigits.shex",
+      "shape": "http://a.example/IssueShape",
+      "data": "1literalFractiondigits_pass.ttl",
+      "node": "http://a.example/Issue1",
+      "result": "1literalFractiondigits_pass.val"
+    },
+    {
+      "schema": "../validations/iovka.shex",
+      "shape": "S",
+      "data": "iovka.ttl",
+      "node": "x",
+      "result": "iovka.val"
+    },
+    {
+      "schema": "../validations/greedy.shex",
+      "shape": "S",
+      "data": "greedy.ttl",
+      "node": "x",
+      "result": "greedy.val"
+    }
+  ]
+}

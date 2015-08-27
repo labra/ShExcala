@@ -99,17 +99,18 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
         idDoc(id) :: "(" :: seqDocWithSep(shapes,",",shapeExprDoc) :: text(")")
       case SomeOf(id,shapes) => 
         idDoc(id) :: "(" :: seqDocWithSep(shapes,"||",shapeExprDoc) :: text(")") 
-      case OneOf(id,shapes) => 
-        idDoc(id) :: "(" :: seqDocWithSep(shapes,"|",shapeExprDoc) :: text(")") 
-      case RepetitionShape(id,shape,card,actions) => {
-        idDoc(id) :: "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card) :: actionsDoc(actions)
+/*      case OneOf(id,shapes) => 
+        idDoc(id) :: "(" :: seqDocWithSep(shapes,"|",shapeExprDoc) :: text(")") */ 
+      case RepetitionShape(id,shape,card,annotations,actions) => {
+        idDoc(id) :: "(" :: shapeExprDoc(shape) :: ")" :: cardDoc(card) :: 
+                    annotationsDoc(annotations) :: actionsDoc(actions)
       }
       case Group2(id,shape1,shape2) => 
         idDoc(id) :: "(" :: shapeExprDoc(shape1) :: "," :: shapeExprDoc(shape2) :: text(")")
       case Or(id,shape1,shape2) => 
-        idDoc(id) :: "(" :: shapeExprDoc(shape1) :: "||" :: shapeExprDoc(shape2) :: text(")")
-      case XOr(id,shape1,shape2) => 
         idDoc(id) :: "(" :: shapeExprDoc(shape1) :: "|" :: shapeExprDoc(shape2) :: text(")")
+/*      case XOr(id,shape1,shape2) => 
+        idDoc(id) :: "(" :: shapeExprDoc(shape1) :: "|" :: shapeExprDoc(shape2) :: text(")") */
       case EmptyShape(id) => idDoc(id) :: text("{}") 
       case IncludeShape(id,label) => {
         idDoc(id) :: text("&") :: labelDoc(label)

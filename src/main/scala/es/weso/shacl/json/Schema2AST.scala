@@ -86,18 +86,18 @@ object Schema2AST {
         base.copy(
           _type = "someOf", id = cnvID(id), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
-      case XOr(id, s1, s2) => {
+/*      case XOr(id, s1, s2) => {
         base.copy(
           _type = "oneOf", id = cnvID(id), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
-      }
+      } */
       case Group2(id, s1, s2) => {
         base.copy(
           _type = "group", id = cnvID(id), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
-      case OneOf(id, ss) => {
+/*      case OneOf(id, ss) => {
         base.copy(
           _type = "oneOf", id = cnvID(id), expressions = Some(ss.map(e => cnvShapeExpr(e))))
-      }
+      } */
       case SomeOf(id, ss) => {
         base.copy(
           _type = "someOf", id = cnvID(id), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
@@ -106,9 +106,15 @@ object Schema2AST {
         base.copy(
           _type = "group", id = cnvID(id), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
       }
-      case RepetitionShape(id, s, card, actions) => {
+      case RepetitionShape(id, s, card, annotations, actions) => {
         base.copy(
-          _type = "group", id = cnvID(id), expressions = Some(List(cnvShapeExpr(s))), min = cnvMinCard(card), max = cnvMaxCard(card), semAct = cnvActions(actions))
+          _type = "group", 
+          id = cnvID(id), 
+          expressions = Some(List(cnvShapeExpr(s))), 
+          min = cnvMinCard(card), 
+          max = cnvMaxCard(card), 
+          annotations = cnvAnnotations(annotations),
+          semAct = cnvActions(actions))
       }
       case IncludeShape(id, label) => {
         base.copy(
@@ -165,9 +171,12 @@ object Schema2AST {
     if (card == defaultCardinality) None
     else Some(card.getMin)
 
-  def cnvMaxCard(card: Cardinality): Option[Int] =
+  def cnvMaxCard(card: Cardinality): Option[Either[Int,String]] =
     if (card == defaultCardinality) None
-    else card.getMax
+    else card.getMax match {
+      case None => Some(Right("*"))
+      case Some(n) => Some(Left(n))
+    }
 
   def cnvValueClass(vc: ValueClass): ValueClassAST = {
     val base = ValueClassAST.empty

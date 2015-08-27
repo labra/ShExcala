@@ -51,8 +51,8 @@ VIRTUAL prefix1:S3 EXTRA a:a prefix:prefix base:base &a:S1 {
    prefix:prefix prefix:dt LENGTH 2?,
    (  base:base IRI*,
       PREFIX:PREFIX IRI ~ "^http://" LENGTH 5 +,
-      $<http://all.example/id1> BaSe:BaSe @prefix1:S5{2},
-    ||virtual:virtual NONLITERAL @ prefix1:S5{2,},
+      BaSe:BaSe @prefix1:S5{2},
+    | virtual:virtual NONLITERAL @ prefix1:S5{2,},
     | closed:closed  BNODE @S5: OR @<http://all.example/S5> MINLENGTH 2 MAXLENGTH 4 {2,*},
     | (  ^extra:extra { prefix1:p1 (
               "STRING_LITERAL2" "STRING_LITERAL2"@en-UK : prefix1:val1#comment

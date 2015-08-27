@@ -30,7 +30,7 @@ case class ExpressionAST(
     inverse: Option[Boolean],
     negated: Option[Boolean],
     min: Option[Int],
-    max: Option[Int],
+    max: Option[Either[Int,String]],  // It can be a number or a star
     expressions: Option[List[ExpressionAST]],
     annotations:Option[List[List[String]]],
     semAct:Option[Map[String,String]]
@@ -284,7 +284,7 @@ implicit def ExpressionDecodeJson: DecodeJson[ExpressionAST] =
      inverse <- (c --\ "inverse").as[Option[Boolean]]
      negated <- (c --\ "negated").as[Option[Boolean]]
      min <- (c --\ "min").as[Option[Int]]
-     max <- (c --\ "max").as[Option[Int]]
+     max <- (c --\ "max").as[Option[Either[Int,String]]]
      expressions <- (c --\ "expressions").as[Option[List[ExpressionAST]]]
      annotations <- (c --\ "annotations").as[Option[List[List[String]]]]
      semAct <- (c --\ "semAct").as[Option[Map[String,String]]]
@@ -325,6 +325,13 @@ implicit def ValueClassDecodeJson: DecodeJson[ValueClassAST] =
         totaldigits,fractiondigits,
         datatype)
     )
+    
+implicit def MaxDecodeJson: DecodeJson[Either[Int,String]] =
+    DecodeJson((c) => 
+      (for { value <- c.as[String] } yield Right(value)) |||
+      (for { value <- c.as[Int] } yield Left(value))
+      )      
+  
 
 implicit def ValueDecodeJson: DecodeJson[ValueAST] =
     DecodeJson((c) => 

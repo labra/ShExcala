@@ -1,0 +1,39 @@
+{
+  "type": "schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/IssueShape": {
+      "type": "shape",
+      "expression": {
+        "type": "group",
+        "expressions": [
+          {
+            "type": "tripleConstraint",
+            "predicate": "http://a.example/p1",
+            "value": { "type": "valueClass" }
+          },
+          {
+            "type": "tripleConstraint",
+            "predicate": "http://a.example/p2",
+            "value": { "type": "valueClass" }
+          },
+          {
+            "type": "tripleConstraint",
+            "predicate": "http://a.example/p3",
+            "value": { "type": "valueClass" }
+          }
+        ],
+        "min": 2, "max": 3,
+        "annotations": [
+           [ "http://a.example/annot1", "\"1\"" ],
+           [ "http://a.example/annot2", "\"2\"" ],
+           [ "http://a.example/annot3", "\"3\"" ]
+        ],
+        "semAct": {
+          "http://a.example/semAct1": " code1 ",
+          "http://a.example/semAct2": " code2 "
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "expression": {
+    "type": "tripleConstraint",
+    "predicate": "http://a.example/p1",
+    "value": { "type": "valueClass" }
+  },
+  "triples": [
+    {
+      "subject": "http://a.example/Issue1",
+      "predicate": "http://a.example/p1",
+      "object": "http://a.example/o1",
+      "graph": ""
+    }
+  ]
+}

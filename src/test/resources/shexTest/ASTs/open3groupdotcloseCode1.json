@@ -1,0 +1,39 @@
+{
+  "type": "AST",
+  "shapes": {
+    "http://a.example/IssueShape": {
+      "type": "ASTshape",
+      "expression": {
+        "type": "SemActs",
+        "expression":
+        {
+          "type": "Group",
+          "conjuncts": [
+            {
+              "type": "TripleConstraint", "inverse": false, "negated": false,
+              "predicate": "http://a.example/p1",
+              "value": {
+                "type": "valueClass"
+              }
+            },
+            {
+              "type": "TripleConstraint", "inverse": false, "negated": false,
+              "predicate": "http://a.example/p2",
+              "value": {
+                "type": "valueClass"
+              }
+            },
+            {
+              "type": "TripleConstraint", "inverse": false, "negated": false,
+              "predicate": "http://a.example/p3",
+              "value": {
+                "type": "valueClass"
+              }
+            }
+          ]
+        },
+        "semActs": { "http://a.example/semAct1": " code1 "}
+      }
+    }
+  }
+}

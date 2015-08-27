@@ -1,0 +1,73 @@
+{
+  "expression": {
+    "type": "group",
+    "expressions": [
+      {
+        "type": "tripleConstraint",
+        "predicate": "http://a.example/a",
+        "value": {
+          "type": "valueClass",
+          "reference": "T1"
+        },
+        "min": 0, "max": "*"
+      },
+      {
+        "type": "someOf",
+        "expressions": [
+          {
+            "type": "tripleConstraint",
+            "predicate": "http://a.example/a",
+            "value": {
+              "type": "valueClass",
+              "reference": "T2"
+            },
+            "min": 1, "max": "*"
+          },
+          {
+            "type": "tripleConstraint",
+            "predicate": "http://a.example/b",
+            "value": {
+              "type": "valueClass",
+              "datatype": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          }
+        ]
+      },
+      {
+        "type": "tripleConstraint",
+        "predicate": "http://a.example/b",
+        "value": {
+          "type": "valueClass",
+          "nodeKind": "iri",
+          "pattern": "^x4$"
+        }
+      }
+    ]
+  },
+  "triples": [
+    {
+      "subject": "x",
+      "predicate": "http://a.example/a",
+      "object": "x1",
+      "graph": ""
+    },
+    {
+      "subject": "x",
+      "predicate": "http://a.example/a",
+      "object": "x2",
+      "graph": ""
+    },
+    {
+      "subject": "x",
+      "predicate": "http://a.example/a",
+      "object": "x3",
+      "graph": ""
+    },
+    {
+      "subject": "x",
+      "predicate": "http://a.example/b",
+      "object": "x4",
+      "graph": ""
+    }
+  ]
+}

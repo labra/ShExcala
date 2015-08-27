@@ -107,12 +107,13 @@ object Schema2RDF extends Logging {
           shape2RDF(shape,node,rdf)
         }
       }
-      case RepetitionShape(id,shape,card,actions) => {
+      case RepetitionShape(id,shape,card,annotations,actions) => {
         val groupLabel = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(node,sh_group,groupLabel))
         cardinality2RDF(card,groupLabel,rdf)
         shape2RDF(shape,groupLabel,rdf)
-//TODO:        actions2RDF(actions,node,rdf)
+//TODO:        annotationsRDF(annotations,node,rdf)
+//        actions2RDF(actions,node,rdf)
       }
       case Or(id,shape1,shape2) => {
         val someOfNode = nodeFromOptionalLabel(id,rdf)
@@ -127,19 +128,19 @@ object Schema2RDF extends Logging {
           shape2RDF(shape,someOfNode,rdf)
         }
       }
-      case XOr(id,shape1,shape2) => {
+/*      case XOr(id,shape1,shape2) => {
         val oneOfNode = nodeFromOptionalLabel(id,rdf)
         addTriple(rdf,(node,sh_oneOf,oneOfNode))
         shape2RDF(shape1,oneOfNode,rdf)
         shape2RDF(shape2,oneOfNode,rdf)
-      }
+      } 
       case OneOf(id,shapes) => {
         val oneOfNode = nodeFromOptionalLabel(id, rdf)
         addTriple(rdf,(node,sh_someOf,oneOfNode))
         for (shape <- shapes) {
           shape2RDF(shape,oneOfNode,rdf)
         }
-      }
+      } */
       case _ => {
         log.error(s"schema2RDF: Non supported conversion to RDF. Shape = $shape")
       }

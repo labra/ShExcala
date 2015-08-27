@@ -1,0 +1,20 @@
+{
+  "expression":{
+    "type":"group",
+    "expressions":[
+      {"type":"tripleConstraint","predicate":"http://a.example/a","value":{"type":"valueClass"},"min":0,"max":"*"},
+      {
+        "type":"someOf",
+        "expressions":[
+          {"type":"tripleConstraint","predicate":"http://a.example/a","value":{"type":"valueClass"},"min":1,"max":"*"},
+          {"type":"tripleConstraint","predicate":"http://a.example/a","value":{"type":"valueClass"}}
+        ]
+      },
+      {"type":"tripleConstraint","predicate":"http://a.example/a","value":{"type":"valueClass"}}
+    ]
+  },
+  "triples":[
+    {"subject":"x","predicate":"http://a.example/a","object":"\"1\"^^http://www.w3.org/2001/XMLSchema#integer","graph":""}
+    ,{"subject":"x","predicate":"http://a.example/a","object":"\"3\"^^http://www.w3.org/2001/XMLSchema#integer","graph":""}
+  ]
+}

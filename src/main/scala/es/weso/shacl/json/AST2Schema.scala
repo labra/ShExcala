@@ -7,7 +7,7 @@ import es.weso.shacl.PREFIXES._
 import es.weso.rdf.PrefixMap
 import es.weso.rdfgraph.nodes._
 
-
+case class AST2SchemaException(msg: String) extends Exception(s"ASTSchemaException: $msg")
 
 object AST2Schema {
   
@@ -84,13 +84,13 @@ object AST2Schema {
            annotations = annotations,
            actions = actions)
      }
-     case "oneOf" => {
+/*     case "oneOf" => {
        val id = expr.id.map(str => toLabel(str))
        val shapes = cnvExpressions(expr.expressions)
        OneOf(id,shapes)
-     }
+     }*/
      case "someOf" => {
-             val id = expr.id.map(str => toLabel(str))
+       val id = expr.id.map(str => toLabel(str))
        val shapes = cnvExpressions(expr.expressions)
        SomeOf(id,shapes)
      }
@@ -102,10 +102,11 @@ object AST2Schema {
        else {
          val card = cnvCard(expr)
          val actions = cnvActions(expr.semAct)
+         val annotations = cnvAnnotations(expr.annotations)
          if (shapes.length == 1)
-           RepetitionShape(id,shapes.head,card,actions)
+           RepetitionShape(id,shapes.head,card,annotations,actions)
          else
-           RepetitionShape(id,GroupShape(None,shapes),card,actions)
+           RepetitionShape(id,GroupShape(None,shapes),card,annotations, actions)
        }
      }
      
@@ -118,7 +119,7 @@ object AST2Schema {
      } 
      
      case _=> {
-       throw new Exception("Unsupported expression conversion " + expr)
+       throw AST2SchemaException("Unsupported expression conversion " + expr)
      }
    }
  }
@@ -140,7 +141,7 @@ object AST2Schema {
  }
  
  def cnvAnnotation(annotation: List[String]): Annotation = {
-   if (annotation.length != 2) throw new Exception("Unsupported annotations without 2 elements: annotation = " + annotation)
+   if (annotation.length != 2) throw AST2SchemaException("Unsupported annotations without 2 elements: annotation = " + annotation)
    else {
      val iri = cnvIRI(annotation(0))
      val value = cnvValue(annotation(1))
@@ -165,10 +166,18 @@ object AST2Schema {
    (expr.min, expr.max) match {
      case (None,None) => defaultCardinality
      case (Some(min),None) => UnboundedCardinalityFrom(min)
-     case (None,Some(max)) => RangeCardinality(1,max)
-     case (Some(min),Some(max)) => RangeCardinality(min,max)
+     case (None,Some(max)) => cnvMax(1,max)
+     case (Some(min),Some(max)) => cnvMax(min,max)
    }
  }
+ 
+ def cnvMax(min:Int, max: Either[Int,String]): Cardinality = {
+   max match {
+     case Right("*") => UnboundedCardinalityFrom(min)
+     case Left(num) => RangeCardinality(min,num)
+     case _ => throw AST2SchemaException(s"Unsupported value of max: max")
+   }
+ } 
  
  def cnvValueClass(vc: ValueClassAST): ValueClass = {
    if (vc.values.isDefined) {
@@ -196,7 +205,7 @@ object AST2Schema {
            val facets = collectStringFacets(vc)
            IRIKind(shapeConstr, facets)
          }
-         case s@_ => throw new Exception(s"Unsupported nodeKind $s")
+         case s@_ => throw AST2SchemaException(s"Unsupported nodeKind $s")
        }
      } else if (vc.reference.isDefined) {
        cnvShapeConstr(vc.reference).get
@@ -341,7 +350,7 @@ object AST2Schema {
  def cnvStemExclusion(s: WildCardAST): Exclusion = {
    s.stem match {
      case Some(StemAST(Left(str))) => Exclusion(IRI(str),true)
-     case _ => throw new Exception("cnvStemExclusion: Unsupported conversion..." + s)
+     case _ => throw AST2SchemaException("cnvStemExclusion: Unsupported conversion..." + s)
    }
  }
  
@@ -386,7 +395,7 @@ object AST2Schema {
      case literal(lex) => {
       StringLiteral(lex) 
      }
-     case _ => throw new Exception(s"Literal |$l| doesn't match" )
+     case _ => throw AST2SchemaException(s"Literal |$l| doesn't match" )
    } 
  }
 
@@ -406,7 +415,7 @@ object AST2Schema {
    str match {
      case "false" => BooleanLiteral(false)
      case "true" => BooleanLiteral(true)
-     case _ => throw new Exception(s"cnvBoolean: Unsupported value $str")
+     case _ => throw AST2SchemaException(s"cnvBoolean: Unsupported value $str")
    }
  }
  

@@ -8,7 +8,7 @@
         "type": "tripleConstraint",
         "predicate": "http://a.example/p1",
         "value": { "type": "valueClass" },
-        "min": 2, "max": 3
+        "min": 2, "max": 5
       }
     }
   }

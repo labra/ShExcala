@@ -26,7 +26,7 @@ start = <IssueShape>  # Issue validation starts with <IssueShape>
 }
 
 UserShape: {                             # A <UserShape> has:
-    $<name> (                             # a name which is either
+    (                             # a name which is either
        foaf:name xsd:string               #   a FOAF name
      |                                    #  or
        foaf:givenName xsd:string+,        #   one or more givenNames
@@ -48,7 +48,7 @@ VIRTUAL _:IDshape {
     ex:system IRI,
     ex:literal ("a" "b"^^ex:c "c"@en "d"@en-fr){2,3},
     !ex:misc BNODE %ex:foo{ ignored %} %ex:bar{ also ignored %}
-    || (^ex:ref (true false),
+    | (^ex:ref (true false),
         !^ex:miscRef .),
     ex:issues @ex:IssueShape*,
     ex:seeAlso @ # interjection!

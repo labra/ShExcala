@@ -268,25 +268,25 @@ trait ShaclParser
 
   // TODO: Rename to shapeDefinition
   def typeSpec: StateParser[ShapeParserState, ShapeExpr] = { s =>
-    "{" ~> opt(WS) ~> opt(oneOfExpr(s)) <~ opt(WS) <~ "}" ^^
+    "{" ~> opt(WS) ~> opt(someOfExpr(s)) <~ opt(WS) <~ "}" ^^
       {
         case None            => (EmptyShape(), s)
         case Some((ors, s1)) => (ors, s1)
       }
   }
-
+/*
   def oneOfExpr: StateParser[ShapeParserState, ShapeExpr] = { s =>
     seqState(someOfExpr,
-      repS(arrowState(oneOfExpr, symbol("|"))))(s) ^^
+      repS(arrowState(someOfExpr, symbol("|"))))(s) ^^
       {
         case (shape ~ List(), s1) => (shape, s1)
         case (shape ~ shapes, s1) => (OneOf(None, shape :: shapes), s1)
       }
-  }
+  } */
 
   def someOfExpr: StateParser[ShapeParserState, ShapeExpr] = { s =>
     seqState(sequenceExpr,
-      repS(arrowState(someOfExpr, symbol("||"))))(s) ^^
+      repS(arrowState(someOfExpr, symbol("|"))))(s) ^^
       {
         case (shape ~ List(), s1) => (shape, s1)
         case (shape ~ shapes, s1) => (SomeOf(None, shape :: shapes), s1)
@@ -337,15 +337,15 @@ trait ShaclParser
   
   def unaryGroup: StateParser[ShapeParserState,ShapeExpr] = { s =>
     for {
-     (expr,s1) <- (symbol("(") ~> oneOfExpr(s) <~ symbol(")"))
+     (expr,s1) <- (symbol("(") ~> someOfExpr(s) <~ symbol(")"))
      card <- opt(cardinality)
-     (actions,s2) <- semanticActions(s1)
+     (annotations,s2) <- annotations(s1)
+     (actions,s3) <- semanticActions(s2)
     } yield {
-     if ((card == None || card.get == defaultCardinality) && 
-         actions.isEmpty)
-       (expr,s2)
+     if ((card == None || card.get == defaultCardinality) && annotations.isEmpty && actions.isEmpty)
+       (expr,s3)
      else 
-       (RepetitionShape(None,expr,card.getOrElse(defaultCardinality),actions),s2)
+       (RepetitionShape(None,expr,card.getOrElse(defaultCardinality),annotations,actions),s3)
     }
   }
   def id: StateParser[ShapeParserState,Label] = { s =>
