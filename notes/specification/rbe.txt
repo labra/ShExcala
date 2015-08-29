@@ -1,3 +1,51 @@
-Interval arithmetic cases:
+Question1. Max-cardinality 0
 
-- What happens when the intervals are (0,0) in the formula: I(a^[m;n]) = [w(a)/n;w(a)/m] (page 12 ICDT paper)
+- What happens when the intervals are (0,0) in the formula: 
+    I(a^[m;n]) = [\lceil{} w(a)/n \rceil{};\lfloor w(a)/m \rfloor] (page 12 ICDT paper)
+
+The formula would be: [\lceil{} w(a)/0 \rceil{};\lfloor w(a)/0 \rfloor]
+
+In my implementation I chose to use:
+\lfloor{} 0/0 \rfloor{} = \infty
+\lceil{} 0/0 \lceil{} = 0   
+
+while for n > 0
+\lfloor{} n/0 \rfloor{} = \infty
+\lceil{} n/0 \lceil{} = \infty
+
+
+So, when you try to check that bag{a} belongs to {b[0,0]} the interval would be {0,\infty}
+while if you try to check that bag{b} belongs to {b[0,0]} the interval would be {\infty,\infty}
+
+Question 2. What does the second case in the I(E+) definition mean?
+
+I(E+) = [1;max I(E)] if w_\delta(E) != \eps and I(E) != \empty  
+
+I implemented it as [1,\infty] (the same as with E*). 
+
+In my implementation, the only between I(E+) and I(E*) is the base case, when w_\delta(E) != \eps
+
+Is it right?
+
+You can find some test cases about the formula in this file: 
+
+https://github.com/labra/ShExcala/blob/master/src/test/scala/es/weso/rbe/SorbeTest.scala
+
+Some Traces:
+
+S { :a integer+, :b string) }
+   \--- C1 ---/ \---C2 ---/   => C1+, C2
+
+<s> :a 1). <s> :a 2 . <s> :b "hi" , <s> :c "foo" .
+ [c1]      [c1]        [c2]       , []
+ C1        C1          C2                   => pass (it belongs to C1+,C2
+
+S { :a integer+, :a string) }
+<s> :a 1). <s> :a 2 . <s> :a "hi" .
+ [c1]      [c1]        [c2]
+ C1        C1          C2      => pass (it matches C1+,C2
+
+
+ 
+
+

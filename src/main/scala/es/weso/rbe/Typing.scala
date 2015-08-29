@@ -22,7 +22,7 @@ object ReasonPosNegTyping {
 
 trait PosTyping[Node,Label] {
   def getPosTypes(node: Node): Seq[(Label)]
-  def addPosType(node: Node, label: Label): Try[PosTyping[Node,Label]]
+  def addPosType(node: Node, label: Label): Try[PosNegTyping[Node,Label]]
   def nodes: Seq[Node]
 } 
 

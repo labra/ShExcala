@@ -116,8 +116,7 @@ licenses += ("MPL-2.0", url("http://opensource.org/licenses/MPL-2.0"))
 resolvers += "Bintray" at "http://dl.bintray.com/weso/weso-releases"
 
 // Scalariform (default disables formatting)
-
-defaultScalariformSettings
+// defaultScalariformSettings
 
 // to enable formatting, use: 
 // scalariformSettings
