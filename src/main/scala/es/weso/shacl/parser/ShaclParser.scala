@@ -344,8 +344,11 @@ trait ShaclParser
     } yield {
      if ((card == None || card.get == defaultCardinality) && annotations.isEmpty && actions.isEmpty)
        (expr,s3)
-     else 
+     else {
+       // TODO: Simplify in case expr is a triple constraint with no cardinality...
        (RepetitionShape(None,expr,card.getOrElse(defaultCardinality),annotations,actions),s3)
+     } 
+       
     }
   }
   def id: StateParser[ShapeParserState,Label] = { s =>

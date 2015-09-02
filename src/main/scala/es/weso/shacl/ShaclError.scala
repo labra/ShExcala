@@ -11,6 +11,18 @@ sealed abstract class ValidationError {
   def show(implicit pm:PrefixMap): String 
 }
 
+final case class MsgError(msg: String) extends ValidationError {
+  override def show(implicit pm:PrefixMap): String = {
+    s"Message: $msg"
+  }
+}
+
+final case class ExcError(e: Throwable) extends ValidationError {
+  override def show(implicit pm:PrefixMap): String = {
+    s"Exception: $e"
+  }
+}
+
 final case class NoMatchValueSet(n: RDFNode, vs: ValueSet) extends ValidationError {
   override def show(implicit pm: PrefixMap): String = 
     "No match valueSet " + showRDFNode(n)(pm) + " ~ values: " + valueSet2String(vs)(pm)

@@ -17,9 +17,11 @@ case class GraphMap[Edge,Node](
   def triples = {
    m.map{case (x,out) => out.map{ case (e,o) => (x,e,o)}}.flatten.toSeq
   }
+  
   def out = { n =>
-    m(n)
+    m.get(n).getOrElse(Seq())
   }
+  
   def in = { n => ??? // Implement this function...
     
   }

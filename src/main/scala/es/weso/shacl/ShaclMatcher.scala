@@ -44,10 +44,11 @@ def match_node_label
     pending = List(),
     validateIncoming = true
   )
-  for {
-//   _ <- setTrace(true)
-   vs <- matchNodeLabel(node, label, ctx) 
-  } yield vs
+  /* for {
+      _ <- setTrace(true)
+    vs <- matchNodeLabel(node, label, ctx) 
+  } yield vs */
+  ???
 } 
  
 } 

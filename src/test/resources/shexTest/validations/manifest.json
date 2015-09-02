@@ -27,6 +27,20 @@
       "data": "greedy.ttl",
       "node": "x",
       "result": "greedy.val"
+    },
+    {
+      "schema": "../validations/skipped.shex",
+      "shape": "S",
+      "data": "skipped.ttl",
+      "node": "x",
+      "result": "skipped.val"
+    },
+    {
+      "schema": "../validations/repeated-group.shex",
+      "shape": "S",
+      "data": "repeated-group.ttl",
+      "node": "x",
+      "result": "repeated-group.val"
     }
   ]
 }

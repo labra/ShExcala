@@ -43,7 +43,7 @@ sealed trait Sorbe[+A] {
         else {
          val ie = v.interval(bag) 
          if (ie.isEmpty) ie
-          else Interval(1,Unbounded) 
+          else Interval(1,ie.m) 
         }
       } 
       
@@ -73,7 +73,7 @@ sealed trait Sorbe[+A] {
 } 
 
 case object Empty extends Sorbe[Nothing]
-case class Symbol[A](a: A, n: Int, m: IntLimit) extends Sorbe[A]
+case class Symbol[A](a: A, n: Int, m: IntOrUnbounded) extends Sorbe[A]
 case class And[A](v1: Sorbe[A], v2: Sorbe[A]) extends Sorbe[A]
 case class Or[A](v1: Sorbe[A], v2: Sorbe[A]) extends Sorbe[A]
 case class Star[A](v: Sorbe[A]) extends Sorbe[A]

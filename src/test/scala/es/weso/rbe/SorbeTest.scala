@@ -3,33 +3,81 @@ package es.weso.rbe
 import org.scalatest._
 import es.weso.collection._
 import es.weso.rbe.Interval._
+import org.scalacheck.Arbitrary._
+import org.scalacheck.Prop._
+import org.scalatest.prop.Checkers
+import org.scalatest.prop.GeneratorDrivenPropertyChecks
+import org.scalacheck._
 
-class SorbeTest extends FunSpec with Matchers {
+class SorbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks {
   
   describe("Intervals calculation") {
-    equalInterval(Empty,Bag.toBag(List("a","b","a")), Interval(0,Unbounded))
-    equalInterval(Symbol("a",0,1),Bag.toBag(List("b")), Interval(0,Unbounded))
-    equalInterval(Symbol("a",0,1),Bag.toBag(List("a","b")), Interval(1,Unbounded))
-    equalInterval(Symbol("a",0,1),Bag.toBag(List("a","b","a")), Interval(2,Unbounded))
-    equalInterval(Symbol("a",1,2),Bag.toBag(List("a","b","a")), Interval(1,2))
-    equalInterval(Symbol("a",2,4),Bag.toBag(List("a","b","a")), Interval(1,1))
-    equalInterval(Symbol("a",2,3),Bag.toBag(List("a","b","a")), Interval(1,1))
-    equalInterval(Symbol("a",2,400),Bag.toBag(List("a","b","a")), Interval(1,1))
-    equalInterval(Symbol("a",1,1),Bag.toBag(List("a","b","a")), Interval(2,2))
-    equalInterval(Symbol("a",2,2),Bag.toBag(List("a","b","a","a","a","a","a")), Interval(3,3))
-    equalInterval(Symbol("b",2,2),Bag.toBag(List("a","b","a","a","a","a","a")), Interval(1,0))
-    equalInterval(Symbol("b",1,1),Bag.toBag(List("a","b","a","a","a","a","a")), Interval(1,1))
-    equalInterval(Symbol("c",1,1),Bag.toBag(List("a","b","a","a","a","a","a")), Interval(0,0))
+    equalInterval(Empty,Bag.
+        toBag(List("a","b","a")), Interval(0,Unbounded))
+        
+    equalInterval(Symbol("a",0,1),
+        Bag.toBag(List("b")), Interval(0,Unbounded))
+        
+    equalInterval(Symbol("a",0,1),
+        Bag.toBag(List("a","b")), Interval(1,Unbounded))
+        
+    equalInterval(Symbol("a",0,1),
+        Bag.toBag(List("a","b","a")), Interval(2,Unbounded))
+        
+    equalInterval(Symbol("a",1,2),
+        Bag.toBag(List("a","b","a")), Interval(1,2))
+        
+    equalInterval(Symbol("a",2,4),
+        Bag.toBag(List("a","b","a")), Interval(1,1))
+        
+    equalInterval(Symbol("a",2,3),
+        Bag.toBag(List("a","b","a")), Interval(1,1))
+        
+    equalInterval(Symbol("a",2,400),
+        Bag.toBag(List("a","b","a")), Interval(1,1))
+        
+    equalInterval(Symbol("a",1,1),
+        Bag.toBag(List("a","b","a")), Interval(2,2))
+        
+    equalInterval(Symbol("a",2,2),
+        Bag.toBag(List("a","b","a","a","a","a","a")), Interval(3,3))
+        
+    equalInterval(Symbol("b",2,2),
+        Bag.toBag(List("a","b","a","a","a","a","a")), Interval(1,0))
+        
+    equalInterval(Symbol("b",1,1),
+        Bag.toBag(List("a","b","a","a","a","a","a")), Interval(1,1))
+        
+    equalInterval(Symbol("c",1,1),
+        Bag.toBag(List("a","b","a","a","a","a","a")), Interval(0,0))
+        
     equalInterval(And(Symbol("a",1,2),Symbol("b",1,1)),
         Bag.toBag(List("a","b","a")), Interval(1,1))
+        
     equalInterval(And(Symbol("a",1,2),Symbol("b",2,2)),
         Bag.toBag(List("a","b","a")), Interval(1,0))
-    equalInterval(Symbol("a",0,0),Bag.toBag(List("a","b")), Interval(Unbounded,Unbounded))
-    equalInterval(Symbol("a",0,0),Bag.toBag(List("b")), Interval(0,Unbounded))
-    equalInterval(Plus(Symbol("a",1,1)),Bag.toBag(List("a","a","a")), Interval(1,Unbounded))
-    equalInterval(Plus(Symbol("a",1,1)),Bag.toBag(List("b","b","c")), Interval(0,0))
-    equalInterval(Star(Symbol("a",1,1)),Bag.toBag(List("a","a","a")), Interval(1,Unbounded))
-    equalInterval(Star(Symbol("a",1,1)),Bag.toBag(List("b","b","c")), Interval(0,Unbounded))
+        
+    equalInterval(Symbol("a",0,0),Bag.toBag(List("a","b")), 
+        Interval(Unbounded,Unbounded))
+    
+    equalInterval(Symbol("a",0,0),
+        Bag.toBag(List("b")), Interval(0,Unbounded))
+    
+    equalInterval(Symbol("b",0,0),
+        Bag.toBag(List("b")), Interval(Unbounded,Unbounded))
+    
+    equalInterval(Plus(Symbol("a",1,1)),
+        Bag.toBag(List("a","a","a")), Interval(1,3))
+        
+    equalInterval(Plus(Symbol("a",1,1)),
+        Bag.toBag(List("b","b","c")), Interval(0,0))
+        
+    equalInterval(Star(Symbol("a",1,1)),
+        Bag.toBag(List("a","a","a")), Interval(1,Unbounded))
+        
+    equalInterval(Star(Symbol("a",1,1)),
+        Bag.toBag(List("b","b","c")), Interval(0,Unbounded))
+        
   }
   
   describe("Containment calculation") {
@@ -55,7 +103,12 @@ class SorbeTest extends FunSpec with Matchers {
         Bag.toBag(List("a","b","a")))
     notContainsBag(Symbol("a",0,0),Bag.toBag(List("a","b","a")))
     notContainsBag(Symbol("a",0,0),Bag.toBag(List("a","b")))
+    
     containsBag(Symbol("a",0,0),Bag.toBag(List("b")))
+    
+    notContainsBag(Symbol("b",0,0),Bag.toBag(List("b")))
+
+    
     containsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("b")))
     containsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("c")))
     containsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("b","c")))
@@ -82,4 +135,5 @@ class SorbeTest extends FunSpec with Matchers {
       rbe.contains(bag) should be(false)
     }
   }
+ 
 }

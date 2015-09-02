@@ -38,12 +38,12 @@ libraryDependencies ++= Seq(
   , "org.scala-lang" % "scala-compiler" % scalaVersion.value  
   , "org.apache.jena" % "jena-arq" % "2.13.0" excludeAll(ExclusionRule(organization = "org.slf4j"))
   , "org.scalaz" % "scalaz-core_2.11" % "7.1.2" 
-  , "org.spire-math" %% "cats" % "0.1.2"
+  , "org.spire-math" %% "cats" % "0.2.0"
   , "io.argonaut" %% "argonaut" % "6.1"
   , "com.casualmiracles" %% "treelog" % "1.2.4"
   , "org.scalactic" % "scalactic_2.11" % "2.2.4"
   , "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
-  , "org.scalacheck" %% "scalacheck" % "1.11.4" % "test"
+  , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
   , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
   , "org.typelevel" %% "scalaz-scalatest" % "0.2.2" % "test"
   , "es.weso" % "wesin_2.11" % "0.3.7" excludeAll(ExclusionRule(organization = "org.slf4j"))

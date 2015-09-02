@@ -28,8 +28,12 @@ trait PosTyping[Node,Label] {
 
 trait PosNegTyping[Node,Label] extends PosTyping[Node,Label] {
   def getNegTypes(node: Node): Seq[(Label)]
+  def getLabels(node: Node): Seq[Label]
   def getAllTypes(node: Node): (Seq[(Label)],Seq[(Label)])
   def addNegType(node: Node, label: Label): Try[PosNegTyping[Node,Label]]
+  def combine(other: PosNegTyping[Node,Label]): Try[PosNegTyping[Node,Label]]
+  def addTypeRow(node: Node, tr: TypeRow[Label]): Try[PosNegTyping[Node,Label]]
+  def asMap: Map[Node,TypeRow[Label]]
 } 
 object PosNegTyping {
   def empty[Node,Label] = PosNegTypingAsMap[Node,Label](Map())
@@ -41,9 +45,36 @@ object PosNegTyping {
     PosNegTypingAsMap(m.mapValues(pair => TypeRow(pair._1, pair._2)))
 }
 
-case class TypeFail(msg:String) extends Exception
+case class TypeFail(msg:String) extends Exception(msg)
 
 case class TypeRow[Label](pos: Set[Label], neg: Set[Label]) {
+  
+  def combine(other: TypeRow[Label]): Try[TypeRow[Label]] = {
+    for {
+      t1 <- this.addPosSet(other.pos)
+      t2 <- t1.addNegSet(other.neg)
+    } yield t2
+  }
+
+  // TODO: Refactor the following code to DRY
+  
+  def addPosSet(s: Set[Label]): Try[TypeRow[Label]] = {
+    val zero : Try[TypeRow[Label]] = Success(this)
+    s.foldLeft(zero) {
+      case (Success(rest),label) => rest.addPos(label)
+      case (Failure(e),_) => Failure(e)
+    }
+  }
+  
+  def addNegSet(s: Set[Label]): Try[TypeRow[Label]] = {
+    val zero : Try[TypeRow[Label]] = Success(this)
+    s.foldLeft(zero) {
+      case (Success(rest),label) => rest.addNeg(label)
+      case (Failure(e),_) => Failure(e)
+    }
+
+  }
+  
   def addPos(label: Label): Try[TypeRow[Label]] = {
     if (negLabels contains label) 
       Failure(TypeFail(s"addPosType: label $label is already in negLabels. Current typeRow: $this"))
@@ -206,11 +237,11 @@ case class ReasonTypingAsMap[Node, Label, ReasonPos, ReasonNeg](
   }
 
   override def getPosTypesReason(node: Node): Seq[(Label,ReasonPos)] = {
-    m(node).pos.toSeq
+    m.get(node).getOrElse(ReasonTypeRow.empty).pos.toSeq
   }
   
   override def getNegTypesReason(node: Node): Seq[(Label,ReasonNeg)] = {
-    m(node).neg.toSeq
+    m.get(node).getOrElse(ReasonTypeRow.empty).neg.toSeq
   }
   override def getAllTypesReason(node: Node): (Seq[(Label,ReasonPos)],Seq[(Label,ReasonNeg)]) = {
     (getPosTypesReason(node),getNegTypesReason(node))
@@ -249,10 +280,29 @@ case class PosNegTypingAsMap[Node,Label](m: Map[Node,TypeRow[Label]])
     }
   }
   
-  def getPosTypes(node: Node): Seq[(Label)] = m(node).pos.toSeq
-  def getNegTypes(node: Node): Seq[(Label)] = m(node).neg.toSeq
-  def getAllTypes(node: Node): (Seq[(Label)],Seq[(Label)]) = (getPosTypes(node),getNegTypes(node))
-
+  override def getPosTypes(node: Node): Seq[(Label)] = m.get(node).getOrElse(TypeRow.empty).pos.toSeq
+  override def getNegTypes(node: Node): Seq[(Label)] = m.get(node).getOrElse(TypeRow.empty).neg.toSeq
+  override def getAllTypes(node: Node): (Seq[(Label)],Seq[(Label)]) = (getPosTypes(node),getNegTypes(node))
+  override def getLabels(node: Node): Seq[Label] = getPosTypes(node) ++ getNegTypes(node)
+  override def asMap = m
+  override def combine(other: PosNegTyping[Node,Label]): Try[PosNegTyping[Node,Label]] = {
+    val zero : Try[PosNegTyping[Node,Label]] = Success(this)
+    other.asMap.foldLeft(zero){
+      case (Success(rest),(node,typeRow)) => rest.addTypeRow(node, typeRow)
+      case (Failure(e),_) => Failure(e)
+    }
+  }
+  
+  def addTypeRow(node: Node, tr: TypeRow[Label]): Try[PosNegTyping[Node,Label]] = {
+    //TODO: Simplify the following expression
+    if (m contains node) {
+      for {
+        tr1 <- m(node).combine(tr)
+      } yield PosNegTypingAsMap(m = m.updated(node,tr1))
+    } else {
+     Success(PosNegTypingAsMap(m + (node -> tr))) 
+    }
+  } 
 }
 
 object PosNegTypingAsMap {

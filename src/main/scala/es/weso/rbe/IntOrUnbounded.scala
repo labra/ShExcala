@@ -113,6 +113,13 @@ case class IntLimit(m: Int) extends IntOrUnbounded {
 
 object IntOrUnbounded {
   
+  def apply(o : Option[Int]): IntOrUnbounded = {
+    o match {
+      case None => Unbounded
+      case Some(n) => IntLimit(n)
+    }
+  }
+  
   implicit def int2LimitInt(x: Int) = IntLimit(x)
 
   
