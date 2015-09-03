@@ -28,13 +28,13 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
       Map("n0" -> List(("a", "n1")),
         "n1" -> List(("b", "n1"), ("c", "n2"))))
 
-    val s0 : Schema[String,String,String] =
+    val s0 : Schema[String,String,String,Throwable] =
       Schema(
         Map("t0" -> Shape.empty.copy(rbe = And(Symbol((("a", Ref("t1"))), 1, 1), Symbol((("b", Ref("t2"))), 1, 1))),
           "t1" -> Shape.empty.copy(rbe = Star(Or(Symbol((("a", Ref("t1"))), 1, 1), Symbol((("b", Ref("t2"))), 1, 1)))),
           "t2" -> Shape.empty.copy(rbe = Or(Symbol((("b", Ref("t2"))), 1, 1), Symbol((("c", Ref("t1"))), 1, 1)))))
 
-    val s1 : Schema[String,String,String]  =
+    val s1 : Schema[String,String,String,Throwable]  =
       Schema(
         Map("t0" -> Shape.empty.copy(rbe = Symbol((("a", Ref("t1"))), 1, 1)),
           "t1" -> Shape.empty.copy(rbe = And(Symbol((("b", Ref("t2"))), 1, 1), Symbol((("c", Ref("t3"))), 1, 1))),
@@ -42,7 +42,7 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
           "t3" -> Shape.empty.copy(rbe = Empty)))
 
 
-    val s2: Schema[String, String, String] =
+    val s2: Schema[String, String, String, Throwable] =
       Schema(
         Map("t0" -> Shape.empty.copy(rbe = Symbol((("a", Ref("t0"))), 1, 1)),
           "t1" -> Shape.empty.copy(rbe = And(Symbol((("b", Ref("t2"))), 1, 1), Symbol((("c", Ref("t3"))), 1, 1))),
@@ -66,7 +66,7 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
   }
     
   describe("Basic matchings") {
-      val s : Schema[String,String,String] = Schema(Map("s" -> Shape.empty.copy(rbe = Symbol((("a", integer)), 1, 1))))
+      val s : Schema[String,String,String,Throwable] = Schema(Map("s" -> Shape.empty.copy(rbe = Symbol((("a", integer)), 1, 1))))
       val g = GraphMap(Map("x" -> List(("a", "1"))))
       val t = Seq(PosNegTyping.fromPosMap(Map("x" -> Set("s"))))
       matchesNodeLabel("x", "s", g, s, t)
@@ -91,7 +91,7 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
   }
   
   describe("Basic matchings with plus") {
-      val s : Schema[String,String,String] = Schema(Map("s" -> Shape.empty.copy(rbe = Plus(Symbol((("a", integer)), 1, 1)))))
+      val s : Schema[String,String,String,Throwable] = Schema(Map("s" -> Shape.empty.copy(rbe = Plus(Symbol((("a", integer)), 1, 1)))))
       val g = GraphMap(Map("x" -> List(("a", "1"))))
       val t = Seq(PosNegTyping.fromPosMap(Map("x" -> Set("s"))))
       matchesNodeLabel("x", "s", g, s, t)
@@ -128,7 +128,7 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
       Map("n0" -> List(("a", "n1")),
           "n1" -> List(("b", "n1"), ("c", "n2"))))
 
-    val s: Schema[String, String, String] =
+    val s: Schema[String, String, String, Throwable] =
       Schema(
         Map("t0" -> Shape.empty.copy(rbe = Symbol((("a", Ref("t1"))), 1, 1)),
           "t1" -> Shape.empty.copy(rbe = And(Symbol((("b", Ref("t2"))), 1, 1), Symbol((("c", Ref("t3"))), 1, 1))),
@@ -153,23 +153,27 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
   }
 
   
-    def matchesNodeLabel[Edge, Node, Label](
+    def matchesNodeLabel[Edge, Node, Label,Err](
       n: Node,
       l: Label,
       g: Graph[Edge, Node],
-      s: Schema[Edge, Node, Label], t: Seq[PosNegTyping[Node, Label]]): Unit = {
+      s: Schema[Edge, Node, Label,Err], t: Seq[PosNegTyping[Node, Label]]): Unit = {
       it(s"Matches node $n with label $l in graph ${g} and schema ${s}") {
-        s.matchNode(n, l, g, s, PosNegTyping.empty) should be(Success(t))
+        s.matchNode(n, l, g) should be(Success(t))
       }
     }
     
-    def noMatchNodeLabel[Edge, Node, Label](
+    def noMatchNodeLabel[Edge, Node, Label,Err](
       n: Node,
       l: Label,
       g: Graph[Edge, Node],
-      s: Schema[Edge, Node, Label]): Unit = {
+      s: Schema[Edge, Node, Label,Err]): Unit = {
       it(s"Doesn't match node $n with label $l in graph ${g} and schema ${s}") {
-        s.matchNode(n, l, g, s, PosNegTyping.empty) should be(Success(Seq()))
+        val result = s.matchNode(n, l, g) 
+        result match {
+          case Success(ls) if (!ls.isEmpty) => fail(s"It matches with: $ls")
+          case _ => info("Doesn't match as expected")
+        }
       }
     }
 

@@ -17,6 +17,7 @@ import es.weso.shacl.json.AST._
 import es.weso.shacl.json._
 import argonaut._
 import Argonaut._
+import es.weso.rbe._
 
 /**
  * The following definitions follow: http://www.w3.org/2013/ShEx/Definition
@@ -30,6 +31,11 @@ case class Schema(
   /* override def toString(): String = {
     ShaclDoc.schema2String(shaclSchema)(pm)
   } */
+  
+  def matchNode_Label(node: RDFNode, label: Label, rdf: RDFReader) = {
+    val seSchema = SEShacl.shacl2SE(shaclSchema)
+    seSchema.matchNode(node, label, RDFAsGraph(rdf))
+  }
 
   def showShapes: String = {
     shaclSchema.shapes.toString

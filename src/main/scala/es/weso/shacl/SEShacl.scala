@@ -22,15 +22,15 @@ import Shacl._
  * Shacl Abstract Syntax to SESchema 
  */
 object SEShacl {
-  type SEShaclSchema = SESchema[IRI,RDFNode,Label]
-  type Val = (IRI,NodeShape[Label,RDFNode])
-  type NodeShape_ = NodeShape[Label,RDFNode]
+  type SEShaclSchema = SESchema[IRI,RDFNode,Label,ValidationError]
+  type Val = (IRI,NodeShape[Label,RDFNode,ValidationError])
+  type NodeShape_ = NodeShape[Label,RDFNode,ValidationError]
 
   def shacl2SE(s: SHACLSchema): SEShaclSchema = {
     SESchema(m = s.shapes.mapValues(sh => shape2SEShape(sh)))
   }
   
-  def shape2SEShape(sh: Shape): SEShape[IRI,RDFNode,Label] = {
+  def shape2SEShape(sh: Shape): SEShape[IRI,RDFNode,Label,ValidationError] = {
     SEShape(
         rbe = shapeExpr2rbe(sh.shapeExpr),
         extras = sh.extras.toSeq,
@@ -55,28 +55,27 @@ object SEShacl {
     )
   }
   
-  def valueClass2NodeShape(v: ValueClass): NodeShape[Label,RDFNode] = {
+  def valueClass2NodeShape(v: ValueClass): NodeShape[Label,RDFNode,ValidationError] = {
     v match {
-      case vc: ValueConstr => valueConstr2NodeShape(vc) 
+      case vc: ValueConstr => valueConstr2NodeShape(vc)
+      case sc: ShapeConstr => shapeConstr2NodeShape(sc)
       case _ => throw SEShaclException(s"valueClass2NodeShape: Unsupported value class " + v)
     }
   }
   
+  def shapeConstr2NodeShape(sc: ShapeConstr): NodeShape[Label,RDFNode,ValidationError] = {
+    sc match {
+      case SingleShape(label) => Ref(label) 
+      case _ => throw SEShaclException(s"shapeConstrNodeShape: Unsupported value class " + sc)
+    }
+  }
+  
   def valueConstr2NodeShape(vc: ValueConstr): NodeShape_ = {
-    vc match {
-      case nk: NodeKind => nodeKind2NodeShape(nk)
-      case _ => throw SEShaclException(s"valueConstr2NodeShape: Unsupported value constr" + vc)
-    }
+    Pred(name = s"ValueConstr $vc")( 
+         pred = (n: RDFNode) => vc.check(n)
+        )
   }
-  def nodeKind2NodeShape(nk: NodeKind): NodeShape_ = {
-    nk match {
-      case IRIKind(_,_) => 
-        Pred(name = "IRIKind", 
-             pred = (n: RDFNode) => n.isIRI
-            )
-      case _ => throw SEShaclException(s"nodeKind2NodeShape: Unsupported node kind" + nk)
-    }
-  }
+  
 }
 
 case class SEShaclException(msg: String) extends Exception("SEShaclException: " + msg)

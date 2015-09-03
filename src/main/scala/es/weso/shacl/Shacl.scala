@@ -9,6 +9,10 @@ import es.weso.shacl.PREFIXES._
 import util._
 import es.weso.utils.PrefixMapUtils._
 import org.slf4j._
+import es.weso.utils.{
+  Success => UtilsSuccess, //TODO: Check why utils exports Success and remove it 
+  _ 
+  }
 import Checker._
 
 /**
@@ -16,7 +20,7 @@ import Checker._
  */
 object Shacl {
 
-  type Check = Checker[ValidationError, RDFNode]
+  type Check = Checker[RDFNode, ValidationError]
 
   val log = LoggerFactory.getLogger("Shacl")
 
@@ -233,14 +237,6 @@ object Shacl {
     def check(node: RDFNode): Check
   }
 
-  def matchFacets(
-    node: RDFNode,
-    facets: List[XSFacet]): Check = {
-    if (facets.isEmpty) ok(node)
-    else
-      err(MsgError("Non supported facets yet"))
-  }
-
   case class Datatype(
     v: IRI,
     facets: List[XSFacet]) extends ValueConstr
@@ -248,7 +244,7 @@ object Shacl {
     override def check(node: RDFNode): Check = {
       node match {
         case l: Literal =>
-          if (l.dataType == v && matchFacets(node, facets).isOK)
+          if (l.dataType == v && checkFacets(node, facets).isOK)
             ok(node)
           else
             err(MsgError(s"node $node doesn't match datatype $this"))
@@ -259,16 +255,53 @@ object Shacl {
   case class ValueSet(s: Seq[ValueObject]) extends ValueConstr
       with Positional {
     override def check(node: RDFNode): Check =
-      err(MsgError(s"Not implemented check on $this for node $node"))
+      checkSome(node,
+          s.map((vo: ValueObject) => ((n: RDFNode) => vo.check(node))),
+          MsgError(s"valueSet: node $node must be in $s"))
+  }
+  
+  sealed trait ValueObject extends Positional {
+    def check(node: RDFNode): Check 
   }
 
-  sealed trait ValueObject extends Positional
+  case class ValueIRI(iri: IRI) extends ValueObject {
+      override def check(node: RDFNode): Check = {
+        if (node.isIRI && node.toIRI == iri) ok(node)
+        else err(MsgError(s"node $node doesn't match IRI $iri"))
+      }
+  }
+ 
+  case class ValueLiteral(literal: Literal) extends ValueObject {
+     override def check(node: RDFNode): Check = {
+        node match {
+          case l: Literal if (l == literal) => ok(node)
+          case _ => err(MsgError(s"node $node doesn't match Literal $literal"))
+        }
+      }
 
-  case class ValueIRI(iri: IRI) extends ValueObject
-  case class ValueLiteral(literal: Literal) extends ValueObject
-  case class ValueLang(lang: Lang) extends ValueObject
-  case class ValueStem(stem: IRI, exclusions: List[Exclusion]) extends ValueObject
-  case class ValueAny(exclusions: List[Exclusion]) extends ValueObject
+  }
+
+  case class ValueLang(lang: Lang) extends ValueObject {
+    override def check(node: RDFNode): Check = {
+        node match {
+          case l: LangLiteral if (l.lang == lang) => ok(node)
+          case _ => err(MsgError(s"node $node doesn't match Language literal $lang"))
+        }
+      }
+  }
+
+  case class ValueStem(stem: IRI, exclusions: List[Exclusion]) extends ValueObject {
+      override def check(node: RDFNode): Check = {
+         err(MsgError(s"Unimplemented value Stem"))
+       }
+  }
+  
+  case class ValueAny(exclusions: List[Exclusion]) extends ValueObject {
+      override def check(node: RDFNode): Check = {
+        if (exclusions.isEmpty) ok(node)
+        else err(MsgError("Not implemented ValueAny with exclusions"))
+      }
+  }
 
   case class Exclusion(iri: IRI, isStem: Boolean) extends Positional
 
@@ -287,6 +320,13 @@ object Shacl {
       shapeConstr: Option[ShapeConstr],
       facets: List[StringFacet]) extends NodeKind {
     override def token = "IRI"
+    
+    override def check(node: RDFNode): Check =
+      if (node.isIRI && checkFacets(node,facets).isOK) {
+        ok(node)
+      } else {
+        err(MsgError(s"IRIKind failed: node: $node is not an IRI"))
+      }
   }
 
   case class BNodeKind(
@@ -317,7 +357,17 @@ object Shacl {
     }
   }
 
+  def checkFacets(node: RDFNode, 
+      facets: List[XSFacet]): Check = {
+    if (facets.isEmpty) ok(node) 
+    else {
+     log.info(s"Unimplemented checkFacets on node $node")
+     err(MsgError("Non supported facets yet")) 
+    }
+  }
+  
   sealed trait XSFacet extends Positional
+  
 
   sealed trait NumericFacet extends XSFacet with Positional
   case class MinInclusive(n: Integer) extends NumericFacet
@@ -359,7 +409,7 @@ object Shacl {
     }
   }
   /**
-   * ShapeConstr ::= SingleShape | DisjShapeConstr | ConjShapeConstr | NotShapeConstr
+   * ShapeConstr ::= SingleShape | DisjShapeConstr 
    */
   sealed trait ShapeConstr extends ValueClass
     with Positional

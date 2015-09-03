@@ -11,7 +11,7 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
 
     describe("Calculate table") {
       it("Creates a table with an And") {
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String,Throwable] =
           Schema(
               Map("S" -> Shape.empty.copy(rbe = And(Symbol((("a", Ref("t1"))), 1, 1), Symbol((("b", Ref("t2"))), 1, 1)))))
         val sorbe = And(Symbol(1, 1, 1), Symbol(2, 1, 1))
@@ -23,7 +23,7 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       }
 
       it("Creates a table with an And and several candidates for the same symbol") {
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String,Throwable] =
           Schema(Map("S" -> Shape.empty.copy(rbe = And(Symbol((("a", Ref("t1"))), 1, 1), Symbol((("a", Ref("t2"))), 1, 1)))))
         val sorbe = And(Symbol(1, 1, 1), Symbol(2, 1, 1))
         val table = Table(
@@ -34,7 +34,7 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       }
 
       it("Calculates table with an And and an Or") {
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String,Throwable] =
           Schema(Map("S" -> Shape.empty.copy(rbe = And(Symbol((("a", Ref("t1"))), 1, 1),
             Or(Symbol((("b", Ref("t2"))), 1, 1), Symbol((("a", Ref("t2"))), 1, 1))))))
 
@@ -47,7 +47,7 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       }
 
       it("Calculates table combining Ors, Ands and Plus") {
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String,Throwable] =
           Schema(Map("S" -> Shape.empty.copy(rbe = And(Symbol((("a", isA)), 1, 1),
             Or(Plus(Symbol((("b", any)), 1, 1)), Symbol((("a", any)), 1, 1))))))
 
@@ -64,14 +64,14 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       describe("Possible candidates of :a int, (:b any + | :a any)") {
         
         // S { :a int, (:b any + | :a any) }
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String,Throwable] =
           Schema(Map("S" -> Shape.empty.copy(rbe = And(Symbol((("a", integer)), 1, 1),
             Or(Plus(Symbol((("b", any)), 1, 1)), Symbol((("a", any)), 1, 1))))))
 
         // 1, (2+|3)
         val sorbe = And(Symbol(1, 1, 1), Or(Plus(Symbol(2, 1, 1)), Symbol(3, 1, 1)))
         
-        val table : Table[String,String,String] = Table(
+        val table : Table[String,String,String,Throwable] = Table(
           constraints = Map(1 -> integer, 2 -> any, 3 -> any),
           edges = Map("a" -> Set(1,3), "b" -> Set(2)),
           elems = 3)
@@ -95,14 +95,14 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       describe("Candidates of :a int, (:b any + | :a any)") {
         
         // S { :a int, (:b any + | :a any) }
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String,Throwable] =
           Schema(Map("S" -> Shape.empty.copy(rbe = And(Symbol((("a", integer)), 1, 1),
             Or(Plus(Symbol((("b", any)), 1, 1)), Symbol((("a", any)), 1, 1))))))
 
         // 1, (2+|3)
         val sorbe = And(Symbol(1, 1, 1), Or(Plus(Symbol(2, 1, 1)), Symbol(3, 1, 1)))
         
-        val table : Table[String,String,String] = Table(
+        val table : Table[String,String,String,Throwable] = Table(
           constraints = Map(1 -> integer, 2 -> any, 3 -> any),
           edges = Map("a" -> Set(1,3), "b" -> Set(2)),
           elems = 3)
@@ -136,14 +136,14 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       describe("zip candidates of :a int, (:b any + | :a any)") {
         
         // S { :a int, (:b any + | :a any) }
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String, Throwable] =
           Schema(Map("S" -> Shape.empty.copy(rbe = And(Symbol((("a", integer)), 1, 1),
             Or(Plus(Symbol((("b", any)), 1, 1)), Symbol((("a", any)), 1, 1))))))
 
         // 1, (2+|3)
         val sorbe = And(Symbol(1, 1, 1), Or(Plus(Symbol(2, 1, 1)), Symbol(3, 1, 1)))
         
-        val table : Table[String,String,String] = Table(
+        val table : Table[String,String,String,Throwable] = Table(
           constraints = Map(1 -> integer, 2 -> any, 3 -> any),
           edges = Map("a" -> Set(1,3), "b" -> Set(2)),
           elems = 3)
@@ -184,14 +184,14 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       describe("filter candidates of :a int, (:b any + | :a any)") {
         
         // S { :a int, (:b any + | :a any) }
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String, Throwable] =
           Schema(Map("S" -> Shape.empty.copy(rbe = And(Symbol((("a", integer)), 1, 1),
             Or(Plus(Symbol((("b", any)), 1, 1)), Symbol((("a", any)), 1, 1))))))
 
         // 1, (2+|3)
         val sorbe = And(Symbol(1, 1, 1), Or(Plus(Symbol(2, 1, 1)), Symbol(3, 1, 1)))
         
-        val table : Table[String,String,String] = Table(
+        val table : Table[String,String,String,Throwable] = Table(
           constraints = Map(1 -> integer, 2 -> any, 3 -> any),
           edges = Map("a" -> Set(1,3), "b" -> Set(2)),
           elems = 3)
@@ -240,14 +240,14 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       describe("matching against :a int, (:b any + | :a any)") {
         
         // S { :a int, (:b any + | :a any) }
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String, Throwable] =
           Schema(Map("S" -> Shape.empty.copy(rbe = And(Symbol((("a", integer)), 1, 1),
             Or(Plus(Symbol((("b", any)), 1, 1)), Symbol((("a", any)), 1, 1))))))
 
         // 1, (2+|3)
         val sorbe = And(Symbol(1, 1, 1), Or(Plus(Symbol(2, 1, 1)), Symbol(3, 1, 1)))
         
-        val table : Table[String,String,String] = Table(
+        val table : Table[String,String,String,Throwable] = Table(
           constraints = Map(1 -> integer, 2 -> any, 3 -> any),
           edges = Map("a" -> Set(1,3), "b" -> Set(2)),
           elems = 3)
@@ -266,13 +266,13 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       describe("filter candidates of :a int +") {
         
         // S { :a int + }
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String, Throwable] =
           Schema(Map("S" -> Shape.empty.copy(rbe = Plus(Symbol((("a", integer)), 1, 1)))))
 
         // 1+
         val sorbe = Plus(Symbol(1, 1, 1))
         
-        val table : Table[String,String,String] = Table(
+        val table : Table[String,String,String,Throwable] = Table(
           constraints = Map(1 -> integer),
           edges = Map("a" -> Set(1)),
           elems = 1)
@@ -297,7 +297,7 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       describe("pending candidates of <S> { :a @<T> +} <T> { :b . } ") {
         
         // S { :a @t + }
-        val schema: Schema[String, String, String] =
+        val schema: Schema[String, String, String, Throwable] =
           Schema(Map(
               "S" -> Shape.empty.copy(rbe = Plus(Symbol((("a", Ref("T"))), 1, 1))),
               "T" -> Shape.empty.copy(rbe = Symbol((("b", any)), 1, 1))))
@@ -305,7 +305,7 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
         // 1+
         val sorbe = Plus(Symbol(1, 1, 1))
         
-        val table : Table[String,String,String] = Table(
+        val table : Table[String,String,String,Throwable] = Table(
           constraints = Map(1 -> Ref("T")),
           edges = Map("a" -> Set(1)),
           elems = 1)

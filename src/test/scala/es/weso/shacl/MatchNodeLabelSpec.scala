@@ -20,7 +20,7 @@ class MatchNodeLabelSpec
     with Matchers
     with Checkers {
 
-  describe("MatchNodeLabel") {
+  ignore("MatchNodeLabel") {
     it("Should match node with label (single)") {
     }
   }
@@ -82,10 +82,10 @@ class MatchNodeLabelSpec
       label: Label,
       ctx: Context,
       withTrace: Boolean = false): Unit = {
-    val result: Result[ValidationState] = for {
+    val result: Result[ValidationState] = ??? /*for {
       _ <- setTrace(withTrace)
       r <- matchNodeLabel(node,label,ctx)
-    } yield r
+    } yield r */
     
     if (result.isValid) {
       val sol1 = result.run.get
@@ -107,10 +107,10 @@ class MatchNodeLabelSpec
       expectedState: ValidationState,
       withTrace: Boolean = false): Unit = {
     val ctx = Context.emptyContext
-    val result: Result[ValidationState] = for {
+    val result: Result[ValidationState] = ??? /*for {
       _ <- setTrace(withTrace)
       r <- matchTriplesShapeExpr(ts,shape,ctx)
-    } yield r
+    } yield r */
     if (result.isValid) {
       info("Result valid but should fail")
       info("Result: " + result)

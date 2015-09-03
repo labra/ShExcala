@@ -14,16 +14,17 @@ import es.weso.monads._
 import util._
 import es.weso.rdf.jena.RDFAsJenaModel
 
+// TODO: Remove these tests
+
 /**
  * Utility test to isolate one test
  */
 class SingleSpec
     extends FunSpec
-    with ShaclValidator
     with Matchers
     with Checkers {
 
-  describe("Single") {
+  ignore("Single") {
     it("Should match node with label (single)") {
       val rdf_str = """|@prefix : <http://example.org/>. 
                        |:x  :a 1 ; :b 2 .""".stripMargin
@@ -48,10 +49,10 @@ class SingleSpec
       label: Label,
       ctx: Context,
       withTrace: Boolean = false): Unit = {
-    val result: Result[ValidationState] = for {
+    val result: Result[ValidationState] = ??? /* for {
       _ <- setTrace(withTrace)
       r <- matchNodeLabel(node,label,ctx)
-    } yield r
+    } yield r */
     
     if (result.isValid) {
       val sol1 = result.run.get
@@ -72,10 +73,10 @@ class SingleSpec
       label: Label,
       ctx: Context,
       withTrace: Boolean = false): Unit = {
-    val result: Result[ValidationState] = for {
+    val result: Result[ValidationState] = ??? /* for {
       _ <- setTrace(withTrace)
       r <- matchNodeLabel(node,label,ctx)
-    } yield r
+    } yield r */
     
     if (result.isValid) {
       val sol1 = result.run.get

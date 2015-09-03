@@ -16,14 +16,12 @@ import es.weso.shex.Typing._
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.utils.IO._
 import buildinfo._
-import es.weso.shacl.DataFormats
-import es.weso.shacl.SchemaFormats
+import es.weso.shacl._
 import es.weso.shex.ShapeValidatorWithDeriv
 import es.weso.shex.Typing
 import es.weso.shex.Schema
 import es.weso.shacl.{Schema => SHACL_Schema}
 import es.weso.shex.ShapeValidatorBacktracking
-// import es.weso.shex.ShapeValidatorRemaining
 import es.weso.shex._
 import es.weso.rdfgraph.nodes._
 import es.weso.utils.Verbosity
