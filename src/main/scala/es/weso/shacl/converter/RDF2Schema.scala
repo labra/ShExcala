@@ -13,7 +13,8 @@ import es.weso.rdf.PrefixMap
 import es.weso.utils.{Success => TrySuccess,_}
 import es.weso.utils.TryUtils._
 
-case class RDF2SchemaException(msg:String) extends Exception
+case class RDF2SchemaException(msg:String) 
+  extends Exception(s"RDF2SchemaException: $msg")
 
 object RDF2Schema 
   extends Logging 

@@ -12,6 +12,7 @@ import es.weso.shex.Context._
 import es.weso.rdf.PrefixMap
 import es.weso.rdf.RDFTriples
 import util._
+import es.weso.rdf.validator.Matcher
 
 class ShapeValidatorAny
     extends FunSpec

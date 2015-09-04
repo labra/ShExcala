@@ -13,6 +13,7 @@ import es.weso.rdf._
 import es.weso.shacl.PREFIXES._
 import es.weso.monads.Result._
 import util._
+import es.weso.rdf.validator.Matcher
 
 class ShapeValidatorSpec
     extends FunSpec

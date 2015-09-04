@@ -8,9 +8,8 @@ import scala.util._
 import es.weso.shacl.Shacl._
 import es.weso.utils.PrefixMapUtils._
 
-case class TypingException(msg:String) extends Exception {
-  new Exception(msg)
-}
+case class TypingException(msg:String) 
+  extends Exception(s"TypingException: $msg") 
 
 case class Reason(msg:String)
 

@@ -2,7 +2,7 @@ package es.weso.performance
 
 import es.weso.rdfgraph.nodes._
 import es.weso.shex.Schema
-import es.weso.shex.Matcher
+import es.weso.rdf.validator.Matcher
 import es.weso.shex.Typing
 import es.weso.rdf.RDFTriples
 import es.weso.rdfgraph.statements.RDFTriple

@@ -1,9 +1,9 @@
-package es.weso.rbe
+package es.weso.typing
 
 import org.scalatest._
 import es.weso.collection._
 import es.weso.rbe.Interval._
-import util.{Try,Failure,Success}
+import util.Success
 
 class TypingTest extends FunSpec with Matchers with TryValues {
 

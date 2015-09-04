@@ -10,7 +10,7 @@ import es.weso.rdf.RDFTriples
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.shacl.PrefixMaps
 import es.weso.shex.ShapeDoc
-import es.weso.shex.Matcher
+import es.weso.rdf.validator.Matcher
 
 class GenSpec
     extends FunSpec

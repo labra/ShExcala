@@ -13,7 +13,8 @@ import es.weso.shacl.Shacl._
 import es.weso.utils.Logging
 import es.weso.utils.PrefixMapUtils._
 
-case class ShapeDocException(msg:String) extends Exception
+case class ShapeDocException(msg:String) 
+  extends Exception(s"ShapeDocException: $msg")
 
 case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 

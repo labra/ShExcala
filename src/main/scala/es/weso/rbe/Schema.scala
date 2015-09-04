@@ -6,6 +6,7 @@ import es.weso.utils.Checker
 import es.weso.collection.Bag
 import es.weso.utils.SeqUtils._
 import es.weso.utils.TryUtils._
+import es.weso.typing.PosNegTyping
 
 case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]]) {
   type ReasonPos = Nothing

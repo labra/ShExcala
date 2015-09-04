@@ -1,14 +1,14 @@
-package es.weso.shacl
+package es.weso.typing
 
 import org.scalatest._
 import org.scalatest.prop.PropertyChecks
 import org.scalatest.prop.Checkers
-import es.weso.shacl.Typing._
 import es.weso.shacl.Shacl._
 import Stream._
 import es.weso.rdfgraph.nodes._
 import util._
 import org.scalatest.TryValues._
+
 
 class TypingSpec
     extends FunSpec

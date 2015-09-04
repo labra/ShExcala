@@ -17,7 +17,7 @@ import es.weso.rdf.jena.RDFAsJenaModel
 
 
 case class RDF2ManifestException(msg:String) 
- extends Exception
+ extends Exception(msg)
 
 trait RDF2Manifest 
   extends Logging 

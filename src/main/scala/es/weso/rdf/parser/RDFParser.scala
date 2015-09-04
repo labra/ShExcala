@@ -11,7 +11,7 @@ import es.weso.rdf.PrefixMap
 import es.weso.utils.{Success => TrySuccess}
 
 case class RDFParserException(msg: String)
-  extends Exception
+  extends Exception(s"RDFParserException: " + msg)
 
 trait RDFParser {
 

@@ -244,5 +244,7 @@ object Result {
   def decompose[A](set:Set[A],n:Int): Result[List[Set[A]]] = {
     Passed(SetUtils.decompose(set,n))
   }
+  
+  
 
 }

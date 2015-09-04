@@ -6,16 +6,33 @@ import es.weso.shex.ShapeSyntax._
 import es.weso.rdfgraph.nodes._
 import java.lang._
 import es.weso.utils.Logging
+import es.weso.rdf.validator._
 
-case class Matcher(
+case class ShExMatcher(
     schema: Schema, 
     rdf: RDFReader, 
     validateIncoming: Boolean = false, 
     withAny: Boolean = false, 
     validator: ShapeValidator = ShapeValidatorWithDeriv
-   ) extends Logging {
+   ) extends Logging 
+      with   RDFValidator {
+  
+  type Label = ShapeSyntax.Label
+  type Schema = es.weso.shex.Schema
+  override def id = "ShEx (Labra) 1.0"
+  override def labels: Seq[Label] = schema.getLabels
+  override def match_node_label(node: RDFNode)(label: Label): ShExResult = {
+    node match {
+      case iri: IRI => {
+        ShExResult(matchIRI_Label(iri)(label)) 
+      }
+      case _ => throw new Exception(s"Node must be a IRI to be validated: $node. Label: $label")
+    }
+  }
+  
+  implicit def result(r: Result[Typing]): ValidationResult[RDFNode,Label] = ???
 
-  val subjects: List[RDFNode] = rdf.subjects.toList
+  override def subjects: List[RDFNode] = rdf.subjects.toList
 
   val shex_extended =
     if (withAny) schema.addAny.shEx

@@ -9,14 +9,16 @@ import es.weso.rdfgraph.nodes.IRI
 import org.slf4j._
 import es.weso.rdfgraph.nodes.RDFNode
 import es.weso.rdf.PrefixMap
+import es.weso.typing._
 import util._
 
-case class ContextException(msg: String) extends RuntimeException
+case class ContextException(msg: String) 
+  extends RuntimeException(msg)
 
 case class Context(
     rdf: RDFReader, 
     schema: SHACLSchema, 
-    typing: Typing, 
+    typing: PosNegTyping[RDFNode,Label], 
     pm: PrefixMap, 
     pending: List[RDFTriple],
     validateIncoming: Boolean = false) {
@@ -39,15 +41,15 @@ case class Context(
   }
 
   def containsType(node: RDFNode, label: Label): Boolean = {
-    typing.containsType(node,label)
+    typing.getPosTypes(node).contains(label)
   } 
 
   def containsNegType(node: RDFNode, label: Label): Boolean = {
-    typing.containsNegType(node,label)
+    typing.getNegTypes(node).contains(label)
   } 
   
   def addTyping(node: RDFNode, label: Label): Try[Context] = {
-    typing.addShape(node, label) match {
+    typing.addPosType(node, label) match {
       case Failure(e) => 
         Failure(ContextException("Context: cannot assign label " + label + " to node " + node + "\nCurrent typing: " + this.typing + "\nError: " + e.getMessage))
       case 
@@ -69,7 +71,7 @@ object Context {
   def emptyContext: Context =
     Context(RDFTriples.noTriples, 
         SHACLSchema.empty, 
-        Typing.emptyTyping, 
+        PosNegTyping.empty, 
         pm = PrefixMaps.commonShacl, 
         pending = List(),
         validateIncoming = false

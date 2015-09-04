@@ -24,6 +24,7 @@ import scala.util.Try
 import scala.collection.JavaConverters._
 import buildinfo._
 import es.weso.shacl.Report
+import es.weso.rdf.validator.Matcher
 
 case class RunTestsFolder(validator: ShapeValidator) {
 

@@ -11,7 +11,8 @@ import es.weso.utils.Checker
 
 package object SESchema {
 
-case class SESchemaException(msg: String) extends Exception(s"SESchema: $msg")
+case class SESchemaException(msg: String) 
+ extends Exception(s"SESchema: $msg")
 
 
 type ConstraintRef = Int 

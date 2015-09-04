@@ -19,7 +19,7 @@ case object Settings {
   val ValueObjectsAsLists = true 
 }
 
-case class Schema2RDFException(msg:String) extends Exception
+case class Schema2RDFException(msg:String) extends Exception(msg)
 
 object Schema2RDF extends Logging {
 
@@ -158,6 +158,11 @@ object Schema2RDF extends Logging {
         addTriple(rdf,(node,sh_valueType,v))
         facets2RDF(facets,node, rdf)
       }
+
+      // Special treatment for . 
+      // Notice that it must be before ValueSet while because it is represented in terms of ValueSet
+      case `any` => rdf
+      
       case ValueSet(s) => {
         valueSet2RDF(s,node,rdf)
       }
@@ -177,7 +182,7 @@ object Schema2RDF extends Logging {
       rdf: RDFBuilder
       ): RDFBuilder = {
     // TODO
-    log.error("Unimplemented valueShape2RDF")
+    log.info(s"Partially implemented valueShape2RDF: Node = $node, valueShape = $valueShape")
     rdf
   } 
   
@@ -249,7 +254,7 @@ object Schema2RDF extends Logging {
     value: ValueObject,
     node: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
-     addTriple(rdf,(node,sh_allowedValue,valueObject2Node(value)))
+    addTriple(rdf,(node,sh_allowedValue,valueObject2Node(value)))
     rdf
   }
   

@@ -6,6 +6,7 @@ import es.weso.rbe.Interval._
 import util._
 import SESchema._
 import StringGraph._
+import es.weso.typing.PosNegTyping
 
 class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
 

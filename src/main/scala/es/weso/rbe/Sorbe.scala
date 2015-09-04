@@ -4,7 +4,7 @@ import es.weso.collection._
 import Interval._
 import IntOrUnbounded._
 
-case class SorbeException(msg: String) extends Exception
+case class SorbeException(msg: String) extends Exception(s"SORBEException: " + msg)
 
 /**
  * This trait defines Single Occurrence Regular Bag Expressions (SORBE)

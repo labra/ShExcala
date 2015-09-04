@@ -12,6 +12,7 @@ import es.weso.rdf._
 import es.weso.rdf.jena._
 import es.weso.shex.ShapeDoc._
 import es.weso.shex.ShapeSyntax._
+import es.weso.shex.ShExMatcher
 import es.weso.shex.Typing._
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.utils.IO._
@@ -357,7 +358,7 @@ object Main extends App with Verbosity {
           case "BACK"  => ShapeValidatorBacktracking
         }
 
-      val matcher = Matcher(schema, rdf, opts.withIncoming(), opts.withAny(), validator)
+      val matcher = ShExMatcher(schema, rdf, opts.withIncoming(), opts.withAny(), validator)
 
       val r =
         if (opts.node.isSupplied)
