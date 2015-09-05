@@ -24,7 +24,7 @@ import scala.util.Try
 import scala.collection.JavaConverters._
 import buildinfo._
 import es.weso.shacl.Report
-import es.weso.rdf.validator.Matcher
+
 
 case class RunTestsFolder(validator: ShapeValidator) {
 
@@ -258,7 +258,7 @@ case class RunTestsFolder(validator: ShapeValidator) {
     for (
       cs_schema <- dereference(schema.str); (schema, prefixMap) <- Schema.fromString(cs_schema); cs_instance <- dereference(instance.str); rdf <- RDFTriples.parse(cs_instance)
     ) yield {
-      val matcher = Matcher(schema, rdf, false, false, validator)
+      val matcher = ShExMatcher(schema, rdf, false, false, validator)
       optIRI match {
         case None => {
           val result = matcher.matchAllIRIs_AllLabels()
@@ -295,7 +295,7 @@ case class RunTestsFolder(validator: ShapeValidator) {
     for (
       cs_schema <- dereference(schema.str); (schema, prefixMap) <- Schema.fromString(cs_schema); cs_instance <- dereference(instance.str); rdf <- RDFTriples.parse(cs_instance)
     ) yield {
-      val matcher = Matcher(schema, rdf, false, false, validator)
+      val matcher = ShExMatcher(schema, rdf, false, false, validator)
       optIRI match {
         case None => {
           val result = matcher.matchAllIRIs_AllLabels()

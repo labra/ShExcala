@@ -6,29 +6,22 @@ import es.weso.utils.Logging
 import org.rogach.scallop._
 import org.rogach.scallop.exceptions._
 import com.typesafe.config._
-import es.weso.monads.Result._
-import es.weso.monads.Result
 import es.weso.rdf._
 import es.weso.rdf.jena._
-import es.weso.shex.ShapeDoc._
-import es.weso.shex.ShapeSyntax._
-import es.weso.shex.ShExMatcher
 import es.weso.shex.Typing._
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.utils.IO._
 import buildinfo._
 import es.weso.shacl._
-import es.weso.shex.ShapeValidatorWithDeriv
 import es.weso.shex.Typing
-import es.weso.shex.Schema
-import es.weso.shacl.{Schema => SHACL_Schema}
-import es.weso.shex.ShapeValidatorBacktracking
-import es.weso.shex._
+import es.weso.shacl._
 import es.weso.rdfgraph.nodes._
 import es.weso.utils.Verbosity
 
+case class MainException(msg: String) extends Exception(s"Exception in main: $msg")
+
 case object ValidatorVersions {
-  lazy val validatorVersions = List("SHEX_01", "SHACL_01")
+  lazy val validatorVersions = List("SHEX3")
 
   def available(x: String): Boolean = {
     validatorVersions.contains(x)
@@ -178,10 +171,10 @@ class Opts(
     )
 
   val validator = opt[String](
-    default = Some("DERIV"),
-    descr = "Validation algorithm: DERIV (Derivatives), BACK (Backtracking), SPARQL (By SPARQL queries)",
+    default = Some("SORBE"),
+    descr = "Validation algorithm: SORBE (Single Occurrence Bag Expressions)",
     noshort=true,
-    validate = (x => List("DERIV", "BACK", "SPARQL").contains(x.toUpperCase))
+    validate = (x => List("SORBE").contains(x.toUpperCase))
 )
 
   val verbose = toggle("verbose",
@@ -278,10 +271,6 @@ object Main extends App with Verbosity {
     println("** SBT version: " + BuildInfo.sbtVersion)
   }
   
-  private def showLabels(schema: Schema): String = {
-    schema.getLabels.map(_.getNode.toString ++ " ").mkString
-  }
-
   def getTimeNow(): Long = System.nanoTime
   
   def getTimeFrom(from: Long): Long = (System.nanoTime - from) / 1000
@@ -320,7 +309,7 @@ object Main extends App with Verbosity {
 
   def convertSchema(opts: Opts): Unit = { // Try[(Result[Typing], PrefixMap)] = {
     verbose("Converting schema")
-    val result = SHACL_Schema.fromFile(opts.schema(), opts.schema_format())
+    val result = Schema.fromFile(opts.schema(), opts.schema_format())
     result match {
       case Success((schema,pm)) => {
         val schemaFormat = opts.outschema_format()
@@ -340,53 +329,54 @@ object Main extends App with Verbosity {
     }
   }
 
-  def validateSchema(rdf: RDFReader, opts: Opts): Unit = { // Try[(Result[Typing], PrefixMap)] = {
+  def validateSchema(rdf: RDFReader, opts: Opts): Unit = { 
     val result = for (
       (schema, pm) <- Schema.fromFile(opts.schema(), opts.schema_format())
     ) yield {
 
-      log.debug("Got schema. Labels: " + showLabels(schema))
       if (opts.showSchema()) {
         val schemaFormat = opts.outschema_format()
         println("Schema with format " + schemaFormat)
         println(schema.serialize(schemaFormat))
       }
 
-      val validator =
+      val validator : RDFValidator =
         opts.validator() match {
-          case "DERIV" => ShapeValidatorWithDeriv
-          case "BACK"  => ShapeValidatorBacktracking
+          case "SORBE" => {
+            ShaclMatcher(schema, rdf)
+          }
+/*          case "DERIV" => {
+            ShExMatcher(schema, rdf, opts.withIncoming(), opts.withAny(), ShapeValidatorWithDeriv)
+          }
+          case "BACK"  => {
+            ShExMatcher(schema, rdf, opts.withIncoming(), opts.withAny(), ShapeValidatorBacktracking)
+          } */
+          case x => throw MainException(s"Unsupported validator type $x")
         }
 
-      val matcher = ShExMatcher(schema, rdf, opts.withIncoming(), opts.withAny(), validator)
 
       val r =
         if (opts.node.isSupplied)
           if (opts.shape_label.isSupplied)
-            matcher.matchIRI_Label(IRI(opts.node()))(mkLabel(opts.shape_label()))
+            validator.match_node_label(IRI(opts.node()))(validator.mkLabel(opts.shape_label()))
           else
-            matcher.matchIRI_AllLabels(IRI(opts.node()))
+            validator.match_node_AllLabels(IRI(opts.node()))
         else if (opts.shape_label.isSupplied)
-          matcher.matchAllIRIs_Label(mkLabel(opts.shape_label()))
+          validator.matchAllNodes_Label(validator.mkLabel(opts.shape_label()))
         else
-          matcher.matchAllIRIs_AllLabels()
+          validator.matchAllNodes_AllLabels
       (r, pm)
     }
     result match {
-      case Success((typings, pm)) => {
-        if (typings.isFailure) {
-          println("<No shape typings>")
-        } else
-          for ((typing, n) <- (typings.run.get) zip (1 to opts.cut())) {
-            println(s"Solution ${n}:\n" + typing.showTyping(pm))
-          }
+      case Success((validationResult, pm)) => {
+        println(validationResult.show(opts.cut())(pm))
       }
       case Failure(f) => {
         println("Failure: " + f)
       }
     }
   }
-
+  
   def time[A](a: => A) = {
     val now = System.nanoTime
     val result = a

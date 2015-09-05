@@ -13,7 +13,6 @@ import es.weso.rdf._
 import es.weso.shacl.PREFIXES._
 import es.weso.monads.Result._
 import util._
-import es.weso.rdf.validator.Matcher
 
 class ShapeValidatorSpec
     extends FunSpec
@@ -298,7 +297,7 @@ class ShapeValidatorSpec
         typing = Typing.emptyTyping,
         pm = epm)
       val schema = Schema(pm = epm, shEx = shEx)
-      val matcher = Matcher(schema, g, false, false)
+      val matcher = ShExMatcher(schema, g, false, false)
       val result = matcher.matchIRI_AllLabels(IRI("a"))
       info("Result:\n" + result.toString)
       result.isValid should be(true)
@@ -322,7 +321,7 @@ class ShapeValidatorSpec
         pm = epm
       )
       val schema = Schema(pm = epm, shEx = shEx)
-      val matcher = Matcher(schema, g, false, false)
+      val matcher = ShExMatcher(schema, g, false, false)
       val result = matcher.matchIRI_AllLabels(IRI("a"))
       info("Result:\n" + result.toList.toString)
       result.isValid should be(true)
@@ -337,7 +336,7 @@ class ShapeValidatorSpec
       val strRDF = "<x> <p> <y> ."
       val schema = Schema.fromString(strShape).get._1
       val rdf = RDFTriples.parse(strRDF).get
-      val matcher = Matcher(schema, rdf, false, false)
+      val matcher = ShExMatcher(schema, rdf, false, false)
       val result = matcher.matchIRI_AllLabels(IRI("x"))
       info("Result:\n" + result.toList.toString)
       result.isValid should be(false)
@@ -349,7 +348,7 @@ class ShapeValidatorSpec
       val strRDF = "<x> <p> <y> ."
       val schema = Schema.fromString(strShape).get._1
       val rdf = RDFTriples.parse(strRDF).get
-      val matcher = Matcher(schema, rdf, false, false)
+      val matcher = ShExMatcher(schema, rdf, false, false)
       val result = matcher.matchIRI_AllLabels(IRI("x"))
       info("Result:\n" + result.toList.toString)
       result.isValid should be(true)
@@ -361,7 +360,7 @@ class ShapeValidatorSpec
       val strRDF = "<x> <p> <y> ."
       val schema = Schema.fromString(strShape).get._1
       val rdf = RDFTriples.parse(strRDF).get
-      val matcher = Matcher(schema, rdf, false, false)
+      val matcher = ShExMatcher(schema, rdf, false, false)
       val result = matcher.matchIRI_AllLabels(IRI("x"))
       info("Result:\n" + result.toList.toString)
       info("Schema: " + schema)
@@ -374,7 +373,7 @@ class ShapeValidatorSpec
       val strRDF = "<x> <p> 1 ; <q> 2 ."
       val schema = Schema.fromString(strShape).get._1
       val rdf = RDFTriples.parse(strRDF).get
-      val matcher = Matcher(schema, rdf, false, false)
+      val matcher = ShExMatcher(schema, rdf, false, false)
       val result = matcher.matchIRI_AllLabels(IRI("x"))
       info("Result:\n" + result.toList.toString)
       result.isValid should be(true)
@@ -387,7 +386,7 @@ class ShapeValidatorSpec
     val strRDF = "<x> <p> <i> ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -399,7 +398,7 @@ class ShapeValidatorSpec
     val strRDF = "<x> <q> 1 ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -411,7 +410,7 @@ class ShapeValidatorSpec
     val strRDF = "<x> <p> 1 ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -423,7 +422,7 @@ class ShapeValidatorSpec
     val strRDF = "<x> <p> 1 ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(false)
@@ -434,7 +433,7 @@ class ShapeValidatorSpec
     val strRDF = "<y> <p> <x> ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, true, false)
+    val matcher = ShExMatcher(schema, rdf, true, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -445,7 +444,7 @@ class ShapeValidatorSpec
     val strRDF = "<x> <http://ex.org/p> 1 ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -457,7 +456,7 @@ class ShapeValidatorSpec
     val strRDF = "<x> <http://ex.org/p> 1 ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -470,7 +469,7 @@ class ShapeValidatorSpec
       "<x> e:p 1 ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -481,7 +480,7 @@ class ShapeValidatorSpec
     val strRDF = "<x> <http://example.org/p> 1 ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -495,7 +494,7 @@ class ShapeValidatorSpec
       "<x> :b 1 ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -509,7 +508,7 @@ class ShapeValidatorSpec
       "<x> :b 1; :c 2 ."
     val schema = Schema.fromString(strShape).get._1
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -524,7 +523,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -538,7 +537,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -552,7 +551,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -566,7 +565,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     result.isValid should be(true)
   }
@@ -579,7 +578,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -594,7 +593,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x2"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -611,7 +610,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     result.isValid should be(true)
@@ -626,7 +625,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     info("RDF:\n" + rdf.serialize())
@@ -642,7 +641,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     info("RDF:\n" + rdf.serialize())
@@ -660,7 +659,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     info("Result:\n" + result.toList.toString)
     info("RDF:\n" + rdf.serialize())
@@ -675,7 +674,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     result.isValid should be(true)
   }
@@ -686,7 +685,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     result.isValid should be(true)
   }
@@ -697,7 +696,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     result.isValid should be(true)
   }
@@ -708,7 +707,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     result.isValid should be(true)
   }
@@ -719,7 +718,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_AllLabels(IRI("x"))
     result.isValid should be(false)
   }
@@ -730,7 +729,7 @@ class ShapeValidatorSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false)
+    val matcher = ShExMatcher(schema, rdf, false, false)
     val result = matcher.matchIRI_Label(IRI("x"))(IRILabel(IRI("a")))
     info("Result: " + result)
     result.isValid should be(true)

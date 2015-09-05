@@ -9,7 +9,6 @@ import org.scalatest.prop._
 import es.weso.shex.Typing._
 import es.weso.shex.Context._
 import es.weso.rdf._
-import es.weso.rdf.validator.Matcher
 
 class ShapeValidatorBackSpec
     extends FunSpec
@@ -50,7 +49,7 @@ class ShapeValidatorBackSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false, ShapeValidatorWithDeriv)
+    val matcher = ShExMatcher(schema, rdf, false, false, ShapeValidatorWithDeriv)
     val result = matcher.matchIRI_Label(IRI(ex + "item"))(IRILabel(IRI(ex + "Item")))
     info("Result: " + result)
     result.isValid should be(true)
@@ -66,7 +65,7 @@ class ShapeValidatorBackSpec
     val schema = Schema.fromString(strShape).get._1
     info("Schema: " + schema)
     val rdf = RDFTriples.parse(strRDF).get
-    val matcher = Matcher(schema, rdf, false, false, ShapeValidatorWithDeriv)
+    val matcher = ShExMatcher(schema, rdf, false, false, ShapeValidatorWithDeriv)
     val result = matcher.matchIRI_Label(IRI(ex + "item"))(IRILabel(IRI(ex + "Item")))
     info("Result: " + result)
     result.isValid should be(false)

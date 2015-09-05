@@ -10,7 +10,7 @@ import es.weso.rdf.RDFTriples
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.shacl.PrefixMaps
 import es.weso.shex.ShapeDoc
-import es.weso.rdf.validator.Matcher
+import es.weso.shex.ShExMatcher
 
 class GenSpec
     extends FunSpec
@@ -25,7 +25,7 @@ class GenSpec
       val t: Typing = Typing.emptyTyping.addType(IRI("x"), IRI("a")).get
       info("Shape: " + ShapeDoc.schema2String(gen2)(PrefixMaps.commonShacl))
       info("Triples: " + g.serialize())
-      val matcher = Matcher(gen2, g, false, false)
+      val matcher = ShExMatcher(gen2, g, false, false)
       val result = matcher.matchAllIRIs_AllLabels()
       result.isValid should be(true)
     }
@@ -34,7 +34,7 @@ class GenSpec
       val gen = GenShape.genAnds(20)
       val g = GenShape.genTriples(20)
       val t: Typing = Typing.emptyTyping.addType(IRI("x"), IRI("a")).get
-      val matcher = Matcher(gen, g, false, false)
+      val matcher = ShExMatcher(gen, g, false, false)
       val result = matcher.matchAllIRIs_AllLabels()
       result.isValid should be(true)
     }
@@ -43,7 +43,7 @@ class GenSpec
       val gen = GenShape.genAnds(200)
       val g = GenShape.genTriples(200)
       val t: Typing = Typing.emptyTyping.addType(IRI("x"), IRI("a")).get
-      val matcher = Matcher(gen, g, false, false)
+      val matcher = ShExMatcher(gen, g, false, false)
       val result = matcher.matchAllIRIs_AllLabels()
       result.isValid should be(true)
     }

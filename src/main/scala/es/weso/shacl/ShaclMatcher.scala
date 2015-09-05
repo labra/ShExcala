@@ -7,21 +7,33 @@ import java.lang._
 import es.weso.utils.Logging
 import util._
 import es.weso.typing._
+import es.weso.rdf.validator._
 
 case class ShaclMatcher(
     schema: Schema, 
     rdf: RDFReader
-   ) extends {
+   ) extends RDFValidator {
   
-  lazy val id = "ShEx3" 
-  
-  type Node = RDFNode
+  override def id = "ShEx3" 
+  type Schema = es.weso.shacl.Schema
   type Label = Shacl.Label
+  
+  override def mkLabel(str: String): Label = {
+    Shacl.mkLabel(str)
+  }
   type ValidationSchema = Schema
-  type Result_ = Try[Seq[PosNegTyping[Node,Label]]]
+  type Result_ = ShaclResult 
+
+  override def emptyResult = {
+    ShaclResult(Success(Seq()))
+  }
+
+  override def labels: Seq[Label] = {
+    schema.labels
+  }
 
   def match_node_label(node:RDFNode)(label:Label): Result_ = {
-    schema.matchNode_Label(node, label, rdf)
+    ShaclResult(schema.matchNode_Label(node, label, rdf))
   }
   
 } 

@@ -15,7 +15,10 @@ import es.weso.rbe.SESchema.{
   _
   }
 import es.weso.rbe._
-import Shacl._
+import Shacl.{
+  Or => _, 
+  _
+}
 
 
 /**
@@ -42,6 +45,14 @@ object SEShacl {
     se match {
       case e:EmptyShape => Empty
       case tc: TripleConstraint => tripleConstraint2Symbol(tc)
+      case GroupShape(_,shapes) => {
+       val zero : Sorbe[Val] = Empty
+       shapes.foldRight(zero)((shape,rest) => And(shapeExpr2rbe(shape),rest))
+      }
+      case SomeOf(_,shapes) => {
+       val zero : Sorbe[Val] = Empty
+       shapes.foldRight(zero)((shape,rest) => Or(shapeExpr2rbe(shape),rest))
+      }
       case _ => 
         throw SEShaclException(s"shapeExpr2rbe: unsupported shape expression: $se")
     }

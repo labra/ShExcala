@@ -4,6 +4,8 @@ import es.weso.rdf._;
 import es.weso.rdfgraph.nodes._
 import es.weso.monads.Result
 import es.weso.shex.Typing
+import util._
+import es.weso.rdf.PrefixMap
 
 trait RDFValidator {
   type Label
@@ -12,31 +14,32 @@ trait RDFValidator {
 
   def id: String
   
-  val rdf: RDFReader
-  val schema: Schema
-  val emptyResult: ValidationResult[Node,Label]
+  
+  def rdf: RDFReader
+  def schema: Schema
+  def emptyResult: ValidationResult[Node,Label,Throwable]
   
   def subjects: List[RDFNode] = rdf.subjects.toList
   def labels: Seq[Label]
+  def mkLabel(str: String): Label
 
-  def match_node_label(node: Node)(label: Label): ValidationResult[Node,Label]
+  def match_node_label(node: Node)(label: Label): ValidationResult[Node,Label,Throwable]
   
-  def match_label_node(label: Label)(node: Node): ValidationResult[Node,Label] = {
+  def match_label_node(label: Label)(node: Node): ValidationResult[Node,Label,Throwable] = {
     match_node_label(node)(label)
   }
   
-  def match_node_AllLabels(node:Node): ValidationResult[Node,Label] = {
+  def match_node_AllLabels(node:Node): ValidationResult[Node,Label,Throwable] = {
     ValidationResult.passSome(labels.toList, emptyResult, match_node_label(node))
   }
   
-  def matchAllNodes_Label(lbl: Label): ValidationResult[Node,Label] = {
+  def matchAllNodes_Label(lbl: Label): ValidationResult[Node,Label,Throwable] = {
     ValidationResult.combineAll(subjects, emptyResult, match_label_node(lbl))
   }
 
-  def matchAllNodes_AllLabels: ValidationResult[Node,Label] = {
+  def matchAllNodes_AllLabels: ValidationResult[Node,Label,Throwable] = {
     ValidationResult.combineAll(subjects, emptyResult, match_node_AllLabels)
   }
- 
-}
 
+}
 

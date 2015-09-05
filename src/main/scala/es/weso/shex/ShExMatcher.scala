@@ -7,6 +7,7 @@ import es.weso.rdfgraph.nodes._
 import java.lang._
 import es.weso.utils.Logging
 import es.weso.rdf.validator._
+import util.Try
 
 case class ShExMatcher(
     schema: Schema, 
@@ -19,8 +20,15 @@ case class ShExMatcher(
   
   type Label = ShapeSyntax.Label
   type Schema = es.weso.shex.Schema
-  override def id = "ShEx (Labra) 1.0"
+  override def id = "ShEx (Labra) 0.1"
   override def labels: Seq[Label] = schema.getLabels
+  override def mkLabel(str: String): Label = {
+    ShapeSyntax.mkLabel(str)
+  }
+  override def emptyResult : ValidationResult[RDFNode, Label, Throwable] = {
+    ShExResult(Passed(Stream()))
+  }
+  
   override def match_node_label(node: RDFNode)(label: Label): ShExResult = {
     node match {
       case iri: IRI => {
@@ -30,8 +38,6 @@ case class ShExMatcher(
     }
   }
   
-  implicit def result(r: Result[Typing]): ValidationResult[RDFNode,Label] = ???
-
   override def subjects: List[RDFNode] = rdf.subjects.toList
 
   val shex_extended =

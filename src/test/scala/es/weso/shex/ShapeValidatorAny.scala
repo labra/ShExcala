@@ -12,7 +12,6 @@ import es.weso.shex.Context._
 import es.weso.rdf.PrefixMap
 import es.weso.rdf.RDFTriples
 import util._
-import es.weso.rdf.validator.Matcher
 
 class ShapeValidatorAny
     extends FunSpec
@@ -29,7 +28,7 @@ class ShapeValidatorAny
       val schema_str = "prefix : <http://example.org/> \n" +
         ":a [ :p . ] "
       val schema = Schema.fromString(schema_str).get._1
-      val matcher = Matcher(schema, rdf, false, false)
+      val matcher = ShExMatcher(schema, rdf, false, false)
       val rs = matcher.matchAllIRIs_AllLabels()
       def ex(n: String) = IRI("http://example.org/" + n)
       val t0 = Typing.emptyTyping
@@ -47,7 +46,7 @@ class ShapeValidatorAny
       val schema_str = "prefix : <http://example.org/> \n" +
         ":a [ :p . ] "
       val schema = Schema.fromString(schema_str).get._1
-      val matcher = Matcher(schema, rdf, false, false)
+      val matcher = ShExMatcher(schema, rdf, false, false)
       val rs = matcher.matchAllIRIs_AllLabels()
       def ex(n: String) = IRI("http://example.org/" + n)
       val t0 = Typing.emptyTyping

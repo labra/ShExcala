@@ -2,7 +2,7 @@ package es.weso.performance
 
 import es.weso.rdfgraph.nodes._
 import es.weso.shex.Schema
-import es.weso.rdf.validator.Matcher
+import es.weso.shex.ShExMatcher
 import es.weso.shex.Typing
 import es.weso.rdf.RDFTriples
 import es.weso.rdfgraph.statements.RDFTriple
@@ -21,7 +21,7 @@ object TestAnds extends PerformanceTest.Quickbenchmark {
     measure method "matchAll" in {
       using(pairs) in {
         case ((schema, rdf)) => {
-          val matcher = Matcher(schema, rdf)
+          val matcher = ShExMatcher(schema, rdf)
           matcher.matchAllIRIs_AllLabels()
         }
       }
