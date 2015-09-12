@@ -51,8 +51,9 @@ sealed trait Sorbe[+A] {
     }
   }
   
-  def contains[U >: A](bag: Bag[U]): Boolean = {
-    this.interval(bag).contains(1)
+  def contains[U >: A](bag: Bag[U], open: Boolean): Boolean = {
+    if (!open && bagHasExtraSymbols(bag)) false 
+    else this.interval(bag).contains(1) 
   }
   
   lazy val symbols: Seq[A] = {
@@ -70,6 +71,11 @@ sealed trait Sorbe[+A] {
   def noSymbolsInBag[U >: A](bag: Bag[U]): Boolean = {
     this.symbols.forall(x => bag.multiplicity(x) == 0)
   }
+  
+  def bagHasExtraSymbols[U >: A](bag: Bag[U]): Boolean = {
+    bag.elems.exists{ case (s,_) => !this.symbols.contains(s) }
+  }
+
 } 
 
 case object Empty extends Sorbe[Nothing]

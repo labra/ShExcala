@@ -7,93 +7,180 @@ import util._
 import es.weso.rdfgraph.nodes._
 import es.weso.shacl.Shacl._
 
-class ValidateTest extends FunSpec with Matchers {
+class ValidateTest extends FunSpec with Matchers with ValidTester {
   describe("Integration tests") {
     it("Should validate triple with any") {
-      val strData = 
+      val strData =
         """|@prefix : <http://example.org/> .
            |:x :p 1 .
            |""".stripMargin
-           
-      val strSchema = 
+
+      val strSchema =
         """|prefix : <http://example.org/>
            |<S> { :p . }
            |""".stripMargin
-           
-      shouldBeValid(strSchema,strData,"http://example.org/x","S") 
+
+      shouldBeValid(strSchema, strData, "http://example.org/x", "S")
     }
-    
+
     it("Should validate triple with IRIs") {
-      val strData = 
+      val strData =
         """|@prefix : <http://example.org/> .
            |:x :p :y , :z .
            |""".stripMargin
-           
-      val strSchema = 
+
+      val strSchema =
         """|prefix : <http://example.org/>
            |<S> { :p IRI+ }
            |""".stripMargin
-           
-      shouldBeValid(strSchema,strData,"http://example.org/x","S") 
+
+      shouldBeValid(strSchema, strData, "http://example.org/x", "S")
     }
 
     it("Should validate single references") {
-      val strData = 
+      val strData =
         """|@prefix : <http://example.org/> .
            |:x :p :y .
            |:y :p 1 .
            |""".stripMargin
-           
-      val strSchema = 
+
+      val strSchema =
         """|prefix : <http://example.org/>
            |<S> { :p @<T> }
            |<T> { :p . }
            |""".stripMargin
-           
-      shouldBeValid(strSchema,strData,"http://example.org/x","S") 
+
+      shouldBeValid(strSchema, strData, "http://example.org/x", "S")
     }
-    
+
     it("Should not validate triple with IRIs if there is a number") {
-      val strData = 
+      val strData =
         """|@prefix : <http://example.org/> .
            |:x :p :y , 1 .
            |""".stripMargin
-           
-      val strSchema = 
+
+      val strSchema =
         """|prefix : <http://example.org/>
            |<S> { :p IRI+ }
            |""".stripMargin
-           
-      shouldNotBeValid(strSchema,strData,"http://example.org/x","S") 
+
+      shouldNotBeValid(strSchema, strData, "http://example.org/x", "S")
+    }
+
+    it("Should not validate triple with (1) and (2) and only (1)") {
+      val strData =
+        """|@prefix : <http://example.org/> .
+           |:x :p 1 .
+           |""".stripMargin
+
+      val strSchema =
+        """|prefix : <http://example.org/>
+           |<S> { :p (1), :p (2) }
+           |""".stripMargin
+
+      shouldNotBeValid(strSchema, strData, "http://example.org/x", "S")
+    }
+
+    it("Should validate Iovka's example") {
+      val strData =
+        """|@prefix : <http://example.org/> .
+           |:x :a :x1 , :x2, :x3; :b 1 .
+           |:x1 :b :y1 .
+           |:x2 :b :y2 .
+           |:x3 :b :y3 .
+           |:y1 :c 1 .
+           |:y2 :d 2 .
+           |:y3 :c 3 .
+           |""".stripMargin
+
+      val strSchema =
+        """|prefix : <http://example.org/>
+           |prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+           |
+           |<S> { :a @<T1>*, (:a @<T2>+ | :b xsd:integer ), :b xsd:integer }
+           |<T1> { :b @<T3> } 
+           |<T2> { :b @<T4> }
+           |<T3> { :c . }
+           |<T4> { :d . }
+           |""".stripMargin
+
+      shouldBeValid(strSchema, strData, "http://example.org/x", "S")
     }
   }
-  
-  def shouldBeValid(strSchema: String, strData: String, strNode: String, strLabel: String): Unit = {
-    val result = for {
-      (schema,pm) <- Schema.fromString(strSchema)
-      data <- RDFAsJenaModel.fromChars(strData,"TURTLE")
-      ts <- schema.matchNode_Label(IRI(strNode),mkLabel(strLabel),data)
-    } yield ts
-    
-    result match {
-      case Failure(e) => fail(s"Exception: $e")
-      case Success(ts) => 
-        if (ts.isEmpty) fail("No results")
-        else info(s"Validated with typings $ts")
+
+  describe("Single test") {
+
+    it("Should not validate extra with an extra triple") {
+      val strData =
+        """|@prefix : <http://example.org/> .
+           |:x :a 1 , 2, "hi", 1.2 .
+           |""".stripMargin
+
+      val strSchema =
+        """|prefix : <http://example.org/>
+           |prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+           |
+           |<S> { :a xsd:integer+, :a xsd:string }
+           |""".stripMargin
+
+      shouldNotBeValid(strSchema, strData, "http://example.org/x", "S")
     }
-  }
-    
-  def shouldNotBeValid(strSchema: String, strData: String, strNode: String, strLabel: String): Unit = {
-    val result = for {
-      (schema,pm) <- Schema.fromString(strSchema)
-      data <- RDFAsJenaModel.fromChars(strData,"TURTLE")
-      ts <- schema.matchNode_Label(IRI(strNode),mkLabel(strLabel),data)
-    } yield ts
-    
-    result match {
-      case Success(ts) if (!ts.isEmpty) => fail(s"Validates with $ts but should fail")
-      case _ => return
+
+    it("Should validate extra with an extra triple") {
+      val strData =
+        """|@prefix : <http://example.org/> .
+           |:x :a 1 , 2, "hi", 1.2 .
+           |""".stripMargin
+
+      val strSchema =
+        """|prefix : <http://example.org/>
+           |prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+           |
+           |<S> EXTRA :a { :a xsd:integer+, :a xsd:string }
+           |""".stripMargin
+
+      shouldBeValid(strSchema, strData, "http://example.org/x", "S")
     }
-     
+
+    it("Should validate triple with any") {
+      val strData =
+        """|@prefix : <http://example.org/> .
+           |:x :p :y1, :y2 .
+           |:y1 :q 1 .
+           |:y2 :q 2 .
+           |""".stripMargin
+
+      val strSchema =
+        """|prefix : <http://example.org/>
+           |prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+           |
+           |<S> { :p @<T>+ }
+           |<T> { :q xsd:integer }
+           |""".stripMargin
+
+      shouldBeValid(strSchema, strData, "http://example.org/x", "S")
+    }
+    
+     it("Should validate triple with any - combining all nodes") {
+      val strData =
+        """|@prefix : <http://example.org/> .
+           |:x :p :y1, :y2 .
+           |:y1 :q 1 .
+           |:y2 :q 2 .
+           |""".stripMargin
+
+      val strSchema =
+        """|prefix : <http://example.org/>
+           |prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+           |
+           |<S> { :p @<T>+ }
+           |<T> { :q xsd:integer }
+           |""".stripMargin
+
+      shouldBeValidAllNodes(strSchema, strData)
+    }
+
+
   }
+
 }

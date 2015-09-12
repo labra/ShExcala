@@ -1,0 +1,20 @@
+@prefix ex:    &lt;http://a.example/&gt; .
+@prefix sh:    &lt;http://www.w3.org/ns/shacl/core#&gt; .
+@prefix xsd:   &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+_:b0    a       sh:Schema .
+
+ex:EmployeeShape  sh:property  [ a             sh:PropertyConstraint ;
+                                 sh:maxCount   1 ;
+                                 sh:minCount   1 ;
+                                 sh:predicate  ex:p2
+                               ] ;
+        sh:schema    _:b0 .
+
+ex:PersonShape  sh:property  [ a             sh:PropertyConstraint ;
+                               sh:maxCount   1 ;
+                               sh:minCount   1 ;
+                               sh:predicate  ex:p1
+                             ] ;
+        sh:schema    _:b0 .
+

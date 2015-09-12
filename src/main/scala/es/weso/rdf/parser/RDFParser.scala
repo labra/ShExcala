@@ -208,7 +208,9 @@ trait RDFParser {
                 case Failure(_) => current
               }
             }
-            case Failure(_) => parser(n, rdf)
+            case Failure(e) => {
+             parser(n, rdf) 
+            }
           }
       }
       r

@@ -1,18 +1,12 @@
 {
-  "expression": {
-    "type": "tripleConstraint",
-    "predicate": "http://a.example/p1",
-    "value": { "type": "valueClass",
-               "nodeKind": "literal",
-               "fractiondigits": 5
-             }
-  },
-  "triples": [
-    {
-      "subject": "http://a.example/Issue1",
-      "predicate": "http://a.example/p1",
-      "object": "\"1.23456\"^^http://www.w3.org/2001/XMLSchema#decimal",
-      "graph": ""
-    }
-  ]
+  "type": "test",
+  "node": "http://a.example/Issue1",
+  "shape": "http://a.example/IssueShape",
+  "solution":{
+    "type": "tripleConstraintSolutions", "predicate": "http://a.example/p1",
+    "value": { "type": "valueClass", "nodeKind": "literal", "fractiondigits": 5 },
+    "solutions":[
+      {"type":"testedTriple","subject":"http://a.example/Issue1","predicate":"http://a.example/p1","object":"\"1.23456\"^^http://www.w3.org/2001/XMLSchema#decimal"}
+    ]
+  }
 }

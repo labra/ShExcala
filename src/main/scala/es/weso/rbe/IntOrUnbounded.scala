@@ -25,7 +25,8 @@ trait IntOrUnbounded {
   def getLimit: Int
   
   def max(other: => IntOrUnbounded): IntOrUnbounded = {
-    this match { case Unbounded => Unbounded
+    this match { 
+      case Unbounded => Unbounded
       case IntLimit(v1) => other match {
         case Unbounded => Unbounded
         case IntLimit(v2) => IntLimit(intMax(v1,v2))
@@ -37,7 +38,7 @@ trait IntOrUnbounded {
     this match {
       case Unbounded => other
       case IntLimit(v1) => other match {
-        case Unbounded => Unbounded
+        case Unbounded => this
         case IntLimit(v2) => IntLimit(intMin(v1,v2))
       }
     }

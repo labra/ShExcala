@@ -44,7 +44,7 @@ trait ManifestRunner
 
         attempt match {
           case Success((result,expected)) => {
-            val validationResult : Boolean = ShaclMatcher.isValid(result)
+            val validationResult : Boolean = result.isValid
             validationResult should be(expected) 
           } 
           case Failure(e) => fail("Exception: " + e.getMessage)

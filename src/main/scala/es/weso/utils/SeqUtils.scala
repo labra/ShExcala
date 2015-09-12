@@ -35,4 +35,19 @@ object SeqUtils {
     s.foldRight(Seq(Seq[Option[A]]()))(f)
   }
 
+  def mergeSeq[A,B](x: A, s: Seq[A],comb: (A,A) => B, z: A => B): Seq[B] = {
+    s.map(v => comb(x,v)) 
+  }
+
+  /**
+   *   mergeSeqs(Seq(1,2,3), Seq(3,4,5),s) == Seq(4,5,6,5,6,7,6,7,8)  
+   *   mergeSeqs(Seq(1,2,3), Seq(),s) == Seq(1,2,3)
+   *   mergeSeq(1,Seq(1,2,3),s) == Seq(2,3,4) 
+   */
+  def mergeSeqs[A,B](s1: Seq[A], s2: Seq[A], comb: (A,A)=>B, z: A => B): Seq[B] = {
+    if (s1.isEmpty) s2.map(x => z(x)) 
+    else if (s2.isEmpty) s1.map(x => z(x))
+    else s1.flatMap(x => mergeSeq(x,s2,comb,z))
+  }
+
 }

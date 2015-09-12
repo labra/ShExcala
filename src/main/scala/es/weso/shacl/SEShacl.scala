@@ -9,12 +9,11 @@ import es.weso.shacl.PREFIXES._
 import util._
 import es.weso.utils.PrefixMapUtils._
 import org.slf4j._
-import es.weso.rbe.SESchema.{
+import es.weso.rbe.{ 
   Schema => SESchema,
   Shape => SEShape,
   _
   }
-import es.weso.rbe._
 import Shacl.{
   Or => _, 
   _
@@ -50,8 +49,7 @@ object SEShacl {
        shapes.foldRight(zero)((shape,rest) => And(shapeExpr2rbe(shape),rest))
       }
       case SomeOf(_,shapes) => {
-       val zero : Sorbe[Val] = Empty
-       shapes.foldRight(zero)((shape,rest) => Or(shapeExpr2rbe(shape),rest))
+       shapes.map(shapeExpr2rbe).reduce((rbe,rest) => Or(rbe,rest))
       }
       case _ => 
         throw SEShaclException(s"shapeExpr2rbe: unsupported shape expression: $se")

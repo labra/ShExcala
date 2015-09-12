@@ -1,73 +1,45 @@
 {
-  "expression": {
-    "type": "group",
-    "expressions": [
+  "type":"test",
+  "node":"x",
+  "shape":"S",
+  "solution": {
+    "type":"groupSolutions","solutions": [
       {
-        "type": "tripleConstraint",
-        "predicate": "http://a.example/a",
-        "value": {
-          "type": "valueClass",
-          "reference": "T1"
-        },
-        "min": 0, "max": "*"
-      },
-      {
-        "type": "someOf",
-        "expressions": [
+        "type":"groupSolution","expressions": [
           {
-            "type": "tripleConstraint",
-            "predicate": "http://a.example/a",
-            "value": {
-              "type": "valueClass",
-              "reference": "T2"
-            },
-            "min": 1, "max": "*"
+            "type":"tripleConstraintSolutions","predicate":"http://a.example/a",
+            "value": { "type":"valueClass","reference":"T1" },
+            "min":0,"max":"*",
+            "solutions":[
+              { "type":"testedTriple","subject":"x","predicate":"http://a.example/a","object":"x1" },
+              { "type":"testedTriple","subject":"x","predicate":"http://a.example/a","object":"x2"}
+            ]
           },
           {
-            "type": "tripleConstraint",
-            "predicate": "http://a.example/b",
-            "value": {
-              "type": "valueClass",
-              "datatype": "http://www.w3.org/2001/XMLSchema#integer"
-            }
+            "type":"someOfSolutions","solutions": [
+              {
+                "type":"someOfSolution","expressions": [
+                  {
+                    "type":"tripleConstraintSolutions","predicate":"http://a.example/a",
+                    "value": { "type":"valueClass","reference":"T2" },
+                    "min":1,"max":"*",
+                    "solutions": [
+                      { "type":"testedTriple","subject":"x","predicate":"http://a.example/a","object":"x3"}
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type":"tripleConstraintSolutions","predicate":"http://a.example/b",
+            "value": { "type":"valueClass","nodeKind":"iri","pattern":"^x4$" },
+            "solutions": [
+              { "type":"testedTriple","subject":"x","predicate":"http://a.example/b","object":"x4"}
+            ]
           }
         ]
-      },
-      {
-        "type": "tripleConstraint",
-        "predicate": "http://a.example/b",
-        "value": {
-          "type": "valueClass",
-          "nodeKind": "iri",
-          "pattern": "^x4$"
-        }
       }
     ]
-  },
-  "triples": [
-    {
-      "subject": "x",
-      "predicate": "http://a.example/a",
-      "object": "x1",
-      "graph": ""
-    },
-    {
-      "subject": "x",
-      "predicate": "http://a.example/a",
-      "object": "x2",
-      "graph": ""
-    },
-    {
-      "subject": "x",
-      "predicate": "http://a.example/a",
-      "object": "x3",
-      "graph": ""
-    },
-    {
-      "subject": "x",
-      "predicate": "http://a.example/b",
-      "object": "x4",
-      "graph": ""
-    }
-  ]
+  }
 }

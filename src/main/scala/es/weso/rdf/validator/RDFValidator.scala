@@ -30,15 +30,15 @@ trait RDFValidator {
   }
   
   def match_node_AllLabels(node:Node): ValidationResult[Node,Label,Throwable] = {
-    ValidationResult.passSome(labels.toList, emptyResult, match_node_label(node))
+    ValidationResult.mergeAll(labels.toList, emptyResult, match_node_label(node))
   }
   
   def matchAllNodes_Label(lbl: Label): ValidationResult[Node,Label,Throwable] = {
-    ValidationResult.combineAll(subjects, emptyResult, match_label_node(lbl))
+    ValidationResult.mergeAll(subjects, emptyResult, match_label_node(lbl))
   }
 
   def matchAllNodes_AllLabels: ValidationResult[Node,Label,Throwable] = {
-    ValidationResult.combineAll(subjects, emptyResult, match_node_AllLabels)
+    ValidationResult.mergeAll(subjects, emptyResult, match_node_AllLabels)
   }
 
 }

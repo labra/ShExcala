@@ -20,7 +20,6 @@ case class Checker[+A,+E](value: A SOr Every[E]){
 } 
 
 object Checker {
-
     
   def ok[A](x: A): Checker[A,Nothing] = 
     Checker(Good(x))
@@ -40,10 +39,15 @@ object Checker {
         )) 
   }
         
-  def cond[A,E >: Throwable](x: A,p: A => Boolean): Checker[A,E] = {
+  def cond[A,E](x: A, p: A => Boolean, name: String)(implicit ferr: String => E): Checker[A,E] = {
+    if (p(x)) ok(x)
+    else err(ferr(s"Failed condition $name on $x"))
+  }
+
+/*  def cond[A,E >: Throwable](x: A,p: A => Boolean): Checker[A,E] = {
     if (p(x)) ok(x)
       else errString(s"Condition failed on $x")
-  }
+  } */
   
   def checkSome[A,E](x: A, conds: Seq[A => Checker[A,E]], e: E): Checker[A,E] = {
     val zero : Checker[A,E] = err(e)

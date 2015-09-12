@@ -1,18 +1,22 @@
 {
-  "expression":{
-    "type":"group",
-    "expressions":[
+  "type": "test",
+  "node": "x",
+  "shape": "S",
+  "solution": {
+    "type": "groupSolutions",
+    "solutions": [
       {
-        "type":"group",
-        "expressions":[
-          {"type":"tripleConstraint","predicate":"http://a.example/a","value":{"type":"valueClass"}},
-          {"type":"tripleConstraint","predicate":"http://a.example/b","value":{"type":"valueClass"}}
-        ],"min":0,"max":1
-      },
-      {"type":"tripleConstraint","predicate":"http://a.example/c","value":{"type":"valueClass"}}
+        "type": "groupSolution",
+        "expressions": [
+          {
+            "type": "tripleConstraintSolutions", "predicate": "http://a.example/c",
+            "value": { "type":"valueClass" },
+            "solutions":[
+              {"type":"testedTriple","subject":"x","predicate":"http://a.example/c","object":"\"1\"^^http://www.w3.org/2001/XMLSchema#integer"}
+            ]
+          }
+        ]
+      }
     ]
-  },
-  "triples":[
-    {"subject":"x","predicate":"http://a.example/c","object":"\"1\"^^http://www.w3.org/2001/XMLSchema#integer","graph":""}
-  ]
+  }
 }

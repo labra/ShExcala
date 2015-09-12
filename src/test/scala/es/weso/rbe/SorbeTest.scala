@@ -12,6 +12,9 @@ import org.scalacheck._
 class SorbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks {
   
   describe("Intervals calculation") {
+    
+    val emptyBag : Bag[String] = Bag.toBag(List())
+    
     equalInterval(Empty,Bag.
         toBag(List("a","b","a")), Interval(0,Unbounded))
         
@@ -78,6 +81,24 @@ class SorbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks
     equalInterval(Star(Symbol("a",1,1)),
         Bag.toBag(List("b","b","c")), Interval(0,Unbounded))
         
+    equalInterval(And(Symbol("a",1,1),Symbol("b",1,1)),
+        Bag.toBag(List("a")), Interval(1,0))
+
+    equalInterval(And(Symbol("a",1,1),Symbol("b",1,1)),
+        Bag.toBag(List("b")), Interval(1,0))
+        
+    equalInterval(And(Symbol("a",1,1),Symbol("b",1,1)),
+        emptyBag, Interval(0,0))
+
+    equalInterval(And(Symbol("a",1,1),And(Symbol("b",1,1),Empty)),
+        emptyBag, Interval(0,0))
+    
+    equalInterval(And(Symbol("a",1,1),Empty),
+        emptyBag, Interval(0,0))
+        
+    equalInterval(Or(Symbol("a",1,1),Or(Symbol("b",1,1),Empty)),
+        emptyBag, Interval(0,0))
+    
   }
   
   describe("Containment calculation") {
@@ -116,6 +137,7 @@ class SorbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks
     containsBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("b","c")))
     notContainsBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("a","b","c")))
     containsBag(Or(Symbol("a",2,2),Symbol("b",1,1)),Bag.toBag(List("a","a","c")))
+    notContainsBag(Or(Symbol("a",2,2),Symbol("b",1,1)),Bag.toBag(List("a","a","c")),false)
   }
   
   def equalInterval[A](rbe: Sorbe[A], bag: Bag[A], expected: Interval) = {
@@ -124,15 +146,15 @@ class SorbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks
     }
   }
   
-  def containsBag[A](rbe: Sorbe[A], bag: Bag[A]) = {
-    it(s"${rbe} should contain ${bag}") {
-      rbe.contains(bag) should be(true)
+  def containsBag[A](rbe: Sorbe[A], bag: Bag[A], open: Boolean = true) = {
+    it(s"${rbe} should contain ${bag}. Open: $open") {
+      rbe.contains(bag,open) should be(true)
     }
   }
   
-  def notContainsBag[A](rbe: Sorbe[A], bag: Bag[A]) = {
-    it(s"${rbe} should not contain ${bag}") {
-      rbe.contains(bag) should be(false)
+  def notContainsBag[A](rbe: Sorbe[A], bag: Bag[A], open: Boolean = true) = {
+    it(s"${rbe} should not contain ${bag}, Open: $open") {
+      rbe.contains(bag,open) should be(false)
     }
   }
  

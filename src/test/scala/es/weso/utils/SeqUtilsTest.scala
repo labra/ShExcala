@@ -33,10 +33,24 @@ class SeqUtilsTest extends FunSpec with Matchers with Checkers {
                  Stream(Some(1),None,Some(2))))
     }
   }
-  
+ 
   def testZipN[A](vs: List[List[A]], expected: List[List[A]]) = {
    it(s"zipN($vs) should be $expected") {
     zipN(vs) should be(expected) 
+   }
+  }
+
+  describe("mergeSeqs") {
+    def fn(x:Int,y:Int): String = s"$x-$y"
+    def z(x: Int): String = s"$x"
+    testMergeSeqs(Seq(1,2,3),Seq(8,10),fn,z,Seq("1-8","1-10","2-8","2-10","3-8","3-10"))
+    testMergeSeqs(Seq(),Seq(8,10),fn,z,Seq("8","10"))
+    testMergeSeqs(Seq(1,2),Seq(),fn,z,Seq("1","2"))
+  }
+  
+  def testMergeSeqs[A,B](s1: Seq[A], s2: Seq[A], comb: (A,A) => B, z: A => B, expected: Seq[B]) = {
+   it(s"mergeSeqs($s1,$s2) should be $expected") {
+    mergeSeqs(s1,s2,comb,z) should be(expected) 
    }
   }
 

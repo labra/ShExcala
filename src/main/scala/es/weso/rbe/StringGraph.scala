@@ -1,6 +1,5 @@
 package es.weso.rbe
 
-import SESchema._
 import es.weso.utils._
 import Checker._
 
@@ -11,15 +10,31 @@ import Checker._
 trait StringGraph extends Graph[String,String] {
 }
 
-object StringGraph {
-    lazy val isA: Pred[String,Throwable] = 
-      Pred("isA")(x => 
-        Checker.cond(x, (x: String) => x == "a"))
+case class Err(str: String) 
 
-    lazy val integer: Pred[String,Throwable] = 
-      Pred("int")( 
-          x => Checker.cond(x, (x : String) => x.matches("""\d+""")))
+object StringGraph {
+  
+  implicit def mkErr = Err
+  
+/*  def cond(x: String, p: String => Boolean,msg: String): Checker[String,Err] = {
+    if (p(x)) ok(x)
+    else err(Err(msg))
+  } */
+
+  lazy val isA: Pred[String,Err] = 
+      Pred("isA")(x => 
+        cond(x, (x: String) => x == "a","eqA"))
+
+  lazy val integer: Pred[String,Err] = 
+      Pred("int")(x => 
+        cond(x, (x : String) => x.matches("""\d+"""), "integer"))
+        
+  lazy val one: Pred[String,Err] = 
+      Pred("one")(x => 
+        cond(x, (x : String) => x=="1", "== 1"))
+      
+  lazy val two: Pred[String,Err] = 
+      Pred("two")(x => 
+        cond(x, (x : String) => x=="2", "== 2"))
           
-    lazy val any: Pred[String,Throwable] = 
-      Pred("any")(x => Checker.cond(x, (x : String) => true))
 }

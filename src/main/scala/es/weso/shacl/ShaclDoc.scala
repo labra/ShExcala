@@ -64,12 +64,12 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     text("}") 
   }
   
-  def inheritDoc(inherit: List[Label]): Document = {
+  def inheritDoc(inherit: Seq[Label]): Document = {
     if (inherit.isEmpty) text("")
     else text("&") :: seqDocWithSep(inherit, " ", labelDoc) :: space
   }
   
-  def extrasDoc(extras: List[IRI]): Document = {
+  def extrasDoc(extras: Seq[IRI]): Document = {
     if (extras.isEmpty) text("")
     else text("EXTRA") :: seqDocWithSep(extras," ", iriDoc) :: space
   }

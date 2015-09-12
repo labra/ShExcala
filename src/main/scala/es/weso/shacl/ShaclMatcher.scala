@@ -25,7 +25,7 @@ case class ShaclMatcher(
   type Result_ = ShaclResult 
 
   override def emptyResult = {
-    ShaclResult(Success(Seq()))
+    ShaclResult(Success(Seq(PosNegTyping.empty)))
   }
 
   override def labels: Seq[Label] = {
@@ -33,7 +33,10 @@ case class ShaclMatcher(
   }
 
   def match_node_label(node:RDFNode)(label:Label): Result_ = {
-    ShaclResult(schema.matchNode_Label(node, label, rdf))
+    val result = schema.matchNode_Label(node, label, rdf)
+    val typing = result.map(r => r.map(_._1))
+//    ShaclResult(result.map(rs => rs.map(pairs => pairs._1)))
+    ShaclResult(typing)
   }
   
 } 
@@ -46,4 +49,5 @@ object ShaclMatcher {
       case Success(xs) => !xs.isEmpty
     }
   }
+  
 }

@@ -79,7 +79,7 @@ class RDF2ShaclSpec
         c <- RDF2Schema.nodeKind(n,rdf)
       } yield 
         c 
-      c.success.value should be(IRIKind)
+      c.success.value should be(IRIKind(None,List()))
     }
     
     it("Should be able to extract a valueConstr with valueType") {
@@ -111,7 +111,7 @@ class RDF2ShaclSpec
         c <- RDF2Schema.valueConstr(n,rdf)
       } yield 
         c 
-      c.success.value should be(IRIKind)
+      c.success.value should be(IRIKind(None,List()))
     }
 
     it("Should complain if there are nodeKind and valueType for ValueConstr") {
@@ -278,36 +278,36 @@ class RDF2ShaclSpec
                          |                       sh:nodeKind   sh:IRI ;
                          |                       sh:predicate  :b ] .
                          |""".stripMargin
-      val n = IRI("http://e.o#n") 
-      val n_label = IRILabel(n)
-      val prop1_label = IRILabel(IRI("http://e.o#prop"))
-      val prop2_label = IRILabel(IRI("http://e.o#prop"))
-      val p = IRI("http://e.o#p")
-      val q = IRI("http://e.o#p")
       val c = for {
         rdf <- RDFAsJenaModel.fromChars(schemaStr, "TURTLE")
         c <- RDF2Schema.rdf2Schema(rdf)
       } yield 
         c 
-      val expected = Shape.empty.copy(
+
+       val default = IRI("http://pepe.com/")
+       val pm = 
+         PrefixMap(Map("" -> default,
+                       "xsd" -> IRI("http://www.w3.org/2001/XMLSchema#"),
+                       "sh" -> IRI("http://www.w3.org/ns/shacl/core#")
+                       ))
+                       
+       val shape = Shape.empty.copy(
               shapeExpr = GroupShape(None,Seq(
                   TripleConstraint.empty.copy(
-                      id = Some(prop1_label),
-                      iri = p,
-                      value = Datatype(xsd_string,emptyFacets),
-                      card = RangeCardinality(1,3)),
-                   TripleConstraint.empty.copy(
-                       id = Some(prop2_label),
-                       iri = q,
-                       value = iriKind,
-                       card = UnboundedCardinalityFrom(1))))
-          ) 
-      // We cannot compare with unknown bnodeLabels
-      // triedMustBe(expected, c)
+                      iri = default + "b",
+                      value = IRIKind(None, List()),
+                      card = UnboundedCardinalityFrom(1)))
+          )) 
+      val expected = Schema.empty.copy(pm = pm, 
+          shaclSchema = SHACLSchema.empty.copy(shapes = Map(mkLabel(default + "a") -> shape)))
+          
       if (c.isFailure) {
         println("Unexpected Failure: " + c)
       }
       c.isSuccess should be(true)
+      val (schema,_) = c.get
+      // TODO...convert c and expected to Schema...
+      compareIsomorphicShape(schema,expected)
     }
 
 
@@ -325,7 +325,52 @@ class RDF2ShaclSpec
     }
    }
   
-  
+
+  describe("Single test") {
+    it("Should parse a simple example with an IRI") {
+      val schemaStr = """|@prefix :      <http://pepe.com/> .
+                         |@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+                         |@prefix sh:    <http://www.w3.org/ns/shacl/core#> .
+                         |
+                         |:a      a            sh:Shape ;
+                         |        sh:property  [ a             sh:PropertyConstraint ;
+                         |                       sh:minCount   1 ;
+                         |                       sh:nodeKind   sh:IRI ;
+                         |                       sh:predicate  :b ] .
+                         |""".stripMargin
+      val c = for {
+        rdf <- RDFAsJenaModel.fromChars(schemaStr, "TURTLE")
+        c <- RDF2Schema.rdf2Schema(rdf)
+      } yield 
+        c 
+
+       val default = IRI("http://pepe.com/")
+       val pm = 
+         PrefixMap(Map("" -> default,
+                       "xsd" -> IRI("http://www.w3.org/2001/XMLSchema#"),
+                       "sh" -> IRI("http://www.w3.org/ns/shacl/core#")
+                       ))
+                       
+       val shape = Shape.empty.copy(
+              shapeExpr = GroupShape(None,Seq(
+                  TripleConstraint.empty.copy(
+                      iri = default + "b",
+                      value = IRIKind(None, List()),
+                      card = UnboundedCardinalityFrom(1)))
+          )) 
+      val expected = Schema.empty.copy(pm = pm, 
+          shaclSchema = SHACLSchema.empty.copy(shapes = Map(mkLabel(default + "a") -> shape)))
+          
+      if (c.isFailure) {
+        println("Unexpected Failure: " + c)
+      }
+      c.isSuccess should be(true)
+      val (schema,_) = c.get
+      // TODO...convert c and expected to Schema...
+      compareIsomorphicShape(schema,expected)
+    }
+    
+  }
  
   def triedMustBe[A](expected: A, tried: Try[A]): Unit = {
     tried match {
@@ -339,5 +384,18 @@ class RDF2ShaclSpec
       }
       case Failure(e) => fail("tried value is not success. Expected: " + expected.toString + " Exception: " + e.getMessage)
     }
+  }
+  
+  def compareIsomorphicShape(x: Schema, expected: Schema): Unit = {
+    val t = for { 
+      rdf1 <- RDFAsJenaModel.fromChars(x.serialize("TURTLE"),"TURTLE")
+      rdf2 <- RDFAsJenaModel.fromChars(expected.serialize("TURTLE"),"TURTLE")
+    } yield (rdf1,rdf2)
+    t match {
+      case Success((rdf1,rdf2)) => shouldBeIsomorphic(rdf1,rdf2)
+      case Failure(e) => println(s"Failing to convert again to RDF when checking isomorphism: $e")
+    }
+    
+    
   }
 }

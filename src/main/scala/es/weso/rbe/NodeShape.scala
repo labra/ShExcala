@@ -16,3 +16,10 @@ case class Pred[Node,Err](name: String)
     name == other.name
   } */
 }
+
+object NodeShape {
+  
+  def any[Node]: Pred[Node,Nothing] = 
+      Pred("any")((node) => Checker.ok(node))
+      
+}

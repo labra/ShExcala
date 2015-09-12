@@ -60,8 +60,8 @@ object Shacl {
     shapeExpr: ShapeExpr,
     isClosed: Boolean,
     isVirtual: Boolean,
-    inherit: List[Label],
-    extras: List[IRI],
+    inherit: Seq[Label],
+    extras: Seq[IRI],
     actions: Actions) extends Positional
 
   object Shape {

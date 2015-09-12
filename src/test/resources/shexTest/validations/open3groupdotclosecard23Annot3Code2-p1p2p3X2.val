@@ -1,0 +1,100 @@
+{
+  "type": "test",
+  "node": "x",
+  "shape": "http://a.example/IssueShape",
+  "solution": {
+    "type": "groupSolutions",
+    "solutions": [
+      {
+        "type": "groupSolution",
+        "expressions": [
+          {
+            "type": "tripleConstraintSolutions","predicate": "http://a.example/p1",
+            "value": {"type":"valueClass"},
+            "solutions": [
+              {"type":"testedTriple","subject":"x","predicate":"http://a.example/p1","object":"\"p1-0\""}
+            ]
+          },
+          {
+            "type": "tripleConstraintSolutions", "predicate": "http://a.example/p2",
+            "value": {"type":"valueClass"},
+            "solutions": [
+              {"type":"testedTriple","subject":"x","predicate":"http://a.example/p2","object":"\"p2-0\""}
+            ]
+          },
+          {
+            "type": "tripleConstraintSolutions", "predicate": "http://a.example/p3",
+            "value": {"type":"valueClass"},
+            "solutions": [
+              {"type":"testedTriple","subject":"x","predicate":"http://a.example/p3","object":"\"p3-0\""}
+            ]
+          }
+        ]
+      },
+      {
+        "type": "groupSolution",
+        "expressions":[
+          {
+            "type": "tripleConstraintSolutions","predicate": "http://a.example/p1",
+            "value": {"type":"valueClass"},
+            "solutions": [
+              {"type": "testedTriple", "subject": "x", "predicate": "http://a.example/p1", "object":"\"p1-1\""}
+            ]
+          },
+          {
+            "type": "tripleConstraintSolutions", "predicate": "http://a.example/p2",
+            "value": {"type":"valueClass"},
+            "solutions": [
+              {"type":"testedTriple","subject":"x","predicate":"http://a.example/p2","object":"\"p2-1\""}
+            ]
+          },
+          {
+            "type": "tripleConstraintSolutions",
+            "predicate": "http://a.example/p3",
+            "value": {"type":"valueClass"},
+            "solutions": [
+              {"type":"testedTriple","subject":"x","predicate":"http://a.example/p3","object":"\"p3-1\""}
+            ]
+          }
+        ]
+      },
+      {
+        "type": "groupSolution",
+        "expressions":[
+          {
+            "type": "tripleConstraintSolutions","predicate": "http://a.example/p1",
+            "value": {"type":"valueClass"},
+            "solutions": [
+              {"type": "testedTriple", "subject": "x", "predicate": "http://a.example/p1", "object":"\"p1-2\""}
+            ]
+          },
+          {
+            "type": "tripleConstraintSolutions", "predicate": "http://a.example/p2",
+            "value": {"type":"valueClass"},
+            "solutions": [
+              {"type":"testedTriple","subject":"x","predicate":"http://a.example/p2","object":"\"p2-2\""}
+            ]
+          },
+          {
+            "type": "tripleConstraintSolutions",
+            "predicate": "http://a.example/p3",
+            "value": {"type":"valueClass"},
+            "solutions": [
+              {"type":"testedTriple","subject":"x","predicate":"http://a.example/p3","object":"\"p3-2\""}
+            ]
+          }
+        ]
+      }
+    ],
+    "min": 2,"max": 3,
+    "annotations": [
+      [ "http://a.example/annot1", "\"1\"" ],
+      [ "http://a.example/annot2", "\"2\"" ],
+      [ "http://a.example/annot3", "\"3\"" ]
+    ],
+    "semAct": {
+      "http://a.example/semAct1": " code1 ",
+      "http://a.example/semAct2": " code2 "
+    }
+  }
+}

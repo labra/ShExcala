@@ -13,8 +13,8 @@ import es.weso.monads._
 import org.slf4j._
 import es.weso.utils.IO._
 import es.weso.rdf.jena.RDFAsJenaModel
-import es.weso.shacl.json.AST._
-import es.weso.shacl.json._
+import es.weso.shacl.ast.AST._
+import es.weso.shacl.ast._
 import argonaut._
 import Argonaut._
 import es.weso.rbe._

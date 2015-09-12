@@ -32,17 +32,21 @@ object RDF2Schema
   }
   
   def shaclSchema(rdf: RDFReader): Try[SHACLSchema] = {
+    // TODO: Check node sh_Graph
+    
     val shape_nodes = subjectsWithType(sh_Shape,rdf).toSet
+    val shapeClass_nodes = subjectsWithType(sh_ShapeClass,rdf).toSet
     val openShape_nodes = subjectsWithType(sh_OpenShape,rdf).toSet
     val closedShape_nodes = subjectsWithType(sh_ClosedShape,rdf).toSet
     val with_sh_property_nodes = subjectsWithProperty(sh_property,rdf).toSet
     val shapeCandidates = 
       (shape_nodes ++ 
        openShape_nodes ++ 
+       shapeClass_nodes ++ 
        closedShape_nodes ++ 
-       with_sh_property_nodes).toSeq
+       with_sh_property_nodes).toSeq.distinct // Remove duplicates
     
-    log.info("Shape candidates = " + shapeCandidates)
+    println("Shape candidates = " + shapeCandidates)
     val maybeRules : Seq[Try[(Label,Shape)]] = 
       shapeCandidates.map{case node => {
       rule(node,rdf)
@@ -59,7 +63,11 @@ object RDF2Schema
   def rule: RDFParser[(Label,Shape)] = { (n,rdf) => {
     for {
       shape <- shape(n,rdf)
-    } yield (mkLabel(n),shape)
+    } yield {
+     val lbl = mkLabel(n)
+     println(s"Shape parsed Label: $lbl: $shape")
+     (lbl,shape) 
+    }
   }
   }
 
@@ -75,14 +83,16 @@ object RDF2Schema
       shape <- {  
          shapeExpr(n,rdf) 
       }
-//      incls <- inclPropSet(n,rdf)
-    } yield Shape.empty
+      incls <- inclPropSet(n,rdf)
+    } yield Shape.empty.copy(
+        shapeExpr = shape,
+        inherit = incls)
   }
   
-/*  def inclPropSet: RDFParser[Set[IRI]] = { (n,rdf) =>
+  def inclPropSet: RDFParser[Seq[Label]] = { (n,rdf) =>
     // Todo: 
-    Success(Set())
-  } */
+    Success(Seq())
+  } 
 
 /*  def closedShape: RDFParser[ClosedShape] = { (n,rdf) =>
     for {
@@ -95,12 +105,13 @@ object RDF2Schema
   def shapeExpr: RDFParser[ShapeExpr] = { (n,rdf) =>
     objectsFromPredicate(sh_property)(n,rdf) match {
       case Success(ps) => {
-        // println("shapeExpr...sh_property = " + ps)
+        println("shapeExpr...sh_property = " + ps)
         ps.size match {
           // TODO: check ids
           case 0 => Success(EmptyShape())
           case 1 => {
            val shapeExpr = oneOf(Seq(tripleConstraint))(ps.head,rdf)
+           println(s"ShapeExpr: $shapeExpr")
            shapeExpr
           }
           case _ => for {
@@ -119,12 +130,13 @@ object RDF2Schema
      valueClass <- valueClass(n,rdf)
      card <- cardinality(n,rdf)
     } yield {
-     // println("TripleConstraint: " + iri + " " + valueClass + " card: " + card) 
-     TripleConstraint.empty.copy(
+     val t = TripleConstraint.empty.copy(
          id = Some(mkLabel(n)),
          iri = iri,
          value = valueClass,
          card = card) 
+     println(s"TripleConstraint: $t") 
+     t
     }
   }
   
@@ -137,6 +149,13 @@ object RDF2Schema
              ,nodeKind
              ,valueSet
              ))
+  }
+  
+  def nodeKindFromNode(n: RDFNode): Try[NodeKind] = {
+    n match {
+      case iri: IRI => nodeKindfromIRI(iri)
+      case _ => Failure(throw RDF2SchemaException("Nodekind Value must be an IRI"))
+    }
   }
   
   def shapeConstr: RDFParser[ShapeConstr] = { 
@@ -175,9 +194,11 @@ object RDF2Schema
   def nodeKind: RDFParser[NodeKind] = { (n,rdf) =>
     for {
       nk_iri <- objectFromPredicate(sh_nodeKind)(n,rdf)
-      if (nk_iri.isIRI)
-      nk <- nodeKindfromIRI(nk_iri.toIRI)
-    } yield nk 
+      nk <- nodeKindFromNode(nk_iri.toIRI)
+    } yield {
+      println(s"Node kind: $nk")
+      nk
+    } 
   }
   
   def valueSet: RDFParser[ValueSet] = 

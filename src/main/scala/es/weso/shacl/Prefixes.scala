@@ -23,6 +23,8 @@ object PREFIXES {
   lazy val sh_NonBNode = add(sh, "NonBNode")
   lazy val sh_OpenShape = add(sh,"OpenShape")
   lazy val sh_ClosedShape = add(sh,"ClosedShape")
+  lazy val sh_ShapeClass = add(sh,"ShapeClass")
+  lazy val sh_Graph = add(sh,"Graph")
   lazy val sh_Any = add(sh, "Any")
   lazy val sh_Shape = add(sh, "Shape")
   lazy val sh_choice = add(sh, "choice")

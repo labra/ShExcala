@@ -36,6 +36,23 @@ class TypingTest extends FunSpec with Matchers with TryValues {
   }
   
   describe("Combine typings") {
+    
+    it("Should combine two typings when the first is empty") {
+      val t1 : PosNegTyping[String,String] = 
+        PosNegTyping.empty
+      val t2 : PosNegTyping[String,String] = 
+        PosNegTyping.fromPosMap(Map("n3" -> Set("t1","t2"), "n4" -> Set("t4"))) 
+      val expected = t2
+      t1.combine(t2) should be(Success(expected))      
+   }
+    it("Should combine two typings when the second is empty") {
+      val t1 : PosNegTyping[String,String] = 
+        PosNegTyping.empty
+      val t2 : PosNegTyping[String,String] = 
+        PosNegTyping.fromPosMap(Map("n3" -> Set("t1","t2"), "n4" -> Set("t4"))) 
+      val expected = t2
+      t2.combine(t1) should be(Success(expected))      
+   }
     it("Should combine two typings with disjoint pos and negs") {
       val t1 : PosNegTyping[String,String] = 
         PosNegTyping.fromPosMap(Map("n1" -> Set("t1","t2"), "n2" -> Set("t1","t3")))

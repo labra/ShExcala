@@ -13,7 +13,7 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "file": ["schemas", "negativeSyntax", "parsedSchemas". "validations", "ASTs"],
+  "file": ["schemas", "negativeSyntax", "parsedSchemas", "validations", "ASTs"],
   "repository": {
     "type": "git",
     "url": "https://github.com/shexSpec/shexTest.git"

@@ -14,6 +14,10 @@ import util.{
 
 case class ShExResult(value: Result[Typing]) extends ValidationResult[RDFNode,Label,Throwable] {
   
+  override def merge(other: ValidationResult[RDFNode,Label,Throwable]): ValidationResult[RDFNode,Label,Throwable] = {
+   ???
+  }
+  
   override def combine(other: ValidationResult[RDFNode,Label,Throwable]): ValidationResult[RDFNode,Label,Throwable] = {
     other match {
       case ShExResult(r) =>  

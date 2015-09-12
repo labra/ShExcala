@@ -4,11 +4,12 @@ import org.scalatest._
 import es.weso.collection._
 import es.weso.rbe.Interval._
 import util._
-import SESchema._
+import es.weso.rbe._
 import StringGraph._
 import es.weso.typing.PosNegTyping
 
 class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
+  def noTs: Seq[(String,String)] = Seq()
 
   describe("Graphs from paper") {
 
@@ -51,25 +52,26 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
           "t3" -> Shape.empty.copy(rbe = Empty)))
 
     val typing2 =
-      Seq(PosNegTyping.fromPosMap(
+      Seq((PosNegTyping.fromPosMap(
         Map("n0" -> Set("t0"),
           "n1" -> Set("t1", "t2"),
-          "n2" -> Set("t3"))))
+          "n2" -> Set("t3"))),noTs))
 
     it("can define some graph") {
       g0.out("n0") should be(List(("a", "n1"), ("b", "n2"), ("a", "n3")))
     }
 
-    describe("Basic matchings from paper") {
+    ignore("Basic matchings from paper") {
       matchesNodeLabel("n0", "t0", g2, s2, typing2)
     }
     
   }
     
   describe("Basic matchings") {
-      val s : Schema[String,String,String,Throwable] = Schema(Map("s" -> Shape.empty.copy(rbe = Symbol((("a", integer)), 1, 1))))
+      val s : Schema[String,String,String,Err] = Schema(Map("s" -> Shape.empty.copy(rbe = Symbol((("a", integer)), 1, 1))))
+      val t = Seq((PosNegTyping.fromPosMap(Map("x" -> Set("s"))),noTs))
+      
       val g = GraphMap(Map("x" -> List(("a", "1"))))
-      val t = Seq(PosNegTyping.fromPosMap(Map("x" -> Set("s"))))
       matchesNodeLabel("x", "s", g, s, t)
       
       val g1 = GraphMap(Map("x" -> Seq( ("a", "1"), ("b","1") )))
@@ -92,9 +94,9 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
   }
   
   describe("Basic matchings with plus") {
-      val s : Schema[String,String,String,Throwable] = Schema(Map("s" -> Shape.empty.copy(rbe = Plus(Symbol((("a", integer)), 1, 1)))))
+      val s : Schema[String,String,String,Err] = Schema(Map("s" -> Shape.empty.copy(rbe = Plus(Symbol((("a", integer)), 1, 1)))))
       val g = GraphMap(Map("x" -> List(("a", "1"))))
-      val t = Seq(PosNegTyping.fromPosMap(Map("x" -> Set("s"))))
+      val t = Seq((PosNegTyping.fromPosMap(Map("x" -> Set("s"))),noTs))
       matchesNodeLabel("x", "s", g, s, t)
       
       val g1 = GraphMap(Map("x" -> Seq( ("a", "1"), ("b","1") )))
@@ -122,6 +124,40 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
       noMatchNodeLabel("x", "s", g9, s)
     }
 
+  describe("Basic matchings with Or") {
+      val s : Schema[String,String,String,Err] = 
+        Schema(Map("s" -> Shape.empty.copy(rbe = Or(
+            Symbol((("a", one)), 1, 1),
+            Symbol((("b", one)), 1, 1)))))
+
+      val t = Seq((PosNegTyping.fromPosMap(Map("x" -> Set("s"))),noTs))
+      val g0 = GraphMap(Map("x" -> Seq(("a", "1"))))
+      matchesNodeLabel("x", "s", g0, s, t)
+      
+      val g1 = GraphMap(Map("x" -> Seq( ("b","1") )))
+      matchesNodeLabel("x", "s", g1, s, t)
+
+      val g2 = GraphMap(Map("x" -> Seq[(String,String)]()))
+      noMatchNodeLabel("x", "s", g2, s)
+      
+      val g3 = GraphMap(Map("x" -> Seq(("c","1"))))
+      noMatchNodeLabel("x", "s", g3, s)
+
+      val g4 = GraphMap(Map("x" -> Seq(("b","1"),("c","1"))))
+      matchesNodeLabel("x", "s", g4, s,t)
+
+      val g5 = GraphMap(Map("x" -> Seq(("a","x"))))
+      noMatchNodeLabel("x", "s", g5, s)
+
+      val g7 = GraphMap(Map("x" -> Seq(("a","1"),("b","1"))))
+      noMatchNodeLabel("x", "s", g7, s)
+
+      val g8 = GraphMap(Map("x" -> Seq(("a","1"),("c","4"),("b","4"))))
+      matchesNodeLabel("x", "s", g8, s,t)
+      
+      val g9 = GraphMap(Map("x" -> Seq(("a","1"),("b","1"),("a","x"))))
+      noMatchNodeLabel("x", "s", g9, s)
+    }
 
   describe("Schema with ref") {
 
@@ -137,15 +173,15 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
           "t3" -> Shape.empty.copy(rbe = Empty)))
 
     val expectedTypeN0 =
-      Seq(PosNegTyping.fromPosMap(
+      Seq((PosNegTyping.fromPosMap(
         Map("n0" -> Set("t0"),
           "n1" -> Set("t1", "t2"),
-          "n2" -> Set("t3"))))
+          "n2" -> Set("t3"))),noTs))
           
     val expectedTypeN1 =
-      Seq(PosNegTyping.fromPosMap(
+      Seq((PosNegTyping.fromPosMap(
         Map("n1" -> Set("t1", "t2"),
-            "n2" -> Set("t3"))))
+            "n2" -> Set("t3"))),noTs))
             
       matchesNodeLabel("n1", "t1", g, s, expectedTypeN1)
       matchesNodeLabel("n0", "t0", g, s, expectedTypeN0)
@@ -158,7 +194,8 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
       n: Node,
       l: Label,
       g: Graph[Edge, Node],
-      s: Schema[Edge, Node, Label,Err], t: Seq[PosNegTyping[Node, Label]]): Unit = {
+      s: Schema[Edge, Node, Label,Err], 
+      t: Seq[(PosNegTyping[Node, Label],Seq[(Edge,Node)])]): Unit = {
       it(s"Matches node $n with label $l in graph ${g} and schema ${s}") {
         s.matchNode(n, l, g) should be(Success(t))
       }

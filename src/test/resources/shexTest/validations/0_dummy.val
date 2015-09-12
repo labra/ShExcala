@@ -1,0 +1,7 @@
+{
+  "type": "test",
+  "node": "http://a.example/dummy",
+  "shape": "http://a.example/IssueShape",
+  "solution": { 
+  }
+}

@@ -1,0 +1,3 @@
+Notes on SHACL spec:
+
+Example 18 should be: sh:nodeKind sh:IRI instead of ex:IRI

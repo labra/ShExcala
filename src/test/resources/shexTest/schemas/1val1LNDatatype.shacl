@@ -1,0 +1,12 @@
+@prefix ex:    &lt;http://a.example/&gt; .
+@prefix sh:    &lt;http://www.w3.org/ns/shacl/core#&gt; .
+@prefix xsd:   &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+ex:IssueShape  sh:property  [ a                 sh:PropertyConstraint ;
+                              sh:allowedValues  ( &quot;ab&quot;^^ex:bloodType ) ;
+                              sh:maxCount       1 ;
+                              sh:minCount       1 ;
+                              sh:predicate      ex:p1
+                            ] ;
+        sh:schema    [ a  sh:Schema ] .
+
