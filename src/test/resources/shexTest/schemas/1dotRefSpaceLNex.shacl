@@ -1,6 +1,6 @@
-@prefix ex:    &lt;http://a.example/&gt; .
-@prefix sh:    &lt;http://www.w3.org/ns/shacl/core#&gt; .
-@prefix xsd:   &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix ex:    <http://a.example/> .
+@prefix sh:    <http://www.w3.org/ns/shacl/core#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 
 _:b0    a       sh:Schema .
 

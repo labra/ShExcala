@@ -1,21 +1,32 @@
 package es.weso.rbe
 
-trait Candidate[+Node,+Label] {
+trait Candidate[+Edge,+Node,+Label] {
   def sign : Int
   def value: ConstraintRef
   def isPending: Boolean
 }
-case class Pos(n : ConstraintRef) extends Candidate[Nothing,Nothing] {
+
+case class Pos[Edge,Node](
+    ref : ConstraintRef, 
+    arc: (Node,Edge,Node)) extends Candidate[Edge,Node,Nothing] {
   def sign = 1
-  def value = n
+  def value = ref
   def isPending = false
 }
-case class Pending[Node,Label](n : ConstraintRef, node: Node, ref: Label) extends Candidate[Node,Label] {
+
+case class Pending[Edge,Node,Label](
+    n : ConstraintRef, 
+    obj: Node, 
+    ref: Label,
+    arc:(Node,Edge,Node)) extends Candidate[Edge,Node,Label] {
   def sign = 1
   def value = n
   def isPending = true
 }
-case class Neg(n : ConstraintRef) extends Candidate[Nothing,Nothing] {
+
+case class Neg[Edge,Node](
+    n : ConstraintRef,
+    arc:(Node,Edge,Node)) extends Candidate[Edge,Node,Nothing] {
   def sign = -1
   def value = n
   def isPending = false

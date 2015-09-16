@@ -50,6 +50,7 @@ object PREFIXES {
   lazy val xsd_string = add(xsd, "string")
   lazy val xsd_integer = add(xsd, "integer")
   lazy val xsd_double = add(xsd, "double")
+  lazy val xsd_decimal = add(xsd, "decimal")
   lazy val rdf_type = add(rdf, "type")
   lazy val rdf_first = add(rdf, "first")
   lazy val rdf_rest = add(rdf, "rest")

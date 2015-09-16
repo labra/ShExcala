@@ -1,37 +1,42 @@
-@prefix sh:    &lt;http://www.w3.org/ns/shacl/core#&gt; .
-@prefix xsd:   &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix sh:    <http://www.w3.org/ns/shacl/core#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 
-&lt;http://a.example/ThingShape&gt;
+<http://a.example/PersonShape>
         sh:property  [ a             sh:PropertyConstraint ;
-                       sh:maxCount   1 ;
-                       sh:minCount   1 ;
-                       sh:predicate  &lt;http://a.example/p3&gt;
+#                       sh:maxCount   1 ;
+#                       sh:minCount   1 ;
+                       sh:predicate  <http://a.example/p1>
                      ] ;
         sh:schema    _:b0 .
 
-&lt;http://a.example/PlaceShape&gt;
+<http://a.example/PlaceShape>
         sh:property  [ a             sh:PropertyConstraint ;
-                       sh:maxCount   1 ;
-                       sh:minCount   1 ;
-                       sh:predicate  &lt;http://a.example/p2&gt;
+#                       sh:maxCount   1 ;
+#                       sh:minCount   1 ;
+                       sh:predicate  <http://a.example/p2>
                      ] ;
         sh:schema    _:b0 .
 
-&lt;http://a.example/EmployeeShape&gt;
+<http://a.example/ThingShape>
         sh:property  [ a             sh:PropertyConstraint ;
-                       sh:maxCount   1 ;
-                       sh:minCount   1 ;
-                       sh:predicate  &lt;http://a.example/p4&gt;
+#                       sh:maxCount   1 ;
+#                       sh:minCount   1 ;
+                       sh:predicate  <http://a.example/p3>
+                     ] ;
+        sh:schema    _:b0 .
+
+<http://a.example/EmployeeShape>
+        sh:property  [ a             sh:PropertyConstraint ;
+#                       sh:maxCount   1 ;
+#                       sh:minCount   1 ;
+                       sh:predicate  <http://a.example/p4>
+                       sh:shapes (
+                         <http://a.example/PersonShape>
+                         <http://a.example/PlaceShape>
+                         <http://a.example/ThingShape>
+                       )
                      ] ;
         sh:schema    _:b0 .
 
 _:b0    a       sh:Schema .
-
-&lt;http://a.example/PersonShape&gt;
-        sh:property  [ a             sh:PropertyConstraint ;
-                       sh:maxCount   1 ;
-                       sh:minCount   1 ;
-                       sh:predicate  &lt;http://a.example/p1&gt;
-                     ] ;
-        sh:schema    _:b0 .
 

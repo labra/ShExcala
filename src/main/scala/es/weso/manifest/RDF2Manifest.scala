@@ -14,6 +14,7 @@ import es.weso.rdf.parser.RDFParser
 import es.weso.utils.TryUtils._
 import es.weso.utils.Logging
 import es.weso.rdf.jena.RDFAsJenaModel
+import java.io.File
 
 
 case class RDF2ManifestException(msg:String) 
@@ -63,6 +64,8 @@ trait RDF2Manifest
  def getEntryType(node: RDFNode): Try[EntryType] = {
    node match {
      case `sht_Validate` => Success(Validate)
+     case `sht_ValidationTest` => Success(ValidationTest)
+     case `sht_ValidationFailure` => Success(ValidationFailure)
      case `sht_MatchNodeShape` => Success(MatchNodeShape)
      case `sht_WellFormedSchema` => Success(WellFormedSchema)
      case `sht_NonWellFormedSchema` => Success(NonWellFormedSchema)
@@ -78,8 +81,8 @@ trait RDF2Manifest
      name <- stringFromPredicate(mf_name)(n,rdf)
      actionNode <- objectFromPredicate(mf_action)(n,rdf)
      action <- action(actionNode,rdf)
-     resultNode <- objectFromPredicate(mf_result)(n,rdf)
-     result <- result(resultNode,rdf)
+     maybeResultNode <- optional(objectFromPredicate(mf_result))(n,rdf)
+     result <- maybeResult(maybeResultNode,rdf)
      statusIri <- iriFromPredicate(mf_status)(n,rdf)
      specRef <- optional(iriFromPredicate(sht_specRef))(n,rdf)
    } yield 
@@ -120,6 +123,11 @@ trait RDF2Manifest
    } 
  }
  
+ def oneOfPredicates(predicates: Seq[IRI]): RDFParser[IRI] = { 
+   val ps = predicates.map(iriFromPredicate(_))
+   oneOf(ps)
+ }
+ 
  def action: RDFParser[ManifestAction] = { (n,rdf) => 
    for {
      schema <- optional(iriFromPredicate(sht_schema))(n,rdf)
@@ -129,8 +137,9 @@ trait RDF2Manifest
      dataFormatIri <- optional(iriFromPredicate(sht_data_format))(n,rdf)
      dataFormat <- mapOptional(dataFormatIri,iriDataFormat2str)
      schemaOutputFormat <- optional(iriFromPredicate(sht_schema_output_format))(n,rdf)
-     node <- optional(iriFromPredicate(sht_node))(n,rdf)
+     node <- optional(oneOfPredicates(Seq(sht_node,sht_focus)))(n,rdf)
      shape <- optional(iriFromPredicate(sht_shape))(n,rdf)
+     // TODO: Result
    } yield 
        ManifestAction(
            schema = schema,
@@ -143,10 +152,17 @@ trait RDF2Manifest
            )
  }
  
+ def maybeResult: (Option[RDFNode],RDFReader) => Try[Result] = { (m,rdf) =>
+   m match {
+     case None => Success(EmptyResult)
+     case Some(resultNode) => result(resultNode,rdf)
+   }
+ }
  
  def result: RDFParser[Result] = { (n,rdf) => 
    n match {
      case BooleanLiteral(b) => Success(BooleanResult(b))
+     case iri:IRI => Success(IRIResult(iri))
      case _ => fail("Unexpected type of result " + n)
    }
  }
@@ -160,10 +176,10 @@ trait RDF2Manifest
 
 object RDF2Manifest extends RDF2Manifest {
 
- def read(fileName: String): Try[Manifest] = {
+ def read(fileName: String, base: String): Try[Manifest] = {
    for {
      cs <- getContents(fileName)
-     rdf <- RDFAsJenaModel.fromChars(cs, "TURTLE")
+     rdf <- RDFAsJenaModel.fromChars(cs, "TURTLE", Some(base))
      mfs <- rdf2Manifest(rdf, false)
      if mfs.size == 1
    } yield mfs.head

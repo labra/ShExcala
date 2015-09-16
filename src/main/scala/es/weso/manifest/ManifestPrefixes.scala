@@ -30,13 +30,17 @@ object ManifestPrefixes {
   lazy val sht_data_format = sht.add("data-format")
   lazy val sht_schema_output_format = sht.add("schema-output-format")
   lazy val sht_node = sht.add("node")
+  lazy val sht_focus = sht.add("focus")
   lazy val sht_shape = sht.add("shape")
   lazy val sht_Validate = sht.add("Validate")
+  lazy val sht_ValidationTest = sht.add("ValidationTest")
+  lazy val sht_ValidationFailure = sht.add("ValidationFailure")
   lazy val sht_WellFormedSchema = sht.add("WellFormedSchema")
   lazy val sht_NonWellFormedSchema = sht.add("NonWellFormedSchema")
   lazy val sht_MatchNodeShape = sht.add("MatchNodeShape")
   lazy val sht_ConvertSchemaSyntax = sht.add("ConvertSchemaSyntax")
   lazy val sht_SHACLC = sht.add("SHACLC")
   lazy val sht_TURTLE = sht.add("TURTLE")
-
+  
+  
 }

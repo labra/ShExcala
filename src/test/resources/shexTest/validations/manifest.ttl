@@ -2,12 +2,16 @@
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix mf:     <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#> .
 @prefix qt:     <http://www.w3.org/2001/sw/DataAccess/tests/test-query#> .
-@prefix shext:   <http://www.w3.org/ns/shextest#> .
+@prefix sht:     <http://www.w3.org/ns/shacl/test-suite#> .
 @prefix ex:     <http://example.org/> .
+
+# TODO:
+#   repeated OR
+#   1dotRefOr3 on..
 
 
 <> a mf:Manifest ;
-    rdfs:comment "ShEx tests" ;
+    rdfs:comment "ShEx validation tests" ;
     mf:entries
     (
         <#0_empty>
@@ -60,9 +64,20 @@
         <#1dotClosed_pass>
         <#1dotClosed_fail_lower>
         <#1dotClosed_fail_higher>
+        <#1literalPlus_IIssue1_Ip1_La,Io1>
         <#1val1IRIREFExtra1iri>
         <#1val2IRIREFExtra1iri>
         <#1val2IRIREFExtra1bnode>
+        <#1dotRef1_referent,referrer>
+        <#1dotRef1_referrer,referent>
+        <#1dotRef1_missingReferent>
+        <#1dotRef1_extraReferrer>
+        <#1dotRef1_extraReferrer,extraReferent>
+        <#1dotRef1_extraMatchesReferent>
+        # <#*Inherit*>
+        # <#*Inline*>
+        # <#*LN*>
+        # <#*NS*>
         # <#1bnodeLength>
         # <#1bnodeMaxlength>
         # <#1bnodeMinlength>
@@ -77,543 +92,657 @@
         # <#1dotComma...>
     ) .
 
-<#0_empty> a shext:ValidationTest ;
+<#0_empty> a sht:ValidationTest ;
     mf:name "0_empty" ;
     rdfs:comment "<S> {  } on {  }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/0.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <empty.ttl> ;
-    shext:focus <http://a.example/dummy> ;
-    shext:result <0_dummy.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/0.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <empty.ttl> ;
+      sht:focus <http://a.example/dummy>
+    ] ;
+    mf:result <0_dummy.val>
     .
 
-<#0_extra> a shext:ValidationTest ;
+<#0_extra> a sht:ValidationTest ;
     mf:name "0_extra" ;
     rdfs:comment "<S> {  } on { <s> <p1> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/0.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <0_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/0.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <0_pass.val>
     .
 
-<#1dot_empty> a shext:ValidationFailure ;
+<#1dot_empty> a sht:ValidationFailure ;
     mf:name "1dot_empty" ;
     rdfs:comment "<S> { <p1> . } on {  }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dot.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <empty.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dot.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <empty.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1dot_missing> a shext:ValidationFailure ;
+<#1dot_missing> a sht:ValidationFailure ;
     mf:name "1dot_missing" ;
     rdfs:comment "<S> { <p1> . } on { <s> <p2> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dot.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip2_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dot.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip2_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1dot_pass> a shext:ValidationTest ;
+<#1dot_pass> a sht:ValidationTest ;
     mf:name "1dot_pass" ;
     rdfs:comment "<S> { <p1> . } on { <s> <p1> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dot.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1dot_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dot.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1dot_pass.val>
     .
 
-<#1dot_extra_lower> a shext:ValidationTest ;
-    mf:name "1dot_extra" ;
+<#1dot_extra_lower> a sht:ValidationTest ;
+    mf:name "1dot_extra_lower" ;
     rdfs:comment "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dot.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip0_Io0;Ip1_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1dot_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dot.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip0_Io0;Ip1_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1dot_pass.val>
     .
 
-<#1dot_extra_higher> a shext:ValidationTest ;
-    mf:name "1dot_extra" ;
+<#1dot_extra_higher> a sht:ValidationTest ;
+    mf:name "1dot_extra_higher" ;
     rdfs:comment "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dot.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1;Ip2_Io2.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1dot_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dot.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1;Ip2_Io2.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1dot_pass.val>
     .
 
-<#1dotAnnot3_missing> a shext:ValidationFailure ;
-    mf:name "1dot_missing" ;
+<#1dotAnnot3_missing> a sht:ValidationFailure ;
+    mf:name "1dotAnnot3_missing" ;
     rdfs:comment "<S> { <p1> . ... } on { <s> <p2> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dotAnnot3.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip2_Io1Annot3.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotAnnot3.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip2_Io1Annot3.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1dotAnnot3_pass> a shext:ValidationTest ;
-    mf:name "1dot_pass" ;
+<#1dotAnnot3_pass> a sht:ValidationTest ;
+    mf:name "1dotAnnot3_pass" ;
     rdfs:comment "<S> { <p1> . ... } on { <s> <p1> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dotAnnot3.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1dotAnnot3_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotAnnot3.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1dotAnnot3_pass.val>
     .
 
-<#1dotCode1_pass> a shext:ValidationTest ;
-    mf:name "1dot_pass" ;
+<#1dotCode1_pass> a sht:ValidationTest ;
+    mf:name "1dotCode1_pass" ;
     rdfs:comment "<S> { <p1> . %semAct1{ code1 %} } on { <s> <p1> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dotCode1.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1dotCode1_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotCode1.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1dotCode1_pass.val>
     .
 
-<#1Adot_pass> a shext:ValidationTest ;
+<#1Adot_pass> a sht:ValidationTest ;
     mf:name "1Adot_pass" ;
     rdfs:comment "<S> { a . } on { <s> a <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1Adot.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_a_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1Adot_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1Adot.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_a_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1Adot_pass.val>
     .
 
-<#1card2_fail0> a shext:ValidationFailure ;
-    mf:name "1card2_pass" ;
+<#1card2_fail0> a sht:ValidationFailure ;
+    mf:name "1card2_fail0" ;
     rdfs:comment "<S> { <p1> .{2} } on {  }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card2.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <empty.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card2.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <empty.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1card2_fail1> a shext:ValidationFailure ;
-    mf:name "1card2_pass" ;
+<#1card2_fail1> a sht:ValidationFailure ;
+    mf:name "1card2_fail1" ;
     rdfs:comment "<S> { <p1> .{2} } on { <s> <p1> 'a' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card2.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card2.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1card2_pass2> a shext:ValidationTest ;
-    mf:name "1card2_pass" ;
+<#1card2_pass2> a sht:ValidationTest ;
+    mf:name "1card2_pass2" ;
     rdfs:comment "<S> { <p1> .{2} } on { <s> <p1> 'a','b' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card2.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1card2_pass2.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card2.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1card2_pass2.val>
     .
 
-<#1card2_fail3> a shext:ValidationFailure ;
+<#1card2_fail3> a sht:ValidationFailure ;
     mf:name "1card2_fail3" ;
     rdfs:comment "<S> { <p1> .{2} } on { <s> <p1> 'a','b','c' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card2.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb,Lc.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card2.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb,Lc.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1card25_fail0> a shext:ValidationFailure ;
-    mf:name "1card25_pass" ;
+<#1card25_fail0> a sht:ValidationFailure ;
+    mf:name "1card25_fail0" ;
     rdfs:comment "<S> { <p1> .{2,5} } on {  }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card25.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <empty.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card25.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <empty.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1card25_fail1> a shext:ValidationFailure ;
-    mf:name "1card25_pass" ;
+<#1card25_fail1> a sht:ValidationFailure ;
+    mf:name "1card25_fail1" ;
     rdfs:comment "<S> { <p1> .{2,5} } on { <s> <p1> 'a' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card25.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card25.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1card25_pass2> a shext:ValidationTest ;
-    mf:name "1card25_pass" ;
+<#1card25_pass2> a sht:ValidationTest ;
+    mf:name "1card25_pass2" ;
     rdfs:comment "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card25.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1card25_pass2.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card25.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1card25_pass2.val>
     .
 
-<#1card25_pass3> a shext:ValidationTest ;
-    mf:name "1card25_pass" ;
+<#1card25_pass3> a sht:ValidationTest ;
+    mf:name "1card25_pass3" ;
     rdfs:comment "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card25.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb,Lc.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1card25_pass3.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card25.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb,Lc.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1card25_pass3.val>
     .
 
-<#1card25_pass4> a shext:ValidationTest ;
-    mf:name "1card25_pass" ;
+<#1card25_pass4> a sht:ValidationTest ;
+    mf:name "1card25_pass4" ;
     rdfs:comment "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c','d' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card25.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb,Lc,Ld.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1card25_pass4.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card25.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb,Lc,Ld.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1card25_pass4.val>
     .
 
-<#1card25_pass5> a shext:ValidationTest ;
-    mf:name "1card25_pass" ;
+<#1card25_pass5> a sht:ValidationTest ;
+    mf:name "1card25_pass5" ;
     rdfs:comment "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c','d','e' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card25.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1card25_pass5.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card25.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1card25_pass5.val>
     .
 
-<#1card25_fail6> a shext:ValidationFailure ;
-    mf:name "1card25_pass" ;
+<#1card25_fail6> a sht:ValidationFailure ;
+    mf:name "1card25_fail6" ;
     rdfs:comment "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c','d','e','f' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card25.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card25.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1card2Star_fail0> a shext:ValidationFailure ;
-    mf:name "1card2Star_pass" ;
+<#1card2Star_fail0> a sht:ValidationFailure ;
+    mf:name "1card2Star_fail0" ;
     rdfs:comment "<S> { <p1> .{2,*} } on {  }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card2Star.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <empty.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card2Star.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <empty.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1card2Star_fail1> a shext:ValidationFailure ;
-    mf:name "1card2Star_pass" ;
+<#1card2Star_fail1> a sht:ValidationFailure ;
+    mf:name "1card2Star_fail1" ;
     rdfs:comment "<S> { <p1> .{2,*} } on { <s> <p1> 'a' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card2Star.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card2Star.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1card2Star_pass2> a shext:ValidationTest ;
-    mf:name "1card2Star_pass" ;
+<#1card2Star_pass2> a sht:ValidationTest ;
+    mf:name "1card2Star_pass2" ;
     rdfs:comment "<S> { <p1> .{2,*} } on { <s> <p1> 'a','b' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card2Star.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1card2Star_pass2.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card2Star.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1card2Star_pass2.val>
     .
 
-<#1card2Star_pass3> a shext:ValidationTest ;
-    mf:name "1card2Star_pass" ;
+<#1card2Star_pass3> a sht:ValidationTest ;
+    mf:name "1card2Star_pass3" ;
     rdfs:comment "<S> { <p1> .{2,*} } on { <s> <p1> 'a','b','c' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card2Star.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb,Lc.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1card2Star_pass3.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card2Star.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb,Lc.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1card2Star_pass3.val>
     .
 
-<#1card2Star_pass6> a shext:ValidationTest ;
-    mf:name "1card2Star_pass" ;
+<#1card2Star_pass6> a sht:ValidationTest ;
+    mf:name "1card2Star_pass6" ;
     rdfs:comment "<S> { <p1> .{2,*} } on { <s> <p1> 'a','b','c','d','e','f' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1card2Star.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1card2Star_pass6.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1card2Star.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1card2Star_pass6.val>
     .
 
-<#1cardPlus_fail0> a shext:ValidationFailure ;
+<#1cardPlus_fail0> a sht:ValidationFailure ;
     mf:name "1cardPlus_fail0" ;
     rdfs:comment "<S> { <p1> .+ } on {  }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1cardPlus.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <empty.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1cardPlus.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <empty.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1cardPlus_pass1> a shext:ValidationTest ;
+<#1cardPlus_pass1> a sht:ValidationTest ;
     mf:name "1cardPlus_pass1" ;
     rdfs:comment "<S> { <p1> .+ } on { <s> <p1> 'a' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1cardPlus.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1cardPlus_pass1.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1cardPlus.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1cardPlus_pass1.val>
     .
 
-<#1cardPlus_pass2> a shext:ValidationTest ;
+<#1cardPlus_pass2> a sht:ValidationTest ;
     mf:name "1cardPlus_pass2" ;
     rdfs:comment "<S> { <p1> .+ } on { <s> <p1> 'a','b' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1cardPlus.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1cardPlus_pass2.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1cardPlus.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1cardPlus_pass2.val>
     .
 
-<#1cardPlus_pass6> a shext:ValidationTest ;
+<#1cardPlus_pass6> a sht:ValidationTest ;
     mf:name "1cardPlus_pass6" ;
     rdfs:comment "<S> { <p1> .+ } on { <s> <p1> 'a','b','c','d','e','f' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1cardPlus.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1cardPlus_pass6.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1cardPlus.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1cardPlus_pass6.val>
     .
 
-<#1cardStar_pass0> a shext:ValidationTest ;
+<#1cardStar_pass0> a sht:ValidationTest ;
     mf:name "1cardStar_fail0" ;
     rdfs:comment "<S> { <p1> .* } on {  }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1cardStar.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <empty.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1cardStar_pass0.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1cardStar.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <empty.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1cardStar_pass0.val>
     .
 
-<#1cardStar_pass1> a shext:ValidationTest ;
+<#1cardStar_pass1> a sht:ValidationTest ;
     mf:name "1cardStar_pass1" ;
     rdfs:comment "<S> { <p1> .* } on { <s> <p1> 'a' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1cardStar.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1cardStar_pass1.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1cardStar.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1cardStar_pass1.val>
     .
 
-<#1cardStar_pass2> a shext:ValidationTest ;
+<#1cardStar_pass2> a sht:ValidationTest ;
     mf:name "1cardStar_pass2" ;
     rdfs:comment "<S> { <p1> .* } on { <s> <p1> 'a','b' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1cardStar.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1cardStar_pass2.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1cardStar.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1cardStar_pass2.val>
     .
 
-<#1cardStar_pass6> a shext:ValidationTest ;
+<#1cardStar_pass6> a sht:ValidationTest ;
     mf:name "1cardStar_pass6" ;
     rdfs:comment "<S> { <p1> .* } on { <s> <p1> 'a','b','c','d','e','f' }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1cardStar.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1cardStar_pass6.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1cardStar.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1cardStar_pass6.val>
     .
 
-<#1datatype_missing> a shext:ValidationFailure ;
+<#1datatype_missing> a sht:ValidationFailure ;
     mf:name "1datatype_missing" ;
     rdfs:comment "<S> { <p1> xs:integer } on <s> in { <s> <p2> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1datatype.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip2_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1datatype.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip2_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1datatype_nonLiteral> a shext:ValidationFailure ;
+<#1datatype_nonLiteral> a sht:ValidationFailure ;
     mf:name "1datatype_nonLiteral" ;
     rdfs:comment "<S> { <p1> xs:integer } on <s> in { <s> <p1> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1datatype.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1datatype.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1datatype_wrongDatatype> a shext:ValidationFailure ;
+<#1datatype_wrongDatatype> a sht:ValidationFailure ;
     mf:name "1datatype_wrongDatatype" ;
     rdfs:comment "<S> { <p1> xs:integer } on <s> in { <s> <p1> 1.234 }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1datatype.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_DEC1.345.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1datatype.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_DEC1.345.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1datatype_pass> a shext:ValidationTest ;
+<#1datatype_pass> a sht:ValidationTest ;
     mf:name "1datatype_pass" ;
     rdfs:comment "<S> { <p1> xs:integer } on <s> in { <s> <p1> 'ab'^^<dt1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1datatype.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_dt1.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1datatype_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1datatype.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_dt1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1datatype_pass.val>
     .
 
-<#1datatypeLength_missing> a shext:ValidationFailure ;
+<#1datatypeLength_missing> a sht:ValidationFailure ;
     mf:name "1datatypeLength_missing" ;
     rdfs:comment "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p2> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1datatypeLength.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip2_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1datatypeLength.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip2_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1datatypeLength_wrongDatatype> a shext:ValidationFailure ;
-    mf:name "1datatypeLength_missing" ;
+<#1datatypeLength_wrongDatatype> a sht:ValidationFailure ;
+    mf:name "1datatypeLength_wrongDatatype" ;
     rdfs:comment "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 1.234 }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1datatypeLength.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_DEC1.345.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1datatypeLength.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_DEC1.345.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1datatypeLength_short> a shext:ValidationFailure ;
-    mf:name "1datatypeLength_pass" ;
+<#1datatypeLength_short> a sht:ValidationFailure ;
+    mf:name "1datatypeLength_short" ;
     rdfs:comment "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 1234 }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1datatypeLength.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_INT1234.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1datatypeLength.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_INT1234.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1datatypeLength_pass> a shext:ValidationTest ;
+<#1datatypeLength_pass> a sht:ValidationTest ;
     mf:name "1datatypeLength_pass" ;
     rdfs:comment "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 12345 }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1datatypeLength.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_INT12345.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1datatypeLength_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1datatypeLength.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_INT12345.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1datatypeLength_pass.val>
     .
 
-<#1datatypeLength_long> a shext:ValidationFailure ;
-    mf:name "1datatypeLength_pass" ;
+<#1datatypeLength_long> a sht:ValidationFailure ;
+    mf:name "1datatypeLength_long" ;
     rdfs:comment "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 123456 }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1datatypeLength.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_INT123456.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1datatypeLength.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_INT123456.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1literalFractiondigits_pass> a shext:ValidationTest ;
+<#1literalFractiondigits_pass> a sht:ValidationTest ;
     mf:name "1literalFractiondigits_pass" ;
     rdfs:comment "@@ 1literalFractiondigits_pass" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1literalFractiondigits.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <1literalFractiondigits_pass.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1literalFractiondigits_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1literalFractiondigits.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <1literalFractiondigits_pass.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1literalFractiondigits_pass.val>
     .
 
-<#1dotClosed_pass> a shext:ValidationTest ;
+<#1dotClosed_pass> a sht:ValidationTest ;
     mf:name "1dotClosed_pass" ;
     rdfs:comment "<S> CLOSED { <p1> . } on { <s> <p1> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dotClosed.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1dot_pass.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotClosed.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1dot_pass.val>
     .
 
-<#1dotClosed_fail_lower> a shext:ValidationFailure ;
-    mf:name "1dot_extra" ;
+<#1dotClosed_fail_lower> a sht:ValidationFailure ;
+    mf:name "1dotClosed_fail_lower" ;
     rdfs:comment "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dotClosed.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip0_Io0;Ip1_Io1.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotClosed.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip0_Io0;Ip1_Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1dotClosed_fail_higher> a shext:ValidationFailure ;
-    mf:name "1dot_extra" ;
+<#1dotClosed_fail_higher> a sht:ValidationFailure ;
+    mf:name "1dotClosed_fail_higher" ;
     rdfs:comment "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1dotClosed.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1;Ip2_Io2.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotClosed.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1;Ip2_Io2.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1val1IRIREFExtra1iri> a shext:ValidationTest ;
+<#1literalPlus_IIssue1_Ip1_La,Io1> a sht:ValidationFailure ;
+    mf:name "1literal_extra" ;
+    rdfs:comment "<S> { <p1> LITERAL+ } on { <s> <p1> 'a', <o2> }" ;
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1literalPlus.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_La,Io1.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
+    .
+
+<#1val1IRIREFExtra1iri> a sht:ValidationTest ;
     mf:name "1val1IRIREFExtra1iri" ;
     rdfs:comment "<S> EXTRA <p1> { <p1> (<o1>) } on { <s> <p1> <o1>, <o2> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1val1IRIREFExtra1.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1,Io2.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1val1IRIREFExtra1bnode_IIssue1_Ip1_Io1.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1val1IRIREFExtra1.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1,Io2.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1val1IRIREFExtra1bnode_IIssue1_Ip1_Io1.val>
     .
 
-<#1val2IRIREFExtra1iri> a shext:ValidationFailure ;
+<#1val2IRIREFExtra1iri> a sht:ValidationFailure ;
     mf:name "1val2IRIREFExtra1iri" ;
     rdfs:comment "<S> EXTRA <p1> { <p1> (<o1> <o2>) } on { <s> <p1> <o1>, <o2> }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1val2IRIREFExtra1.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1,Io2.ttl> ;
-    shext:focus <http://a.example/Issue1>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1val2IRIREFExtra1.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1,Io2.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ]
     .
 
-<#1val2IRIREFExtra1bnode> a shext:ValidationTest ;
+<#1val2IRIREFExtra1bnode> a sht:ValidationTest ;
     mf:name "1val2IRIREFExtra1bnode" ;
     rdfs:comment "<S> EXTRA <p1> { <p1> (<o1> <o2> } on { <s> <p1> <o1>, _:o2 }" ;
-    shext:status mf:proposed ;
-    shext:schema <../schemas/1val2IRIREFExtra1.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <IIssue1_Ip1_Io1,Bo2.ttl> ;
-    shext:focus <http://a.example/Issue1> ;
-    shext:result <1val2IRIREFExtra1bnode_IIssue1_Ip1_Io1.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1val2IRIREFExtra1.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <IIssue1_Ip1_Io1,Bo2.ttl> ;
+      sht:focus <http://a.example/Issue1>
+    ] ;
+    mf:result <1val2IRIREFExtra1bnode_IIssue1_Ip1_Io1.val>
     .
 
         # <#1bnodeLength>
@@ -621,69 +750,156 @@
         # <#1bnodeMinlength>
         # <#1bnodePattern>
 
-<#iovka> a shext:ValidationTest ;
+<#1dotRef1_referent,referrer> a sht:ValidationTest ;
+    mf:name "1dotRef1_referent,referrer" ;
+    rdfs:comment "<n2> in { <n1> <p1> X . <n2> <p2> <n1> } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }" ;
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotRef1.shex> ;
+      sht:shape <http://a.example/EmployeeShape> ;
+      sht:data <In1_Ip1_LX.In2_Ip2_In1.ttl> ;
+      sht:focus <http://a.example/n2>
+    ] ;
+    mf:result <In2_Ip2_In1@In1_Ip1_LX.ttl>
+    .
+
+<#1dotRef1_referrer,referent> a sht:ValidationTest ;
+    mf:name "1dotRef1_referrer,referent" ;
+    rdfs:comment "<n2> in { <n2> <p2> <n1> . <n1> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }" ;
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotRef1.shex> ;
+      sht:shape <http://a.example/EmployeeShape> ;
+      sht:data <In2_Ip2_In1.In1_Ip1_LX.ttl> ;
+      sht:focus <http://a.example/n2>
+    ] ;
+    mf:result <In2_Ip2_In1@In1_Ip1_LX.ttl>
+    .
+
+<#1dotRef1_missingReferent> a sht:ValidationFailure ;
+    mf:name "1dotRef1_missingReferent" ;
+    rdfs:comment "<n2> in { <n2> <p2> <n1> } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }" ;
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotRef1.shex> ;
+      sht:shape <http://a.example/EmployeeShape> ;
+      sht:data <In2_Ip2_In1.ttl> ;
+      sht:focus <http://a.example/n2>
+    ]
+    .
+
+<#1dotRef1_extraReferrer> a sht:ValidationFailure ;
+    mf:name "1dotRef1_extraReferrer" ;
+    rdfs:comment "<n2> in { <n2> <p2> <n1>, <n3> . <n1> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }" ;
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotRef1.shex> ;
+      sht:shape <http://a.example/EmployeeShape> ;
+      sht:data <In2_Ip2_In1.In2_Ip2_In3.In1_Ip1_LX.ttl> ;
+      sht:focus <http://a.example/n2>
+    ]
+    .
+
+<#1dotRef1_extraReferrer,extraReferent> a sht:ValidationFailure ;
+    mf:name "1dotRef1_extraReferrer,extraReferent" ;
+    rdfs:comment "<n2> in { <n2> <p2> <n1>, <n3> . <n1> <p1> X . <n3> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }" ;
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotRef1.shex> ;
+      sht:shape <http://a.example/EmployeeShape> ;
+      sht:data <In2_Ip2_In1.In2_Ip2_In3.In1_Ip1_LX.In3_Ip1_LX.ttl> ;
+      sht:focus <http://a.example/n2>
+    ]
+    .
+
+<#1dotRef1_extraMatchesReferent> a sht:ValidationTest ;
+    mf:name "1dotRef1_extraMatchesReferent" ;
+    rdfs:comment "<n2> in { <n2> <p2> <n1>, <n3> . <n1> <p1> X . <n3> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }" ;
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/1dotRef1.shex> ;
+      sht:shape <http://a.example/EmployeeShape> ;
+      sht:data <In2_Ip2_In1.In1_Ip1_LX.In3_Ip1_LX.ttl> ;
+      sht:focus <http://a.example/n2>
+    ] ;
+    mf:result <In2_Ip2_In1@In1_Ip1_LX.ttl>
+    .
+
+<#iovka> a sht:ValidationTest ;
     mf:name "iovka" ;
     rdfs:comment "@@ iovka" ;
-    shext:status mf:proposed ;
-    shext:schema <../validations/iovka.shex> ;
-    shext:shape <S> ;
-    shext:data <iovka.ttl> ;
-    shext:focus <x> ;
-    shext:result <iovka.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../validations/iovka.shex> ;
+      sht:shape <S> ;
+      sht:data <iovka.ttl> ;
+      sht:focus <x>
+    ] ;
+    mf:result <iovka.val>
     .
 
-<#greedy> a shext:ValidationTest ;
+<#greedy> a sht:ValidationTest ;
     mf:name "greedy" ;
     rdfs:comment "@@ greedy" ;
-    shext:status mf:proposed ;
-    shext:schema <../validations/greedy.shex> ;
-    shext:shape <S> ;
-    shext:data <greedy.ttl> ;
-    shext:focus <x> ;
-    shext:result <greedy.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../validations/greedy.shex> ;
+      sht:shape <S> ;
+      sht:data <greedy.ttl> ;
+      sht:focus <x>
+    ] ;
+    mf:result <greedy.val>
     .
 
-<#skipped> a shext:ValidationTest ;
+<#skipped> a sht:ValidationTest ;
     mf:name "skipped" ;
     rdfs:comment "@@ skipped" ;
-    shext:status mf:proposed ;
-    shext:schema <../validations/skipped.shex> ;
-    shext:shape <S> ;
-    shext:data <skipped.ttl> ;
-    shext:focus <x> ;
-    shext:result <skipped.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../validations/skipped.shex> ;
+      sht:shape <S> ;
+      sht:data <skipped.ttl> ;
+      sht:focus <x>
+    ] ;
+    mf:result <skipped.val>
     .
 
-<#repeated-group> a shext:ValidationTest ;
+<#repeated-group> a sht:ValidationTest ;
     mf:name "repeated-group" ;
     rdfs:comment "@@ repeated-group" ;
-    shext:status mf:proposed ;
-    shext:schema <../validations/repeated-group.shex> ;
-    shext:shape <S> ;
-    shext:data <repeated-group.ttl> ;
-    shext:focus <x> ;
-    shext:result <repeated-group.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../validations/repeated-group.shex> ;
+      sht:shape <S> ;
+      sht:data <repeated-group.ttl> ;
+      sht:focus <x>
+    ] ;
+    mf:result <repeated-group.val>
     .
 
-<#simple-group> a shext:ValidationTest ;
+<#simple-group> a sht:ValidationTest ;
     mf:name "simple-group" ;
     rdfs:comment "@@ simple-group" ;
-    shext:status mf:proposed ;
-    shext:schema <../validations/simple-group.shex> ;
-    shext:shape <S> ;
-    shext:data <simple-group.ttl> ;
-    shext:focus <s0> ;
-    shext:result <simple-group.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../validations/simple-group.shex> ;
+      sht:shape <S> ;
+      sht:data <simple-group.ttl> ;
+      sht:focus <s0>
+    ] ;
+    mf:result <simple-group.val>
     .
 
-<#open3groupdotclosecard23Annot3Code2-p1p2p3X2> a shext:ValidationTest ;
+<#open3groupdotclosecard23Annot3Code2-p1p2p3X2> a sht:ValidationTest ;
     mf:name "open3groupdotclosecard23Annot3Code2-p1p2p3X2" ;
     rdfs:comment "@@ open3groupdotclosecard23Annot3Code2-p1p2p3X2" ;
-    shext:status mf:proposed ;
-    shext:schema <open3groupdotclosecard23Annot3Code2.shex> ;
-    shext:shape <http://a.example/IssueShape> ;
-    shext:data <p1p2p3X2.ttl> ;
-    shext:focus <x> ;
-    shext:result <open3groupdotclosecard23Annot3Code2-p1p2p3X2.val>
+    mf:status mf:proposed ;
+    mf:action [
+      sht:schema <../schemas/open3groupdotclosecard23Annot3Code2.shex> ;
+      sht:shape <http://a.example/IssueShape> ;
+      sht:data <p1p2p3X2.ttl> ;
+      sht:focus <x>
+    ] ;
+    mf:result <open3groupdotclosecard23Annot3Code2-p1p2p3X2.val>
     .
 

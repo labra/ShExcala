@@ -96,9 +96,28 @@ class SorbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks
     equalInterval(And(Symbol("a",1,1),Empty),
         emptyBag, Interval(0,0))
         
-    equalInterval(Or(Symbol("a",1,1),Or(Symbol("b",1,1),Empty)),
+    equalInterval(Or(Symbol("a",1,1),Symbol("b",1,1)),
         emptyBag, Interval(0,0))
     
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),0,1), Symbol("c",1,1)),
+        Bag.toBag(List("c")), Interval(1,1))
+
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),0,1), Symbol("c",1,1)),
+        Bag.toBag(List("b", "c")), Interval(1,1))
+        
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),0,1), Symbol("c",1,1)),
+        Bag.toBag(List("a", "c")), Interval(1,1))
+
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),0,1), Symbol("c",1,1)),
+        Bag.toBag(List("a", "a", "c")), Interval(2,1))
+        
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),0,1), Symbol("c",1,1)),
+        Bag.toBag(List("a")), Interval(1,0))
   }
   
   describe("Containment calculation") {

@@ -252,7 +252,7 @@ trait ShaclParser
     
   def label: StateParser[ShapeParserState, Label] = { s =>
     opt(WS) ~>
-      (iri(s.namespaces) ^^ {
+      (iriBase(s.namespaces,s.baseIRI) ^^ {
         case iri => (IRILabel(iri), s)
       }
         | BlankNode(s.bNodeLabels) ^^ {
@@ -406,22 +406,21 @@ trait ShaclParser
   
   case class Sense(inverse: Boolean, negated: Boolean)
 
-  
   def annotations: StateParser[ShapeParserState, List[Annotation]] = { s => 
-    rep(annotation(s.namespaces)) ^^ {
+    rep(annotation(s.namespaces,s.baseIRI)) ^^ {
       case as => (as,s)
     }
   }
   
-  def annotation: PrefixMap => Parser[Annotation] = { pm => 
-    symbol(";") ~> iri(pm) ~ iriOrLiteral(pm) ^^ {
+  def annotation(pm: PrefixMap, base: IRI): Parser[Annotation] = {  
+    symbol(";") ~> iriBase(pm,base) ~ iriOrLiteral(pm,base) ^^ {
       case iri ~ value => Annotation(iri,value)
     }
   }
   
-  def iriOrLiteral(pm: PrefixMap): Parser[Either[IRI,Literal]] = { 
+  def iriOrLiteral(pm: PrefixMap, base: IRI): Parser[Either[IRI,Literal]] = { 
    opt(WS) ~> 
-   ( iri(pm) ^^ { case i => Left(i) }
+   ( iriBase(pm,base) ^^ { case i => Left(i) }
    | literal(pm) ^^ { case l => Right(l) }
    )
   }
@@ -484,7 +483,7 @@ trait ShaclParser
   }
   
   def iriFacets: StateParser[ShapeParserState,(IRI,List[XSFacet])] = { s =>
-      opt(WS) ~> iri(s.namespaces) ~ xsFacets(s) <~ opt(WS) ^^ {
+      opt(WS) ~> iriBase(s.namespaces,s.baseIRI) ~ xsFacets(s) <~ opt(WS) ^^ {
         case iri ~ facets => {
          ((iri, facets), s)
         }
@@ -545,32 +544,32 @@ trait ShaclParser
 
   def basicValueObject: StateParser[ShapeParserState, ValueObject] = { s => 
     opt(WS) ~> (
-        lift(iriRange(s.namespaces))(s) 
+        lift(iriRange(s.namespaces,s.baseIRI))(s) 
       | literal(s.namespaces) ^^ { case l => {
        (ValueLiteral(l), s) 
       } } 
       ) <~ opt(WS)
   }
     
-  def valueAny: PrefixMap => Parser[ValueObject] = { pm => 
-      dot ~> rep1(exclusion(pm)) ^^ {
+  def valueAny(pm: PrefixMap, base: IRI): Parser[ValueObject] = {  
+      dot ~> rep1(exclusion(pm,base)) ^^ {
         case exclusions => ValueAny(exclusions)
       }
   }
   
-  def exclusion: PrefixMap => Parser[Exclusion] = { pm =>
-    symbol("-") ~> iri(pm) ~ opt(symbol("~")) ^^ {
+  def exclusion(pm: PrefixMap, base: IRI): Parser[Exclusion] = { 
+    symbol("-") ~> iriBase(pm,base) ~ opt(symbol("~")) ^^ {
       case iri ~ None => Exclusion(iri,false)
       case iri ~ Some(_) => Exclusion(iri,true)
     } 
   }
   
-  def iriRange: PrefixMap => Parser[ValueObject] = { pm => 
-      iriOrStem(pm) | valueAny(pm) 
+  def iriRange(pm: PrefixMap, base: IRI): Parser[ValueObject] = {  
+      iriOrStem(pm,base) | valueAny(pm,base) 
     } 
   
-  def iriOrStem:PrefixMap => Parser[ValueObject] = { pm =>
-      iri(pm) ~ (opt(symbol("~") ~> rep(exclusion(pm)))) ^^ {
+  def iriOrStem(pm: PrefixMap, base: IRI): Parser[ValueObject] = { 
+      iriBase(pm,base) ~ (opt(symbol("~") ~> rep(exclusion(pm,base)))) ^^ {
         case iri ~ None => ValueIRI(iri)
         case iri ~ Some(exclusions) => ValueStem(iri,exclusions)
       }
@@ -734,6 +733,10 @@ def unscapePercent(s: String): String = {
   // TODO: Move this method to StateParser
   def lift[S,A](p:Parser[A]): StateParser[S,A] = { s =>
     p ^^ { case v => (v,s) } 
+  }
+  
+  def iriBase(pm: PrefixMap, base: IRI): Parser[IRI] = {
+    iri(pm) ^^ { case iri => base.resolve(iri) }
   }
 
 }

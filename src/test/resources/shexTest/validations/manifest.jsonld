@@ -7,20 +7,20 @@
       "rdfs:comment": "ShEx tests",
       "mf:entries": [
         {
-          "@id": "#1dotCode1_pass",
-          "@type": "shext:ValidationTest",
+          "@id": "#1dotAnnot3_pass",
+          "@type": "sht:ValidationTest",
           "name": "1dot_pass",
-          "comment": "<S> { <p1> . %semAct1{ code1 %} } on { <s> <p1> <o1> }",
+          "comment": "<S> { <p1> . ... } on { <s> <p1> <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dotCode1.shex",
+          "schema": "../schemas/1dotAnnot3.shex",
           "shape": "http://a.example/IssueShape",
           "data": "IIssue1_Ip1_Io1.ttl",
           "focus": "http://a.example/Issue1",
-          "result": "1dotCode1_pass.val"
+          "result": "1dotAnnot3_pass.val"
         },
         {
           "@id": "#1dot_empty",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1dot_empty",
           "comment": "<S> { <p1> . } on {  }",
           "status": "mf:proposed",
@@ -31,7 +31,7 @@
         },
         {
           "@id": "#0_empty",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "0_empty",
           "comment": "<S> {  } on {  }",
           "status": "mf:proposed",
@@ -43,7 +43,7 @@
         },
         {
           "@id": "#0_extra",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "0_extra",
           "comment": "<S> {  } on { <s> <p1> <o1> }",
           "status": "mf:proposed",
@@ -54,20 +54,20 @@
           "result": "0_pass.val"
         },
         {
-          "@id": "#1dot_extra_higher",
-          "@type": "shext:ValidationTest",
+          "@id": "#1dot_extra_lower",
+          "@type": "sht:ValidationTest",
           "name": "1dot_extra",
           "comment": "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }",
           "status": "mf:proposed",
           "schema": "../schemas/1dot.shex",
           "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1;Ip2_Io2.ttl",
+          "data": "IIssue1_Ip0_Io0;Ip1_Io1.ttl",
           "focus": "http://a.example/Issue1",
           "result": "1dot_pass.val"
         },
         {
           "@id": "#greedy",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "greedy",
           "comment": "@@ greedy",
           "status": "mf:proposed",
@@ -78,8 +78,44 @@
           "result": "greedy.val"
         },
         {
+          "@id": "#1dotRef1_extraMatchesReferent",
+          "@type": "sht:ValidationTest",
+          "name": "1dotRef1_",
+          "comment": "<n2> in { <n2> <p2> <n1>, <n3> . <n1> <p1> X . <n3> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
+          "status": "mf:proposed",
+          "schema": "../schemas/1dotRef1.shex",
+          "shape": "http://a.example/EmployeeShape",
+          "data": "In2_Ip2_In1.In1_Ip1_LX.In3_Ip1_LX.ttl",
+          "focus": "http://a.example/n2",
+          "result": "In2_Ip2_In1@In1_Ip1_LX.ttl"
+        },
+        {
+          "@id": "#1dotRef1_referrer,referent",
+          "@type": "sht:ValidationTest",
+          "name": "1dotRef1_",
+          "comment": "<n2> in { <n2> <p2> <n1> . <n1> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
+          "status": "mf:proposed",
+          "schema": "../schemas/1dotRef1.shex",
+          "shape": "http://a.example/EmployeeShape",
+          "data": "In2_Ip2_In1.In1_Ip1_LX.ttl",
+          "focus": "http://a.example/n2",
+          "result": "In2_Ip2_In1@In1_Ip1_LX.ttl"
+        },
+        {
+          "@id": "#1dotRef1_referent,referrer",
+          "@type": "sht:ValidationTest",
+          "name": "1dotRef1_",
+          "comment": "<n2> in { <n1> <p1> X . <n2> <p2> <n1> } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
+          "status": "mf:proposed",
+          "schema": "../schemas/1dotRef1.shex",
+          "shape": "http://a.example/EmployeeShape",
+          "data": "In1_Ip1_LX.In2_Ip2_In1.ttl",
+          "focus": "http://a.example/n2",
+          "result": "In2_Ip2_In1@In1_Ip1_LX.ttl"
+        },
+        {
           "@id": "#1val2IRIREFExtra1bnode",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1val2IRIREFExtra1bnode",
           "comment": "<S> EXTRA <p1> { <p1> (<o1> <o2> } on { <s> <p1> <o1>, _:o2 }",
           "status": "mf:proposed",
@@ -91,7 +127,7 @@
         },
         {
           "@id": "#1val1IRIREFExtra1iri",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1val1IRIREFExtra1iri",
           "comment": "<S> EXTRA <p1> { <p1> (<o1>) } on { <s> <p1> <o1>, <o2> }",
           "status": "mf:proposed",
@@ -103,7 +139,7 @@
         },
         {
           "@id": "#1dotClosed_pass",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1dotClosed_pass",
           "comment": "<S> CLOSED { <p1> . } on { <s> <p1> <o1> }",
           "status": "mf:proposed",
@@ -115,7 +151,7 @@
         },
         {
           "@id": "#1literalFractiondigits_pass",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1literalFractiondigits_pass",
           "comment": "@@ 1literalFractiondigits_pass",
           "status": "mf:proposed",
@@ -127,7 +163,7 @@
         },
         {
           "@id": "#1datatypeLength_pass",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1datatypeLength_pass",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 12345 }",
           "status": "mf:proposed",
@@ -139,7 +175,7 @@
         },
         {
           "@id": "#1datatype_pass",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1datatype_pass",
           "comment": "<S> { <p1> xs:integer } on <s> in { <s> <p1> 'ab'^^<dt1> }",
           "status": "mf:proposed",
@@ -151,7 +187,7 @@
         },
         {
           "@id": "#1cardStar_pass6",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1cardStar_pass6",
           "comment": "<S> { <p1> .* } on { <s> <p1> 'a','b','c','d','e','f' }",
           "status": "mf:proposed",
@@ -163,7 +199,7 @@
         },
         {
           "@id": "#1cardStar_pass2",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1cardStar_pass2",
           "comment": "<S> { <p1> .* } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
@@ -175,7 +211,7 @@
         },
         {
           "@id": "#1cardStar_pass1",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1cardStar_pass1",
           "comment": "<S> { <p1> .* } on { <s> <p1> 'a' }",
           "status": "mf:proposed",
@@ -187,7 +223,7 @@
         },
         {
           "@id": "#1cardStar_pass0",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1cardStar_fail0",
           "comment": "<S> { <p1> .* } on {  }",
           "status": "mf:proposed",
@@ -199,7 +235,7 @@
         },
         {
           "@id": "#1cardPlus_pass6",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1cardPlus_pass6",
           "comment": "<S> { <p1> .+ } on { <s> <p1> 'a','b','c','d','e','f' }",
           "status": "mf:proposed",
@@ -211,7 +247,7 @@
         },
         {
           "@id": "#1cardPlus_pass2",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1cardPlus_pass2",
           "comment": "<S> { <p1> .+ } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
@@ -223,7 +259,7 @@
         },
         {
           "@id": "#1cardPlus_pass1",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1cardPlus_pass1",
           "comment": "<S> { <p1> .+ } on { <s> <p1> 'a' }",
           "status": "mf:proposed",
@@ -235,7 +271,7 @@
         },
         {
           "@id": "#1card2Star_pass6",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1card2Star_pass",
           "comment": "<S> { <p1> .{2,*} } on { <s> <p1> 'a','b','c','d','e','f' }",
           "status": "mf:proposed",
@@ -247,7 +283,7 @@
         },
         {
           "@id": "#1card2Star_pass3",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1card2Star_pass",
           "comment": "<S> { <p1> .{2,*} } on { <s> <p1> 'a','b','c' }",
           "status": "mf:proposed",
@@ -259,7 +295,7 @@
         },
         {
           "@id": "#1card2Star_pass2",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1card2Star_pass",
           "comment": "<S> { <p1> .{2,*} } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
@@ -271,7 +307,7 @@
         },
         {
           "@id": "#1card25_pass5",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1card25_pass",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c','d','e' }",
           "status": "mf:proposed",
@@ -283,7 +319,7 @@
         },
         {
           "@id": "#1card25_pass4",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1card25_pass",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c','d' }",
           "status": "mf:proposed",
@@ -295,7 +331,7 @@
         },
         {
           "@id": "#1card25_pass3",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1card25_pass",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c' }",
           "status": "mf:proposed",
@@ -307,7 +343,7 @@
         },
         {
           "@id": "#1card25_pass2",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1card25_pass",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
@@ -319,7 +355,7 @@
         },
         {
           "@id": "#1card2_pass2",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1card2_pass",
           "comment": "<S> { <p1> .{2} } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
@@ -331,7 +367,7 @@
         },
         {
           "@id": "#1Adot_pass",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1Adot_pass",
           "comment": "<S> { a . } on { <s> a <o1> }",
           "status": "mf:proposed",
@@ -342,8 +378,20 @@
           "result": "1Adot_pass.val"
         },
         {
+          "@id": "#1dotCode1_pass",
+          "@type": "sht:ValidationTest",
+          "name": "1dot_pass",
+          "comment": "<S> { <p1> . %semAct1{ code1 %} } on { <s> <p1> <o1> }",
+          "status": "mf:proposed",
+          "schema": "../schemas/1dotCode1.shex",
+          "shape": "http://a.example/IssueShape",
+          "data": "IIssue1_Ip1_Io1.ttl",
+          "focus": "http://a.example/Issue1",
+          "result": "1dotCode1_pass.val"
+        },
+        {
           "@id": "#1dot_missing",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1dot_missing",
           "comment": "<S> { <p1> . } on { <s> <p2> <o1> }",
           "status": "mf:proposed",
@@ -353,20 +401,20 @@
           "focus": "http://a.example/Issue1"
         },
         {
-          "@id": "#1dotAnnot3_pass",
-          "@type": "shext:ValidationTest",
-          "name": "1dot_pass",
-          "comment": "<S> { <p1> . ... } on { <s> <p1> <o1> }",
+          "@id": "#1dot_extra_higher",
+          "@type": "sht:ValidationTest",
+          "name": "1dot_extra",
+          "comment": "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dotAnnot3.shex",
+          "schema": "../schemas/1dot.shex",
           "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1.ttl",
+          "data": "IIssue1_Ip1_Io1;Ip2_Io2.ttl",
           "focus": "http://a.example/Issue1",
-          "result": "1dotAnnot3_pass.val"
+          "result": "1dot_pass.val"
         },
         {
           "@id": "#iovka",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "iovka",
           "comment": "@@ iovka",
           "status": "mf:proposed",
@@ -377,20 +425,8 @@
           "result": "iovka.val"
         },
         {
-          "@id": "#1dot_extra_lower",
-          "@type": "shext:ValidationTest",
-          "name": "1dot_extra",
-          "comment": "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1dot.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip0_Io0;Ip1_Io1.ttl",
-          "focus": "http://a.example/Issue1",
-          "result": "1dot_pass.val"
-        },
-        {
           "@id": "#1dot_pass",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "1dot_pass",
           "comment": "<S> { <p1> . } on { <s> <p1> <o1> }",
           "status": "mf:proposed",
@@ -402,7 +438,7 @@
         },
         {
           "@id": "#1dotAnnot3_missing",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1dot_missing",
           "comment": "<S> { <p1> . ... } on { <s> <p2> <o1> }",
           "status": "mf:proposed",
@@ -413,7 +449,7 @@
         },
         {
           "@id": "#1card2_fail0",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1card2_pass",
           "comment": "<S> { <p1> .{2} } on {  }",
           "status": "mf:proposed",
@@ -423,8 +459,41 @@
           "focus": "http://a.example/Issue1"
         },
         {
+          "@id": "#1dotRef1_extraReferrer,extraReferent",
+          "@type": "sht:ValidationFailure",
+          "name": "1dotRef1_",
+          "comment": "<n2> in { <n2> <p2> <n1>, <n3> . <n1> <p1> X . <n3> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
+          "status": "mf:proposed",
+          "schema": "../schemas/1dotRef1.shex",
+          "shape": "http://a.example/EmployeeShape",
+          "data": "In2_Ip2_In1.In2_Ip2_In3.In1_Ip1_LX.In3_Ip1_LX.ttl",
+          "focus": "http://a.example/n2"
+        },
+        {
+          "@id": "#1dotRef1_extraReferrer",
+          "@type": "sht:ValidationFailure",
+          "name": "1dotRef1_",
+          "comment": "<n2> in { <n2> <p2> <n1>, <n3> . <n1> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
+          "status": "mf:proposed",
+          "schema": "../schemas/1dotRef1.shex",
+          "shape": "http://a.example/EmployeeShape",
+          "data": "In2_Ip2_In1.In2_Ip2_In3.In1_Ip1_LX.ttl",
+          "focus": "http://a.example/n2"
+        },
+        {
+          "@id": "#1dotRef1_missingReferent",
+          "@type": "sht:ValidationFailure",
+          "name": "1dotRef1_",
+          "comment": "<n2> in { <n2> <p2> <n1> } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
+          "status": "mf:proposed",
+          "schema": "../schemas/1dotRef1.shex",
+          "shape": "http://a.example/EmployeeShape",
+          "data": "In2_Ip2_In1.ttl",
+          "focus": "http://a.example/n2"
+        },
+        {
           "@id": "#1val2IRIREFExtra1iri",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1val2IRIREFExtra1iri",
           "comment": "<S> EXTRA <p1> { <p1> (<o1> <o2>) } on { <s> <p1> <o1>, <o2> }",
           "status": "mf:proposed",
@@ -434,8 +503,19 @@
           "focus": "http://a.example/Issue1"
         },
         {
+          "@id": "#1literalPlus_IIssue1_Ip1_La,Io1",
+          "@type": "sht:ValidationFailure",
+          "name": "1literal_extra",
+          "comment": "<S> { <p1> LITERAL+ } on { <s> <p1> 'a', <o2> }",
+          "status": "mf:proposed",
+          "schema": "../schemas/1literalPlus.shex",
+          "shape": "http://a.example/IssueShape",
+          "data": "IIssue1_Ip1_La,Io1.ttl",
+          "focus": "http://a.example/Issue1"
+        },
+        {
           "@id": "#1dotClosed_fail_higher",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1dot_extra",
           "comment": "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }",
           "status": "mf:proposed",
@@ -446,7 +526,7 @@
         },
         {
           "@id": "#1dotClosed_fail_lower",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1dot_extra",
           "comment": "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }",
           "status": "mf:proposed",
@@ -457,7 +537,7 @@
         },
         {
           "@id": "#1datatypeLength_long",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1datatypeLength_pass",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 123456 }",
           "status": "mf:proposed",
@@ -468,7 +548,7 @@
         },
         {
           "@id": "#1datatypeLength_short",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1datatypeLength_pass",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 1234 }",
           "status": "mf:proposed",
@@ -479,7 +559,7 @@
         },
         {
           "@id": "#1datatypeLength_wrongDatatype",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1datatypeLength_missing",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 1.234 }",
           "status": "mf:proposed",
@@ -490,7 +570,7 @@
         },
         {
           "@id": "#1datatypeLength_missing",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1datatypeLength_missing",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p2> <o1> }",
           "status": "mf:proposed",
@@ -501,7 +581,7 @@
         },
         {
           "@id": "#1datatype_wrongDatatype",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1datatype_wrongDatatype",
           "comment": "<S> { <p1> xs:integer } on <s> in { <s> <p1> 1.234 }",
           "status": "mf:proposed",
@@ -512,7 +592,7 @@
         },
         {
           "@id": "#1datatype_nonLiteral",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1datatype_nonLiteral",
           "comment": "<S> { <p1> xs:integer } on <s> in { <s> <p1> <o1> }",
           "status": "mf:proposed",
@@ -523,7 +603,7 @@
         },
         {
           "@id": "#1datatype_missing",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1datatype_missing",
           "comment": "<S> { <p1> xs:integer } on <s> in { <s> <p2> <o1> }",
           "status": "mf:proposed",
@@ -534,7 +614,7 @@
         },
         {
           "@id": "#1cardPlus_fail0",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1cardPlus_fail0",
           "comment": "<S> { <p1> .+ } on {  }",
           "status": "mf:proposed",
@@ -545,7 +625,7 @@
         },
         {
           "@id": "#1card2Star_fail1",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1card2Star_pass",
           "comment": "<S> { <p1> .{2,*} } on { <s> <p1> 'a' }",
           "status": "mf:proposed",
@@ -556,7 +636,7 @@
         },
         {
           "@id": "#1card2Star_fail0",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1card2Star_pass",
           "comment": "<S> { <p1> .{2,*} } on {  }",
           "status": "mf:proposed",
@@ -567,7 +647,7 @@
         },
         {
           "@id": "#1card25_fail6",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1card25_pass",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c','d','e','f' }",
           "status": "mf:proposed",
@@ -578,7 +658,7 @@
         },
         {
           "@id": "#1card25_fail1",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1card25_pass",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a' }",
           "status": "mf:proposed",
@@ -589,7 +669,7 @@
         },
         {
           "@id": "#1card25_fail0",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1card25_pass",
           "comment": "<S> { <p1> .{2,5} } on {  }",
           "status": "mf:proposed",
@@ -600,7 +680,7 @@
         },
         {
           "@id": "#1card2_fail3",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1card2_fail3",
           "comment": "<S> { <p1> .{2} } on { <s> <p1> 'a','b','c' }",
           "status": "mf:proposed",
@@ -611,7 +691,7 @@
         },
         {
           "@id": "#1card2_fail1",
-          "@type": "shext:ValidationFailure",
+          "@type": "sht:ValidationFailure",
           "name": "1card2_pass",
           "comment": "<S> { <p1> .{2} } on { <s> <p1> 'a' }",
           "status": "mf:proposed",
@@ -622,7 +702,7 @@
         },
         {
           "@id": "#skipped",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "skipped",
           "comment": "@@ skipped",
           "status": "mf:proposed",
@@ -634,7 +714,7 @@
         },
         {
           "@id": "#repeated-group",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "repeated-group",
           "comment": "@@ repeated-group",
           "status": "mf:proposed",
@@ -646,7 +726,7 @@
         },
         {
           "@id": "#simple-group",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "simple-group",
           "comment": "@@ simple-group",
           "status": "mf:proposed",
@@ -658,11 +738,11 @@
         },
         {
           "@id": "#open3groupdotclosecard23Annot3Code2-p1p2p3X2",
-          "@type": "shext:ValidationTest",
+          "@type": "sht:ValidationTest",
           "name": "open3groupdotclosecard23Annot3Code2-p1p2p3X2",
           "comment": "@@ open3groupdotclosecard23Annot3Code2-p1p2p3X2",
           "status": "mf:proposed",
-          "schema": "open3groupdotclosecard23Annot3Code2.shex",
+          "schema": "../schemas/open3groupdotclosecard23Annot3Code2.shex",
           "shape": "http://a.example/IssueShape",
           "data": "p1p2p3X2.ttl",
           "focus": "x",

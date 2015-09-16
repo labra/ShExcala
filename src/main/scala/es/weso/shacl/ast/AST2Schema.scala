@@ -171,11 +171,10 @@ object AST2Schema {
    }
  }
  
- def cnvMax(min:Int, max: Either[Int,String]): Cardinality = {
-   max match {
-     case Right("*") => UnboundedCardinalityFrom(min)
-     case Left(num) => RangeCardinality(min,num)
-     case _ => throw AST2SchemaException(s"Unsupported value of max: max")
+ def cnvMax(min:Int, max: MaxAST): Cardinality = {
+   max.v match {
+     case None => UnboundedCardinalityFrom(min)
+     case Some(num) => RangeCardinality(min,num)
    }
  } 
  

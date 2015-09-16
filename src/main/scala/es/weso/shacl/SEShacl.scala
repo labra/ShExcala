@@ -51,6 +51,9 @@ object SEShacl {
       case SomeOf(_,shapes) => {
        shapes.map(shapeExpr2rbe).reduce((rbe,rest) => Or(rbe,rest))
       }
+      case RepetitionShape(_,shape,card,_,_) => {
+        Repeat(shapeExpr2rbe(shape),card.getMin,IntOrUnbounded(card.getMax))
+      }
       case _ => 
         throw SEShaclException(s"shapeExpr2rbe: unsupported shape expression: $se")
     }

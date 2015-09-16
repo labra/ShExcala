@@ -16,10 +16,7 @@ import es.weso.utils.testUtils._
 class Driver extends FunSpec with Matchers with TryValues with TestUtils {
 
   val conf: Config = ConfigFactory.load()
-  val testsDir = conf.getString("shexSyntaxTestsFolder")
-  val parsedSchemasDir = testsDir + "parsedSchemas"
-  val schemasDir = testsDir + "schemas"
-  val negativeSyntaxDir = testsDir + "negativeSyntax"
+  val validationsDir = conf.getString("validations")
 
   def str2ValAST(str: String): Try[ValAST] = {
     Try{
@@ -31,21 +28,21 @@ class Driver extends FunSpec with Matchers with TryValues with TestUtils {
   }
 
 
-  def file2AST(file: File): Try[ValAST] = {
+  def file2AST(file: File): Try[Validation] = {
     Try {
       val contents = io.Source.fromFile(file)("UTF-8").mkString
-      val parsed = Parse.decodeValidation[ValAST](contents)
+      val parsed = Parse.decodeValidation[Validation](contents)
       parsed.fold(_ =>
         throw new Exception(s"Error parsing ${file.getName()}: $parsed"),
         x => x)
     }
   }
 
-/*  def getParsedSchemas(jsonSchemasDir: String): List[(File, Json)] = {
-    parseFolderFiles(jsonSchemasDir, file2json)
-  } */
+  def getValidations(validationsDir: String): List[(File, Json)] = {
+    parseFolderFilesWithExt(validationsDir, file2json,"val")
+  } 
   
-  def astFile(file: File): Try[ValAST] = {
+  def astFile(file: File): Try[Validation] = {
     trying("Reading AST", file2AST(file))
   }
  

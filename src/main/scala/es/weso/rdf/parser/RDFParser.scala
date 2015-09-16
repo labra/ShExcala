@@ -82,7 +82,6 @@ trait RDFParser {
     n match {
       case `rdf_nil` => Success(List())
       case x => {
-        println("rdfList...n = " + n)
         for {
           elem <- objectFromPredicate(rdf_first)(n, rdf)
           next <- objectFromPredicate(rdf_rest)(n, rdf)
@@ -187,7 +186,8 @@ trait RDFParser {
             case Success(rs) => {
               parser(node, rdf) match {
                 case Success(a) => Success(a +: rs)
-                case Failure(f) => throw new Exception("group: Unimplemented parsing node " + node + " Exception: " + f.getMessage) // TODO
+                case Failure(f) => 
+                  throw RDFParserException("group: Unimplemented parsing node " + node + "\nException: " + f.getMessage) // TODO
               }
             }
             case _ => s

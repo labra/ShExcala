@@ -47,7 +47,8 @@ case class ShaclResult(value: Try[Seq[PosNegTyping[RDFNode, Label]]])
     t.asMap.mapValues(tr => (tr.posLabels.toSeq, tr.negLabels.toSeq))
   }
 
-  override def isValid: Boolean = !value.isFailure
+  override def isFailure: Boolean = value.isFailure || value.get.isEmpty
+  override def isValid: Boolean = !isFailure
 
   override def orElse(other: => ValidationResult[RDFNode, Label, Throwable]): ValidationResult[RDFNode, Label, Throwable] = {
     other match {

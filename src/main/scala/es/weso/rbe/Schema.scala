@@ -17,11 +17,12 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
   // These types are specialized versions of the general types for readability
   type RBE_ = Sorbe[(Edge,NodeShape[Label,Node,Err])] 
   type Table_ = Table[Edge,Node,Label,Err]
+  type Arc_ = (Node,Edge,Node)
   type OutNeigh_ = Seq[(Edge,Node)]
-  type Candidate_ = Candidate[Node,Label]
+  type Candidate_ = Candidate[Edge,Node,Label]
   type Candidates_ = Seq[Option[Candidate_]]
   type Typing_ = PosNegTyping[Node,Label]
-  type SingleResult_ = (Typing_,Seq[(Edge,Node)])
+  type SingleResult_ = (Typing_,Seq[(Node,Edge,Node)])
   type Result_ = Try[Seq[SingleResult_]]
   type Graph_ = Graph[Edge,Node]
   type Schema_ = Schema[Edge,Node,Label,Err]
@@ -93,23 +94,30 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
          val (t,r) = mkTableAux(s,current)
          (t, Star(r))
        }
+       case Repeat(s,n,m) => {
+         val (t,r) = mkTableAux(s,current)
+         (t, Repeat(r,n,m))
+       }
+       case _ => throw SESchemaException(s"mkTableAux: Unsupported rbe: $rbe")
     }
   }
   
-  private def checkCandidate(shape: NodeShape[Label,Node,Err], node: Node, c: ConstraintRef): Candidate_ = {
-        println(s"Check candidate with shape $shape")
+  private def checkCandidate(
+      shape: NodeShape[Label,Node,Err], node: Node, edge: Edge, obj: Node, c: ConstraintRef): Candidate_ = {
+        println(s"Check candidate $c with shape $shape. Edge: $edge, node: $node")
     shape match {
-      case Ref(label) => Pending(c,node,label)  // Possible optimization if Ref has already been checked
+      case Ref(label) => 
+        Pending(c,obj,label,(node,edge,obj))  // Possible optimization if Ref has already been checked
       case p: Pred[Node,Err] => {
-            println(s"Checking condition with node $node and predicate ${p.name}")
-        p.pred(node).fold(
+        println(s"Checking condition with obj $obj and predicate ${p.name}")
+        p.pred(obj).fold(
             (x: Node) => {
                  println(s"Condition satisfied with node $x")
-             Pos(c) 
+             Pos(c,(node,edge,obj))
             },
             (y:Seq[Err]) => {
-             println(s"Condition failed on $node with predicate ${p.name}. Error = $y")
-             Neg(c)  // TODO: Integrate error messages 
+             println(s"Condition failed on $obj with predicate ${p.name}. Error = $y")
+             Neg(c,(node,edge,obj))  // TODO: Check how to integrate error messages 
             }
         )
       } 
@@ -128,31 +136,33 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     }
   }
   
-  def possibleCandidates(table: Table_, pair: (Edge,Node)): Seq[Candidate_] = {
-    val (edge,node) = pair
+  def possibleCandidates(table: Table_, node: Node, pair: (Edge,Node)): Seq[Candidate_] = {
+    val (edge,obj) = pair
     lookupEdgeConstraints(table, edge).map(c => 
-      checkCandidate(lookupConstraintShape(table, c),node,c)
+      checkCandidate(lookupConstraintShape(table, c),node,edge,obj,c)
     )
   }
   
-  def candidates(table: Table_, out: OutNeigh_): Seq[Seq[Candidate_]] = {
-    out.map(pair => possibleCandidates(table,pair))
+  def candidates(table: Table_, node: Node, out: OutNeigh_): Seq[Seq[Candidate_]] = {
+    out.map(pair => possibleCandidates(table,node,pair))
   }
   
   def filterCandidates(
       table: Table_, 
-      out: OutNeigh_, 
+      out: OutNeigh_,
+      node: Node,
       sorbe: Sorbe[ConstraintRef],
       open:Boolean): Seq[Seq[Option[Candidate_]]] = {
-    val css = zipCandidates(table,out)
-    css.filter(cs => checkCandidate(cs,sorbe,open))
+    val css = zipCandidates(table,node,out)
+    css.filter(cs => matchCandidateSorbe(cs,sorbe,open))
   }
   
   private def pending(cs: Seq[Option[Candidate_]]): Seq[(Node,Label)] = {
-    cs.filter(c => c.isDefined && c.get.isPending).map{ case c => c.get match {
-      case Pending(c,n,l) => (n,l)
-      case _ => throw SESchemaException(s"pending: Unexpected value: $c")
-    }}
+    cs.filter(c => c.isDefined && c.get.isPending).
+       map{ case c => c.get match {
+        case Pending(c,n,l,arc) => (n,l)
+        case _ => throw SESchemaException(s"pending: Unexpected value: $c")
+       }}
   }
   
   private def pendings(css: Seq[Candidates_]): Seq[(Node,Label)] = {
@@ -164,9 +174,12 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     !css.isEmpty && pendings(css).isEmpty
   } */
   
-  private def checkCandidate(cs: Seq[Option[Candidate_]], sorbe: Sorbe[ConstraintRef], open: Boolean): Boolean = {
+  private def matchCandidateSorbe(cs: Seq[Option[Candidate_]], 
+      sorbe: Sorbe[ConstraintRef], 
+      open: Boolean): Boolean = {
     println(s"--Checking candidate: $cs with sorbe: $sorbe. Bag: ${candidatesToBag(cs)}. Interval: ${sorbe.interval(candidatesToBag(cs))}")
-    val b = !containsContradictions(cs) && sorbe.contains(candidatesToBag(cs),open)
+    val b = !containsContradictions(cs) && 
+            sorbe.contains(candidatesToBag(cs),open)
     println(s"--Result of checking candidate $cs with $sorbe = $b")
     b
   }
@@ -185,17 +198,18 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     Bag.toBag(cs.filter(x => x.isDefined && x.get.sign == 1).map(_.get.value))
   }
 
-  def zipCandidates(table: Table_, out: Seq[(Edge,Node)]): Seq[Seq[Option[Candidate_]]] = {
-    zipN(candidates(table,out))
+  def zipCandidates(table: Table_, node: Node, out: Seq[(Edge,Node)]): Seq[Seq[Option[Candidate_]]] = {
+    zipN(candidates(table,node, out))
   }
   
   private def calculateCandidates(
       table: Table_, 
       out: OutNeigh_, 
       sorbe: Sorbe[ConstraintRef],
+      node: Node,
       open: Boolean): Try[Seq[Candidates_]] = {
     Try{
-     filterCandidates(table,out,sorbe,open) 
+     filterCandidates(table,out,node,sorbe,open) 
     }
   }
   
@@ -203,27 +217,48 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     t1.combine(t2)
   }
   
-  private def resolveCandidate(g: Graph_,s:Schema_)(
-      rest: Result_, 
-      c: Option[Candidate_]): Result_ = {
+  private def resolveCandidate(
+      n: Node, 
+      g: Graph_,
+      s:Schema_)(
+      c: Option[Candidate_],
+      rest: Result_ 
+      ): Result_ = {
     c match {
-      case None => rest
-      case Some(Pending(c,node,label)) => rest match {
+      case None => {
+       rest 
+      }
+      case Some(Pending(c,obj,label,arc)) => rest match {
         case Failure(e) => Failure(e)
         case Success(results) => {
-          val rs = results.map(result => matchNodeInTyping(node,label,g,result))
+          val rs = results.map(result => matchNodeInTyping(obj,label,g,result))
           val f = filterSuccess(rs)
-          f.map(t => t.flatten)
+          val r = f.map(t => t.flatten)
+          addArcResult(arc,r)
         } 
       }
       
-      case Some(_) => 
+      case Some(Pos(ref,arc)) => { 
         // Basic matching with no pending
         // TODO: Accumulate triples checked?
+        println(s"Basic candidate matched. Constraint: $ref, node: $n, arc: $arc" )
+        addArcResult(arc,rest)
+      }
+      case Some(Neg(ref,arc)) => { 
+        // TODO: Throw exception?
+        println(s"Neg candidate: $ref. Node: $n. Arc = $arc")
         rest
+      }
+
     }
   }
   
+  private def addArcResult(arc: Arc_, result: Result_): Result_ = {
+    result match {
+      case Success(rs) => Success(rs.map((pair) => (pair._1,arc +: pair._2)))
+      case f@Failure(_) => f
+    }
+  }
   private def resolveCandidates(
       cs: Candidates_, 
       node: Node, 
@@ -234,7 +269,7 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     // TODO: Check if we can return triples instead of Seq()
     val checked = Seq()
     val zero : Result_ = t.addPosType(node, label).map(t => Seq((t,checked))) 
-    cs.foldLeft(zero)(resolveCandidate(g,s))
+    cs.foldRight(zero)(resolveCandidate(node, g, s))
   }
   
   // TODO: Move to utils 
@@ -254,7 +289,8 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
       g: Graph_,
       s: Schema_,
       currentTyping: Typing_): Result_ = {
-  val attempts : Seq[Result_] = css.map(cs => resolveCandidates(cs,node,label,g,s,currentTyping))
+  val attempts : Seq[Result_] = 
+    css.map(cs => resolveCandidates(cs,node,label,g,s,currentTyping))
   filterSuccessSeqFlatten(attempts)
   }
   
@@ -281,13 +317,21 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     for {
       (table,sorbe) <- mkTable(label)
       val open = !m(label).closed
-      allCandidates <- calculateCandidates(table,out,sorbe,open)
+      allCandidates <- calculateCandidates(table,out,sorbe,node,open)
       newTyping <- currentTyping.addPosType(node,label)
-      typings <- resolveAllCandidates(allCandidates, node, label, graph, this, newTyping)
+      results <- resolveAllCandidates(allCandidates, node, label, graph, this, newTyping)
     } yield {
-      typings
+      if (m(label).closed) {
+        // filter out results that don't affect all triples in out neighbourhood 
+        results.filter(r => containsAllTriples(node,out,r._2))
+      } else results
     }
   }
+  }
+  
+  def containsAllTriples(node: Node, out: Seq[(Edge,Node)], triples: Seq[(Node,Edge,Node)]): Boolean = {
+    val arcsWithNode = triples.filter(_._1 == node).map(triple => (triple._2,triple._3))
+    out.forall(arcsWithNode contains _)
   }
   
   def matchNode(

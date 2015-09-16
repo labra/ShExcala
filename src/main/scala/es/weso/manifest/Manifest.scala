@@ -20,6 +20,8 @@ case class Entry(
 sealed trait EntryType
 final case object Validate extends EntryType
 final case object MatchNodeShape extends EntryType
+final case object ValidationTest extends EntryType
+final case object ValidationFailure extends EntryType
 final case object WellFormedSchema extends EntryType
 final case object NonWellFormedSchema extends EntryType
 final case object ConvertSchemaSyntax extends EntryType
@@ -75,6 +77,11 @@ final case class NotValidResult(
 final case class BooleanResult(
     value: Boolean
     ) extends Result
+final case class IRIResult(
+    value: IRI
+    ) extends Result
+final case object EmptyResult extends Result
+    
 
 final case class ErrorCondition(
     root: Option[IRI], 

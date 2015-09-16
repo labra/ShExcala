@@ -173,11 +173,11 @@ object Schema2AST {
     if (card == defaultCardinality) None
     else Some(card.getMin)
 
-  def cnvMaxCard(card: Cardinality): Option[Either[Int,String]] =
+  def cnvMaxCard(card: Cardinality): Option[MaxAST] =
     if (card == defaultCardinality) None
     else card.getMax match {
-      case None => Some(Right("*"))
-      case Some(n) => Some(Left(n))
+      case None => Some(MaxAST(None))
+      case Some(n) => Some(MaxAST(Some(n)))
     }
 
   def cnvValueClass(vc: ValueClass): ValueClassAST = {

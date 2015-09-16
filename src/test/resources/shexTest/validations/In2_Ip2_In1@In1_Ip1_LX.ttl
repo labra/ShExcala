@@ -1,0 +1,34 @@
+{
+  "type": "test",
+  "node": "http://a.example/n2",
+  "shape": "http://a.example/EmployeeShape",
+  "solution": {
+    "type": "tripleConstraintSolutions",
+    "predicate": "http://a.example/p2",
+    "value": {
+      "type": "valueClass",
+      "reference": "http://a.example/PersonShape"
+    },
+    "solutions": [
+      {
+        "type": "testedTriple",
+        "subject": "http://a.example/n2",
+        "predicate": "http://a.example/p2",
+        "object": "http://a.example/n1",
+        "referenced": {
+          "type": "test",
+          "node": "http://a.example/n1",
+          "shape": "http://a.example/PersonShape",
+          "solution": {
+            "type": "tripleConstraintSolutions",
+            "predicate": "http://a.example/p1",
+            "value": { "type": "valueClass" },
+            "solutions": [
+              { "type": "testedTriple", "subject": "http://a.example/n1", "predicate": "http://a.example/p1", "object": "\"X\"" }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

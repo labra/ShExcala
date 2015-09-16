@@ -18,6 +18,8 @@ import es.weso.shacl.ast._
 import argonaut._
 import Argonaut._
 import es.weso.rbe._
+import java.net.URI
+import io._
 
 case class Schema(
     pm: PrefixMap,
@@ -78,22 +80,24 @@ object Schema {
   }
  
 
-  def fromString(cs: CharSequence, format: String = "SHEXC"): Try[(Schema, PrefixMap)] = {
+  def fromString(cs: CharSequence, format: String = "SHEXC", base: Option[String] = None): Try[(Schema, PrefixMap)] = {
     format.toUpperCase match {
-      case "SHEXC" | "SHACLC" =>
-        ShaclParser.parse(cs) match {
+      case "SHEXC" | "SHACLC" => {
+        val baseIRI : IRI = IRI(base.getOrElse(""))
+        ShaclParser.parse(cs,baseIRI) match {
           case s @ Success(_) => s
           case Failure(t)     => Failure(throw new Exception("Parsing schema: " + t.getMessage))
         }
-        
-      case ("JSONAST" | "JSON") => for {
+      }
+      case ("JSONAST" | "JSON") => // TODO: Handle base URI for JSON format? 
+       for {
         schemaAST <- str2AST(cs.toString)
         schema <- AST2Schema.cnvAST(schemaAST)
       } yield (schema,schema.pm)
       case x =>
         if (SchemaFormats.available(x)) {
           for {
-            rdf <- RDFAsJenaModel.fromChars(cs, format)
+            rdf <- RDFAsJenaModel.fromChars(cs, format, base)
             (schema, pm) <- RDF2Schema.rdf2Schema(rdf)
           } yield (schema, pm)
         } else
@@ -101,10 +105,19 @@ object Schema {
     }
   }
 
-  def fromFile(fileName: String, format: String): Try[(Schema, PrefixMap)] = {
+  def fromFile(fileName: String, format: String, base: Option[String] = None): Try[(Schema, PrefixMap)] = {
     for (
-      cs <- getContents(fileName); (schema, prefixMap) <- Schema.fromString(cs, format)
+      cs <- getContents(fileName); (schema, prefixMap) <- Schema.fromString(cs, format, base)
     ) yield (schema, prefixMap)
+  }
+
+  def fromURI(uri: URI, format: String, base: Option[String] = None): Try[(Schema, PrefixMap)] = {
+    println(s"Reading contents behind URI: $uri")
+    val cs = Source.fromURI(uri)(Codec.UTF8).mkString
+    println(s"Contents: $cs")
+     for {
+      (schema, prefixMap) <- Schema.fromString(cs, format, base)
+    } yield (schema, prefixMap)
   }
 
 }

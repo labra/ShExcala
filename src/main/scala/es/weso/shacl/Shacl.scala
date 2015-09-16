@@ -14,6 +14,8 @@ import es.weso.utils.{
   _ 
   }
 import Checker._
+import NumericFacetTypeClass._
+
 
 /**
  * Shacl Abstract Syntax
@@ -322,9 +324,9 @@ object Shacl {
     override def token = "IRI"
     
     override def check(node: RDFNode): Check =
-      if (node.isIRI && checkFacets(node,facets).isOK) {
-        ok(node)
-      } else {
+      if (node.isIRI)
+        checkFacets(node,facets)
+      else {
         err(MsgError(s"IRIKind failed: node: $node is not an IRI"))
       }
   }
@@ -333,17 +335,42 @@ object Shacl {
       shapeConstr: Option[ShapeConstr],
       facets: List[StringFacet]) extends NodeKind {
     override def token = "BNode"
+    
+    override def check(node: RDFNode): Check =
+      if (node.isBNode)
+        checkFacets(node,facets) 
+      else {
+        // TODO...pass facets to error message
+        err(MsgError(s"BNodeKind failed: node: $node is not an BNode or doesn't pass facets"))
+      }
+
   }
 
   case class LiteralKind(
       facets: List[XSFacet]) extends NodeKind {
     override def token = "Literal"
+    
+    override def check(node: RDFNode): Check =
+      if (node.isLiteral) {
+        checkFacets(node,facets) 
+      } else {
+        // TODO...pass facets to error message
+        err(MsgError(s"LiteralKind failed: node: $node is not a Literal or doesn't pass facets"))
+      }
   }
 
   case class NonLiteralKind(
       shapeConstr: Option[ShapeConstr],
       facets: List[XSFacet]) extends NodeKind {
     override def token = "NonLiteral"
+
+    override def check(node: RDFNode): Check =
+      if (!node.isLiteral) 
+        checkFacets(node,facets)
+      else {
+        // TODO...pass facets to error message
+        err(MsgError(s"NonLiteralKind failed: node: $node is a Literal or doesn't pass facets"))
+      }
   }
 
   def nodeKindfromIRI(iri: IRI): Try[NodeKind] = {
@@ -361,28 +388,153 @@ object Shacl {
       facets: List[XSFacet]): Check = {
     if (facets.isEmpty) ok(node) 
     else {
-     log.info(s"Unimplemented checkFacets on node $node")
-     err(MsgError("Non supported facets yet")) 
+     Checker.checkValueAll(node, facets.map(_.check _)) 
     }
   }
   
-  sealed trait XSFacet extends Positional
   
+  sealed trait XSFacet extends Positional {
+    def check(node: RDFNode): Check
+  }
 
-  sealed trait NumericFacet extends XSFacet with Positional
-  case class MinInclusive(n: Integer) extends NumericFacet
-  case class MinExclusive(n: Integer) extends NumericFacet
-  case class MaxInclusive(n: Integer) extends NumericFacet
-  case class MaxExclusive(n: Integer) extends NumericFacet
-  case class TotalDigits(n: Integer) extends NumericFacet
-  case class FractionDigits(n: Integer) extends NumericFacet
+  sealed trait NumericFacet extends XSFacet with Positional {
+  }
+  
+  def numericDatatype(dt: IRI): Boolean = {
+    dt match {
+      case `xsd_integer`=> true
+      case `xsd_double`=> true
+      case `xsd_decimal`=> true
+      case _ => false
+    }
+  }
+  
+  case class MinInclusive(n: Integer) extends NumericFacet {
+    import NumericFacetTypeClass._
+    lazy val name="MinInclusive"
+    
+    def check(node: RDFNode): Check = {
+     val cmp = node match {
+       case IntegerLiteral(x) => NumericFacetInteger.minInclusive(x,n)
+       case DecimalLiteral(x) => NumericFacetDecimal.minInclusive(x,n.toDouble)
+       case DoubleLiteral(x) => NumericFacetDouble.minInclusive(x,n.toDouble)
+       case l: Literal if numericDatatype(l.dataType) => 
+         NumericFacetString.minInclusive(l.lexicalForm,n.toString)
+       case _ => err(MsgError(s"MinInclusive($n) failed with node $node"))       
+     }
+     cmp.map(_ => node)
+    }
+  }
+  case class MinExclusive(n: Integer) extends NumericFacet {
+    def check(node: RDFNode): Check = {
+     val cmp = node match {
+       case IntegerLiteral(x) => NumericFacetInteger.minExclusive(x,n)
+       case DecimalLiteral(x) => NumericFacetDecimal.minExclusive(x,n.toDouble)
+       case DoubleLiteral(x) => NumericFacetDouble.minExclusive(x,n.toDouble)
+       case l: Literal if numericDatatype(l.dataType) => 
+         NumericFacetString.minExclusive(l.lexicalForm,n.toString)
+       case _ => err(MsgError(s"MinExclusive($n) failed with node $node"))       
+     }
+     cmp.map(_ => node)
+    }
+    
+  }
+  case class MaxInclusive(n: Integer) extends NumericFacet {
+    def check(node: RDFNode): Check = {
+     val cmp = node match {
+       case IntegerLiteral(x) => NumericFacetInteger.maxInclusive(x,n)
+       case DecimalLiteral(x) => NumericFacetDecimal.maxInclusive(x,n.toDouble)
+       case DoubleLiteral(x) => NumericFacetDouble.maxInclusive(x,n.toDouble)
+       case l: Literal if numericDatatype(l.dataType) => 
+         NumericFacetString.maxInclusive(l.lexicalForm,n.toString)
+       case _ => err(MsgError(s"MaxInclusive($n) failed with node $node"))       
+     }
+     cmp.map(_ => node)
+    }
+  }
+  case class MaxExclusive(n: Integer) extends NumericFacet {
+    def check(node: RDFNode): Check = {
+     val cmp = node match {
+       case IntegerLiteral(x) => NumericFacetInteger.maxExclusive(x,n)
+       case DecimalLiteral(x) => NumericFacetDecimal.maxExclusive(x,n.toDouble)
+       case DoubleLiteral(x) => NumericFacetDouble.maxExclusive(x,n.toDouble)
+       case l: Literal if numericDatatype(l.dataType) => 
+         NumericFacetString.maxExclusive(l.lexicalForm,n.toString)
+       case _ => err(MsgError(s"MaxExclusive($n) failed with node $node"))       
+     }
+     cmp.map(_ => node)
+    } 
+  }
+  case class TotalDigits(n: Integer) extends NumericFacet {
+    def check(node: RDFNode): Check = {
+     val cmp = node match {
+       case IntegerLiteral(x) => NumericFacetInteger.checkTotalDigits(x,n)
+       case DecimalLiteral(x) => NumericFacetDecimal.checkTotalDigits(x,n)
+       case DoubleLiteral(x) => NumericFacetDouble.checkTotalDigits(x,n)
+       case l: Literal if numericDatatype(l.dataType) => 
+         NumericFacetString.checkTotalDigits(l.lexicalForm,n)
+       case _ => err(MsgError(s"CheckTotalDigits($n) failed with node $node"))       
+     }
+     cmp.map(_ => node)
+    } 
+  }
+  case class FractionDigits(n: Integer) extends NumericFacet{
+    def check(node: RDFNode): Check = {
+     val cmp = node match {
+       case IntegerLiteral(x) => NumericFacetInteger.checkFractionDigits(x,n)
+       case DecimalLiteral(x) => NumericFacetDecimal.checkFractionDigits(x,n)
+       case DoubleLiteral(x) => NumericFacetDouble.checkFractionDigits(x,n)
+       case l: Literal if numericDatatype(l.dataType) => 
+         NumericFacetString.checkFractionDigits(l.lexicalForm,n)
+       case _ => err(MsgError(s"checkFractionDigits($n) failed with node $node"))       
+     }
+     cmp.map(_ => node)
+    }
+  }
 
   sealed trait StringFacet extends XSFacet with Positional
+  
+  // TODO: Move this method to RDF utils...
+  def lexicalForm(node: RDFNode): String = {
+    node match {
+      case l: Literal => l.lexicalForm
+      case i: IRI => i.str
+      case b: BNodeId => b.id
+    }
+  }
 
-  case class Pattern(regex: String) extends StringFacet
-  case class Length(n: Integer) extends StringFacet
-  case class MinLength(n: Integer) extends StringFacet
-  case class MaxLength(n: Integer) extends StringFacet
+  case class Pattern(regexStr: String) extends StringFacet {
+    def check(node: RDFNode): Check = {
+     val regex = regexStr.r
+     val str = lexicalForm(node)
+     str match {
+         case regex(_ *) => ok(node)
+         case _ => err(MsgError(s"Facet pattern($regex) doesn't match node $node with lexical form $str"))
+       }
+     }
+    }
+  
+  case class Length(n: Integer) extends StringFacet {
+    def check(node: RDFNode): Check = {
+     val str = lexicalForm(node)
+     if (str.length == n) ok(node)
+     else err(MsgError(s"Facet length($n) doesn't match node $node with lexical form $str"))
+     }
+  }
+  case class MinLength(n: Integer) extends StringFacet {
+    def check(node: RDFNode): Check = {
+     val str = lexicalForm(node)
+     if (str.length >= n) ok(node)
+     else err(MsgError(s"Facet MinLength($n) doesn't match node $node with lexical form $str"))
+     }
+  }
+  case class MaxLength(n: Integer) extends StringFacet {
+    def check(node: RDFNode): Check = {
+     val str = lexicalForm(node)
+     if (str.length <= n) ok(node)
+     else err(MsgError(s"Facet MaxLength($n) doesn't match node $node with lexical form $str"))
+     }
+  }
 
   // Does this function already exist?
   def all[A](ls: List[A], check: A => Boolean): Boolean = {

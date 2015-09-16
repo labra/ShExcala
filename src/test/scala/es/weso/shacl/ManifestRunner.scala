@@ -17,9 +17,19 @@ trait ManifestRunner
      with Matchers
      with Logging {
   
+  def runTestByName(mf: Manifest, base: String, name:String): Unit = {
+    it ("Should pass entry: " + name) {
+    val entriesWithName = mf.entries.filter(_.name == name)
+    if (entriesWithName.isEmpty) {
+      fail(s"Not found entry $name")  
+    } else 
+        runEntry(entriesWithName.head, base)      
+    }
+  }
+
   def runTests(mf: Manifest, base: String): Unit = {
     for(entry <- mf.entries) {
-      it ("Entry: " + entry.name) {
+      it ("Should pass entry: " + entry.name) {
         runEntry(entry, base)      
       }
     }
@@ -50,6 +60,52 @@ trait ManifestRunner
           case Failure(e) => fail("Exception: " + e.getMessage)
         }
       }
+      case ValidationTest => {
+        info("Entry: " + entry.name + " - result " + entry.result)
+        val action = entry.action
+        info("Action: " + action)
+        val attempt = for {
+          schema <- extractSchema(action, base)
+          rdf <- extractRDF(action, base)
+          node <- extractNode(action)
+          label <- extractLabel(action)
+          matcher <- Try{ ShaclMatcher(schema,rdf) }
+          result <- Try(matcher.match_node_label(node)(label))
+          _ <- Try(info("Result " + result))
+          expected <- Try(entry.result.asBoolean.getOrElse(true))
+        } yield (result,expected)
+
+        attempt match {
+          case Success((result,expected)) => {
+            val validationResult : Boolean = result.isValid
+            validationResult should be(expected) 
+          } 
+          case Failure(e) => fail("Exception: " + e.getMessage)
+        }
+      }
+      case ValidationFailure => {
+        info("Entry to fail: " + entry.name + " must fail. Result " + entry.result)
+        val action = entry.action
+        info("Action to fail: " + action)
+        val attempt = for {
+          schema <- extractSchema(action, base)
+          rdf <- extractRDF(action, base)
+          node <- extractNode(action)
+          label <- extractLabel(action)
+          matcher <- Try{ ShaclMatcher(schema,rdf) }
+          result <- Try(matcher.match_node_label(node)(label))
+          _ <- Try(info("Result that should be a failure: " + result))
+        } yield (result)
+
+        attempt match {
+          case Success(result) => {
+            val validationResult : Boolean = result.isValid
+            info("Checking that it fails")
+            validationResult should be(false) 
+          } 
+          case Failure(e) => info("Exception: " + e.getMessage)
+        }
+      }
       case _ => {
         log.error("Unsupported entry type: " + entry.entryType)
       }
@@ -57,12 +113,15 @@ trait ManifestRunner
   }
   
   def extractSchema(action: ManifestAction, base: String): Try[Schema] = {
-    println("Extracting schema...")
+    println(s"Extracting schema...${action.schema.get.str} with base $base")
     for {
       schema <- Try(action.schema.get)
       schemaFormat <- Try(action.schemaFormat.getOrElse(SchemaFormats.default))
       val schemaFilename = relativize(schema, base)
-      (schema,pm) <- Schema.fromFile(schemaFilename, schemaFormat)
+      (schema,pm) <- {
+         println(s"Schema file name: $schemaFilename")
+         Schema.fromURI(new java.net.URI(schemaFilename), schemaFormat, Some(base))
+        }
     } yield {
       println("Schema: " + schema)
       schema
@@ -70,13 +129,12 @@ trait ManifestRunner
   }
 
   def extractRDF(action: ManifestAction, base: String): Try[RDFReader] = {
-    println("Extracting data...")
+    println(s"Extracting RDF...${action.data.get.str} with base $base")
     for {
       data <- Try(action.data.get)
       dataFormat <- Try(action.dataFormat.getOrElse(DataFormats.default))
-      val dataFilename = relativize(data, base)
-      cs <- getContents(dataFilename)
-      rdf <- RDFAsJenaModel.fromChars(cs,dataFormat)
+      val dataUri = relativize(data, base)
+      rdf <- RDFAsJenaModel.fromURI(dataUri,dataFormat,Some(base))
     } yield {
       println("RDF: " + rdf)
      rdf 
@@ -98,8 +156,9 @@ trait ManifestRunner
   }
   
   def relativize(iri: IRI, base: String): String = {
-    val iriLocal = iri.str.stripPrefix("http://www.w3.org/ns/")
-    base + iriLocal
+//    val iriLocal = iri.str.stripPrefix("http://www.w3.org/ns/")
+//    base + iriLocal
+    iri.str
   }
   
 }

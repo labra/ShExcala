@@ -8,10 +8,11 @@ import StringGraph._
 
 class SESchemaTest extends FunSpec with Matchers with TryValues {
   
-  def any: NodeShape[String,String,Err] = NodeShape.any
+/*  def any: NodeShape[String,String,Err] = NodeShape.any
   
   def ref(n: Int) = ConstraintRef(value = n)
 
+  
     describe("Candidates of :a int") {
 
       // S { :a int, (:b any + | :a any) }
@@ -30,6 +31,9 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       }
 
       it("Candidates of (:a 1)") {
+        assertResult(Seq(Seq(Pos(ref(1))))) {
+          schema.candidates(table, Seq(("a", "2")))
+        }
         assertResult(Seq(Seq(Neg(ref(1))))) {
           schema.candidates(table, Seq(("a", "x")))
         }
@@ -377,5 +381,5 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
       fail(s"Values are different\n$s1\n$s2")
     }
   }
-
+*/
 }
