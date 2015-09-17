@@ -21,6 +21,9 @@ trait IntOrUnbounded {
   def isUnbounded : Boolean
   
   def +(other: => IntOrUnbounded):IntOrUnbounded
+  
+  def minusOne: IntOrUnbounded
+  
   def hasLimit = !isUnbounded
   def getLimit: Int
   
@@ -89,6 +92,9 @@ case object Unbounded extends IntOrUnbounded {
   def +(other: => IntOrUnbounded): IntOrUnbounded = 
     Unbounded
     
+  def minusOne: IntOrUnbounded = 
+    Unbounded    
+    
   def getLimit = 
     throw IntervalsException("Cannot get limit of Unbounded value")
   
@@ -109,6 +115,9 @@ case class IntLimit(m: Int) extends IntOrUnbounded {
     else Unbounded
   }
   
+  def minusOne: IntOrUnbounded = 
+    IntLimit(m - 1)
+    
   def getLimit:Int = m
 }
 

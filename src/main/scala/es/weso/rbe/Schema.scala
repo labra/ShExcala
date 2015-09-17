@@ -179,7 +179,7 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
       open: Boolean): Boolean = {
     println(s"--Checking candidate: $cs with sorbe: $sorbe. Bag: ${candidatesToBag(cs)}. Interval: ${sorbe.interval(candidatesToBag(cs))}")
     val b = !containsContradictions(cs) && 
-            sorbe.contains(candidatesToBag(cs),open)
+            sorbe.containsWithRepeats(candidatesToBag(cs),open)
     println(s"--Result of checking candidate $cs with $sorbe = $b")
     b
   }

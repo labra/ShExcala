@@ -11,17 +11,17 @@ import es.weso.rdf.validator._
 
 class ValidateSingle extends FunSpec with Matchers with ValidTester {
   describe("Single Test") {
-    it("Should be valid triple with any") {
+    it("Should be valid single") {
       val strData =
         """|@prefix : <http://example.org/> .
-           |:x :p 123, 124 .
+           |:x :a 1; :b 1; :b 1; :c 1; :c 2 .
            |""".stripMargin
 
       val strSchema =
         """|prefix : <http://example.org/>
            |prefix xsd: <http://www.w3.org/2001/XMLSchema#>
            |
-           |<S> { :p xsd:integer PATTERN "\\d{3}" MININCLUSIVE 123 MAXExclusive 124 + }
+           |<S> { (:a . ,:b .)+ , :c . } 
            |""".stripMargin
 
       shouldBeValid(strSchema, strData,"http://example.org/x","S")

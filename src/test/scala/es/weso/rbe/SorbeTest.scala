@@ -11,7 +11,7 @@ import org.scalacheck._
 
 class SorbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks {
   
-  describe("Intervals calculation") {
+/*  describe("Intervals calculation") {
     
     val emptyBag : Bag[String] = Bag.toBag(List())
     
@@ -118,6 +118,34 @@ class SorbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks
     equalInterval(
         And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),0,1), Symbol("c",1,1)),
         Bag.toBag(List("a")), Interval(1,0))
+        
+    equalInterval(
+        And(And(And(Symbol("a",1,1),Symbol("b",1,1)),
+                And(Symbol("a",1,1),Symbol("b",1,1))
+            )
+            , Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a","b","c")), Interval(1,1))
+        
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),3,5), Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a","b","a","b","c")), Interval(1,1))
+        
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),3,5), Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a","b","a","b","a","b","a","b","c")), Interval(1,1))
+        
+    // Fail...
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),3,5), Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a","b","a","b","a","b","a","b","a","b","c")), Interval(1,1))
+        
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),3,Unbounded), Symbol("c",1,1)),
+        Bag.toBag(List("a","a","a","c")), Interval(1,1))
+        
+    equalInterval(
+        And(Repeat(And(Symbol("a",1,1),Symbol("b",1,1)),3,Unbounded), Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a","b","a","b","a","b","c")), Interval(1,1))
   }
   
   describe("Containment calculation") {
@@ -153,10 +181,67 @@ class SorbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks
     containsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("c")))
     containsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("b","c")))
     notContainsBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("a","b")))
-    containsBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("b","c")))
-    notContainsBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("a","b","c")))
+    containsBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("b","c"))) */
+    notContainsBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("a","b")))
+    equalInterval(
+        Or(Symbol("a",1,1),Symbol("b",1,1)),
+        Bag.toBag(List("a","b")), Interval(1,1))
+/*    notContainsBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("a","b","c")))
     containsBag(Or(Symbol("a",2,2),Symbol("b",1,1)),Bag.toBag(List("a","a","c")))
     notContainsBag(Or(Symbol("a",2,2),Symbol("b",1,1)),Bag.toBag(List("a","a","c")),false)
+  }
+  */
+  
+  describe("Derivatives matching") {
+/*    matchBag(Symbol("a",1,1),Bag.toBag(List("a")))
+    matchBag(Symbol("a",1,1),Bag.toBag(List("a","b")), true)
+    noMatchBag(Symbol("a",1,1),Bag.toBag(List("a","b")), false) 
+    matchBag(Empty,Bag.toBag(List("a","b","a")))
+    matchBag(Symbol("a",1,2),Bag.toBag(List("a","b","a"))) 
+    matchBag(Symbol("a",2,4),Bag.toBag(List("a","b","a")))
+    matchBag(Symbol("a",2,3),Bag.toBag(List("a","b","a")))
+    matchBag(Symbol("a",2,400),Bag.toBag(List("a","b","a"))) 
+    noMatchBag(Symbol("a",1,1),Bag.toBag(List("a","b","a")))
+    noMatchBag(Symbol("a",2,2),Bag.toBag(List("a","b","a","a","a","a","a")))
+    noMatchBag(Symbol("b",2,2),Bag.toBag(List("a","b","a","a","a","a","a"))) 
+    matchBag(Symbol("b",1,1),Bag.toBag(List("a","b","a","a","a","a","a"))) 
+    noMatchBag(Symbol("c",1,1),Bag.toBag(List("a","b","a","a","a","a","a")))
+    matchBag(And(Symbol("a",1,2),Symbol("b",1,1)),
+        Bag.toBag(List("a","b","a")))
+    noMatchBag(And(Symbol("a",1,2),Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a")))
+    matchBag(Or(Symbol("a",1,2),Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a")))
+    noMatchBag(Or(Symbol("a",3,5),Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a")))
+    noMatchBag(Or(Symbol("a",0,1),Symbol("c",1,1)),
+        Bag.toBag(List("a","b","a")))
+    noMatchBag(Symbol("a",0,0),Bag.toBag(List("a","b","a")))
+    noMatchBag(Symbol("a",0,0),Bag.toBag(List("a","b")))
+    matchBag(Symbol("a",0,0),Bag.toBag(List("b")))
+    noMatchBag(Symbol("b",0,0),Bag.toBag(List("b")))
+    matchBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("b")))
+    matchBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("c")))
+    matchBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("b","c")))
+    noMatchBag(Or(Symbol("a",0,0),Symbol("b",1,1)),Bag.toBag(List("a","b")))
+    matchBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("b","c"))) */
+    noMatchBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("a","b")))
+//    noMatchBag(Or(Symbol("a",1,1),Symbol("b",1,1)),Bag.toBag(List("a","b","c")))
+
+/*    matchBag(Or(Symbol("a",2,2),Symbol("b",1,1)),Bag.toBag(List("a","a","c")))
+    noMatchBag(Or(Symbol("a",2,2),Symbol("b",1,1)),Bag.toBag(List("a","a","c")),false) */  
+  }
+  
+  def matchBag[A](rbe: Sorbe[A], bag: Bag[A], open: Boolean = true) = {
+    it(s"${rbe} should match ${bag}. Open: $open") {
+      rbe.matchDeriv(bag,open) should be(true)
+    }
+  }
+
+  def noMatchBag[A](rbe: Sorbe[A], bag: Bag[A], open: Boolean = true) = {
+    it(s"${rbe} should not match ${bag}. Open: $open") {
+      rbe.matchDeriv(bag,open) should be(false)
+    }
   }
   
   def equalInterval[A](rbe: Sorbe[A], bag: Bag[A], expected: Interval) = {

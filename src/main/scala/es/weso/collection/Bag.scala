@@ -66,6 +66,16 @@ trait Bag[A] {
   def from(t: Traversable[A]): Bag[A] = {
     t.foldLeft(this)((s, a) => s.insert(a))
   }
+  
+ def toSeq: Seq[A] = {
+    def generate(x: A,n: Int): Seq[A] = {
+      (1 to n).map(_ => x)
+    }
+    
+    this.asSortedMap.map(
+        pair => generate(pair._1,pair._2)
+    ).flatten.toSeq
+  }
 }
 
 object Bag {
@@ -76,6 +86,8 @@ object Bag {
   def toBag[A: Ordering](t: Traversable[A]): Bag[A] = {
     empty.from(t)
   }
+  
+  
   
    /**
    * Calculates the bag obtained by taking into account only a set of symbols
