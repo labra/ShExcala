@@ -6,4 +6,5 @@ case class ConstraintRef(value: Int)
 
   def compare (that: ConstraintRef) = this.value.compare(that.value)
 
+  override def toString = s"!$value"
 }

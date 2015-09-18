@@ -69,7 +69,29 @@ sealed trait Sorbe[+A] {
       case _ => throw SorbeException(s"repeatInterval. Unsupported cardinality: ($n,$m)")
     }
   }
+
+    lazy val symbols: Seq[A] = {
+    this match {
+      case Fail(_) => List()
+      case Empty => List()
+      case Symbol(a,_,_) => List(a)
+      case And(v1,v2) => v1.symbols union v2.symbols
+      case Or(v1,v2) => v1.symbols union v2.symbols
+      case Star(v) => v.symbols
+      case Plus(v) => v.symbols
+      case Repeat(v,_,_) => v.symbols
+      case _ => throw SorbeException(s"symbols: unexpected Sorbe expression ${this}") 
+    }
+  }
   
+  def noSymbolsInBag[U >: A](bag: Bag[U]): Boolean = {
+    this.symbols.forall(x => bag.multiplicity(x) == 0)
+  }
+  
+  def bagHasExtraSymbols[U >: A](bag: Bag[U]): Boolean = {
+    bag.elems.exists{ case (s,_) => !this.symbols.contains(s) }
+  }
+
   def contains[U >: A](bag: Bag[U], open: Boolean): Boolean = {
     if (!open && bagHasExtraSymbols(bag)) false 
     else this.interval(bag).contains(1) 
@@ -100,43 +122,27 @@ sealed trait Sorbe[+A] {
    * open: allows extra symbols to match
    */
   def matchDeriv[U >: A](bag: Bag[U], open: Boolean): Boolean = {
-     val d = this.derivBag(bag,open)
-     if (d.nullable) true
-     else false
+    val d = this.derivBag(bag,open,symbols)
+    if (d.nullable) true
+    else false
   }
   
-  def derivBag[U >: A](bag: Bag[U], open: Boolean): Sorbe[U] = {
+  /*
+   * Derivative over a bag of symbols
+   * open: allows extra symbols
+   * controlled: limits the extra symbols to those that don't appear in controlled
+   */
+  def derivBag[U >: A](bag: Bag[U], open: Boolean, controlled: Seq[U]): Sorbe[U] = {
     val e: Sorbe[U] = this
     def f(x: U, rest: Sorbe[U]): Sorbe[U] = {
       println(s"Step: x: $x, rest: $rest, ")
-      val r = rest.deriv(x,open)
+      val r = rest.deriv(x,open,controlled)
       println(s"Deriv($x)($rest) = $r")
       r
     }
     bag.toSeq.foldRight(e)(f)
   } 
   
-  lazy val symbols: Seq[A] = {
-    this match {
-      case Fail(_) => List()
-      case Empty => List()
-      case Symbol(a,_,_) => List(a)
-      case And(v1,v2) => v1.symbols union v2.symbols
-      case Or(v1,v2) => v1.symbols union v2.symbols
-      case Star(v) => v.symbols
-      case Plus(v) => v.symbols
-      case Repeat(v,_,_) => v.symbols
-      case _ => throw SorbeException(s"symbols: unexpected Sorbe expression ${this}") 
-    }
-  }
-  
-  def noSymbolsInBag[U >: A](bag: Bag[U]): Boolean = {
-    this.symbols.forall(x => bag.multiplicity(x) == 0)
-  }
-  
-  def bagHasExtraSymbols[U >: A](bag: Bag[U]): Boolean = {
-    bag.elems.exists{ case (s,_) => !this.symbols.contains(s) }
-  }
   
   def nullable: Boolean = {
     this match {
@@ -201,49 +207,55 @@ sealed trait Sorbe[+A] {
     r
   }
   
-  def derivSymbol[U >: A](x: U, s: Symbol[U], open: Boolean): Sorbe[U] = {
+  def mkRepeat[A](r: => Sorbe[A], m: Int, n: IntOrUnbounded): Sorbe[A]= {
+    Repeat(r,m,n)
+  }
+  
+  def derivSymbol[U >: A](x: U, s: Symbol[U], open: Boolean, controlled: Seq[U]): Sorbe[U] = {
     if (x == s.a) {
       if (s.m == IntLimit(0)) 
         Fail(s"Symbol $x doesn't match $s")
       else 
         mkRangeSymbol(s.a, math.max(s.n - 1, 0), s.m minusOne)
     } 
-    else if (open) {
+    else if (open && !(controlled contains x)) {
       this
     } else {
       Fail(s"$x doesn't match $s")
     }
   }
 
-  def deriv[U >: A](x: U, open: Boolean) : Sorbe[U] = {
+  def deriv[U >: A](x: U, open: Boolean, controlled: Seq[U]) : Sorbe[U] = {
     this match {
       case f@Fail(_) => f 
       case Empty => 
-        if (open) Empty
-        else Fail(s"Unexpected symbol $x") 
+        if (open && !(controlled contains x)) 
+          Empty
+        else 
+          Fail(s"Unexpected symbol $x") 
       case s@Symbol(a,m,n) => {
-       derivSymbol(x,s,open)
+       derivSymbol(x,s,open,controlled)
       }  
       case And(e1,e2) => {
-        lazy val d1 = e1.deriv(x,open)
-        lazy val d2 = e2.deriv(x,open)
+        lazy val d1 = e1.deriv(x,open,controlled)
+        lazy val d2 = e2.deriv(x,open,controlled)
         mkOr(mkAnd(d1, e2), mkAnd(d2, e1))
       }
       case Or(e1,e2) => {
-        lazy val d1 = e1.deriv(x,open)
-        lazy val d2 = e2.deriv(x,open)
+        lazy val d1 = e1.deriv(x,open,controlled)
+        lazy val d2 = e2.deriv(x,open,controlled)
         mkOr(d1, d2)
       }
       case Star(e) => {
-        val d = e.deriv(x,open)
+        val d = e.deriv(x,open,controlled)
         mkAnd(d, e)
       }
       case Plus(e) => {
-        val d = e.deriv(x,open)
+        val d = e.deriv(x,open,controlled)
         mkAnd(d, Star(e))
       }
       case Repeat(e,m,n) => {
-        lazy val d = e.deriv(x,open)
+        lazy val d = e.deriv(x,open,controlled)
         mkAnd(d,mkRange(e, math.max(m - 1, 0), n minusOne))
       }
     }

@@ -14,7 +14,7 @@ class ValidateSingle extends FunSpec with Matchers with ValidTester {
     it("Should be valid single") {
       val strData =
         """|@prefix : <http://example.org/> .
-           |:x :a 1; :b 1; :b 1; :c 1; :c 2 .
+           |:x :a 1; :b 1; :c 1 ; :d 1 .
            |""".stripMargin
 
       val strSchema =

@@ -103,7 +103,7 @@ case object Unbounded extends IntOrUnbounded {
 /**
  * Positive integers 
  */
-case class IntLimit(m: Int) extends IntOrUnbounded {
+case class IntLimit(m: Int) extends IntOrUnbounded with Requirements {
   
   require(m >=0)
   
@@ -115,8 +115,11 @@ case class IntLimit(m: Int) extends IntOrUnbounded {
     else Unbounded
   }
   
-  def minusOne: IntOrUnbounded = 
-    IntLimit(m - 1)
+  def minusOne: IntOrUnbounded = {
+    if (m > 0) IntLimit(m - 1)
+    else this
+  }
+    
     
   def getLimit:Int = m
 }
