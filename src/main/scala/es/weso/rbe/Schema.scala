@@ -153,7 +153,9 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
       node: Node,
       sorbe: Sorbe[ConstraintRef],
       open:Boolean): Seq[Seq[Option[Candidate_]]] = {
+    println(s"filterCandidates: out = $out, sorbe = $sorbe")
     val css = zipCandidates(table,node,out)
+    println(s"zip candidates: $css") 
     css.filter(cs => matchCandidateSorbe(cs,sorbe,open))
   }
   
@@ -314,10 +316,15 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     }
     else {
     val out = graph.out(node)
+    println(s"Out: $out")
     for {
       (table,sorbe) <- mkTable(label)
       val open = !m(label).closed
-      allCandidates <- calculateCandidates(table,out,sorbe,node,open)
+      allCandidates <- {
+        println(s"Before calculating candidates: $out") 
+        val cs = calculateCandidates(table,out,sorbe,node,open)
+        cs
+      }
       newTyping <- currentTyping.addPosType(node,label)
       results <- resolveAllCandidates(allCandidates, node, label, graph, this, newTyping)
     } yield {
@@ -338,6 +345,7 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
       node: Node, 
       label: Label, 
       graph: Graph_): Result_ = {
+    println(s"Matching node $node with $label in graph $graph")
     matchNodeInTyping(node,label,graph,(PosNegTyping.empty,Seq()))
   }
 }

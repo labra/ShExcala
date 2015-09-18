@@ -27,8 +27,8 @@ trait ValidTester extends FunSpec with Matchers {
   }
 def shouldBeValid(strSchema: String, strData: String, strNode: String, strLabel: String): Unit = {
     val result = for {
-      (schema,pm) <- Schema.fromString(strSchema)
-      data <- RDFAsJenaModel.fromChars(strData,"TURTLE")
+      (schema,pm) <- Schema.fromString(strSchema,"SHEXC",Some(""))
+      data <- RDFAsJenaModel.fromChars(strData,"TURTLE",Some(""))
       ts <- schema.matchNode_Label(IRI(strNode),mkLabel(strLabel),data)
     } yield ts
     
