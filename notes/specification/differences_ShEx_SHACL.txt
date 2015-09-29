@@ -1,0 +1,13 @@
+Differences betweeb ShEx - SHACL
+
+- Namespace
+Shex: http://www.w3.org/ns/shacl/core#
+SHACL: http://www.w3.org/ns/shacl#
+
+- sh:text
+
+SHACL: sh:text is defined as the union between xsd:string and rdf:langString
+SHEX: I added support for it manually
+
+
+

@@ -82,7 +82,7 @@ object Schema2RDF extends Logging {
 
   def value2RDF(v: ValueClass, arcNode: RDFNode, rdf: RDFBuilder): RDFBuilder = {
     v match {
-      case ValueType(v) => rdf.addTriple(RDFTriple(arcNode, sh_valueType, v))
+      case ValueType(v) => rdf.addTriple(RDFTriple(arcNode, sh_datatype, v))
       case ValueSet(set) => {
         for (vo <- set) {
           valueObject2RDF(vo, arcNode, rdf)

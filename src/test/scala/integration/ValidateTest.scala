@@ -110,7 +110,7 @@ class ValidateTest extends FunSpec with Matchers with ValidTester {
 
   describe("Single test") {
 
-    it("Should not validate extra with an extra triple") {
+    it("Should not validate extra with an extra triple if no extra is declared") {
       val strData =
         """|@prefix : <http://example.org/> .
            |:x :a 1 , 2, "hi", 1.2 .
@@ -126,7 +126,7 @@ class ValidateTest extends FunSpec with Matchers with ValidTester {
       shouldNotBeValid(strSchema, strData, "http://example.org/x", "S")
     }
 
-    it("Should validate extra with an extra triple") {
+    it("Should validate extra with an extra triple if extra is declared") {
       val strData =
         """|@prefix : <http://example.org/> .
            |:x :a 1 , 2, "hi", 1.2 .
@@ -178,6 +178,40 @@ class ValidateTest extends FunSpec with Matchers with ValidTester {
            |""".stripMargin
 
       shouldBeValidAllNodes(strSchema, strData)
+    }
+     
+    it("Should be valid single with an EXTRA") {
+      val strData =
+        """|PREFIX : <http://a.example/>
+           |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+           |:x :a 1; :a 3; :b 2 . 
+           |""".stripMargin
+
+      val strSchema =
+        """|PREFIX : <http://a.example/>
+           |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+           |<S> EXTRA :a { :a (1 2) }
+           |""".stripMargin
+
+
+      shouldBeValid(strSchema, strData,"http://a.example/x","S")
+    }
+ 
+    it("Should not be valid single with extra triples without EXTRA") {
+      val strData =
+        """|PREFIX : <http://a.example/>
+           |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+           |:x :a 1; :a 3; :b 2 . 
+           |""".stripMargin
+
+      val strSchema =
+        """|PREFIX : <http://a.example/>
+           |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+           |<S> { :a (1 2) }
+           |""".stripMargin
+
+
+      shouldNotBeValid(strSchema, strData,"http://a.example/x","S")
     }
 
 

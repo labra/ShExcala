@@ -162,18 +162,6 @@ trait RDFParser {
     }
   }
 
-/*    def mapParser[A](
-    ls: List[RDFNode],
-    parser: RDFParser[A]): RDFParser[List[A]] = { (n, rdf) =>
-    ls match {
-      case Nil => Success(Nil)
-      case x :: xs => for {
-        y <- parser(x, rdf)
-        ys <- mapParser(xs, parser)(n, rdf)
-      } yield y :: ys
-    }
-  } */
-
   def group[A](
       parser: RDFParser[A], 
       nodes: Seq[RDFNode]

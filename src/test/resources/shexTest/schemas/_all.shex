@@ -77,7 +77,7 @@ VIRTUAL prefix1:S3 EXTRA a:a prefix:prefix base:base &a:S1 {
       nonliteral:nonliteral xsd:integer MININCLUSIVE 5 MAXINCLUSIVE 5 TOTALDIGITS 1 FRACTIONDIGITS 1
    ),
    or:or (<http://a.example/a1> prefix:~ - prefix:a~ - prefix:b),
-   ((pattern:pattern (. - prefix:a~ - prefix:b)) %prefix1:act1{ code1 %}) %prefix1:act2{ code2 %},
+   pattern:pattern (. - prefix:a~ - prefix:b) %prefix1:act1{ code1 %} %prefix1:act2{ code2 %},
 }
 
 _:a·̀ͯ‿.⁀ CLOSED &_:a·̀ͯ‿.⁀ &<http://all.example/S2> {

@@ -1,5 +1,5 @@
 # source: IRI_subject.ttl
 
-<http://a.example/IssueShape> {
-   <http://a.example/p1> .
-}
+PREFIX : <http://a.example/>
+
+:S { :p1 . }

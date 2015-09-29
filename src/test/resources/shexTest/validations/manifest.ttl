@@ -1,9 +1,7 @@
 @prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix mf:     <http://www.w3.org/2001/sw/DataAccess/tests/test-manifest#> .
-@prefix qt:     <http://www.w3.org/2001/sw/DataAccess/tests/test-query#> .
 @prefix sht:     <http://www.w3.org/ns/shacl/test-suite#> .
-@prefix ex:     <http://example.org/> .
 
 # TODO:
 #   repeated OR
@@ -124,7 +122,7 @@
     mf:status mf:proposed ;
     mf:action [
       sht:schema <../schemas/1dot.shex> ;
-      sht:shape <http://a.example/IssueShape> ;
+      sht:shape <http://a.example/S> ;
       sht:data <empty.ttl> ;
       sht:focus <http://a.example/Issue1>
     ]
@@ -136,7 +134,7 @@
     mf:status mf:proposed ;
     mf:action [
       sht:schema <../schemas/1dot.shex> ;
-      sht:shape <http://a.example/IssueShape> ;
+      sht:shape <http://a.example/S> ;
       sht:data <IIssue1_Ip2_Io1.ttl> ;
       sht:focus <http://a.example/Issue1>
     ]
@@ -148,7 +146,7 @@
     mf:status mf:proposed ;
     mf:action [
       sht:schema <../schemas/1dot.shex> ;
-      sht:shape <http://a.example/IssueShape> ;
+      sht:shape <http://a.example/S> ;
       sht:data <IIssue1_Ip1_Io1.ttl> ;
       sht:focus <http://a.example/Issue1>
     ] ;
@@ -161,7 +159,7 @@
     mf:status mf:proposed ;
     mf:action [
       sht:schema <../schemas/1dot.shex> ;
-      sht:shape <http://a.example/IssueShape> ;
+      sht:shape <http://a.example/S> ;
       sht:data <IIssue1_Ip0_Io0;Ip1_Io1.ttl> ;
       sht:focus <http://a.example/Issue1>
     ] ;
@@ -174,7 +172,7 @@
     mf:status mf:proposed ;
     mf:action [
       sht:schema <../schemas/1dot.shex> ;
-      sht:shape <http://a.example/IssueShape> ;
+      sht:shape <http://a.example/S> ;
       sht:data <IIssue1_Ip1_Io1;Ip2_Io2.ttl> ;
       sht:focus <http://a.example/Issue1>
     ] ;
@@ -664,7 +662,7 @@
     mf:status mf:proposed ;
     mf:action [
       sht:schema <../schemas/1dotClosed.shex> ;
-      sht:shape <http://a.example/IssueShape> ;
+      sht:shape <http://a.example/S> ;
       sht:data <IIssue1_Ip1_Io1.ttl> ;
       sht:focus <http://a.example/Issue1>
     ] ;
@@ -677,7 +675,7 @@
     mf:status mf:proposed ;
     mf:action [
       sht:schema <../schemas/1dotClosed.shex> ;
-      sht:shape <http://a.example/IssueShape> ;
+      sht:shape <http://a.example/S> ;
       sht:data <IIssue1_Ip0_Io0;Ip1_Io1.ttl> ;
       sht:focus <http://a.example/Issue1>
     ]
@@ -689,7 +687,7 @@
     mf:status mf:proposed ;
     mf:action [
       sht:schema <../schemas/1dotClosed.shex> ;
-      sht:shape <http://a.example/IssueShape> ;
+      sht:shape <http://a.example/S> ;
       sht:data <IIssue1_Ip1_Io1;Ip2_Io2.ttl> ;
       sht:focus <http://a.example/Issue1>
     ]
@@ -760,7 +758,7 @@
       sht:data <In1_Ip1_LX.In2_Ip2_In1.ttl> ;
       sht:focus <http://a.example/n2>
     ] ;
-    mf:result <In2_Ip2_In1@In1_Ip1_LX.ttl>
+    mf:result <In2_Ip2_In1@In1_Ip1_LX.val>
     .
 
 <#1dotRef1_referrer,referent> a sht:ValidationTest ;
@@ -773,7 +771,7 @@
       sht:data <In2_Ip2_In1.In1_Ip1_LX.ttl> ;
       sht:focus <http://a.example/n2>
     ] ;
-    mf:result <In2_Ip2_In1@In1_Ip1_LX.ttl>
+    mf:result <In2_Ip2_In1@In1_Ip1_LX.val>
     .
 
 <#1dotRef1_missingReferent> a sht:ValidationFailure ;
@@ -822,7 +820,7 @@
       sht:data <In2_Ip2_In1.In1_Ip1_LX.In3_Ip1_LX.ttl> ;
       sht:focus <http://a.example/n2>
     ] ;
-    mf:result <In2_Ip2_In1@In1_Ip1_LX.ttl>
+    mf:result <In2_Ip2_In1@In1_Ip1_LX.val>
     .
 
 <#iovka> a sht:ValidationTest ;

@@ -7,11 +7,8 @@ import java.nio.ByteBuffer
 import java.nio.channels.ReadableByteChannel
 import scala.util.{ Try, Success => TrySuccess, Failure => TryFailure }
 import scala.io._
-//import scalaz.\/
 import org.scalatest.FunSpec
 import org.scalatest._
-//import scalaz._, Scalaz._
-import es.weso.shacl.ast.AST._
 import es.weso.shacl._
 
 class RunValASTSingle extends Driver {

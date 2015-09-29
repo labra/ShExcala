@@ -26,7 +26,18 @@ object SeqUtils {
    *   [[0],[],[1,2]] -> [[Some(0),None,Some(1)],[Some(0),None,Some(2)]]
    *  }}}
    */
-  def zipN[A](s: Seq[Seq[A]]): Seq[Seq[Option[A]]] = {
+  def zipN[A](s: Seq[Seq[A]]): Seq[Seq[A]] = {
+    def f(x: Seq[A], rest: Seq[Seq[A]]): Seq[Seq[A]] = {
+      if (x.isEmpty) rest
+      else for {
+      v <- x
+      r <- rest
+    } yield v +: r
+    }
+    s.foldRight(Seq(Seq[A]()))(f)
+  }
+  
+  def zipNOption[A](s: Seq[Seq[A]]): Seq[Seq[Option[A]]] = {
     def f(x: Seq[A], rest: Seq[Seq[Option[A]]]): Seq[Seq[Option[A]]] = {
       val none : Option[A] = None 
       if (x.isEmpty) rest.map(s => none +: s)

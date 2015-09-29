@@ -7,7 +7,9 @@ import es.weso.shacl.PREFIXES._
 import es.weso.rdf.jena.RDFAsJenaModel
 import com.hp.hpl.jena.rdf.model.Model
 import es.weso.shacl._
-import es.weso.shacl.Shacl._
+import es.weso.shacl.Label._
+import es.weso.shacl.XSFacet._
+import es.weso.shacl.ValueClass._
 import util._
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph.statements._

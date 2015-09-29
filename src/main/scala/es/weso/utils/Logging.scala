@@ -11,5 +11,13 @@ trait Logging {
   def setDebug() {
     log.setLevel(Level.DEBUG)
   }
+  
+  def info(msg: String) {
+    log.info(msg)
+  }
+  
+  def debug(msg: String) {
+    log.debug(msg)
+  }
 
 }

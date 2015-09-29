@@ -8,10 +8,11 @@
         "type": "tripleConstraint",
         "predicate": "http://a.example/p1",
         "value": { "type": "valueClass" },
-        "semAct": { "http://a.example/semAct1": " code1 ",
-                    "http://a.example/semAct2": " code2 ",
-                    "http://a.example/semAct3": " code3 "
-                  }
+        "semActs": [
+          { "name": "http://a.example/semAct1", "contents": " code1 " },
+          { "name": "http://a.example/semAct2", "contents": " code2 " },
+          { "name": "http://a.example/semAct3", "contents": " code3 " }
+        ]
       }
     }
   }

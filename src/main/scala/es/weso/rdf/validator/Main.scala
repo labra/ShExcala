@@ -17,6 +17,7 @@ import es.weso.shex.Typing
 import es.weso.shacl._
 import es.weso.rdfgraph.nodes._
 import es.weso.utils.Verbosity
+import es.weso.shacl.Shacl._
 
 case class MainException(msg: String) extends Exception(s"Exception in main: $msg")
 
@@ -262,6 +263,12 @@ object Main extends App with Verbosity {
       if (opts.time()) { showTime(micros) }
       if (opts.memory()) { showRuntimeMemory(runtime) }
 
+    } else { // If no schema...check to validate nodeShape declarations in RDF
+      if (maybe_rdf.isDefined) {
+        val attempts = validateRDF(maybe_rdf.get)
+        showAttempts(attempts)
+      }
+      
     }
   }
 
@@ -278,7 +285,28 @@ object Main extends App with Verbosity {
   def showTime(micros: Long): Unit = {
     println("** %d microseconds".format(micros))
   }
+  
+  def showAttempts(attempts: Try[Seq[ValidationAttempt[RDFNode,Label]]]): Unit = {
+    attempts match {
+      case Failure(e) => println("Exception trying to validate RDF: " + e)
+      case Success(as) => {
+        if (as.isEmpty) {
+          println("Validation: No declaration of node shapes found")
+        } else {
+          as.foreach { showAttempt(_) }
+        }
+      }
+    }
+  }
 
+  def showAttempt(attempt: ValidationAttempt[RDFNode,Label]): Unit = {
+    if (attempt.result.isValid) {
+      println(s"OK => Node ${attempt.node} matches ${attempt.label}. Result: ${attempt.result}")
+    } else {
+      println(s"Error => Node ${attempt.node} doesn't match ${attempt.label}. Result: ${attempt.result}")
+    }
+  }
+  
   def showRuntimeMemory(runtime: Runtime): Unit = {
     // memory info, code from: http://alvinalexander.com/scala/how-show-memory-ram-use-scala-application-used-free-total-max
     val mb = 1024 * 1024

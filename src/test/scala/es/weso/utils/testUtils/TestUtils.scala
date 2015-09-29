@@ -171,7 +171,7 @@ trait TestUtils extends FunSpec {
       if (obj == v) {
         ""
       } else {
-        s"Objects different: $obj != $v\n${diffObjects(obj, v)}"
+        s"Objects different...${diffObjects(obj, v)}"
       }
     } else 
       s"json $json should be object to be able to compare with $v"

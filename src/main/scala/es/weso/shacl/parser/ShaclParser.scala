@@ -1,7 +1,6 @@
 package es.weso.shacl.parser
 
 import es.weso.parser._
-import es.weso.shacl.Shacl._
 import es.weso.rdf._
 import es.weso.shacl.PREFIXES._
 import scala.util.parsing.combinator.RegexParsers
@@ -13,8 +12,8 @@ import scala.util.{ Try, Success => UtilSuccess, Failure => UtilFailure }
 import org.slf4j._
 import scala.util.{Failure => UtilFailure}
 import scala.util.{Success => UtilSuccess}
-import es.weso.shacl.Shacl._
 import es.weso.shacl._
+import es.weso.shacl.Cardinality._
 import scala.annotation.tailrec
 import scala.collection.immutable.LinearSeq
 
@@ -34,7 +33,6 @@ trait ShaclParser
   val log = LoggerFactory.getLogger("ShapeParser")
 
   case class ShapeRule(label : Label,shape: Shape) 
-  type ActionsMap = Map[IRI,String]
 
   /**
    * Main entry point for parser
@@ -50,14 +48,17 @@ trait ShaclParser
         val startLabel = if (s1.starts.isEmpty) None
                          else Some(s1.starts.last)
         val shaclSchema = 
-            SHACLSchema.empty.copy(shapes = shapes,start = startLabel, startActions = as)                        
+            SHACLSchema.empty.copy(
+                shapes = shapes,
+                start = startLabel, 
+                startActions = as)                        
         (Schema(s1.namespaces, shaclSchema), s)
       }
     }
   }
   
   // startStatements :: beginGroup statement* 
-  def startStatements: StateParser[ShapeParserState,(ActionsMap,List[Option[ShapeRule]])] = { s =>
+  def startStatements: StateParser[ShapeParserState,(Actions,List[Option[ShapeRule]])] = { s =>
     seqState(beginGroup,repS(statement))(s) ^^ {
       case ((startActions,statement) ~ statements, s1) => ((startActions,statement :: statements),s1)
     }
@@ -65,20 +66,20 @@ trait ShaclParser
 
   // TODO: Refactor the following code...type declarations look ugly
   // beginGroup :: (start | shape | startActions)
-  def beginGroup: StateParser[ShapeParserState,(ActionsMap,Option[ShapeRule])] = { s =>
+  def beginGroup: StateParser[ShapeParserState,(Actions,Option[ShapeRule])] = { s =>
    ( start(s) <~ opt(WS) ^^ { 
      case s1 => {
-      val ret : (ActionsMap,Option[ShapeRule]) = (Map(),None)
+      val ret : (Actions,Option[ShapeRule]) = (Actions.empty,None)
       (ret, s1)
      }
    }
    | shapeRule(s) <~ opt(WS) ^^ { 
      case (shape, s1) => {
-       val ret: (ActionsMap,Option[ShapeRule]) = (Map(),Some(shape))
+       val ret: (Actions,Option[ShapeRule]) = (Actions.empty,Some(shape))
        (ret, s1)
      } }
    | startActions(s) <~ opt(WS) ^^ { case (m,s1) => {
-    val ret : (ActionsMap,Option[ShapeRule]) = (m,None)
+    val ret : (Actions,Option[ShapeRule]) = (m,None)
     (ret,s1) 
     } 
    }
@@ -97,6 +98,7 @@ trait ShaclParser
 //      | begin(s) ^^ { case (rule, s1) => (Some(rule), s1) }
       | start(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
       | shapeRule(s) <~ opt(WS) ^^ { case (shape, s1) => (Some(shape), s1) }
+//      | valueClassDefinition(s)
       )
   }
 
@@ -186,7 +188,7 @@ trait ShaclParser
             isVirtual = false,
             inherit = inherit,
             extras = extras,
-            actions = Map())
+            actions = Actions.empty)
   }
   
   def mkShapeRule(
@@ -462,7 +464,7 @@ trait ShaclParser
         case (shapeConstr ~ facets,s1) => (NonLiteralKind(shapeConstr, facets), s1)        
       }
 //      | ignorecase("ANY") ^^^ (AnyKind, s)
-      | dot ^^^ (any, s)
+      | dot ^^^ (ValueClass.any, s)
       | iriFacetsChecked(s)
       | valueSet(s)
       | groupShapeConstr(s)
@@ -491,7 +493,7 @@ trait ShaclParser
     }
   
   def okFacets(pair: (IRI, List[XSFacet])): Boolean = {
-   ok_facets(pair._1,pair._2) 
+   XSFacet.ok_facets(pair._1,pair._2) 
   }
   
   def parseCond[A,S](
@@ -664,13 +666,13 @@ trait ShaclParser
   
   
   // [0]     startActions          ::= codeDecl+
-  def startActions: StateParser[ShapeParserState, Map[IRI, String]] = {  
+  def startActions: StateParser[ShapeParserState, Actions] = {  
     semanticActions
   }
 
   
-  def semanticActions: StateParser[ShapeParserState, Map[IRI, String]] = { s =>  
-    repS(action)(s) ^^ { case (as,s1) => (as.toMap,s1)}
+  def semanticActions: StateParser[ShapeParserState, Actions] = { s =>  
+    repS(action)(s) ^^ { case (as,s1) => (Actions.fromList(as),s1)}
   }
   
   def action: StateParser[ShapeParserState, (IRI, String)] = { s => 

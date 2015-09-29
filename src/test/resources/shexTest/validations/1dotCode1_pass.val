@@ -8,6 +8,6 @@
     "solutions":[
       {"type":"testedTriple","subject":"http://a.example/Issue1","predicate":"http://a.example/p1","object":"http://a.example/o1"}
     ],
-    "semAct": { "http://a.example/semAct1": " code1 " }
+    "semActs": [ { "name": "http://a.example/semAct1", "contents": " code1 " } ]
   }
 }

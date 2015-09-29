@@ -13,17 +13,18 @@ import es.weso.monads._
 import org.slf4j._
 import es.weso.utils.IO._
 import es.weso.rdf.jena.RDFAsJenaModel
-import es.weso.shacl.ast.AST._
-import es.weso.shacl.ast._
+import es.weso.shacl.jast.AST._
+import es.weso.shacl.jast._
 import argonaut._
 import Argonaut._
 import es.weso.rbe._
 import java.net.URI
 import io._
+import es.weso.utils.Logging
 
 case class Schema(
     pm: PrefixMap,
-    shaclSchema: SHACLSchema) extends Positional {
+    shaclSchema: SHACLSchema) extends Positional with Logging {
 
   def matchNode_Label(node: RDFNode, label: Label, rdf: RDFReader) = {
     val seSchema = SEShacl.shacl2SE(shaclSchema)
@@ -112,9 +113,9 @@ object Schema {
   }
 
   def fromURI(uri: URI, format: String, base: Option[String] = None): Try[(Schema, PrefixMap)] = {
-    println(s"Reading contents behind URI: $uri")
+    log.info(s"Reading contents behind URI: $uri")
     val cs = Source.fromURI(uri)(Codec.UTF8).mkString
-    println(s"Contents: $cs")
+    log.info(s"Contents: $cs")
      for {
       (schema, prefixMap) <- Schema.fromString(cs, format, base)
     } yield (schema, prefixMap)

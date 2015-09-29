@@ -16,33 +16,33 @@ object IntervalSpec extends Properties("Intervals") {
       (0,0),(0,1),(1,1),(0,2),(1,2),(2,2),(3,2),(20,20),(1,20),(2,20),(3,20)
   )
   
-  def genEmpty : Gen[Sorbe[Char]] = 
+  def genEmpty : Gen[Rbe[Char]] = 
     const(Empty)
     
-  def genSymbol : Gen[Sorbe[Char]] = for {
+  def genSymbol : Gen[Rbe[Char]] = for {
     (m,n) <- genCard
     a <- letter
   } yield Symbol(a,m,n)
   
-  def genAnd(level: Int) : Gen[Sorbe[Char]]= for {
-    v1 <- genSorbe(level)
-    v2 <- genSorbe(level)
+  def genAnd(level: Int) : Gen[Rbe[Char]]= for {
+    v1 <- genRbe(level)
+    v2 <- genRbe(level)
   } yield And(v1,v2)
   
-  def genOr(level: Int) : Gen[Sorbe[Char]]= for {
-    v1 <- genSorbe(level)
-    v2 <- genSorbe(level)
+  def genOr(level: Int) : Gen[Rbe[Char]]= for {
+    v1 <- genRbe(level)
+    v2 <- genRbe(level)
   } yield Or(v1,v2)
   
-  def genPlus(level: Int) : Gen[Sorbe[Char]]= for {
-    v <- genSorbe(level)
+  def genPlus(level: Int) : Gen[Rbe[Char]]= for {
+    v <- genRbe(level)
   } yield Plus(v)
   
-  def genStar(level: Int) : Gen[Sorbe[Char]]= for {
-    v <- genSorbe(level)
+  def genStar(level: Int) : Gen[Rbe[Char]]= for {
+    v <- genRbe(level)
   } yield Star(v)
   
-  def genSorbe(level:Int) = 
+  def genRbe(level:Int) = 
     if (level >= 5) oneOf(genEmpty, genSymbol)
     else {
       val newLevel = level + 1
@@ -54,12 +54,12 @@ object IntervalSpec extends Properties("Intervals") {
           genStar(newLevel))
     }
   
-  def sorbe : Gen[Sorbe[Char]] = genSorbe(0)
+  def rbe : Gen[Rbe[Char]] = genRbe(0)
     
 
   println("One bag..." + bag.sample)
-  println("Printing a sorbe...")
-  println("One sorbe..." + sorbe.sample)
+  println("Printing a Rbe...")
+  println("One Rbe..." + rbe.sample)
   
   def condition(c:Char) = c >= 'a' 
 
@@ -69,12 +69,12 @@ object IntervalSpec extends Properties("Intervals") {
     
   property("letter in range") = forAll(letter)(l => condition(l))
   property("intervals I(E)") = 
-    forAll(sorbe,bag)((e,bag) => {
+    forAll(rbe,bag)((e,bag) => {
         e.interval(bag).m >= 0 
     })
   
   property("intervals I(E+) == I(E) + I(E*) ") = 
-    forAll(sorbe,bag)((e,bag) => {
+    forAll(rbe,bag)((e,bag) => {
       println("bag =" + bag)
       println("e =" + e)
       println("I(e+)=" + Plus(e).interval(bag))

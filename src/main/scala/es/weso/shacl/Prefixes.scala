@@ -12,7 +12,10 @@ object PREFIXES {
   lazy val foaf = IRI("http://xmlns.com/foaf/0.1/")
   lazy val xsd = IRI("http://www.w3.org/2001/XMLSchema#")
   lazy val rdf = IRI("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
-  lazy val sh = IRI("http://www.w3.org/ns/shacl/core#")
+  
+  lazy val sh = IRI("http://www.w3.org/ns/shacl#")
+//  lazy val sh = IRI("http://www.w3.org/ns/shacl/core#")
+  
   lazy val owl = IRI("http://www.w3.org/2002/07/owl#")
   lazy val rdfs = IRI("http://www.w3.org/2000/01/rdf-schema#")
   lazy val sh_IRI = add(sh, "IRI")
@@ -42,10 +45,12 @@ object PREFIXES {
   lazy val sh_oneOf = add(sh,"oneOf")
   lazy val sh_schema = add(sh, "schema")
   lazy val sh_Schema = add(sh, "Schema")
-  lazy val sh_valueType = add(sh, "valueType")
+  lazy val sh_datatype = add(sh, "datatype")
   lazy val sh_valueShape = add(sh, "valueShape")
   lazy val sh_start = add(sh, "start")
   lazy val sh_group = add(sh,"group")
+  lazy val sh_nodeShape = add(sh,"nodeShape")
+  lazy val sh_text = add(sh,"text")
   lazy val rdf_langString = add(rdf, "langString")
   lazy val xsd_string = add(xsd, "string")
   lazy val xsd_integer = add(xsd, "integer")
@@ -55,6 +60,9 @@ object PREFIXES {
   lazy val rdf_first = add(rdf, "first")
   lazy val rdf_rest = add(rdf, "rest")
   lazy val rdf_nil = add(rdf, "nil")
+  
+  lazy val builtinTypes = List(xsd_integer, xsd_double, xsd_string)
+
 
   private val shMap: Map[String, IRI] =
     Map("sh" -> sh,

@@ -4,748 +4,876 @@
     {
       "@id": "http://shexspec.github.io/test-suite/tests/manifest.ttl",
       "@type": "mf:Manifest",
-      "rdfs:comment": "ShEx tests",
-      "mf:entries": [
+      "rdfs:comment": "ShEx validation tests",
+      "entries": [
         {
           "@id": "#1dotAnnot3_pass",
           "@type": "sht:ValidationTest",
-          "name": "1dot_pass",
+          "action": {
+            "schema": "../schemas/1dotAnnot3.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1dotAnnot3_pass",
           "comment": "<S> { <p1> . ... } on { <s> <p1> <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dotAnnot3.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1dotAnnot3_pass.val"
         },
         {
           "@id": "#1dot_empty",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1dot.shex",
+            "shape": "http://a.example/S",
+            "data": "empty.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1dot_empty",
           "comment": "<S> { <p1> . } on {  }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1dot.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "empty.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#0_empty",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/0.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "empty.ttl",
+            "focus": "http://a.example/dummy"
+          },
           "name": "0_empty",
           "comment": "<S> {  } on {  }",
           "status": "mf:proposed",
-          "schema": "../schemas/0.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "empty.ttl",
-          "focus": "http://a.example/dummy",
           "result": "0_dummy.val"
         },
         {
           "@id": "#0_extra",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/0.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "0_extra",
           "comment": "<S> {  } on { <s> <p1> <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/0.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "0_pass.val"
         },
         {
           "@id": "#1dot_extra_lower",
           "@type": "sht:ValidationTest",
-          "name": "1dot_extra",
+          "action": {
+            "schema": "../schemas/1dot.shex",
+            "shape": "http://a.example/S",
+            "data": "IIssue1_Ip0_Io0;Ip1_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1dot_extra_lower",
           "comment": "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dot.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip0_Io0;Ip1_Io1.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1dot_pass.val"
         },
         {
           "@id": "#greedy",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../validations/greedy.shex",
+            "shape": "S",
+            "data": "greedy.ttl",
+            "focus": "x"
+          },
           "name": "greedy",
           "comment": "@@ greedy",
           "status": "mf:proposed",
-          "schema": "../validations/greedy.shex",
-          "shape": "S",
-          "data": "greedy.ttl",
-          "focus": "x",
           "result": "greedy.val"
         },
         {
           "@id": "#1dotRef1_extraMatchesReferent",
           "@type": "sht:ValidationTest",
-          "name": "1dotRef1_",
+          "action": {
+            "schema": "../schemas/1dotRef1.shex",
+            "shape": "http://a.example/EmployeeShape",
+            "data": "In2_Ip2_In1.In1_Ip1_LX.In3_Ip1_LX.ttl",
+            "focus": "http://a.example/n2"
+          },
+          "name": "1dotRef1_extraMatchesReferent",
           "comment": "<n2> in { <n2> <p2> <n1>, <n3> . <n1> <p1> X . <n3> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dotRef1.shex",
-          "shape": "http://a.example/EmployeeShape",
-          "data": "In2_Ip2_In1.In1_Ip1_LX.In3_Ip1_LX.ttl",
-          "focus": "http://a.example/n2",
-          "result": "In2_Ip2_In1@In1_Ip1_LX.ttl"
+          "result": "In2_Ip2_In1@In1_Ip1_LX.val"
         },
         {
           "@id": "#1dotRef1_referrer,referent",
           "@type": "sht:ValidationTest",
-          "name": "1dotRef1_",
+          "action": {
+            "schema": "../schemas/1dotRef1.shex",
+            "shape": "http://a.example/EmployeeShape",
+            "data": "In2_Ip2_In1.In1_Ip1_LX.ttl",
+            "focus": "http://a.example/n2"
+          },
+          "name": "1dotRef1_referrer,referent",
           "comment": "<n2> in { <n2> <p2> <n1> . <n1> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dotRef1.shex",
-          "shape": "http://a.example/EmployeeShape",
-          "data": "In2_Ip2_In1.In1_Ip1_LX.ttl",
-          "focus": "http://a.example/n2",
-          "result": "In2_Ip2_In1@In1_Ip1_LX.ttl"
+          "result": "In2_Ip2_In1@In1_Ip1_LX.val"
         },
         {
           "@id": "#1dotRef1_referent,referrer",
           "@type": "sht:ValidationTest",
-          "name": "1dotRef1_",
+          "action": {
+            "schema": "../schemas/1dotRef1.shex",
+            "shape": "http://a.example/EmployeeShape",
+            "data": "In1_Ip1_LX.In2_Ip2_In1.ttl",
+            "focus": "http://a.example/n2"
+          },
+          "name": "1dotRef1_referent,referrer",
           "comment": "<n2> in { <n1> <p1> X . <n2> <p2> <n1> } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dotRef1.shex",
-          "shape": "http://a.example/EmployeeShape",
-          "data": "In1_Ip1_LX.In2_Ip2_In1.ttl",
-          "focus": "http://a.example/n2",
-          "result": "In2_Ip2_In1@In1_Ip1_LX.ttl"
+          "result": "In2_Ip2_In1@In1_Ip1_LX.val"
         },
         {
           "@id": "#1val2IRIREFExtra1bnode",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1val2IRIREFExtra1.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_Io1,Bo2.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1val2IRIREFExtra1bnode",
           "comment": "<S> EXTRA <p1> { <p1> (<o1> <o2> } on { <s> <p1> <o1>, _:o2 }",
           "status": "mf:proposed",
-          "schema": "../schemas/1val2IRIREFExtra1.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1,Bo2.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1val2IRIREFExtra1bnode_IIssue1_Ip1_Io1.val"
         },
         {
           "@id": "#1val1IRIREFExtra1iri",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1val1IRIREFExtra1.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_Io1,Io2.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1val1IRIREFExtra1iri",
           "comment": "<S> EXTRA <p1> { <p1> (<o1>) } on { <s> <p1> <o1>, <o2> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1val1IRIREFExtra1.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1,Io2.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1val1IRIREFExtra1bnode_IIssue1_Ip1_Io1.val"
         },
         {
           "@id": "#1dotClosed_pass",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1dotClosed.shex",
+            "shape": "http://a.example/S",
+            "data": "IIssue1_Ip1_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1dotClosed_pass",
           "comment": "<S> CLOSED { <p1> . } on { <s> <p1> <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dotClosed.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1dot_pass.val"
         },
         {
           "@id": "#1literalFractiondigits_pass",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1literalFractiondigits.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "1literalFractiondigits_pass.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1literalFractiondigits_pass",
           "comment": "@@ 1literalFractiondigits_pass",
           "status": "mf:proposed",
-          "schema": "../schemas/1literalFractiondigits.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "1literalFractiondigits_pass.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1literalFractiondigits_pass.val"
         },
         {
           "@id": "#1datatypeLength_pass",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1datatypeLength.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_INT12345.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1datatypeLength_pass",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 12345 }",
           "status": "mf:proposed",
-          "schema": "../schemas/1datatypeLength.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_INT12345.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1datatypeLength_pass.val"
         },
         {
           "@id": "#1datatype_pass",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1datatype.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_dt1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1datatype_pass",
           "comment": "<S> { <p1> xs:integer } on <s> in { <s> <p1> 'ab'^^<dt1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1datatype.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_dt1.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1datatype_pass.val"
         },
         {
           "@id": "#1cardStar_pass6",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1cardStar.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1cardStar_pass6",
           "comment": "<S> { <p1> .* } on { <s> <p1> 'a','b','c','d','e','f' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1cardStar.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1cardStar_pass6.val"
         },
         {
           "@id": "#1cardStar_pass2",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1cardStar.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1cardStar_pass2",
           "comment": "<S> { <p1> .* } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1cardStar.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1cardStar_pass2.val"
         },
         {
           "@id": "#1cardStar_pass1",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1cardStar.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1cardStar_pass1",
           "comment": "<S> { <p1> .* } on { <s> <p1> 'a' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1cardStar.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1cardStar_pass1.val"
         },
         {
           "@id": "#1cardStar_pass0",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1cardStar.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "empty.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1cardStar_fail0",
           "comment": "<S> { <p1> .* } on {  }",
           "status": "mf:proposed",
-          "schema": "../schemas/1cardStar.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "empty.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1cardStar_pass0.val"
         },
         {
           "@id": "#1cardPlus_pass6",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1cardPlus.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1cardPlus_pass6",
           "comment": "<S> { <p1> .+ } on { <s> <p1> 'a','b','c','d','e','f' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1cardPlus.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1cardPlus_pass6.val"
         },
         {
           "@id": "#1cardPlus_pass2",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1cardPlus.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1cardPlus_pass2",
           "comment": "<S> { <p1> .+ } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1cardPlus.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1cardPlus_pass2.val"
         },
         {
           "@id": "#1cardPlus_pass1",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1cardPlus.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1cardPlus_pass1",
           "comment": "<S> { <p1> .+ } on { <s> <p1> 'a' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1cardPlus.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1cardPlus_pass1.val"
         },
         {
           "@id": "#1card2Star_pass6",
           "@type": "sht:ValidationTest",
-          "name": "1card2Star_pass",
+          "action": {
+            "schema": "../schemas/1card2Star.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card2Star_pass6",
           "comment": "<S> { <p1> .{2,*} } on { <s> <p1> 'a','b','c','d','e','f' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1card2Star.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1card2Star_pass6.val"
         },
         {
           "@id": "#1card2Star_pass3",
           "@type": "sht:ValidationTest",
-          "name": "1card2Star_pass",
+          "action": {
+            "schema": "../schemas/1card2Star.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb,Lc.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card2Star_pass3",
           "comment": "<S> { <p1> .{2,*} } on { <s> <p1> 'a','b','c' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1card2Star.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb,Lc.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1card2Star_pass3.val"
         },
         {
           "@id": "#1card2Star_pass2",
           "@type": "sht:ValidationTest",
-          "name": "1card2Star_pass",
+          "action": {
+            "schema": "../schemas/1card2Star.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card2Star_pass2",
           "comment": "<S> { <p1> .{2,*} } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1card2Star.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1card2Star_pass2.val"
         },
         {
           "@id": "#1card25_pass5",
           "@type": "sht:ValidationTest",
-          "name": "1card25_pass",
+          "action": {
+            "schema": "../schemas/1card25.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card25_pass5",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c','d','e' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1card25.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1card25_pass5.val"
         },
         {
           "@id": "#1card25_pass4",
           "@type": "sht:ValidationTest",
-          "name": "1card25_pass",
+          "action": {
+            "schema": "../schemas/1card25.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb,Lc,Ld.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card25_pass4",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c','d' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1card25.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb,Lc,Ld.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1card25_pass4.val"
         },
         {
           "@id": "#1card25_pass3",
           "@type": "sht:ValidationTest",
-          "name": "1card25_pass",
+          "action": {
+            "schema": "../schemas/1card25.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb,Lc.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card25_pass3",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1card25.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb,Lc.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1card25_pass3.val"
         },
         {
           "@id": "#1card25_pass2",
           "@type": "sht:ValidationTest",
-          "name": "1card25_pass",
+          "action": {
+            "schema": "../schemas/1card25.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card25_pass2",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1card25.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1card25_pass2.val"
         },
         {
           "@id": "#1card2_pass2",
           "@type": "sht:ValidationTest",
-          "name": "1card2_pass",
+          "action": {
+            "schema": "../schemas/1card2.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card2_pass2",
           "comment": "<S> { <p1> .{2} } on { <s> <p1> 'a','b' }",
           "status": "mf:proposed",
-          "schema": "../schemas/1card2.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1card2_pass2.val"
         },
         {
           "@id": "#1Adot_pass",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1Adot.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_a_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1Adot_pass",
           "comment": "<S> { a . } on { <s> a <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1Adot.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_a_Io1.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1Adot_pass.val"
         },
         {
           "@id": "#1dotCode1_pass",
           "@type": "sht:ValidationTest",
-          "name": "1dot_pass",
+          "action": {
+            "schema": "../schemas/1dotCode1.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1dotCode1_pass",
           "comment": "<S> { <p1> . %semAct1{ code1 %} } on { <s> <p1> <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dotCode1.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1dotCode1_pass.val"
         },
         {
           "@id": "#1dot_missing",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1dot.shex",
+            "shape": "http://a.example/S",
+            "data": "IIssue1_Ip2_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1dot_missing",
           "comment": "<S> { <p1> . } on { <s> <p2> <o1> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1dot.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip2_Io1.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1dot_extra_higher",
           "@type": "sht:ValidationTest",
-          "name": "1dot_extra",
+          "action": {
+            "schema": "../schemas/1dot.shex",
+            "shape": "http://a.example/S",
+            "data": "IIssue1_Ip1_Io1;Ip2_Io2.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1dot_extra_higher",
           "comment": "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dot.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1;Ip2_Io2.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1dot_pass.val"
         },
         {
           "@id": "#iovka",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../validations/iovka.shex",
+            "shape": "S",
+            "data": "iovka.ttl",
+            "focus": "x"
+          },
           "name": "iovka",
           "comment": "@@ iovka",
           "status": "mf:proposed",
-          "schema": "../validations/iovka.shex",
-          "shape": "S",
-          "data": "iovka.ttl",
-          "focus": "x",
           "result": "iovka.val"
         },
         {
           "@id": "#1dot_pass",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/1dot.shex",
+            "shape": "http://a.example/S",
+            "data": "IIssue1_Ip1_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1dot_pass",
           "comment": "<S> { <p1> . } on { <s> <p1> <o1> }",
           "status": "mf:proposed",
-          "schema": "../schemas/1dot.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1.ttl",
-          "focus": "http://a.example/Issue1",
           "result": "1dot_pass.val"
         },
         {
           "@id": "#1dotAnnot3_missing",
           "@type": "sht:ValidationFailure",
-          "name": "1dot_missing",
+          "action": {
+            "schema": "../schemas/1dotAnnot3.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip2_Io1Annot3.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1dotAnnot3_missing",
           "comment": "<S> { <p1> . ... } on { <s> <p2> <o1> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1dotAnnot3.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip2_Io1Annot3.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1card2_fail0",
           "@type": "sht:ValidationFailure",
-          "name": "1card2_pass",
+          "action": {
+            "schema": "../schemas/1card2.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "empty.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card2_fail0",
           "comment": "<S> { <p1> .{2} } on {  }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1card2.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "empty.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1dotRef1_extraReferrer,extraReferent",
           "@type": "sht:ValidationFailure",
-          "name": "1dotRef1_",
+          "action": {
+            "schema": "../schemas/1dotRef1.shex",
+            "shape": "http://a.example/EmployeeShape",
+            "data": "In2_Ip2_In1.In2_Ip2_In3.In1_Ip1_LX.In3_Ip1_LX.ttl",
+            "focus": "http://a.example/n2"
+          },
+          "name": "1dotRef1_extraReferrer,extraReferent",
           "comment": "<n2> in { <n2> <p2> <n1>, <n3> . <n1> <p1> X . <n3> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1dotRef1.shex",
-          "shape": "http://a.example/EmployeeShape",
-          "data": "In2_Ip2_In1.In2_Ip2_In3.In1_Ip1_LX.In3_Ip1_LX.ttl",
-          "focus": "http://a.example/n2"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1dotRef1_extraReferrer",
           "@type": "sht:ValidationFailure",
-          "name": "1dotRef1_",
+          "action": {
+            "schema": "../schemas/1dotRef1.shex",
+            "shape": "http://a.example/EmployeeShape",
+            "data": "In2_Ip2_In1.In2_Ip2_In3.In1_Ip1_LX.ttl",
+            "focus": "http://a.example/n2"
+          },
+          "name": "1dotRef1_extraReferrer",
           "comment": "<n2> in { <n2> <p2> <n1>, <n3> . <n1> <p1> X } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1dotRef1.shex",
-          "shape": "http://a.example/EmployeeShape",
-          "data": "In2_Ip2_In1.In2_Ip2_In3.In1_Ip1_LX.ttl",
-          "focus": "http://a.example/n2"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1dotRef1_missingReferent",
           "@type": "sht:ValidationFailure",
-          "name": "1dotRef1_",
+          "action": {
+            "schema": "../schemas/1dotRef1.shex",
+            "shape": "http://a.example/EmployeeShape",
+            "data": "In2_Ip2_In1.ttl",
+            "focus": "http://a.example/n2"
+          },
+          "name": "1dotRef1_missingReferent",
           "comment": "<n2> in { <n2> <p2> <n1> } as <S1> in <S1> { <p2> @<S2> } <S2> { <p1> X }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1dotRef1.shex",
-          "shape": "http://a.example/EmployeeShape",
-          "data": "In2_Ip2_In1.ttl",
-          "focus": "http://a.example/n2"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1val2IRIREFExtra1iri",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1val2IRIREFExtra1.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_Io1,Io2.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1val2IRIREFExtra1iri",
           "comment": "<S> EXTRA <p1> { <p1> (<o1> <o2>) } on { <s> <p1> <o1>, <o2> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1val2IRIREFExtra1.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1,Io2.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1literalPlus_IIssue1_Ip1_La,Io1",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1literalPlus.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1literal_extra",
           "comment": "<S> { <p1> LITERAL+ } on { <s> <p1> 'a', <o2> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1literalPlus.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Io1.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1dotClosed_fail_higher",
           "@type": "sht:ValidationFailure",
-          "name": "1dot_extra",
+          "action": {
+            "schema": "../schemas/1dotClosed.shex",
+            "shape": "http://a.example/S",
+            "data": "IIssue1_Ip1_Io1;Ip2_Io2.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1dotClosed_fail_higher",
           "comment": "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1dotClosed.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1;Ip2_Io2.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1dotClosed_fail_lower",
           "@type": "sht:ValidationFailure",
-          "name": "1dot_extra",
+          "action": {
+            "schema": "../schemas/1dotClosed.shex",
+            "shape": "http://a.example/S",
+            "data": "IIssue1_Ip0_Io0;Ip1_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1dotClosed_fail_lower",
           "comment": "<S> { <p1> . } on { <s> <p1> <o1>; <p2> <o1> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1dotClosed.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip0_Io0;Ip1_Io1.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1datatypeLength_long",
           "@type": "sht:ValidationFailure",
-          "name": "1datatypeLength_pass",
+          "action": {
+            "schema": "../schemas/1datatypeLength.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_INT123456.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1datatypeLength_long",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 123456 }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1datatypeLength.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_INT123456.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1datatypeLength_short",
           "@type": "sht:ValidationFailure",
-          "name": "1datatypeLength_pass",
+          "action": {
+            "schema": "../schemas/1datatypeLength.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_INT1234.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1datatypeLength_short",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 1234 }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1datatypeLength.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_INT1234.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1datatypeLength_wrongDatatype",
           "@type": "sht:ValidationFailure",
-          "name": "1datatypeLength_missing",
+          "action": {
+            "schema": "../schemas/1datatypeLength.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_DEC1.345.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1datatypeLength_wrongDatatype",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p1> 1.234 }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1datatypeLength.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_DEC1.345.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1datatypeLength_missing",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1datatypeLength.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip2_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1datatypeLength_missing",
           "comment": "<S> { <p1> xs:integer LENGTH 5 } on <s> in { <s> <p2> <o1> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1datatypeLength.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip2_Io1.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1datatype_wrongDatatype",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1datatype.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_DEC1.345.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1datatype_wrongDatatype",
           "comment": "<S> { <p1> xs:integer } on <s> in { <s> <p1> 1.234 }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1datatype.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_DEC1.345.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1datatype_nonLiteral",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1datatype.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1datatype_nonLiteral",
           "comment": "<S> { <p1> xs:integer } on <s> in { <s> <p1> <o1> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1datatype.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_Io1.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1datatype_missing",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1datatype.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip2_Io1.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1datatype_missing",
           "comment": "<S> { <p1> xs:integer } on <s> in { <s> <p2> <o1> }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1datatype.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip2_Io1.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1cardPlus_fail0",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1cardPlus.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "empty.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1cardPlus_fail0",
           "comment": "<S> { <p1> .+ } on {  }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1cardPlus.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "empty.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1card2Star_fail1",
           "@type": "sht:ValidationFailure",
-          "name": "1card2Star_pass",
+          "action": {
+            "schema": "../schemas/1card2Star.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card2Star_fail1",
           "comment": "<S> { <p1> .{2,*} } on { <s> <p1> 'a' }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1card2Star.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1card2Star_fail0",
           "@type": "sht:ValidationFailure",
-          "name": "1card2Star_pass",
+          "action": {
+            "schema": "../schemas/1card2Star.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "empty.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card2Star_fail0",
           "comment": "<S> { <p1> .{2,*} } on {  }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1card2Star.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "empty.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1card25_fail6",
           "@type": "sht:ValidationFailure",
-          "name": "1card25_pass",
+          "action": {
+            "schema": "../schemas/1card25.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card25_fail6",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a','b','c','d','e','f' }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1card25.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb,Lc,Ld,Le,Lf.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1card25_fail1",
           "@type": "sht:ValidationFailure",
-          "name": "1card25_pass",
+          "action": {
+            "schema": "../schemas/1card25.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card25_fail1",
           "comment": "<S> { <p1> .{2,5} } on { <s> <p1> 'a' }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1card25.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1card25_fail0",
           "@type": "sht:ValidationFailure",
-          "name": "1card25_pass",
+          "action": {
+            "schema": "../schemas/1card25.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "empty.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card25_fail0",
           "comment": "<S> { <p1> .{2,5} } on {  }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1card25.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "empty.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1card2_fail3",
           "@type": "sht:ValidationFailure",
+          "action": {
+            "schema": "../schemas/1card2.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La,Lb,Lc.ttl",
+            "focus": "http://a.example/Issue1"
+          },
           "name": "1card2_fail3",
           "comment": "<S> { <p1> .{2} } on { <s> <p1> 'a','b','c' }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1card2.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La,Lb,Lc.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#1card2_fail1",
           "@type": "sht:ValidationFailure",
-          "name": "1card2_pass",
+          "action": {
+            "schema": "../schemas/1card2.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "IIssue1_Ip1_La.ttl",
+            "focus": "http://a.example/Issue1"
+          },
+          "name": "1card2_fail1",
           "comment": "<S> { <p1> .{2} } on { <s> <p1> 'a' }",
-          "status": "mf:proposed",
-          "schema": "../schemas/1card2.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "IIssue1_Ip1_La.ttl",
-          "focus": "http://a.example/Issue1"
+          "status": "mf:proposed"
         },
         {
           "@id": "#skipped",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../validations/skipped.shex",
+            "shape": "S",
+            "data": "skipped.ttl",
+            "focus": "x"
+          },
           "name": "skipped",
           "comment": "@@ skipped",
           "status": "mf:proposed",
-          "schema": "../validations/skipped.shex",
-          "shape": "S",
-          "data": "skipped.ttl",
-          "focus": "x",
           "result": "skipped.val"
         },
         {
           "@id": "#repeated-group",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../validations/repeated-group.shex",
+            "shape": "S",
+            "data": "repeated-group.ttl",
+            "focus": "x"
+          },
           "name": "repeated-group",
           "comment": "@@ repeated-group",
           "status": "mf:proposed",
-          "schema": "../validations/repeated-group.shex",
-          "shape": "S",
-          "data": "repeated-group.ttl",
-          "focus": "x",
           "result": "repeated-group.val"
         },
         {
           "@id": "#simple-group",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../validations/simple-group.shex",
+            "shape": "S",
+            "data": "simple-group.ttl",
+            "focus": "s0"
+          },
           "name": "simple-group",
           "comment": "@@ simple-group",
           "status": "mf:proposed",
-          "schema": "../validations/simple-group.shex",
-          "shape": "S",
-          "data": "simple-group.ttl",
-          "focus": "s0",
           "result": "simple-group.val"
         },
         {
           "@id": "#open3groupdotclosecard23Annot3Code2-p1p2p3X2",
           "@type": "sht:ValidationTest",
+          "action": {
+            "schema": "../schemas/open3groupdotclosecard23Annot3Code2.shex",
+            "shape": "http://a.example/IssueShape",
+            "data": "p1p2p3X2.ttl",
+            "focus": "x"
+          },
           "name": "open3groupdotclosecard23Annot3Code2-p1p2p3X2",
           "comment": "@@ open3groupdotclosecard23Annot3Code2-p1p2p3X2",
           "status": "mf:proposed",
-          "schema": "../schemas/open3groupdotclosecard23Annot3Code2.shex",
-          "shape": "http://a.example/IssueShape",
-          "data": "p1p2p3X2.ttl",
-          "focus": "x",
           "result": "open3groupdotclosecard23Annot3Code2-p1p2p3X2.val"
         }
       ]

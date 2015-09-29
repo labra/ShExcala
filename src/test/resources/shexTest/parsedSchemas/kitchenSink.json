@@ -9,9 +9,9 @@
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schem#"
   },
-  "startAct": {
-    "http://ex.example/#foo": " initializer for ignored extension "
-  },
+  "startActs": [
+    { "name": "http://ex.example/#foo", "contents": " initializer for ignored extension " }
+  ],
   "start": "http://ex.example/IssueShape",
   "shapes": {
     "http://ex.example/IssueShape": {
@@ -97,9 +97,9 @@
             ],
             "min": 0,
             "max": 1,
-            "semAct": {
-              "http://ex.example/#foo": " asdfasdf "
-            }
+            "semActs": [
+              { "name": "http://ex.example/#foo", "contents": " asdfasdf " }
+            ]
           },
           {
             "type": "tripleConstraint",
@@ -266,10 +266,10 @@
                   "type": "valueClass",
                   "nodeKind": "bnode"
                 },
-                "semAct": {
-                  "http://ex.example/#foo": " ignored ",
-                  "http://ex.example/#bar": " also ignored "
-                }
+                "semActs": [
+                  { "name": "http://ex.example/#foo", "contents": " ignored "},
+                  { "name": "http://ex.example/#bar", "contents": " also ignored " }
+                ]
               }
             ]
           },

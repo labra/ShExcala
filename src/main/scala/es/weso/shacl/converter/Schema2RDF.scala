@@ -1,7 +1,8 @@
 package es.weso.shacl.converter
 
 import es.weso.shacl._
-import es.weso.shacl.Shacl._
+import es.weso.shacl.Cardinality._
+import es.weso.shacl.ValueClass._
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import scala.util.Try
@@ -155,7 +156,7 @@ object Schema2RDF extends Logging {
       ): RDFBuilder = {
     value match {
       case Datatype(v,facets) => {
-        addTriple(rdf,(node,sh_valueType,v))
+        addTriple(rdf,(node,sh_datatype,v))
         facets2RDF(facets,node, rdf)
       }
 

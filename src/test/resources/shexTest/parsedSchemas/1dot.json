@@ -1,8 +1,10 @@
 {
   "type": "schema",
-  "prefixes": {},
+  "prefixes": {
+    "": "http://a.example/"
+  },
   "shapes":{
-    "http://a.example/IssueShape": {
+    "http://a.example/S": {
       "type": "shape",
       "expression": {
         "type": "tripleConstraint",

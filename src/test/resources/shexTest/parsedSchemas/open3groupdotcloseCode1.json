@@ -29,9 +29,9 @@
             }
           }
         ],
-        "semAct": {
-          "http://a.example/semAct1": " code1 "
-        }
+        "semActs": [
+          { "name": "http://a.example/semAct1", "contents": " code1 " }
+        ]
       }
     }
   }

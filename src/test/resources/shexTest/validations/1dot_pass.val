@@ -1,7 +1,7 @@
 {
   "type": "test",
   "node": "http://a.example/Issue1",
-  "shape": "http://a.example/IssueShape",
+  "shape": "http://a.example/S",
   "solution": { 
     "type":"tripleConstraintSolutions", "predicate":"http://a.example/p1",
     "value": { "type":"valueClass" },

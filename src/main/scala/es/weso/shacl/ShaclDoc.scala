@@ -8,8 +8,9 @@ import Document._
 import es.weso.rdf._
 import arq.iri
 import org.slf4j.LoggerFactory
-import es.weso.shacl.PREFIXES._
-import es.weso.shacl.Shacl._
+import PREFIXES._
+import ValueClass.any
+import es.weso.shacl._
 import es.weso.utils.Logging
 import es.weso.utils.PrefixMapUtils._
 
@@ -22,6 +23,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     pmDoc(prefixMap) :/: 
     startActionsDoc(s.startActions) :/:
     startDoc(s.start) :/:
+    valueClassesDoc(s.valueClasses) :/: 
     shapesDoc(s.shapes) 
   }
   
@@ -45,7 +47,14 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 /*  def actionsDoc(as:Actions): Document = {
     mapDocWithSep(as, " ", "\n", iriDoc, x => x)
   } */
+  def valueClassesDoc(valueClasses: Map[Label,ValueClass]): Document = {
+    iterDocWithSep(valueClasses, "\n", labelValueClassDoc)
+  }
 
+  def labelValueClassDoc(pair: (Label,ValueClass)): Document = {
+    "$" :: labelDoc(pair._1) :: space :: valueClassDoc(pair._2)   
+  }
+  
   def shapesDoc(shapes: Map[Label,Shape]): Document = {
     iterDocWithSep(shapes, "\n", labelShapeDoc)
   }
@@ -145,7 +154,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
     else text("")
 
   def actionsDoc(as: Actions): Document = {
-    iterDocWithSep(as, "\n", actionDoc)
+    iterDocWithSep(as.toList, "\n", actionDoc)
   }
   
   def annotationsDoc(as: List[Annotation]): Document = {
@@ -162,6 +171,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def valueClassDoc(v: ValueClass): Document = {
     v match {
+      case vr: ValueClassRef => "$" :: labelDoc(vr.label)
       case vc: ValueConstr => valueDoc(vc)
       case sc: ShapeConstr => shapeDoc(sc)
     }

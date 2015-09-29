@@ -5,7 +5,7 @@ import es.weso.shacl.ShaclMatcher
 import es.weso.rdf.jena.RDFAsJenaModel
 import util._
 import es.weso.rdfgraph.nodes._
-import es.weso.shacl.Shacl._
+import es.weso.shacl.Label._
 import es.weso.rdf.validator._
 import org.scalatest._
 
@@ -33,7 +33,10 @@ def shouldBeValid(strSchema: String, strData: String, strNode: String, strLabel:
     } yield ts
     
     result match {
-      case Failure(e) => fail(s"Exception: $e")
+      case Failure(e) => {
+       e.printStackTrace()
+       fail(s"Exception: ${e.getStackTrace}") 
+      }
       case Success(ts) => 
         if (ts.isEmpty) fail("No results")
         else info(s"Validated with typings $ts")

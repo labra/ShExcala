@@ -221,8 +221,8 @@ trait ShapeValidator extends Logging {
   }
 
   def matchRegex(r: Regex, lit: Literal): Result[Boolean] = {
-    r.findFirstIn(lit.lexicalForm) match {
-      case None => failure("matchValue: regex " + r.toString + " does not match literal " + lit.lexicalForm)
+    r.findFirstIn(lit.getLexicalForm) match {
+      case None => failure("matchValue: regex " + r.toString + " does not match literal " + lit.getLexicalForm)
       case Some(_) => unit(true)
     }
   }

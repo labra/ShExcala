@@ -1,13 +1,16 @@
 package es.weso.shacl.converter
 
-import es.weso.shacl.Shacl._
+import es.weso.shacl.XSFacet._
 import es.weso.rdf.parser.RDFParser
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
 import scala.util._
 import es.weso.rdf._
-import es.weso.shacl.Schema
+import es.weso.shacl._
+import es.weso.shacl.Label._
+import es.weso.shacl.Cardinality._
 import es.weso.shacl.PREFIXES._
+import es.weso.shacl.ValueClass._
 import es.weso.rdfgraph.statements.RDFTriple
 import es.weso.rdf.PrefixMap
 import es.weso.utils.{Success => TrySuccess,_}
@@ -46,7 +49,7 @@ object RDF2Schema
        closedShape_nodes ++ 
        with_sh_property_nodes).toSeq.distinct // Remove duplicates
     
-    println("Shape candidates = " + shapeCandidates)
+    log.info("Shape candidates = " + shapeCandidates)
     val maybeRules : Seq[Try[(Label,Shape)]] = 
       shapeCandidates.map{case node => {
       rule(node,rdf)
@@ -65,7 +68,7 @@ object RDF2Schema
       shape <- shape(n,rdf)
     } yield {
      val lbl = mkLabel(n)
-     println(s"Shape parsed Label: $lbl: $shape")
+     log.info(s"Shape parsed Label: $lbl: $shape")
      (lbl,shape) 
     }
   }
@@ -105,13 +108,13 @@ object RDF2Schema
   def shapeExpr: RDFParser[ShapeExpr] = { (n,rdf) =>
     objectsFromPredicate(sh_property)(n,rdf) match {
       case Success(ps) => {
-        println("shapeExpr...sh_property = " + ps)
+        log.info("shapeExpr...sh_property = " + ps)
         ps.size match {
           // TODO: check ids
           case 0 => Success(EmptyShape())
           case 1 => {
            val shapeExpr = oneOf(Seq(tripleConstraint))(ps.head,rdf)
-           println(s"ShapeExpr: $shapeExpr")
+           log.info(s"ShapeExpr: $shapeExpr")
            shapeExpr
           }
           case _ => for {
@@ -135,7 +138,7 @@ object RDF2Schema
          iri = iri,
          value = valueClass,
          card = card) 
-     println(s"TripleConstraint: $t") 
+     log.info(s"TripleConstraint: $t") 
      t
     }
   }
@@ -165,9 +168,9 @@ object RDF2Schema
   def singleShape: RDFParser[SingleShape] = { (n,rdf) =>
     for {
       label <- {
-       // println("looking for single Shape: " + n)
+       // log.info("looking for single Shape: " + n)
        val obj = objectFromPredicate(sh_valueShape)(n,rdf)
-       // println("objectFromPredicate valueShape = " + obj)
+       // log.info("objectFromPredicate valueShape = " + obj)
        obj
       }
     } yield SingleShape(mkLabel(label))
@@ -176,9 +179,9 @@ object RDF2Schema
   def literalDatatype: RDFParser[Datatype] = { (n,rdf) =>
     for {
       dt <- {
-       // println("literalDatatype: looking for valueType: " + n)
-       val obj = objectFromPredicate(sh_valueType)(n,rdf) 
-       // println("objectFromPredicate valueType = " + obj)
+       log.info("literalDatatype: looking for valueType: " + n)
+       val obj = objectFromPredicate(sh_datatype)(n,rdf) 
+       log.info("objectFromPredicate valueType = " + obj)
        obj
       }
       // TODO: Parse facets and check errors
@@ -196,7 +199,7 @@ object RDF2Schema
       nk_iri <- objectFromPredicate(sh_nodeKind)(n,rdf)
       nk <- nodeKindFromNode(nk_iri.toIRI)
     } yield {
-      println(s"Node kind: $nk")
+      log.info(s"Node kind: $nk")
       nk
     } 
   }

@@ -31,7 +31,7 @@ class ValidateSingle extends FunSpec with Matchers with ValidTester {
       val strSchema =
         """|PREFIX : <http://a.example/>
            |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-           |<S> { :a @<T1>*, (:a @<T2>+ | :b xsd:integer), :b IRI }
+           |<S> { :a @<T1>*, (:a @<T2>+ | :b xsd:integer), :b IRI ~ "^x4$" }
            |<T1> { :b @<T3> }
            |<T2> { :b @<T4> }
            |<T3> { :c . }
@@ -39,6 +39,7 @@ class ValidateSingle extends FunSpec with Matchers with ValidTester {
 
 
       shouldBeValid(strSchema, strData,"http://a.example/x","S")
-    }
+    } 
+    
   }
 }

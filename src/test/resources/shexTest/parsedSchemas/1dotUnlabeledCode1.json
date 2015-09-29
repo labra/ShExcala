@@ -8,7 +8,9 @@
         "type": "tripleConstraint",
         "predicate": "http://a.example/p1",
         "value": { "type": "valueClass" },
-        "semAct": { "": " code1 " }
+        "semActs": [
+          { "name": "", "contents": " code1 " }
+        ]
       }
     }
   }

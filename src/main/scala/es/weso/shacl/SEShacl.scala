@@ -12,12 +12,9 @@ import org.slf4j._
 import es.weso.rbe.{ 
   Schema => SESchema,
   Shape => SEShape,
+  Or => RBEOr,
   _
   }
-import Shacl.{
-  Or => _, 
-  _
-}
 
 
 /**
@@ -40,16 +37,16 @@ object SEShacl {
     )
   }
   
-  def shapeExpr2rbe(se: ShapeExpr): Sorbe[Val] = {
+  def shapeExpr2rbe(se: ShapeExpr): Rbe[Val] = {
     se match {
       case e:EmptyShape => Empty
       case tc: TripleConstraint => tripleConstraint2Symbol(tc)
       case GroupShape(_,shapes) => {
-       val zero : Sorbe[Val] = Empty
+       val zero : Rbe[Val] = Empty
        shapes.foldRight(zero)((shape,rest) => And(shapeExpr2rbe(shape),rest))
       }
       case SomeOf(_,shapes) => {
-       shapes.map(shapeExpr2rbe).reduce((rbe,rest) => Or(rbe,rest))
+       shapes.map(shapeExpr2rbe).reduce((rbe,rest) => RBEOr(rbe,rest))
       }
       case RepetitionShape(_,shape,card,_,_) => {
         Repeat(shapeExpr2rbe(shape),card.getMin,IntOrUnbounded(card.getMax))

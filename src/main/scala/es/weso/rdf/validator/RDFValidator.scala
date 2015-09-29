@@ -14,7 +14,6 @@ trait RDFValidator {
 
   def id: String
   
-  
   def rdf: RDFReader
   def schema: Schema
   def emptyResult: ValidationResult[Node,Label,Throwable]

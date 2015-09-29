@@ -1,7 +1,7 @@
 package es.weso.rbe
 
 case class Shape[Edge,Node,Label,Err](
-    rbe: Sorbe[(Edge,NodeShape[Label,Node,Err])], 
+    rbe: Rbe[(Edge,NodeShape[Label,Node,Err])], 
     extras: Seq[Edge], 
     closed: Boolean
 )

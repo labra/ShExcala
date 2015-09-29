@@ -1,7 +1,6 @@
 package es.weso.shacl
 
 import es.weso.rdf._
-import es.weso.shacl.Shacl._
 import es.weso.rdfgraph.nodes._
 import java.lang._
 import es.weso.utils.Logging
@@ -16,10 +15,10 @@ case class ShaclMatcher(
   
   override def id = "ShEx3" 
   type Schema = es.weso.shacl.Schema
-  type Label = Shacl.Label
+  type Label = es.weso.shacl.Label
   
   override def mkLabel(str: String): Label = {
-    Shacl.mkLabel(str)
+    Label.mkLabel(str)
   }
   type ValidationSchema = Schema
   type Result_ = ShaclResult 

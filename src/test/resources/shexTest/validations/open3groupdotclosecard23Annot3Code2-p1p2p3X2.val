@@ -92,9 +92,9 @@
       [ "http://a.example/annot2", "\"2\"" ],
       [ "http://a.example/annot3", "\"3\"" ]
     ],
-    "semAct": {
-      "http://a.example/semAct1": " code1 ",
-      "http://a.example/semAct2": " code2 "
-    }
+    "semActs": [
+      { "name": "http://a.example/semAct1", "contents": " code1 " },
+      { "name": "http://a.example/semAct2", "contents": " code2 " }
+    ]
   }
 }

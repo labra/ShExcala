@@ -1,10 +1,11 @@
 {
   "type": "schema",
   "prefixes": {},
-  "startAct": { "http://a.example/semAct1": " code1 ",
-                "http://a.example/semAct2": " code2 ",
-                "http://a.example/semAct3": " code3 "
-              },
+  "startActs": [
+    { "name": "http://a.example/semAct1", "contents": " code1 "},
+    { "name": "http://a.example/semAct2", "contents": " code2 "},
+    { "name": "http://a.example/semAct3", "contents": " code3 "}
+  ],
   "shapes":{
     "http://a.example/IssueShape": {
       "type": "shape",

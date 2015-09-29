@@ -9,7 +9,9 @@
         "predicate": "http://a.example/p1",
         "value": { "type": "valueClass" }
       },
-      "semAct": { "http://a.example/semAct1": " code1 " }
+      "semActs": [
+        { "name": "http://a.example/semAct1", "contents": " code1 " }
+      ]
     }
   }
 }

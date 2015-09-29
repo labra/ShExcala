@@ -9,7 +9,6 @@ import scala.util.{ Try, Success => TrySuccess, Failure => TryFailure }
 import scala.io._
 import org.scalatest.FunSpec
 import org.scalatest._
-import es.weso.shacl.ast.AST._
 import es.weso.shacl._
 
 class RunValASTAll extends Driver {

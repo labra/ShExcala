@@ -15,12 +15,12 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
   type Constraint = ConstraintRef
   
   // These types are specialized versions of the general types for readability
-  type RBE_ = Sorbe[(Edge,NodeShape[Label,Node,Err])] 
+  type RBE_ = Rbe[(Edge,NodeShape[Label,Node,Err])] 
   type Table_ = Table[Edge,Node,Label,Err]
   type Arc_ = (Node,Edge,Node)
   type OutNeigh_ = Seq[(Edge,Node)]
-  type Candidate_ = Candidate[Edge,Node,Label]
-  type Candidates_ = Seq[Option[Candidate_]]
+  type Candidate_ = Candidate[Edge,Node,Label,Err]
+  type Candidates_ = Seq[Candidate_]
   type Typing_ = PosNegTyping[Node,Label]
   type SingleResult_ = (Typing_,Seq[(Node,Edge,Node)])
   type Result_ = Try[Seq[SingleResult_]]
@@ -28,23 +28,23 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
   type Schema_ = Schema[Edge,Node,Label,Err]
   type Check_ = Checker[Err,Node]
     
-  def mkTable(label: Label): Try[(Table_, Sorbe[ConstraintRef])] = {
+  def mkTable(label: Label): Try[(Table_, Rbe[ConstraintRef])] = {
     if (m contains label) {
      val shape = m(label)
      val (table,rbe) = mkTableAux(shape.rbe,Table.empty)
-     val (table1,rbe1) = addExtras(shape.extras,table,rbe)
-     println(s"Table created: table = $table1, rbe = $rbe1")
-     Success((table1,rbe1)) 
+//     val (table1,rbe1) = addExtras(shape.extras,table,rbe)
+     log.info(s"Table created: table = $table, rbe = $rbe")
+     Success((table,rbe)) 
     }
     else 
      Failure(SESchemaException(s"Schema does not contain label $label. Table: $m"))
   }
   
-  def addExtras(extras: Seq[Edge], table: Table_, rbe: Sorbe[ConstraintRef]): (Table_,Sorbe[ConstraintRef]) = {
+/*  def addExtras(extras: Seq[Edge], table: Table_, rbe: Rbe[ConstraintRef]): (Table_,Rbe[ConstraintRef]) = {
     extras.foldLeft((table,rbe))(addExtra)
   }
   
-  def addExtra(pair: (Table_, Sorbe[ConstraintRef]), extra: Edge): (Table_,Sorbe[ConstraintRef]) = {
+  def addExtra(pair: (Table_, Rbe[ConstraintRef]), extra: Edge): (Table_,Rbe[ConstraintRef]) = {
     val (table,rbe) = pair
     val elems1 = table.elems + 1
     val ref1 = ConstraintRef(elems1)
@@ -60,10 +60,12 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     val rbe1 = And(rbe,Symbol(ref1,0,Unbounded)) 
     (table1,rbe1)
   }
+   
+  */
      
   private def mkTableAux(
       rbe: RBE_,
-      current: Table_): (Table_,Sorbe[ConstraintRef]) = {
+      current: Table_): (Table_,Rbe[ConstraintRef]) = {
     rbe match {
       case Empty => (current, Empty)
       case Symbol((p,c),m,n) => {
@@ -103,21 +105,25 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
   }
   
   private def checkCandidate(
-      shape: NodeShape[Label,Node,Err], node: Node, edge: Edge, obj: Node, c: ConstraintRef): Candidate_ = {
-        println(s"Check candidate $c with shape $shape. Edge: $edge, node: $node")
+      shape: NodeShape[Label,Node,Err], 
+      node: Node, 
+      edge: Edge, 
+      obj: Node, 
+      c: ConstraintRef): Candidate_ = {
+    log.info(s"Check candidate $c with shape $shape. Edge: $edge, node: $node")
     shape match {
       case Ref(label) => 
         Pending(c,obj,label,(node,edge,obj))  // Possible optimization if Ref has already been checked
       case p: Pred[Node,Err] => {
-        println(s"Checking condition with obj $obj and predicate ${p.name}")
+        log.info(s"Checking condition with obj $obj and predicate ${p.name}")
         p.pred(obj).fold(
             (x: Node) => {
-                 println(s"Condition satisfied with node $x")
+                 log.info(s"Condition satisfied with node $x")
              Pos(c,(node,edge,obj))
             },
-            (y:Seq[Err]) => {
-             println(s"Condition failed on $obj with predicate ${p.name}. Error = $y")
-             Neg(c,(node,edge,obj))  // TODO: Check how to integrate error messages 
+            (es:Seq[Err]) => {
+             log.info(s"Condition failed on $obj with predicate ${p.name}. Error = $es")
+             Neg(c,(node,edge,obj),es)  // TODO: Check how to integrate error messages 
             }
         )
       } 
@@ -151,17 +157,18 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
       table: Table_, 
       out: OutNeigh_,
       node: Node,
-      sorbe: Sorbe[ConstraintRef],
-      open:Boolean): Seq[Seq[Option[Candidate_]]] = {
-    println(s"filterCandidates: out = $out, sorbe = $sorbe")
+      Rbe: Rbe[ConstraintRef],
+      open:Boolean, 
+      extras: Seq[Edge]): Seq[Candidates_] = {
+    log.info(s"filterCandidates: out = $out, Rbe = $Rbe")
     val css = zipCandidates(table,node,out)
-    println(s"zip candidates: $css") 
-    css.filter(cs => matchCandidateSorbe(cs,sorbe,open))
+    log.info(s"zip candidates: $css") 
+    css.filter(cs => matchCandidateRbe(cs,Rbe,open,extras))
   }
   
-  private def pending(cs: Seq[Option[Candidate_]]): Seq[(Node,Label)] = {
-    cs.filter(c => c.isDefined && c.get.isPending).
-       map{ case c => c.get match {
+  private def pending(cs: Seq[Candidate_]): Seq[(Node,Label)] = {
+    cs.filter(_.isPending).
+       map{ case c => c match {
         case Pending(c,n,l,arc) => (n,l)
         case _ => throw SESchemaException(s"pending: Unexpected value: $c")
        }}
@@ -171,47 +178,52 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     css.map(cs => pending(cs)).flatten
   }
   
-/*  def matchNoPending(table: Table_, out: OutNeigh_, sorbe: Sorbe[ConstraintRef], open: Boolean): Boolean = {
-    val css = filterCandidates(table, out, sorbe,open)
+/*  def matchNoPending(table: Table_, out: OutNeigh_, Rbe: Rbe[ConstraintRef], open: Boolean): Boolean = {
+    val css = filterCandidates(table, out, Rbe,open)
     !css.isEmpty && pendings(css).isEmpty
   } */
   
-  private def matchCandidateSorbe(cs: Seq[Option[Candidate_]], 
-      sorbe: Sorbe[ConstraintRef], 
-      open: Boolean): Boolean = {
-    println(s"--Checking candidate: $cs with sorbe: $sorbe. Bag: ${candidatesToBag(cs)}. Interval: ${sorbe.interval(candidatesToBag(cs))}")
-    val b = !containsContradictions(cs) && 
-            sorbe.containsWithRepeats(candidatesToBag(cs),open)
-    println(s"--Result of checking candidate $cs with $sorbe = $b")
+  private def matchCandidateRbe(cs: Seq[Candidate_], 
+      rbe: Rbe[ConstraintRef], 
+      open: Boolean,
+      extras: Seq[Edge]): Boolean = {
+    log.info(s"--Checking candidate: $cs with sorbe: $rbe. Bag: ${candidatesToBag(cs)}. Interval: ${rbe.interval(candidatesToBag(cs))}")
+    val b = !containsContradictions(cs,extras) && 
+            rbe.containsWithRepeats(candidatesToBag(cs),open)
+    log.info(s"--Result of checking candidate $cs with $rbe = $b")
     b
   }
   
   // TODO: The following code could be optimized using some mathematical formula
   // A contradiction appears when a value N has sign -1 and another value N has sign +1
-  private def containsContradictions(cs: Seq[Option[Candidate_]]): Boolean = {
-    val defined = cs.filter(_.isDefined)
-    val pos = defined.filter(_.get.sign == 1).map(_.get.value)
-    val neg = defined.filter(_.get.sign == -1).map(_.get.value)
+  // allow contradictions if the predicate belongs to EXTRAs
+  private def containsContradictions(
+      cs: Seq[Candidate_],
+      extras: Seq[Edge]): Boolean = {
+    val noExtras = cs.filter(c => !(extras contains c.edge))
+    val pos = noExtras.filter(_.sign == 1).map(_.value)
+    val neg = noExtras.filter(_.sign == -1).map(_.value)
     pos.intersect(neg).length != 0
   }
   
   // TODO: It ignores extra predicates (value None) and negative candidates by now
-  private def candidatesToBag(cs: Seq[Option[Candidate_]]): Bag[ConstraintRef] = {
-    Bag.toBag(cs.filter(x => x.isDefined && x.get.sign == 1).map(_.get.value))
+  private def candidatesToBag(cs: Seq[Candidate_]): Bag[ConstraintRef] = {
+    Bag.toBag(cs.filter(_.sign == 1).map(_.value))
   }
 
-  def zipCandidates(table: Table_, node: Node, out: Seq[(Edge,Node)]): Seq[Seq[Option[Candidate_]]] = {
+  def zipCandidates(table: Table_, node: Node, out: Seq[(Edge,Node)]): Seq[Seq[Candidate_]] = {
     zipN(candidates(table,node, out))
   }
   
   private def calculateCandidates(
       table: Table_, 
       out: OutNeigh_, 
-      sorbe: Sorbe[ConstraintRef],
+      rbe: Rbe[ConstraintRef],
       node: Node,
-      open: Boolean): Try[Seq[Candidates_]] = {
+      open: Boolean,
+      extras: Seq[Edge]): Try[Seq[Candidates_]] = {
     Try{
-     filterCandidates(table,out,node,sorbe,open) 
+     filterCandidates(table,out,node,rbe,open,extras) 
     }
   }
   
@@ -221,16 +233,15 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
   
   private def resolveCandidate(
       n: Node, 
-      g: Graph_,
-      s:Schema_)(
-      c: Option[Candidate_],
+      g: Graph_)(
+      c: Candidate_,
       rest: Result_ 
       ): Result_ = {
     c match {
-      case None => {
+      case Missing(_,_) => {
        rest 
       }
-      case Some(Pending(c,obj,label,arc)) => rest match {
+      case Pending(c,obj,label,arc) => rest match {
         case Failure(e) => Failure(e)
         case Success(results) => {
           val rs = results.map(result => matchNodeInTyping(obj,label,g,result))
@@ -240,15 +251,15 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
         } 
       }
       
-      case Some(Pos(ref,arc)) => { 
+      case Pos(ref,arc) => { 
         // Basic matching with no pending
         // TODO: Accumulate triples checked?
-        println(s"Basic candidate matched. Constraint: $ref, node: $n, arc: $arc" )
+        log.info(s"Basic candidate matched. Constraint: $ref, node: $n, arc: $arc" )
         addArcResult(arc,rest)
       }
-      case Some(Neg(ref,arc)) => { 
+      case Neg(ref,arc,es) => { 
         // TODO: Throw exception?
-        println(s"Neg candidate: $ref. Node: $n. Arc = $arc")
+        log.info(s"Neg candidate: $ref. Node: $n. Arc = $arc, violations: $es")
         rest
       }
 
@@ -266,12 +277,11 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
       node: Node, 
       label: Label,
       g: Graph_,
-      s: Schema_,
       t: Typing_): Result_ = {
     // TODO: Check if we can return triples instead of Seq()
     val checked = Seq()
     val zero : Result_ = t.addPosType(node, label).map(t => Seq((t,checked))) 
-    cs.foldRight(zero)(resolveCandidate(node, g, s))
+    cs.foldRight(zero)(resolveCandidate(node, g))
   }
   
   // TODO: Move to utils 
@@ -289,10 +299,9 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
       node: Node, 
       label: Label,
       g: Graph_,
-      s: Schema_,
       currentTyping: Typing_): Result_ = {
   val attempts : Seq[Result_] = 
-    css.map(cs => resolveCandidates(cs,node,label,g,s,currentTyping))
+    css.map(cs => resolveCandidates(cs,node,label,g,currentTyping))
   filterSuccessSeqFlatten(attempts)
   }
   
@@ -305,7 +314,7 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
       label: Label, 
       graph: Graph_,
       result: SingleResult_): Result_ = {
-    println(s"Trying to match node $node with label $label, currentResult: $result" )
+    log.info(s"Trying to match node $node with label $label, current: $result" )
 
     val currentTyping = result._1
     // If the node has already been checked, return without checking again to avoid recursion
@@ -316,17 +325,18 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
     }
     else {
     val out = graph.out(node)
-    println(s"Out: $out")
+    log.info(s"Out: $out")
     for {
       (table,sorbe) <- mkTable(label)
-      val open = !m(label).closed
+      val shape = m(label)
+      val open = !shape.closed
       allCandidates <- {
-        println(s"Before calculating candidates: $out") 
-        val cs = calculateCandidates(table,out,sorbe,node,open)
+        log.info(s"Before calculating candidates: $out") 
+        val cs = calculateCandidates(table,out,sorbe,node,open,shape.extras)
         cs
       }
       newTyping <- currentTyping.addPosType(node,label)
-      results <- resolveAllCandidates(allCandidates, node, label, graph, this, newTyping)
+      results <- resolveAllCandidates(allCandidates, node, label, graph, newTyping)
     } yield {
       if (m(label).closed) {
         // filter out results that don't affect all triples in out neighbourhood 
@@ -345,7 +355,7 @@ case class Schema[Edge,Node,Label,Err](m: Map[Label,Shape[Edge,Node,Label,Err]])
       node: Node, 
       label: Label, 
       graph: Graph_): Result_ = {
-    println(s"Matching node $node with $label in graph $graph")
+    log.info(s"Matching node $node with $label in graph $graph")
     matchNodeInTyping(node,label,graph,(PosNegTyping.empty,Seq()))
   }
 }

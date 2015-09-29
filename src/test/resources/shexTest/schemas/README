@@ -1,0 +1,32 @@
+Exploration of someOf and group:
+
+The following tests cover 2-levels of combinatorics of someOf and group
+constructs. The column on the right includes the same tests with extra commas
+added wherever possible.
+
+1dot				1dotComma
+<S> { :p1 . }			<S> { :p1 ., }
+2dot				2dotCommas
+<S> { :p1 ., :p2 . }		<S> { :p1 ., :p2 ., }
+1dotOr1dot			1dotCommaOr1dotComma
+<S> { :p1 .| :p2 . }		<S> { :p1 .,| :p2 ., }
+2dotOr1dot			2dotCommaOr1dotComma
+<S> { :p1 ., :p2 .| :p3 . }	<S> { :p1 ., :p2 .,| :p3 ., }
+1dotOr2dot			1dotCommaOr2dotCommas
+<S> { :p1 .| :p2 ., :p3 . }	<S> { :p1 .,| :p2 ., :p3 ., }
+open2dotclose			open2dotcommasclose
+<S> { (:p1 ., :p2 .) }		<S> { (:p1 ., :p2 .,), }
+open1dotOr1dot			open1dotCommaOr1dotCommacloseComma
+<S> { (:p1 .| :p2 .) }		<S> { (:p1 .,| :p2 .,), }
+openopen1dotOr1dotclose1dotclose	openopen1dotCommaOr1dotCommaclose1dotCommacloseComma
+<S> { ((:p1 .| :p2 .), :p3 .) }	<S> { ((:p1 .,| :p2 .,), :p3 .,), }
+open1dotopen1dotOr1dotcloseclose	open1dotopen1dotCommaOr1dotCommacloseCommacloseComma
+<S> { (:p1 ., (:p2 .| :p3 .)) }	<S> { (:p1 ., (:p2 .,| :p3 .,),), }
+openopen2dotcloseOr1dotclose	openopen2dotCommascloseOr1dotCommaclose
+<S> { ((:p1 ., :p2 .)| :p3 .) }	<S> { ((:p1 ., :p2 .,),| :p3 .,), }
+open1dotOropen2dotcloseclose	open1dotCommaOropen2dotCommascloseclose
+<S> { (:p1 .| (:p2 ., :p3 .)) }	<S> { (:p1 .,| (:p2 ., :p3 .,),), }
+open2dotOr1dotclose		open2dotCommasOr1dotCommaclose
+<S> { (:p1 ., :p2 .| :p3 .) }	<S> { (:p1 ., :p2 .,| :p3 .,), }
+open1dotOr2dotclose		open1dotCommaOr2dotcommasclose
+<S> { (:p1 .| :p2 ., :p3 .) }	<S> { (:p1 .,| :p2 ., :p3 .,), }
