@@ -37,13 +37,15 @@ class RunASTSingle extends Driver {
            ast
           }
           schema <- {
-           println(s"SchemaAST\n$schemaAST") 
-           trying("AST->Schema", AST2Schema.cnvAST(schemaAST)) 
+           println(s"schema\n$schemaAST") 
+           val s = trying("AST->Schema", AST2Schema.cnvAST(schemaAST))
+           println(s"schemaAST to schema:\n$s")
+           s
           }
           shaclFile <- lookupFileWithSameName(file,schemasDir,"shex")
           shacl <- {
            val shacl = trying("Parsing SHACL", parseShaclSchema(shaclFile))
-           println(s"SHAC schemaL\n${shacl}")
+           println(s"shacl from parsing shex file\n${shacl}")
            shacl
           }
         } yield (schemaAST,schema,shacl,json)
@@ -52,6 +54,7 @@ class RunASTSingle extends Driver {
           case TrySuccess((schemaAST,schema, shacl,json)) => {
            println(s"\nJson generated = \n${schemaAST.asJson.spaces2}")
            jsonsEqual(json,schemaAST.asJson)
+           
            schemasEqual(schema,shacl) 
           }
           case TryFailure(e)      => fail("Failure: " + e)

@@ -17,11 +17,13 @@ object Schema2AST {
     Try {
       val ps = cnvPrefix(schema.pm)
       val s = schema.shaclSchema
+      val vcs = cnvValueClasses(s.valueClasses)
       val shapes = cnvShapes(s.shapes)
       val actions = cnvActions(s.startActions)
       val start = s.start.map(cnvLabel)
       SchemaAST.empty.copy(
-        prefixes = ps, 
+        prefixes = ps,
+        valueClasses = vcs,
         start = start, 
         startActions = actions, 
         shapes = shapes)
@@ -45,6 +47,11 @@ object Schema2AST {
       inherit = cnvLabels(shape.inherit), 
       extra = cnvIRIs(shape.extras), 
       semAct = cnvActions(shape.actions))
+  }
+  
+  def cnvValueClasses(vcs: Map[Label,ValueClass]): Option[Map[String,ValueClassAST]] = {
+    if (vcs.isEmpty) None
+    else Some(vcs.map { case (lbl,vc) => (cnvLabel(lbl), cnvValueClass(vc)) })
   }
 
   def cnvIRIs(iris: Seq[IRI]): Option[Seq[String]] = {

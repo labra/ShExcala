@@ -26,8 +26,8 @@ object AST2Schema {
    }
  }
 
- def cnvValueClasses(vcs: Map[String,ValueClassAST]): Map[Label,ValueClass] = {
-   vcs.map { case (str,vc) => (toLabel(str), cnvValueClass(vc))}
+ def cnvValueClasses(maybe_vcs: Option[Map[String,ValueClassAST]]): Map[Label,ValueClass] = {
+   maybe_vcs.getOrElse(Map()).map { case (str,vc) => (toLabel(str), cnvValueClass(vc))}
  }
  
  def cnvActions(actions: Option[Seq[ActionAST]]): Actions = {
@@ -75,7 +75,10 @@ object AST2Schema {
      case "tripleConstraint" => {
        val iri = IRI(expr.predicate.getOrElse(""))
        val id = expr.id.map(str => toLabel(str))
-       val value = expr.value.fold[ValueClass](any)(cnvValueClass)
+       val value = 
+         if (expr.valueClassRef.isDefined) 
+           cnvValueClassRef(expr.valueClassRef.get)
+         else expr.value.fold[ValueClass](any)(cnvValueClass)
        val card = cnvCard(expr)
        val inverse = cnvInverse(expr.inverse)
        val negated = cnvNegated(expr.negated)
@@ -158,6 +161,10 @@ object AST2Schema {
  
  def cnvIRI(str: String): IRI = {
    IRI(str)
+ }
+ 
+ def cnvValueClassRef(vcr: String): ValueClass = {
+   ValueClassRef(mkLabel(vcr))
  }
  
  def cnvValue(str: String): Either[IRI,Literal] = {

@@ -51,7 +51,8 @@ trait ShaclParser
             SHACLSchema.empty.copy(
                 shapes = shapes,
                 start = startLabel, 
-                startActions = as)                        
+                startActions = as,
+                valueClasses = s1.createdValueClasses)   
         (Schema(s1.namespaces, shaclSchema), s)
       }
     }
@@ -96,10 +97,21 @@ trait ShaclParser
   def statement: StateParser[ShapeParserState, Option[ShapeRule]] = { s => 
     (directive(s) <~ opt(WS) ^^ { case (_,s1) => (None, s1) }
 //      | begin(s) ^^ { case (rule, s1) => (Some(rule), s1) }
-      | start(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
-      | shapeRule(s) <~ opt(WS) ^^ { case (shape, s1) => (Some(shape), s1) }
-//      | valueClassDefinition(s)
-      )
+    | start(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
+    | shapeRule(s) <~ opt(WS) ^^ { case (shape, s1) => (Some(shape), s1) }
+    | valueClassDefinition(s) <~ opt(WS) ^^ { case ((label,vcd), s1) => (None, s1.addValueClass(label,vcd)) }
+    )
+  }
+  
+  def valueClassDefinition: StateParser[ShapeParserState,(Label,ValueClass)] = { s =>
+    (valueClassLabel(s.namespaces) <~ symbol("=")) ~ valueClass(s) ^^ {
+      case (lbl ~ ((vc,s1))) => ((lbl,vc),s1.addValueClass(lbl,vc))
+    }
+  }
+
+  // [3a]    valueClassLabel       ::= '$' iri
+  def valueClassLabel: PrefixMap => Parser[Label] = { pm =>
+    symbol("$") ~> iri(pm) ^^ { case iri => IRILabel(iri) }
   }
 
   def directive: StateParser[ShapeParserState,Unit] = { s => 
@@ -383,13 +395,14 @@ trait ShaclParser
     } yield ((a,b,c,d,e,f),s6)
   }
 
+  // [15]    tripleConstraint      ::= senseFlags? predicate valueClassOrRef cardinality? annotation* semanticActions
   def arc: StateParser[ShapeParserState, ShapeExpr] = { s =>
     val senseFlagsLifted: StateParser[ShapeParserState,Sense] = lift(senseFlags)
     val cardinalityLifted: StateParser[ShapeParserState,Cardinality] = lift(cardinality)
     combine6(
         senseFlagsLifted, 
         pred, 
-        valueClass, 
+        valueClassOrRef, 
         cardinalityLifted, 
         annotations, 
         semanticActions)(s) ^^ {
@@ -407,6 +420,12 @@ trait ShaclParser
   }
   
   case class Sense(inverse: Boolean, negated: Boolean)
+  
+  def valueClassOrRef: StateParser[ShapeParserState,ValueClass] = { s =>
+    ( valueClass(s) 
+    | valueClassLabel(s.namespaces) ^^ { case lbl => (ValueClassRef(lbl),s)}
+    )
+  }
 
   def annotations: StateParser[ShapeParserState, List[Annotation]] = { s => 
     rep(annotation(s.namespaces,s.baseIRI)) ^^ {
