@@ -47,12 +47,12 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 /*  def actionsDoc(as:Actions): Document = {
     mapDocWithSep(as, " ", "\n", iriDoc, x => x)
   } */
-  def valueClassesDoc(valueClasses: Map[Label,ValueClass]): Document = {
-    iterDocWithSep(valueClasses, "\n", labelValueClassDoc)
+  def valueClassesDoc(valueClasses: Map[Label,ValueClassDefinition]): Document = {
+    iterDocWithSep(valueClasses, "\n", labelValueClassDefnDoc)
   }
 
-  def labelValueClassDoc(pair: (Label,ValueClass)): Document = {
-    "$" :: labelDoc(pair._1) :: space :: valueClassDoc(pair._2)   
+  def labelValueClassDefnDoc(pair: (Label,ValueClassDefinition)): Document = {
+    "$" :: labelDoc(pair._1) :: space :: valueClassDefnDoc(pair._2)   
   }
   
   def shapesDoc(shapes: Map[Label,Shape]): Document = {
@@ -167,6 +167,13 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def actionDoc(a: (IRI,String)): Document = {
     "%" :: iriDoc(a._1) :: "{" :: text(a._2) :: text("%}")
+  }
+
+   def valueClassDefnDoc(v: ValueClassDefinition): Document = {
+    v.defn match {
+      case Left((vc,as)) => valueClassDoc(vc) :: space :: actionsDoc(as)
+      case Right(External()) => text("EXTERNAL") 
+    }
   }
 
   def valueClassDoc(v: ValueClass): Document = {

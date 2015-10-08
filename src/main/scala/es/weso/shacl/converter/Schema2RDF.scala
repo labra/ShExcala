@@ -117,16 +117,23 @@ object Schema2RDF extends Logging {
 //        actions2RDF(actions,node,rdf)
       }
       case Or(id,shape1,shape2) => {
-        val someOfNode = nodeFromOptionalLabel(id,rdf)
-        addTriple(rdf,(node,sh_someOf,someOfNode))
-        shape2RDF(shape1,someOfNode,rdf)
-        shape2RDF(shape2,someOfNode,rdf)
+        val orNode = nodeFromOptionalLabel(id,rdf)
+        val (o1, _) = rdf.createBNode
+        val (o2, _) = rdf.createBNode
+        addTriple(rdf,(node, sh_constraint, orNode))
+        addTriple(rdf,(orNode, rdf_type, sh_OrConstraint))
+        val list = rdflist(List(o1,o2),rdf)
+        rdf.addTriple(RDFTriple(orNode, sh_shapes, list))
+        shape2RDF(shape1, o1, rdf)
+        shape2RDF(shape2, o2, rdf)
       }
       case SomeOf(id,shapes) => {
-        val someOfNode = nodeFromOptionalLabel(id,rdf)
-        addTriple(rdf,(node,sh_someOf,someOfNode))
+        val orNode = nodeFromOptionalLabel(id,rdf)
+        addTriple(rdf,(node,sh_constraint,orNode))
+        addTriple(rdf,(orNode, rdf_type, sh_OrConstraint))
+        // TODO....!!!
         for (shape <- shapes) {
-          shape2RDF(shape,someOfNode,rdf)
+//          shape2RDF(shape,someOfNode,rdf)
         }
       }
 /*      case XOr(id,shape1,shape2) => {
@@ -322,5 +329,19 @@ object Schema2RDF extends Logging {
  def addTripleInteger(rdf: RDFBuilder, triple:(RDFNode, IRI, Integer)): RDFBuilder = {
   rdf.addTriple(RDFTriple(triple._1,triple._2,IntegerLiteral(triple._3)))
  }
+
+   def rdflist(ls:List[RDFNode],rdf: RDFBuilder):RDFNode = {
+    
+ def next(x:RDFNode,rest:RDFNode):RDFNode = {
+      val (link,_) = rdf.createBNode
+      rdf.addTriple(RDFTriple(link,rdf_first,x))
+      rdf.addTriple(RDFTriple(link,rdf_rest,rest))
+      link
+    }
+    
+    def zero : RDFNode = rdf_nil
+    
+    ls.foldRight(zero)(next)
+  }
 
 }

@@ -99,13 +99,16 @@ trait ShaclParser
 //      | begin(s) ^^ { case (rule, s1) => (Some(rule), s1) }
     | start(s) <~ opt(WS) ^^ { case s1 => (None, s1) }
     | shapeRule(s) <~ opt(WS) ^^ { case (shape, s1) => (Some(shape), s1) }
-    | valueClassDefinition(s) <~ opt(WS) ^^ { case ((label,vcd), s1) => (None, s1.addValueClass(label,vcd)) }
+    | valueClassDefinition(s) <~ opt(WS) ^^ { case ((label,vcd), s1) => (None, s1.addValueClassDefinition(label,vcd)) }
     )
   }
   
-  def valueClassDefinition: StateParser[ShapeParserState,(Label,ValueClass)] = { s =>
-    (valueClassLabel(s.namespaces) <~ symbol("=")) ~ valueClass(s) ^^ {
-      case (lbl ~ ((vc,s1))) => ((lbl,vc),s1.addValueClass(lbl,vc))
+  def valueClassDefinition: StateParser[ShapeParserState,(Label,ValueClassDefinition)] = { s =>
+    (valueClassLabel(s.namespaces) <~ symbol("=")) ~ (seqState(valueClass, semanticActions))(s) ^^ {
+      case (lbl ~ ((vc ~ as,s1))) => {
+        val vcd = ValueClassDefinition.fromValueClassActions(vc, as)
+        ((lbl,vcd),s1.addValueClassDefinition(lbl,vcd))
+      }
     }
   }
 

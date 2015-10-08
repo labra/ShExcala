@@ -3,7 +3,6 @@ package es.weso.rdf.validator
 import es.weso.rdf._;
 import es.weso.rdfgraph.nodes._
 import es.weso.monads.Result
-import es.weso.shex.Typing
 import util._
 import es.weso.rdf.PrefixMap
 

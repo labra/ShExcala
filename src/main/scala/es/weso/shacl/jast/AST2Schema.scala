@@ -26,8 +26,8 @@ object AST2Schema {
    }
  }
 
- def cnvValueClasses(maybe_vcs: Option[Map[String,ValueClassAST]]): Map[Label,ValueClass] = {
-   maybe_vcs.getOrElse(Map()).map { case (str,vc) => (toLabel(str), cnvValueClass(vc))}
+ def cnvValueClasses(maybe_vcs: Option[Map[String,ValueClassAST]]): Map[Label,ValueClassDefinition] = {
+   maybe_vcs.getOrElse(Map()).map { case (str,vc) => (toLabel(str), cnvValueClassDef(vc))}
  }
  
  def cnvActions(actions: Option[Seq[ActionAST]]): Actions = {
@@ -191,6 +191,9 @@ object AST2Schema {
      case Some(num) => RangeCardinality(min,num)
    }
  } 
+ def cnvValueClassDef(vc: ValueClassAST): ValueClassDefinition = {
+   ValueClassDefinition.fromValueClass(cnvValueClass(vc))   
+ }
  
  def cnvValueClass(vc: ValueClassAST): ValueClass = {
    if (vc.values.isDefined) {

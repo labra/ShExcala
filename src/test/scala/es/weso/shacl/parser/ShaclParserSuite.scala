@@ -4,7 +4,6 @@ import org.scalatest._
 import org.scalatest.prop._
 import es.weso.rdfgraph.nodes._
 import es.weso.rdfgraph._
-import es.weso.shex.ShapeDoc._
 import es.weso.shacl.parser._
 import es.weso.shacl.parser.ShaclParser._
 import es.weso.shacl._

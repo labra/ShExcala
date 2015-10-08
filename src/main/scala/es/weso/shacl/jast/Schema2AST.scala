@@ -49,10 +49,12 @@ object Schema2AST {
       semAct = cnvActions(shape.actions))
   }
   
-  def cnvValueClasses(vcs: Map[Label,ValueClass]): Option[Map[String,ValueClassAST]] = {
+  def cnvValueClasses(vcs: Map[Label,ValueClassDefinition]): Option[Map[String,ValueClassAST]] = {
     if (vcs.isEmpty) None
-    else Some(vcs.map { case (lbl,vc) => (cnvLabel(lbl), cnvValueClass(vc)) })
+    else Some(vcs.map { case (lbl,vc) => (cnvLabel(lbl), cnvValueClassDef(vc)) })
   }
+  
+  def cnvValueClassDef(vcd: ValueClassDefinition): ValueClassAST = ???
 
   def cnvIRIs(iris: Seq[IRI]): Option[Seq[String]] = {
     if (iris.isEmpty) None

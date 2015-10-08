@@ -3,7 +3,7 @@ import scala.util.parsing.input.Positional
 
 case class SHACLSchema(
   id: Option[Label],
-  valueClasses: Map[Label,ValueClass],
+  valueClasses: Map[Label,ValueClassDefinition],
   shapes: Map[Label, Shape],
   start: Option[Label],
   startActions: Actions)

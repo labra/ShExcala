@@ -39,12 +39,10 @@ object RDF2Schema
     
     val shape_nodes = subjectsWithType(sh_Shape,rdf).toSet
     val shapeClass_nodes = subjectsWithType(sh_ShapeClass,rdf).toSet
-    val openShape_nodes = subjectsWithType(sh_OpenShape,rdf).toSet
     val closedShape_nodes = subjectsWithType(sh_ClosedShape,rdf).toSet
     val with_sh_property_nodes = subjectsWithProperty(sh_property,rdf).toSet
     val shapeCandidates = 
       (shape_nodes ++ 
-       openShape_nodes ++ 
        shapeClass_nodes ++ 
        closedShape_nodes ++ 
        with_sh_property_nodes).toSeq.distinct // Remove duplicates

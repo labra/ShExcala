@@ -22,7 +22,7 @@ case class ShapeParserState(
     val starts: List[Label],
     val baseIRI: IRI,
     val createdShapes: Map[Label,Shape],
-    val createdValueClasses: Map[Label,ValueClass]) {
+    val createdValueClasses: Map[Label,ValueClassDefinition]) {
 
   def newTable(table: BNodeTable): ShapeParserState =
     copy(bNodeLabels = table)
@@ -55,6 +55,11 @@ case class ShapeParserState(
   def addValueClass(
       label: Label, 
       valueClass: ValueClass): ShapeParserState = {
+    this.copy(createdValueClasses = createdValueClasses + (label -> ValueClassDefinition.fromValueClass(valueClass)))
+  }
+  def addValueClassDefinition(
+      label: Label, 
+      valueClass: ValueClassDefinition): ShapeParserState = {
     this.copy(createdValueClasses = createdValueClasses + (label -> valueClass))
   }
 }
