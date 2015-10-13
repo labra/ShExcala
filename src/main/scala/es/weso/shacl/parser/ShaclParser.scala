@@ -557,8 +557,9 @@ trait ShaclParser
   }
   
   def singleShapeConstr: StateParser[ShapeParserState,ShapeConstr] = { s =>
-    token("@") ~> label(s) ^^ { case (label,s1) => (SingleShape(label), s1) }
-    token("!") ~> label(s) ^^ { case (label,s1) => (NotShape(label), s1) }
+  ( token("@") ~> label(s) ^^ { case (label,s1) => (SingleShape(label), s1) }
+  | token("!") ~> label(s) ^^ { case (label,s1) => (NotShape(label), s1) }
+  )
   }
   
   def valueSet: StateParser[ShapeParserState, ValueSet] = { s => 

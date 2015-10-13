@@ -1,0 +1,9 @@
+@prefix : <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:x1 :p :q1 .
+:x2 :p :q2 .
+
+:q1 :q 1 . 
+:q2 :q -1 . 

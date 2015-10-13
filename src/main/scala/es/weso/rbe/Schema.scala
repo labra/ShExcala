@@ -104,6 +104,9 @@ case class Schema[Edge,Node,Label,Err](
       case Ref(label) => 
         Pending(c,nodeToCheck,label,mkArc(edge, node, nodeToCheck),edge)  // Possible optimization if Ref has already been checked
         
+      case RefNot(label) => 
+        PendingNot(c,nodeToCheck,label,mkArc(edge, node, nodeToCheck),edge)  // Possible optimization if Ref has already been checked
+        
       case ConjRef(labels) => 
         PendingSeq(c,nodeToCheck,labels,mkArc(edge, node, nodeToCheck),edge) // Possible optimization if Ref has already been checked
         
@@ -160,6 +163,7 @@ case class Schema[Edge,Node,Label,Err](
     css.filter(cs => matchCandidateRbe(cs,Rbe,open,extras))
   }
   
+  /*
   private def pending(cs: Seq[Candidate_]): Seq[(Node,Label)] = {
     cs.filter(_.isPending).
        map{ case c => c match {
@@ -171,7 +175,7 @@ case class Schema[Edge,Node,Label,Err](
   
   private def pendings(css: Seq[Candidates_]): Seq[(Node,Label)] = {
     css.map(cs => pending(cs)).flatten
-  }
+  } */
   
   private def matchCandidateRbe(cs: Seq[Candidate_], 
       rbe: Rbe[ConstraintRef], 
@@ -235,6 +239,16 @@ case class Schema[Edge,Node,Label,Err](
         case Failure(e) => Failure(e)
         case Success(results) => {
           val rs = results.map(result => matchNodeInTyping(obj,label,g,result))
+          val f = filterSuccess(rs)
+          val r = f.map(t => t.flatten)
+          addArcResult(arc,r)
+        } 
+      }
+      
+      case PendingNot(c,obj,label,arc,_) => rest match {
+        case Failure(e) => Failure(e)
+        case Success(results) => {
+          val rs = results.map(result => noMatchNodeInTyping(obj,label,g,result))
           val f = filterSuccess(rs)
           val r = f.map(t => t.flatten)
           addArcResult(arc,r)
@@ -320,7 +334,7 @@ case class Schema[Edge,Node,Label,Err](
     combineAll(labels,current,comb _)
   }
   
-  /**
+    /**
    * Matches a node with a label in a graph 
    * Takes into account the current result typing and triples
    */
@@ -328,15 +342,15 @@ case class Schema[Edge,Node,Label,Err](
       node: Node, 
       label: Label, 
       graph: Graph_,
-      result: SingleResult_): Result_ = {
-    log.info(s"Trying to match node $node with label $label, current: $result" )
+      current: SingleResult_): Result_ = {
+    log.info(s"-- Checking if node $node has shape $label\nCurrent: $current" )
 
-    val currentTyping = result._1
+    val currentTyping = current._1
     // If the node has already been checked, return without checking again to avoid recursion
     // TODO: Maybe, we could try again in a more dynamic setting
     if (currentTyping.getLabels(node) contains label) {
       // val s : Seq[(Edge,Node)] = Seq()
-      Success(Seq(result))
+      Success(Seq(current))
     }
     else {
     val out = neighbours(graph, node)
@@ -359,6 +373,26 @@ case class Schema[Edge,Node,Label,Err](
       } else results
     }
   }
+  }
+
+  
+  /**
+   * Checks that a a node doesn't match with a label in a graph 
+   * Takes into account the current result typing and triples
+   */
+  private def noMatchNodeInTyping(
+      node: Node, 
+      label: Label, 
+      graph: Graph_,
+      current: SingleResult_): Result_ = {
+    log.info(s"-- Checking that node $node doesn't match with label $label, current: $current" )
+
+    val res = matchNodeInTyping(node,label,graph,current)
+    if (res.isFailure || res.get.isEmpty) {
+      Success(Seq(current))
+    } else {
+      Failure(SESchemaException(s"$node matches label $label"))
+    }
   }
   
   
