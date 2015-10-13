@@ -536,14 +536,29 @@ trait ShaclParser
     }
 
   def groupShapeConstr: StateParser[ShapeParserState,ShapeConstr] = { s =>
-   rep1sepState(shapeOrRef,symbol("OR"))(s) ^^ {
-     case (shapes,s1) => if (shapes.length == 1) (SingleShape(shapes.head),s1)
-     else (DisjShapeConstr(shapes),s1)
+   rep1sepState(singleShapeConstr,symbol("AND"))(s) ^^ {
+     case (shapes,s1) => 
+       if (shapes.length == 1) (shapes.head,s1)
+       else {
+         val conj = mkConjShape(shapes)
+         (conj,s1)
+       }
    } 
   } 
   
-  def shapeOrRef: StateParser[ShapeParserState,Label] = { s =>
-    token("@") ~> label(s) ^^ { case (label,s1) => (label, s1) }
+  def mkConjShape(shapes: Seq[ShapeConstr]): ShapeConstr = {
+    def getLabel(s: ShapeConstr): Label = {
+      s match {
+        case SingleShape(l) => l
+        case _ => throw new Exception(s"Complex expression in ShapeConstr not handled yet: shapeConstr: $s")
+      }
+    }
+    ConjShapeConstr(shapes.map(getLabel(_)))
+  }
+  
+  def singleShapeConstr: StateParser[ShapeParserState,ShapeConstr] = { s =>
+    token("@") ~> label(s) ^^ { case (label,s1) => (SingleShape(label), s1) }
+    token("!") ~> label(s) ^^ { case (label,s1) => (NotShape(label), s1) }
   }
   
   def valueSet: StateParser[ShapeParserState, ValueSet] = { s => 

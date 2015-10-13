@@ -52,6 +52,13 @@ case class PosNegTypingAsMap[Node,Label](m: Map[Node,TypeRow[Label]])
      Success(PosNegTypingAsMap(m + (node -> tr))) 
     }
   } 
+  
+  override def toString: String = {
+    def next(rest:String, current: (Node, TypeRow[Label])): String = {
+      s"${current._1} -> ${current._2}| " + rest 
+    }
+    "{" + m.foldLeft("")(next)  + "}"
+  }
 }
 
 object PosNegTypingAsMap {

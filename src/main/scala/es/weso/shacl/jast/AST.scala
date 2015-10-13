@@ -43,10 +43,10 @@ object AST {
     pattern: Option[String],
     reference: Option[ReferenceAST],
     length: Option[Int],
-    minInclusive: Option[Int],
-    maxInclusive: Option[Int],
-    minExclusive: Option[Int],
-    maxExclusive: Option[Int],
+    minInclusive: Option[NumberAST],
+    maxInclusive: Option[NumberAST],
+    minExclusive: Option[NumberAST],
+    maxExclusive: Option[NumberAST],
     minLength: Option[Int],
     maxLength: Option[Int],
     totalDigits: Option[Int],
@@ -55,15 +55,19 @@ object AST {
 
   case class MaxAST(val v: Option[Int]) {
   }
+  
+  case class NumberAST(val v: Either[Int,Double]) {
+  }
+
 
   case class ValueAST(
     value: Either[String, StemRangeAST])
 
   case class ReferenceAST(
-    value: Either[String, OrAST])
+    value: Either[String, AndAST])
 
-  case class OrAST(
-    disjuncts: List[String])
+  case class AndAST(
+    conjuncts: List[String])
 
   case class StemRangeAST(
 //    _type: Option[String],
@@ -141,8 +145,8 @@ object AST {
     lazy val empty = Left("")
   }
 
-  object OrAST {
-    lazy val empty = OrAST(disjuncts = List())
+  object AndAST {
+    lazy val empty = AndAST(conjuncts = List())
   }
 
 /*  object StemRangeAST {
@@ -210,6 +214,13 @@ object AST {
         case Some(x) => jNumber(x)
       })
 
+  implicit def NumberEncodeJson: EncodeJson[NumberAST] =
+    EncodeJson((n: NumberAST) =>
+      n.v match {
+        case Left(x)  => jNumber(x)
+        case Right(x) => jNumber(x)
+      })
+      
   implicit def ValueClassEncodeJson: EncodeJson[ValueClassAST] =
     EncodeJson((n: ValueClassAST) =>
       ("mininclusive" :=? n.minInclusive) ->?:
@@ -237,10 +248,10 @@ object AST {
     EncodeJson((n: ReferenceAST) =>
       n.value.fold(_.asJson, _.asJson))
 
-  implicit def OrEncodeJson: EncodeJson[OrAST] =
-    EncodeJson((n: OrAST) =>
-      ("disjuncts" := n.disjuncts) ->:
-        ("type" := jString("or")) ->:
+  implicit def OrEncodeJson: EncodeJson[AndAST] =
+    EncodeJson((n: AndAST) =>
+      ("conjuncts" := n.conjuncts) ->:
+        ("type" := jString("and")) ->:
         jEmptyObject)
 
   implicit def StemRangeEncodeJson: EncodeJson[StemRangeAST] =
@@ -334,10 +345,10 @@ object AST {
       pattern <- (c --\ "pattern").as[Option[String]]
       reference <- (c --\ "reference").as[Option[ReferenceAST]]
       nodeKind <- (c --\ "nodeKind").as[Option[String]]
-      minInclusive <- (c --\ "mininclusive").as[Option[Int]]
-      maxInclusive <- (c --\ "maxinclusive").as[Option[Int]]
-      minExclusive <- (c --\ "minexclusive").as[Option[Int]]
-      maxExclusive <- (c --\ "maxexclusive").as[Option[Int]]
+      minInclusive <- (c --\ "mininclusive").as[Option[NumberAST]]
+      maxInclusive <- (c --\ "maxinclusive").as[Option[NumberAST]]
+      minExclusive <- (c --\ "minexclusive").as[Option[NumberAST]]
+      maxExclusive <- (c --\ "maxexclusive").as[Option[NumberAST]]
       minlength <- (c --\ "minlength").as[Option[Int]]
       maxlength <- (c --\ "maxlength").as[Option[Int]]
       totaldigits <- (c --\ "totaldigits").as[Option[Int]]
@@ -361,6 +372,12 @@ object AST {
       (for { value <- c.as[String] } yield MaxAST(None)) |||
         (for { value <- c.as[Int] } yield MaxAST(Some(value))))
 
+  implicit def NumberDecodeJson: DecodeJson[NumberAST] =
+    DecodeJson((c) =>
+      // TODO: Check that the string is a *
+      (for { value <- c.as[Int] } yield NumberAST(Left(value))) |||
+      (for { value <- c.as[Double] } yield NumberAST(Right(value))))
+        
   implicit def ValueDecodeJson: DecodeJson[ValueAST] =
     DecodeJson((c) =>
       (for { value <- c.as[String] } yield ValueAST(Left(value))) |||
@@ -369,12 +386,12 @@ object AST {
   implicit def ReferenceDecodeJson: DecodeJson[ReferenceAST] =
     DecodeJson((c) =>
       (for { value <- c.as[String] } yield ReferenceAST(Left(value))) |||
-        (for { value <- c.as[OrAST] } yield ReferenceAST(Right(value))))
+        (for { value <- c.as[AndAST] } yield ReferenceAST(Right(value))))
 
-  implicit def OrDecodeJson: DecodeJson[OrAST] =
+  implicit def OrDecodeJson: DecodeJson[AndAST] =
     DecodeJson((c) => for {
-      disjuncts <- (c --\ "disjuncts").as[List[String]]
-    } yield OrAST(disjuncts))
+      conjuncts <- (c --\ "conjuncts").as[List[String]]
+    } yield AndAST(conjuncts))
 
   implicit def StemRangeDecodeJson: DecodeJson[StemRangeAST] =
     DecodeJson((c) => for {

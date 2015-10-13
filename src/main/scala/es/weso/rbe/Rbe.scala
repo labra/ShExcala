@@ -135,9 +135,9 @@ sealed trait Rbe[+A] extends Logging {
   def derivBag[U >: A](bag: Bag[U], open: Boolean, controlled: Seq[U]): Rbe[U] = {
     val e: Rbe[U] = this
     def f(x: U, rest: Rbe[U]): Rbe[U] = {
-      log.info(s"Step: x: $x, rest: $rest, ")
+      log.info(s"DerivBag. step: x: $x, rest: $rest")
       val r = rest.deriv(x,open,controlled)
-      log.info(s"Deriv($x)($rest) = $r")
+      log.info(s"DerivBag. deriv($x)($rest) = $r")
       r
     }
     bag.toSeq.foldRight(e)(f)

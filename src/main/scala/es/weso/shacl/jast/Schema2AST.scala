@@ -225,8 +225,8 @@ object Schema2AST {
     sc match {
       case SingleShape(label) =>
         ReferenceAST(Left(cnvLabel(label)))
-      case DisjShapeConstr(shapes) =>
-        ReferenceAST(Right(OrAST(shapes.map(cnvLabel).toList)))
+      case ConjShapeConstr(shapes) =>
+        ReferenceAST(Right(AndAST(shapes.map(cnvLabel).toList)))
     }
   }
 
@@ -250,10 +250,10 @@ object Schema2AST {
     vc: ValueClassAST): ValueClassAST = {
     f match {
       // Numeric facets
-      case MinInclusive(n)   => vc.copy(minInclusive = Some(n))
-      case MinExclusive(n)   => vc.copy(minExclusive = Some(n))
-      case MaxInclusive(n)   => vc.copy(maxInclusive = Some(n))
-      case MaxExclusive(n)   => vc.copy(maxExclusive = Some(n))
+      case MinInclusive(n)   => vc.copy(minInclusive = Some(NumberAST(Left(n))))  // TODO: Check conversion to doubles
+      case MinExclusive(n)   => vc.copy(minExclusive = Some(NumberAST(Left(n))))
+      case MaxInclusive(n)   => vc.copy(maxInclusive = Some(NumberAST(Left(n))))
+      case MaxExclusive(n)   => vc.copy(maxExclusive = Some(NumberAST(Left(n))))
       case TotalDigits(n)    => vc.copy(totalDigits = Some(n))
       case FractionDigits(n) => vc.copy(fractionDigits = Some(n))
 

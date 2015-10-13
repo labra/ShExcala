@@ -240,7 +240,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shapeDoc(s: ShapeConstr): Document = {
     s match {
-      case DisjShapeConstr(shapes) => seqDocWithSep(shapes, "OR", labelDoc)
+      case ConjShapeConstr(shapes) => seqDocWithSep(shapes, "AND", labelDoc)
       case SingleShape(shape) => labelDoc(shape)
     }
   }

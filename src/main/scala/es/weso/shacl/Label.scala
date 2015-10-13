@@ -4,13 +4,13 @@ import es.weso.rdfgraph.nodes._
 import es.weso.rdf._
 import es.weso.utils.PrefixMapUtils._
 
-  /**
-   * Labels
-   */
+/**
+ * Labels
+ */
 sealed trait Label {
-    def getNode(): RDFNode
+  def getNode(): RDFNode
 
-    def show(implicit pm: PrefixMap): String
+  def show(implicit pm: PrefixMap): String
 }
 
 object Label {
@@ -25,21 +25,29 @@ object Label {
       case _          => throw new Exception("Cannot convert node " + node + " to Label")
     }
   }
-  
+
 }
 
-  case class IRILabel(iri: IRI) extends Label {
-    override def getNode = iri
+case class IRILabel(iri: IRI) extends Label {
+  override def getNode = iri
 
-    override def show(implicit pm: PrefixMap): String = {
-      qualify(iri)
-    }
+  override def show(implicit pm: PrefixMap): String = {
+    qualify(iri)
   }
 
-  case class BNodeLabel(bnode: BNodeId) extends Label {
-    override def getNode = bnode
-
-    override def show(implicit pm: PrefixMap): String =
-      "_:" + bnode.id
+  override def toString: String = {
+    iri.toString
   }
+}
+
+case class BNodeLabel(bnode: BNodeId) extends Label {
+  override def getNode = bnode
+
+  override def show(implicit pm: PrefixMap): String =
+    "_:" + bnode.id
+
+  override def toString: String = 
+    "_:" + bnode.id
+  
+}
 

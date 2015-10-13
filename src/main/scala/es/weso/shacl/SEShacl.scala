@@ -22,17 +22,18 @@ import es.weso.rbe.{
  */
 object SEShacl {
   type SEShaclSchema = SESchema[IRI,RDFNode,Label,ValidationError]
-  type Val = (IRI,NodeShape[Label,RDFNode,ValidationError])
+  type Val = (DirectedEdge[IRI],NodeShape[Label,RDFNode,ValidationError])
   type NodeShape_ = NodeShape[Label,RDFNode,ValidationError]
 
   def shacl2SE(s: SHACLSchema): SEShaclSchema = {
     SESchema(m = s.shapes.mapValues(sh => shape2SEShape(sh)))
   }
   
-  def shape2SEShape(sh: Shape): SEShape[IRI,RDFNode,Label,ValidationError] = {
+  def shape2SEShape(sh: Shape): SEShape[DirectedEdge[IRI],RDFNode,Label,ValidationError] = {
     SEShape(
         rbe = shapeExpr2rbe(sh.shapeExpr),
-        extras = sh.extras.toSeq,
+        // TODO: Consider inverse extras
+        extras = sh.extras.map(e => DirectEdge(e)).toSeq,
         closed = sh.isClosed
     )
   }
@@ -57,8 +58,10 @@ object SEShacl {
   }
   
   def tripleConstraint2Symbol(tc: TripleConstraint): Symbol[Val] = {
+    val edge = if (tc.inverse) InverseEdge(tc.iri)
+    else DirectEdge(tc.iri)
     Symbol(
-        a = (tc.iri, valueClass2NodeShape(tc.value)),
+        a = (edge, valueClass2NodeShape(tc.value)),
         n = tc.card.getMin,
         m = IntOrUnbounded(tc.card.getMax)
     )
@@ -75,6 +78,8 @@ object SEShacl {
   def shapeConstr2NodeShape(sc: ShapeConstr): NodeShape[Label,RDFNode,ValidationError] = {
     sc match {
       case SingleShape(label) => Ref(label) 
+      case NotShape(label) => RefNot(label) 
+      case ConjShapeConstr(labels) => ConjRef(labels) 
       case _ => throw SEShaclException(s"shapeConstrNodeShape: Unsupported value class " + sc)
     }
   }

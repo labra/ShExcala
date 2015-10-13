@@ -6,6 +6,12 @@ sealed trait NodeShape[+Label,+Node,+Err]
 // Reference to another label
 case class Ref[Label](label:Label) extends NodeShape[Label,Nothing,Nothing]
 
+// Reference to another label
+case class RefNot[Label](label:Label) extends NodeShape[Label,Nothing,Nothing]
+
+// Reference to a sequence of labels
+case class ConjRef[Label](labels:Seq[Label]) extends NodeShape[Label,Nothing,Nothing]
+
 // Boolean Constraint on nodes (it has a name and a predicate)
 // pred is defined in the 2nd parameter section to avoid equality and hashing of functions
 case class Pred[Node,Err](name: String)

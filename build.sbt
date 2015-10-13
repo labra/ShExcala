@@ -17,7 +17,7 @@ name := "shExcala"
 
 organization := "es.weso"
 
-version := "0.5.5"
+version := "0.5.7"
 
 scalaVersion := "2.11.7"
 

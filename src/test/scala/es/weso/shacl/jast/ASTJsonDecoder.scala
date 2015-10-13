@@ -58,7 +58,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
         predicate = Some("http://a.example/p1"),
         value = Some(ValueClassAST.empty.copy(
           nodeKind = Some("literal"),
-          maxInclusive = Some(5))))
+          maxInclusive = Some(NumberAST(Left(5))))))
           
       checkJsonDecoder(str, vc)
     }

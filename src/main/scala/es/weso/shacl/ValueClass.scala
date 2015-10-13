@@ -203,13 +203,13 @@ case class NonLiteralKind(
 }
 
 /**
- * ShapeConstr ::= SingleShape | DisjShapeConstr | ConjShapeConstr
+ * ShapeConstr ::= SingleShape | NotShape | DisjShapeConstr | ConjShapeConstr
  */
 sealed trait ShapeConstr extends ValueClass
   with Positional
 
 case class SingleShape(shape: Label) extends ShapeConstr
-case class DisjShapeConstr(shapes: List[Label]) extends ShapeConstr
-case class ConjShapeConstr(shapes: Set[Label]) extends ShapeConstr
-  //  case class NotShapeConstr(shape: ShapeConstr) extends ShapeConstr
+case class NotShape(shape: Label) extends ShapeConstr
+case class ConjShapeConstr(shapes: Seq[Label]) extends ShapeConstr
+// case class DisjShapeConstr(shapes: List[Label]) extends ShapeConstr
   

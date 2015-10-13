@@ -1,0 +1,21 @@
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:john foaf:name "John" ; ex:role ex:Tester .
+
+ex:tom 
+  foaf:name "Tomas" ; 
+  ex:experience ex:senior ;
+  ex:assignedIssue ex:issue1 .
+
+ex:mary foaf:givenName "Maria"; foaf:lastName "Smith" .
+
+ex:client1 ex:clientNumber 1 .
+
+ex:issue1  
+  ex:reportedBy ex:mary ; 
+  ex:reproducedBy ex:john ; 
+  ex:reproducedBy ex:tom 
+ .
+

@@ -2,20 +2,22 @@ package es.weso.rbe
 
 import es.weso.rdfgraph.nodes._
 import es.weso.rdf._
+import es.weso.utils.Logging
 
 /**
  *  RDF as graphs 
  */
 
-case class RDFAsGraph(rdf: RDFReader) extends Graph[IRI,RDFNode] {
+case class RDFAsGraph(rdf: RDFReader) extends Graph[IRI,RDFNode] with Logging {
   
   def in: RDFNode => Seq[(IRI, RDFNode)] = { n =>
-    rdf.triplesWithObject(n).map(t => (t.pred,t.subj)).toSeq
+    val in = rdf.triplesWithObject(n).map(t => (t.pred,t.subj)).toSeq
+    log.info(s"In of $n = $in")
+    in 
   }
   def out: RDFNode => Seq[(IRI, RDFNode)] = { n => 
-    println(s"Checking out of $n")
     val out = rdf.triplesWithSubject(n).map(t => (t.pred,t.obj)).toSeq
-    println(s"Out of $n = out")
+    log.info(s"Out of $n = $out")
     out
   }
   def nodes: Seq[RDFNode] = {

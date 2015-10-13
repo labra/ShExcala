@@ -265,22 +265,29 @@ object AST2Schema {
  }
  
  def collectMinInclusive(vc:ValueClassAST): List[NumericFacet] = {
-   if (vc.minInclusive.isDefined) List(MinInclusive(vc.minInclusive.get))
+   if (vc.minInclusive.isDefined) List(MinInclusive(cnvNumber(vc.minInclusive.get)))
    else List()
  }
  
+ def cnvNumber(n: NumberAST): Integer = {
+   n.v match {
+     case Left(n) => n
+     case Right(n) => throw new Exception("cnvNumber: Unsupported conversion from double to Number")
+   }
+ }
+ 
  def collectMaxInclusive(vc:ValueClassAST): List[NumericFacet] = {
-   if (vc.maxInclusive.isDefined) List(MaxInclusive(vc.maxInclusive.get))
+   if (vc.maxInclusive.isDefined) List(MaxInclusive(cnvNumber(vc.maxInclusive.get)))
    else List()
  }
  
  def collectMinExclusive(vc:ValueClassAST): List[NumericFacet] = {
-   if (vc.minExclusive.isDefined) List(MinExclusive(vc.minExclusive.get))
+   if (vc.minExclusive.isDefined) List(MinExclusive(cnvNumber(vc.minExclusive.get)))
    else List()
  }
  
  def collectMaxExclusive(vc:ValueClassAST): List[NumericFacet] = {
-   if (vc.maxExclusive.isDefined) List(MaxExclusive(vc.maxExclusive.get))
+   if (vc.maxExclusive.isDefined) List(MaxExclusive(cnvNumber(vc.maxExclusive.get)))
    else List()
  }
  
@@ -315,8 +322,8 @@ object AST2Schema {
    ref.map(ref => 
      ref.value match {
      case Left(str) => SingleShape(toLabel(str))
-     case Right(OrAST(disjuncts)) => 
-       DisjShapeConstr(disjuncts.map(x => toLabel(x)))  
+     case Right(AndAST(conjuncts)) => 
+       ConjShapeConstr(conjuncts.map(x => toLabel(x)))  
    })
  }
  

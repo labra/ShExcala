@@ -1,0 +1,32 @@
+prefix ex: <http://example.org/>
+prefix foaf: <http://xmlns.com/foaf/0.1/>
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+
+<TesterShape> {
+  foaf:name xsd:string
+, ex:role IRI
+}
+
+<ProgrammerShape> {
+  foaf:name xsd:string
+, ex:experience (ex:senior ex:young) 
+, ex:assignedName <ConfirmedIssueShape> *
+}
+
+<UserShape> {
+ ( foaf:givenName xsd:string, foaf:lastName xsd:string
+ | foaf:name xsd:string
+ )
+}
+
+<ClientShape> {
+ ex:clientNumber xsd:integer 
+}
+
+<ConfirmedIssueShape> {
+  ex:reportedBy @<UserShape> AND @<ClientShape>
+, ex:reproducedBy @<TesterShape>+ 
+, ex:reproducedBy @<ProgrammerShape>+ 
+, ^ex:assignedIssue @<ProgrammerShape>
+}
+
