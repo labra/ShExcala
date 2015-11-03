@@ -12,7 +12,6 @@ import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.utils.IO._
 import buildinfo._
 import es.weso.shacl._
-import es.weso.shacl._
 import es.weso.rdfgraph.nodes._
 import es.weso.utils.Verbosity
 import es.weso.shacl.Shacl._
