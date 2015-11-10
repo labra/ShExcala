@@ -4,7 +4,7 @@ import es.weso.rdf.PrefixMap
 import es.weso.rdfgraph.nodes._
 import es.weso.shacl.Label
 
-class ValidationAttempt[Node,Label] {
+trait ValidationAttempt[Node,Label] {
   def show(
       verbose: Boolean = false, 
       cut: Int = 1, 
@@ -19,8 +19,8 @@ case class ScopeNodeAttempt[Node,Label] (
   override def show(verbose: Boolean, cut: Int = 1, prefixMap: PrefixMap = PrefixMap.empty): String = {
     val sb: StringBuilder = new StringBuilder
     if (result.isValid) {
-      if (verbose) {
        sb ++= s"$node has shape $shape"
+      if (verbose) {
        sb ++= result.show(cut)(prefixMap) 
       }
     } else {
@@ -40,6 +40,25 @@ case class ScopeClassAttempt[Node,Label] (
 ) extends ValidationAttempt[Node,Label] {
   override def show(verbose: Boolean, cut: Int = 1, prefixMap: PrefixMap = PrefixMap.empty): String = {
     s"ScopeClassAttempt: $node with $cls "
+  }
+}
+
+object ValidationAttempt {
+  
+  def showAttempts[Node,Label](
+      attempts: Seq[ValidationAttempt[Node,Label]],
+      verbose: Boolean,
+      cut: Int,
+      pm: PrefixMap): String = {
+    if (attempts.isEmpty) {
+      "No declared validation detected (sh:scopeNode/sh:scopeClass)"
+    } else {
+      val sb = new StringBuilder
+      for (attempt <- attempts) {
+        sb ++= attempt.show(verbose, cut, pm) + "\n"
+      }
+      sb.toString
+    }
   }
 }
 

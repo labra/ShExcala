@@ -8,7 +8,6 @@ import util._
 import es.weso.typing._
 import es.weso.rdf.validator._
 import es.weso.shacl.PREFIXES._
-import es.weso.shacl.Label
 
 case class ShaclMatcher(
     schema: Schema, 

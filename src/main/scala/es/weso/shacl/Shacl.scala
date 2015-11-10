@@ -31,18 +31,8 @@ object Shacl extends RDFParser {
     for {
       (schema,pm) <- RDF2Schema.rdf2Schema(rdf)
     } yield {
-      val assertions = rdf.triplesWithPredicate(sh_scopeNode).map(t => (t.subj,t.obj)).toSeq
-      assertions.map{ case (labelNode, node) => {
-       mkLabel(labelNode) match {
-         case Some(label) => {
-           val matcher = ShaclMatcher(schema,rdf)
-           val result = matcher.match_node_label(node)(label)
-           ScopeNodeAttempt(node,labelNode,result)
-         }
-         case None => 
-           ScopeNodeAttempt(node,labelNode,ShaclResult.fail(s"Node $labelNode cannot be a shape label"))
-       }
-      }}
+      val matcher = ShaclMatcher(schema,rdf)
+      matcher.validate
     }
   }
 }
