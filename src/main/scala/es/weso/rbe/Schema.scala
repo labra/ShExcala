@@ -197,7 +197,8 @@ case class Schema[Edge,Node,Label,Err](
     val noExtras = cs.filter(c => !(extras contains c.edge))
     val pos = noExtras.filter(_.sign == 1).map(_.value)
     val neg = noExtras.filter(_.sign == -1).map(_.value)
-    pos.intersect(neg).length != 0
+    //    pos.intersect(neg).length != 0
+    neg.length != 0
   }
   
   // TODO: It ignores extra predicates (value None) and negative candidates by now

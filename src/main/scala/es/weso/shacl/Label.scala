@@ -14,15 +14,15 @@ sealed trait Label {
 }
 
 object Label {
-  def mkLabel(str: String): IRILabel = {
+  def labelStr(str: String): IRILabel = {
     IRILabel(IRI(str))
   }
 
-  def mkLabel(node: RDFNode): Label = {
+  def mkLabel(node: RDFNode): Option[Label] = {
     node match {
-      case b: BNodeId => BNodeLabel(b)
-      case i: IRI     => IRILabel(i)
-      case _          => throw new Exception("Cannot convert node " + node + " to Label")
+      case b: BNodeId => Some(BNodeLabel(b))
+      case i: IRI     => Some(IRILabel(i))
+      case _          => None
     }
   }
 

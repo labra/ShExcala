@@ -4,8 +4,7 @@ import org.slf4j._
 import org.apache.log4j.LogManager
 import org.apache.log4j.Level
 
-trait Verbosity {
-  lazy val log = LogManager.getLogger("Verbose")
+trait Verbosity extends Logging {
 
   var isVerbose = true
   
@@ -17,6 +16,11 @@ trait Verbosity {
   
   def setVerbosity(verbosity: Boolean): Unit = {
     isVerbose = verbosity
+    if (isVerbose) {
+      setInfo()
+    } else {
+      setError()
+    }
   }
   
 }

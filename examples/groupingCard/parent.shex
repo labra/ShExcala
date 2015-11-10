@@ -1,0 +1,8 @@
+prefix : <http://example.org/> 
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
+
+<item> {
+ :code xsd:string PATTERN "\\d{2}", 
+ :code xsd:string PATTERN "^[A-Z]"
+}

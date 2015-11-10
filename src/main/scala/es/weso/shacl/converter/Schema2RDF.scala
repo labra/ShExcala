@@ -200,7 +200,7 @@ object Schema2RDF extends Logging {
       rdf: RDFBuilder): RDFBuilder = {
     if (Settings.ValueObjectsAsLists) {
       val (list,_) = nodeList2RDF(values.map{ case v => valueObject2Node(v) },rdf)
-      addTriple(rdf,(node,sh_allowedValues,list))
+      addTriple(rdf,(node,sh_in,list))
     } else {
        for { vo <- values } {
         valueObject2RDF(vo,node,rdf)
@@ -258,11 +258,12 @@ object Schema2RDF extends Logging {
   }
     
     
+  // TODO: Review this code...should add sh_in for a list?
   def valueObject2RDF(
     value: ValueObject,
     node: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
-    addTriple(rdf,(node,sh_allowedValue,valueObject2Node(value)))
+    addTriple(rdf,(node,sh_in,valueObject2Node(value)))
     rdf
   }
   

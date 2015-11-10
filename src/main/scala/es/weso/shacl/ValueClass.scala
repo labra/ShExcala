@@ -67,7 +67,7 @@ case class Datatype(
         if (l.dataType == v && checkFacets(node, facets).isOK)
           ok(node)
         else
-          err(MsgError(s"literal $l doesn't match datatype $this"))
+          err(MsgError(s"literal $l with datatype ${l.dataType} doesn't match datatype $v"))
       case _ => err(MsgError(s"node $node doesn't match datatype $this"))
     }
   }

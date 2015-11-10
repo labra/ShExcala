@@ -30,7 +30,7 @@ trait ShaclParser
     with W3cTokens 
     with TurtleParser {
 
-  val log = LoggerFactory.getLogger("ShapeParser")
+  val log = LoggerFactory.getLogger("ShExParser")
 
   case class ShapeRule(label : Label,shape: Shape) 
 
@@ -573,10 +573,6 @@ trait ShaclParser
   def openParen: Parser[String] = symbol("(")
   def closeParen: Parser[String] = symbol(")")
 
-  /**
-   * It corresponds to object rule in
-   *  [[http://www.w3.org/2013/ShEx/ShEx.bnf grammar]]
-   */
   def valueObject(s: ShapeParserState): Parser[(ValueObject, ShapeParserState)] = {
     ( // symbol("-") ~> basicValueObject(s) ^^ { case ((vo, s)) => (NoObject(vo), s) } | 
       basicValueObject(s))

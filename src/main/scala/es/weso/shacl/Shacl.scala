@@ -15,7 +15,7 @@ import es.weso.utils.{
 }
 import Checker._
 import NumericFacetTypeClass._
-import es.weso.rdf.validator.ValidationAttempt
+import es.weso.rdf.validator._
 import converter.RDF2Schema
 import es.weso.rdf.parser.RDFParser
 import es.weso.shacl.Label._
@@ -31,12 +31,17 @@ object Shacl extends RDFParser {
     for {
       (schema,pm) <- RDF2Schema.rdf2Schema(rdf)
     } yield {
-      val assertions = rdf.triplesWithPredicate(sh_nodeShape).map(t => (t.subj,t.obj)).toSeq
-      assertions.map{ case (node,labelNode) => {
-       val label = mkLabel(labelNode)
-       val matcher = ShaclMatcher(schema,rdf)
-       val result = matcher.match_node_label(node)(label)
-       ValidationAttempt(node,label,result)
+      val assertions = rdf.triplesWithPredicate(sh_scopeNode).map(t => (t.subj,t.obj)).toSeq
+      assertions.map{ case (labelNode, node) => {
+       mkLabel(labelNode) match {
+         case Some(label) => {
+           val matcher = ShaclMatcher(schema,rdf)
+           val result = matcher.match_node_label(node)(label)
+           ScopeNodeAttempt(node,labelNode,result)
+         }
+         case None => 
+           ScopeNodeAttempt(node,labelNode,ShaclResult.fail(s"Node $labelNode cannot be a shape label"))
+       }
       }}
     }
   }

@@ -169,10 +169,10 @@ class Opts(
     )
 
   val validator = opt[String](
-    default = Some("SORBE"),
-    descr = "Validation algorithm: SORBE (Single Occurrence Bag Expressions)",
+    default = Some("SHEX3"),
+    descr = "Validation algorithm: SHEX3 (Shape Expressions)",
     noshort=true,
-    validate = (x => List("SORBE").contains(x.toUpperCase))
+    validate = (x => List("SHEX3").contains(x.toUpperCase))
 )
 
   val verbose = toggle("verbose",
@@ -211,7 +211,7 @@ object Main extends App with Verbosity {
     
     val conf = ConfigFactory.load()
     val opts = new Opts(args, errorDriver)
-
+    
     if (args.length == 0) {
       opts.printHelp()
       return
@@ -223,8 +223,10 @@ object Main extends App with Verbosity {
       showVersion()
     }
     
-    setVerbosity(opts.verbose())
-    verbose("Verbose mode activated")
+    val isVerbose = opts.verbose()
+    setVerbosity(isVerbose)
+    
+    val cut = opts.cut()
 
     val maybe_rdf: Option[RDFReader] = opts.data.get match {
       case None => opts.endpoint.get match {
@@ -263,7 +265,7 @@ object Main extends App with Verbosity {
     } else { // If no schema...check to validate nodeShape declarations in RDF
       if (maybe_rdf.isDefined) {
         val attempts = validateRDF(maybe_rdf.get)
-        showAttempts(attempts)
+        showAttempts(attempts,isVerbose,cut,PrefixMaps.commonShacl)
       }
       
     }
@@ -283,25 +285,21 @@ object Main extends App with Verbosity {
     println("** %d microseconds".format(micros))
   }
   
-  def showAttempts(attempts: Try[Seq[ValidationAttempt[RDFNode,Label]]]): Unit = {
+  def showAttempts(attempts: Try[Seq[ValidationAttempt[RDFNode,Label]]], verbose: Boolean, cut:Int, pm: PrefixMap): Unit = {
     attempts match {
       case Failure(e) => println("Exception trying to validate RDF: " + e)
       case Success(as) => {
         if (as.isEmpty) {
           println("Validation: No declaration of node shapes found")
         } else {
-          as.foreach { showAttempt(_) }
+          as.foreach { showAttempt(_,verbose,cut,pm) }
         }
       }
     }
   }
 
-  def showAttempt(attempt: ValidationAttempt[RDFNode,Label]): Unit = {
-    if (attempt.result.isValid) {
-      println(s"OK => Node ${attempt.node} matches ${attempt.label}. Result: ${attempt.result}")
-    } else {
-      println(s"Error => Node ${attempt.node} doesn't match ${attempt.label}. Result: ${attempt.result}")
-    }
+  def showAttempt(attempt: ValidationAttempt[RDFNode,Label], verbose: Boolean, cut: Int, pm: PrefixMap): Unit = {
+    attempt.show(verbose,cut,pm)
   }
   
   def showRuntimeMemory(runtime: Runtime): Unit = {
@@ -367,7 +365,7 @@ object Main extends App with Verbosity {
 
       val validator : RDFValidator =
         opts.validator() match {
-          case "SORBE" => {
+          case "SHEX3" => {
             ShaclMatcher(schema, rdf)
           }
 /*          case "DERIV" => {
@@ -383,11 +381,11 @@ object Main extends App with Verbosity {
       val r =
         if (opts.node.isSupplied)
           if (opts.shape_label.isSupplied)
-            validator.match_node_label(IRI(opts.node()))(validator.mkLabel(opts.shape_label()))
+            validator.match_node_label(IRI(opts.node()))(validator.labelStr(opts.shape_label()))
           else
             validator.match_node_AllLabels(IRI(opts.node()))
         else if (opts.shape_label.isSupplied)
-          validator.matchAllNodes_Label(validator.mkLabel(opts.shape_label()))
+          validator.matchAllNodes_Label(validator.labelStr(opts.shape_label()))
         else
           validator.matchAllNodes_AllLabels
       (r, pm)

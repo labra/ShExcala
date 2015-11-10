@@ -64,10 +64,14 @@ object RDF2Schema
   def rule: RDFParser[(Label,Shape)] = { (n,rdf) => {
     for {
       shape <- shape(n,rdf)
+      lbl <- {
+        mkLabel(n) match {
+          case None => fail(s"Node $n cannot be a label")
+          case Some(lbl) => Success(lbl)
+        }
+      }
     } yield {
-     val lbl = mkLabel(n)
-     log.info(s"Shape parsed Label: $lbl: $shape")
-     (lbl,shape) 
+      (lbl,shape)
     }
   }
   }
@@ -130,9 +134,15 @@ object RDF2Schema
      iri <- iriFromPredicate(sh_predicate)(n,rdf)
      valueClass <- valueClass(n,rdf)
      card <- cardinality(n,rdf)
+     lbl <- {
+        mkLabel(n) match {
+          case None => fail(s"Node $n cannot be a label")
+          case Some(lbl) => Success(lbl)
+        }
+      }
     } yield {
      val t = TripleConstraint.empty.copy(
-         id = Some(mkLabel(n)),
+         id = Some(lbl),
          iri = iri,
          value = valueClass,
          card = card) 
@@ -165,13 +175,19 @@ object RDF2Schema
   
   def singleShape: RDFParser[SingleShape] = { (n,rdf) =>
     for {
-      label <- {
+      labelNode <- {
        // log.info("looking for single Shape: " + n)
        val obj = objectFromPredicate(sh_valueShape)(n,rdf)
        // log.info("objectFromPredicate valueShape = " + obj)
        obj
       }
-    } yield SingleShape(mkLabel(label))
+      label <- {
+        mkLabel(labelNode) match {
+          case None => fail(s"Node $n cannot be a label")
+          case Some(lbl) => Success(lbl)
+        }
+      }
+    } yield SingleShape(label)
   }
   
   def literalDatatype: RDFParser[Datatype] = { (n,rdf) =>
@@ -202,21 +218,11 @@ object RDF2Schema
     } 
   }
   
-  def valueSet: RDFParser[ValueSet] = 
-    oneOf(Seq(allowedValue,allowedValues))
-  
-  def allowedValue: RDFParser[ValueSet] = { (n,rdf) => {
+  def valueSet: RDFParser[ValueSet] = { (n,rdf) => {
      for {
-       shapes <- objectsFromPredicate(sh_allowedValue)(n,rdf)
+       shapes <- objectsFromPredicate(sh_in)(n,rdf)
        if !shapes.isEmpty
      } yield ValueSet(shapes.map(node2valueObject).toSeq)
-   }
-  }
-    
-  def allowedValues: RDFParser[ValueSet] = { (n,rdf) => {
-     for {
-       shapes <-rdfListForPredicate(sh_allowedValues)(n,rdf) 
-     } yield ValueSet(shapes.map(node2valueObject))
    }
   }
   

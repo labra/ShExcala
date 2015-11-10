@@ -1,0 +1,28 @@
+@prefix : <http://example.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+:good1 :hasSon :person1 ;
+       :sonBirthDay "24/10/2015"^^xsd:date .
+
+:good2 :hasSon :person1, :person2 ;
+       :sonBirthDay "24/10/2015"^^xsd:date, "12/10/2010"^^xsd:date .
+
+:good3 :hasSon :person1, :person2, :person3 ;
+       :sonBirthDay "24/10/2015"^^xsd:date, 
+                    "12/10/2010"^^xsd:date,
+                    "07/09/2007"^^xsd:date .
+
+:bad1 :hasSon :person1 . 
+
+:bad2 :hasSon :person1, :person2;
+      :sonBirthDay "24/10/2015"^^xsd:date .
+
+:bad3 :hasSon :person1, :person2;
+      :sonBirthDay "24/10/2015"^^xsd:date, 
+	               "14/10/2010"^^xsd:date, 
+				   "24/10/2000"^^xsd:date .
+
+:bad4 :hasSon :person1; 
+      :sonBirthDay 2015 . 

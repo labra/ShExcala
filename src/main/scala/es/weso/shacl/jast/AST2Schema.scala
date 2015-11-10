@@ -164,7 +164,7 @@ object AST2Schema {
  }
  
  def cnvValueClassRef(vcr: String): ValueClass = {
-   ValueClassRef(mkLabel(vcr))
+    ValueClassRef(labelStr(vcr)) 
  }
  
  def cnvValue(str: String): Either[IRI,Literal] = {
@@ -454,6 +454,6 @@ object AST2Schema {
    if (str.startsWith(bNodeStart)) {
      BNodeLabel(BNodeId(str.drop(bNodeStartLength)))
    } else 
-     mkLabel(str)
+     labelStr(str)
  }
 }

@@ -87,4 +87,6 @@ case class ShaclResult(value: Try[Seq[PosNegTyping[RDFNode, Label]]])
 
 object ShaclResult {
   def empty = ShaclResult(Success(Seq()))
+  
+  def fail(msg: String) = ShaclResult(Failure(new Exception(msg)))
 }
