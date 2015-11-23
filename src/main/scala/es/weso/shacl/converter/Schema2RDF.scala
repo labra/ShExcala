@@ -209,7 +209,8 @@ object Schema2RDF extends Logging {
     }
   }
   
-  def nodeList2RDF(nodes: Seq[RDFNode],
+  def nodeList2RDF(
+      nodes: Seq[RDFNode],
       rdf:RDFBuilder): (RDFNode,RDFBuilder) = {
     nodes match {
       case Nil => {

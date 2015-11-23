@@ -153,8 +153,9 @@ sealed trait StringFacet extends XSFacet with Positional
 
 case class Pattern(regexStr: String) extends StringFacet {
   def check(node: RDFNode): Checker[RDFNode, ValidationError] = {
-    log.info(s"Pattern $regexStr facet on node $node")
+    log.info(s"Checking pattern $regexStr facet on node $node")
     val regex = regexStr.r
+    log.info(s"Regex = \\$regex\\")
     val str = node.getLexicalForm
     str match {
       case regex(_*) => ok(node)

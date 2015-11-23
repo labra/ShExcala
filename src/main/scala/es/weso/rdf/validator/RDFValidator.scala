@@ -42,6 +42,7 @@ trait RDFValidator {
     ValidationResult.mergeAll(subjects, emptyResult, match_node_AllLabels)
   }
   
+  // Validates declared ScopeNode's only
   def validate: Seq[ValidationAttempt[Node,Label]] 
 
 }
