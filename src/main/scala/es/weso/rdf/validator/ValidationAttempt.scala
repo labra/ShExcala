@@ -5,6 +5,8 @@ import es.weso.rdfgraph.nodes._
 import es.weso.shacl.Label
 
 trait ValidationAttempt[Node,Label] {
+  def isValid : Boolean
+  
   def show(
       verbose: Boolean = false, 
       cut: Int = 1, 
@@ -16,6 +18,11 @@ case class ScopeNodeAttempt[Node,Label] (
     shape: Node,
     result: ValidationResult[Node,Label,Throwable]
 ) extends ValidationAttempt[Node,Label] {
+  
+  override def isValid: Boolean = {
+    result.isValid
+  }
+  
   override def show(verbose: Boolean, cut: Int = 1, prefixMap: PrefixMap = PrefixMap.empty): String = {
     val sb: StringBuilder = new StringBuilder
     if (result.isValid) {
@@ -38,6 +45,9 @@ case class ScopeClassAttempt[Node,Label] (
     cls: Node,
     result: ValidationResult[Node,Label,Throwable]
 ) extends ValidationAttempt[Node,Label] {
+  
+  override def isValid = false 
+  
   override def show(verbose: Boolean, cut: Int = 1, prefixMap: PrefixMap = PrefixMap.empty): String = {
     s"ScopeClassAttempt: $node with $cls "
   }

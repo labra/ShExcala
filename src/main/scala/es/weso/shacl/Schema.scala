@@ -24,8 +24,16 @@ import es.weso.utils.Logging
 
 case class Schema(
     pm: PrefixMap,
-    shaclSchema: SHACLSchema) extends Positional with Logging {
+    shaclSchema: SHACLSchema) 
+      extends Positional with Logging {
 
+ def matchNodesLabels( 
+      decls: Seq[(RDFNode,Label)], 
+      rdf: RDFReader) = {
+    val seSchema = SEShacl.shacl2SE(shaclSchema)
+    seSchema.matchNodesLabels(decls, RDFAsGraph(rdf))
+  } 
+ 
   def matchNode_Label(node: RDFNode, label: Label, rdf: RDFReader) = {
     val seSchema = SEShacl.shacl2SE(shaclSchema)
     seSchema.matchNode(node, label, RDFAsGraph(rdf))

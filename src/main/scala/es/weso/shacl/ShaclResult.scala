@@ -74,6 +74,7 @@ case class ShaclResult(value: Try[Seq[PosNegTyping[RDFNode, Label]]])
           "<No results>"
         } else {
           val sb = new StringBuilder
+          sb ++= s"${rs.size} Results\n"
           for ((r, n) <- rs zip (1 to cut)) {
             sb ++= f"Solution ${n}%2d: $r\n"
           }

@@ -26,7 +26,10 @@ object SEShacl {
   type NodeShape_ = NodeShape[Label,RDFNode,ValidationError]
 
   def shacl2SE(s: SHACLSchema): SEShaclSchema = {
-    SESchema(m = s.shapes.mapValues(sh => shape2SEShape(sh)))
+    SESchema(
+        m = s.shapes.mapValues(sh => shape2SEShape(sh)),
+        ignored = Seq(InverseEdge(sh_scopeNode), InverseEdge(sh_scopeClass)) 
+    )
   }
   
   def shape2SEShape(sh: Shape): SEShape[DirectedEdge[IRI],RDFNode,Label,ValidationError] = {

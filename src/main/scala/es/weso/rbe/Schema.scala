@@ -10,7 +10,8 @@ import es.weso.typing.PosNegTyping
 import es.weso.utils.Logging
 
 case class Schema[Edge,Node,Label,Err](
-    m: Map[Label, Shape[DirectedEdge[Edge],Node,Label,Err]]
+    m: Map[Label,Shape[DirectedEdge[Edge],Node,Label,Err]],
+    ignored: Seq[DirectedEdge[Edge]]  // Edges that are ignored in the definition of closed schemas
     ) extends Logging {
   type ReasonPos = Nothing
   type ReasonNeg = Nothing
@@ -335,9 +336,9 @@ case class Schema[Edge,Node,Label,Err](
     combineAll(labels,current,comb _)
   }
   
-    /**
+  /**
    * Matches a node with a label in a graph 
-   * Takes into account the current result typing and triples
+   * Takes into account the current result typing and visited triples
    */
   private def matchNodeInTyping(
       node: Node, 
@@ -370,7 +371,9 @@ case class Schema[Edge,Node,Label,Err](
     } yield {
       if (m(label).closed) {
         // filter out results that don't affect all triples in neighbourhood 
-        results.filter(r => containsAllTriples(node,out,r._2))
+        // that are not part of ignored
+        val extras = m(label).extras
+        results.filter(r => containsAllTriples(node,extras,out,r._2))
       } else results
     }
   }
@@ -398,9 +401,27 @@ case class Schema[Edge,Node,Label,Err](
   
   
   
-  def containsAllTriples(node: Node, out: Neighs_, triples: Seq[(Node,Edge,Node)]): Boolean = {
+  def containsAllTriples(
+      node: Node, 
+      extras: Seq[DirectedEdge[Edge]], 
+      out: Neighs_, 
+      triples: Seq[(Node,Edge,Node)]): Boolean = {
+    def notInIgnored(neigh: Neigh_): Boolean = {
+      !(ignored contains neigh.directedEdge)
+    }
+    def notInExtras(extras: Seq[DirectedEdge[Edge]])(neigh: Neigh_): Boolean = {
+      !(extras contains neigh.directedEdge)
+    }
+    def onlyDirect(neigh: Neigh_): Boolean = {
+      neigh.isDirect 
+    }
     log.info(s"containsAllTriples: node: $node, out: $out, triples: $triples") 
-    val outTriples : Seq[(Node,Edge,Node)] = out.map(_.mkTriple(node))
+    val outTriples : Seq[(Node,Edge,Node)] = 
+      out.filter(notInIgnored).
+          filter(notInExtras(extras)).
+          filter(onlyDirect).  // TODO: Modify this line when allowing CLOSED ^ 
+          map(_.mkTriple(node))
+    log.info(s"containsAllTriples: outTriples after filters: $outTriples") 
     val cond = outTriples.forall(triples contains _)
     log.info(s"containsAllTriples: $cond")
     cond
@@ -419,8 +440,19 @@ case class Schema[Edge,Node,Label,Err](
     log.info(s"Matching node $node with $label\nGraph: $graph")
     matchNodeInTyping(node,label,graph,(PosNegTyping.empty,Seq()))
   }
+  
+  def matchNodesLabels(
+      ls: Seq[(Node,Label)], 
+      graph: Graph_): Result_ = {
+    val empty : SingleResult_ = (PosNegTyping.empty,Seq())
+    def comb(pair:(Node,Label), current: SingleResult_): Result_ = {
+      matchNodeInTyping(pair._1,pair._2,graph,current)
+    }
+    log.info(s"nodesLabels: ls = $ls")
+    combineAll(ls,empty,comb _)
+  }
 }
 
 object Schema {
-  def empty[Edge,Node,Label,Err] = Schema(Map())
+  def empty[Edge,Node,Label,Err] = Schema(Map(), Seq())
 }

@@ -43,7 +43,7 @@ trait RDFValidator {
   }
   
   // Validates declared ScopeNode's only
-  def validate: Seq[ValidationAttempt[Node,Label]] 
+  def validate: Result // Seq[ValidationAttempt[Node,Label]] 
 
 }
 

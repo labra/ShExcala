@@ -32,7 +32,7 @@ object Shacl extends RDFParser {
       (schema,pm) <- RDF2Schema.rdf2Schema(rdf)
     } yield {
       val matcher = ShaclMatcher(schema,rdf)
-      matcher.validate
+      matcher.validateAttempts
     }
   }
 }

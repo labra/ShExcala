@@ -188,23 +188,25 @@ object Main extends App with Verbosity {
         if (opts.node.isSupplied)
           if (opts.shape_label.isSupplied) {
             val r = validator.match_node_label(IRI(opts.node()))(validator.labelStr(opts.shape_label()))
-            r.show(cut)(pm)
+            println(r.show(cut)(pm))
           } else {
             val r = validator.match_node_AllLabels(IRI(opts.node()))
-            r.show(cut)(pm)
+            println(r.show(cut)(pm))
           }
         else if (opts.shape_label.isSupplied) {
           val r = validator.matchAllNodes_Label(validator.labelStr(opts.shape_label()))
-          r.show(cut)(pm)
+          println(r.show(cut)(pm))
         } else {
           opts.mode() match {
             case "ALL_NODESLABELS" => {
               val r = validator.matchAllNodes_AllLabels
-              r.show(cut)(pm)
+              println(r.show(cut)(pm))
             }
             case "DECLARED" => {
-              val attempts = validator.validate
-              println(ValidationAttempt.showAttempts(attempts, opts.verbose(), cut, pm))
+              println("Validating...")
+              val r = validator.validate
+              println(r.show(cut)(pm))
+              // println(ValidationAttempt.showAttempts(attempts, opts.verbose(), cut, pm))
             }
             case str => {
               throw MainException(s"Unsupported mode: $str")
