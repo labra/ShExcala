@@ -34,14 +34,16 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
       Schema(
         Map("t0" -> Shape.empty.copy(rbe = And(Symbol(((DirectEdge("a"), Ref("t1"))), 1, 1), Symbol(((DirectEdge("b"), Ref("t2"))), 1, 1))),
           "t1" -> Shape.empty.copy(rbe = Star(Or(Symbol(((DirectEdge("a"), Ref("t1"))), 1, 1), Symbol(((DirectEdge("b"), Ref("t2"))), 1, 1)))),
-          "t2" -> Shape.empty.copy(rbe = Or(Symbol(((DirectEdge("b"), Ref("t2"))), 1, 1), Symbol(((DirectEdge("c"), Ref("t1"))), 1, 1)))))
+          "t2" -> Shape.empty.copy(rbe = Or(Symbol(((DirectEdge("b"), Ref("t2"))), 1, 1), Symbol(((DirectEdge("c"), Ref("t1"))), 1, 1)))),
+        Seq())
 
     val s1 : Schema[String,String,String,Throwable]  =
       Schema(
         Map("t0" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("a"), Ref("t1"))), 1, 1)),
           "t1" -> Shape.empty.copy(rbe = And(Symbol(((DirectEdge("b"), Ref("t2"))), 1, 1), Symbol(((DirectEdge("c"), Ref("t3"))), 1, 1))),
           "t2" -> Shape.empty.copy(rbe = And(Symbol(((DirectEdge("b"), Ref("t2"))), 0, 1), Symbol(((DirectEdge("c"), Ref("t3"))), 1, 1))),
-          "t3" -> Shape.empty.copy(rbe = Empty)))
+          "t3" -> Shape.empty.copy(rbe = Empty)),
+        Seq())
 
 
     val s2: Schema[String, String, String, Throwable] =
@@ -49,7 +51,8 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
         Map("t0" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("a"), Ref("t0"))), 1, 1)),
           "t1" -> Shape.empty.copy(rbe = And(Symbol(((DirectEdge("b"), Ref("t2"))), 1, 1), Symbol(((DirectEdge("c"), Ref("t3"))), 1, 1))),
           "t2" -> Shape.empty.copy(rbe = And(Symbol(((DirectEdge("b"), Ref("t2"))), 0, 1), Symbol(((DirectEdge("c"), Ref("t3"))), 1, 1))),
-          "t3" -> Shape.empty.copy(rbe = Empty)))
+          "t3" -> Shape.empty.copy(rbe = Empty)),
+        Seq())
 
     val typing2 =
       Seq((PosNegTyping.fromPosMap(
@@ -68,7 +71,9 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
   }
     
   describe("Basic matchings") {
-      val s : Schema[String,String,String,Err] = Schema(Map("s" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("a"), integer)), 1, 1))))
+      val s : Schema[String,String,String,Err] = 
+        Schema(Map("s" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("a"), integer)), 1, 1))),
+        Seq())
       val t = Seq((PosNegTyping.fromPosMap(Map("x" -> Set("s"))),noTs))
       
       val g = GraphMap(Map("x" -> List(("a", "1"))))
@@ -94,7 +99,9 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
   }
   
   describe("Basic matchings with plus") {
-      val s : Schema[String,String,String,Err] = Schema(Map("s" -> Shape.empty.copy(rbe = Plus(Symbol(((DirectEdge("a"), integer)), 1, 1)))))
+      val s : Schema[String,String,String,Err] = 
+        Schema(Map("s" -> Shape.empty.copy(rbe = Plus(Symbol(((DirectEdge("a"), integer)), 1, 1)))),
+        Seq())
       val g = GraphMap(Map("x" -> List(("a", "1"))))
       val t = Seq((PosNegTyping.fromPosMap(Map("x" -> Set("s"))),noTs))
       matchesNodeLabel("x", "s", g, s, t)
@@ -128,7 +135,8 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
       val s : Schema[String,String,String,Err] = 
         Schema(Map("s" -> Shape.empty.copy(rbe = Or(
             Symbol(((DirectEdge("a"), one)), 1, 1),
-            Symbol(((DirectEdge("b"), one)), 1, 1)))))
+            Symbol(((DirectEdge("b"), one)), 1, 1)))),
+        Seq())
 
       val t = Seq((PosNegTyping.fromPosMap(Map("x" -> Set("s"))),noTs))
       val g0 = GraphMap(Map("x" -> Seq(("a", "1"))))
@@ -170,7 +178,8 @@ class MatchingSchemaTest extends FunSpec with Matchers with TryValues {
         Map("t0" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("a"), Ref("t1"))), 1, 1)),
           "t1" -> Shape.empty.copy(rbe = And(Symbol(((DirectEdge("b"), Ref("t2"))), 1, 1), Symbol(((DirectEdge("c"), Ref("t3"))), 1, 1))),
           "t2" -> Shape.empty.copy(rbe = And(Symbol(((DirectEdge("b"), Ref("t2"))), 0, 1), Symbol(((DirectEdge("c"), Ref("t3"))), 1, 1))),
-          "t3" -> Shape.empty.copy(rbe = Empty)))
+          "t3" -> Shape.empty.copy(rbe = Empty)),
+        Seq())
 
     val expectedTypeN0 =
       Seq((PosNegTyping.fromPosMap(

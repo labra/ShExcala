@@ -17,7 +17,7 @@ class ResolveCandidatesTest extends FunSpec with Matchers with TryValues {
 
       // S { :a int }
       val schema: Schema[String, String, String, Err] =
-        Schema(Map("S" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("a"), integer)), 1, 1))))
+        Schema(Map("S" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("a"), integer)), 1, 1))), Seq())
         
       val graph: Graph[String,String] = GraphMap(Map("x" -> Seq(("a","50"))))
 
@@ -47,7 +47,8 @@ class ResolveCandidatesTest extends FunSpec with Matchers with TryValues {
       val schema: Schema[String, String, String, Err] =
         Schema(Map(
             "S" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("a"), Ref("T"))),1,1)),
-            "T" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("b"), integer)), 1, 1))))
+            "T" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("b"), integer)), 1, 1))),
+            Seq())
         
       val graph: Graph[String,String] = 
         GraphMap(Map(
@@ -85,7 +86,7 @@ class ResolveCandidatesTest extends FunSpec with Matchers with TryValues {
             "S" -> Shape.empty.copy(rbe = And(Symbol(((DirectEdge("a"), Ref("T1"))),1,1),Symbol(((DirectEdge("a"), Ref("T2"))),1,1))),
             "T1" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("b"), integer)), 1, 1)),
             "T2" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("b"), integer)), 1, 1))
-            ))
+            ), Seq())
             
       val schemaClosed: Schema[String, String, String, Err] =
         Schema(Map(
@@ -94,7 +95,7 @@ class ResolveCandidatesTest extends FunSpec with Matchers with TryValues {
                 closed = true),
             "T1" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("b"), integer)), 1, 1)),
             "T2" -> Shape.empty.copy(rbe = Symbol(((DirectEdge("b"), integer)), 1, 1))
-            ))
+            ),Seq())
             
         
       val g1: Graph[String,String] = 

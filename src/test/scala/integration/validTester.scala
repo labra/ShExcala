@@ -29,7 +29,7 @@ def shouldBeValid(strSchema: String, strData: String, strNode: String, strLabel:
     val result = for {
       (schema,pm) <- Schema.fromString(strSchema,"SHEXC",Some(""))
       data <- RDFAsJenaModel.fromChars(strData,"TURTLE",Some(""))
-      ts <- schema.matchNode_Label(IRI(strNode),mkLabel(strLabel),data)
+      ts <- schema.matchNode_Label(IRI(strNode),labelStr(strLabel),data)
     } yield ts
     
     result match {
@@ -47,7 +47,7 @@ def shouldBeValid(strSchema: String, strData: String, strNode: String, strLabel:
     val result = for {
       (schema,pm) <- Schema.fromString(strSchema)
       data <- RDFAsJenaModel.fromChars(strData,"TURTLE")
-      ts <- schema.matchNode_Label(IRI(strNode),mkLabel(strLabel),data)
+      ts <- schema.matchNode_Label(IRI(strNode),labelStr(strLabel),data)
     } yield ts
     
     result match {

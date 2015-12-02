@@ -301,7 +301,7 @@ class RDF2ShaclSpec
                       card = UnboundedCardinalityFrom(1)))
           )) 
       val expected = Schema.empty.copy(pm = pm, 
-          shaclSchema = SHACLSchema.empty.copy(shapes = Map(mkLabel(default + "a") -> shape)))
+          shaclSchema = SHACLSchema.empty.copy(shapes = Map(mkLabel(default + "a").get -> shape)))
           
       if (c.isFailure) {
         println("Unexpected Failure: " + c)
@@ -361,7 +361,7 @@ class RDF2ShaclSpec
                       card = UnboundedCardinalityFrom(1)))
           )) 
       val expected = Schema.empty.copy(pm = pm, 
-          shaclSchema = SHACLSchema.empty.copy(shapes = Map(mkLabel(default + "a") -> shape)))
+          shaclSchema = SHACLSchema.empty.copy(shapes = Map(mkLabel(default + "a").get -> shape)))
           
       if (c.isFailure) {
         println("Unexpected Failure: " + c)

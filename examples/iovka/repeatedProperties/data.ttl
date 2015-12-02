@@ -1,0 +1,10 @@
+@prefix : <http://example.org/> .
+
+:ok1 :p :B, :C .       # Passes
+:ok2 :p :B, :C, :BC .  # Passes but the constraint that :p @<B> is only satisfied once is violated
+:bad1 :p :B, :B2, :C . # Fails because there are two :p @<B> and there should be only one
+
+:B :b 1 .
+:B2 :b 2 .
+:C :c 1 .
+:BC :b 1; :c 1 .
