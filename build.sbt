@@ -127,6 +127,9 @@ licenses += ("MPL-2.0", url("http://opensource.org/licenses/MPL-2.0"))
 
 resolvers += "Bintray" at "http://dl.bintray.com/weso/weso-releases"
 
+resolvers += Resolver.bintrayRepo("labra", "maven")
+
+
 // Scalariform (default disables formatting)
 // defaultScalariformSettings
 
