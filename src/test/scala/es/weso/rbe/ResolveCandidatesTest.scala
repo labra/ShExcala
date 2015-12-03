@@ -35,7 +35,7 @@ class ResolveCandidatesTest extends FunSpec with Matchers with TryValues {
       it("Matches (x,a,50) with S") {
         val typeRow: TypeRow[String] = TypeRow(pos = Set("S"),Set()) 
         val expectedType : PosNegTyping[String,String] = PosNegTypingAsMap(Map("x" -> typeRow)) 
-        assertResult(Success(Seq((expectedType,Seq(("x","a","50")))))) {
+        assertResult(Success(Seq((expectedType,Set(("x","a","50")))))) {
           schema.matchNode("x", "S", graph)
         }
       }
@@ -71,7 +71,7 @@ class ResolveCandidatesTest extends FunSpec with Matchers with TryValues {
         val typeS: TypeRow[String] = TypeRow(pos = Set("S"),Set())
         val typeT: TypeRow[String] = TypeRow(pos = Set("T"),Set())
         val expectedType = PosNegTypingAsMap(Map("x" -> typeS, "y" -> typeT)) 
-        assertResult(Success(Seq((expectedType,Seq(("x","a","y"),("y","b","51")))))) {
+        assertResult(Success(Seq((expectedType,Set(("x","a","y"),("y","b","51")))))) {
           schema.matchNode("x", "S", graph)
         }
       }
@@ -131,8 +131,8 @@ class ResolveCandidatesTest extends FunSpec with Matchers with TryValues {
         val expectedType1 = PosNegTypingAsMap(Map("x" -> typeS, "y" -> typeT1, "z" -> typeT2)) 
         val expectedType2 = PosNegTypingAsMap(Map("x" -> typeS, "y" -> typeT2, "z" -> typeT1)) 
         assertResult(Success(Seq(
-            (expectedType1,Seq(("x","a","y"),("y","b","51"))),
-            (expectedType2,Seq(("x","a","y"),("y","b","51")))
+            (expectedType1,Set(("x","a","y"),("y","b","51"))),
+            (expectedType2,Set(("x","a","y"),("y","b","51")))
             ))) {
           schema.matchNode("x", "S", g1)
         }
@@ -144,8 +144,8 @@ class ResolveCandidatesTest extends FunSpec with Matchers with TryValues {
         val expectedType1 = PosNegTypingAsMap(Map("x" -> typeS, "y" -> typeT1, "z" -> typeT2)) 
         val expectedType2 = PosNegTypingAsMap(Map("x" -> typeS, "y" -> typeT2, "z" -> typeT1)) 
         assertResult(Success(Seq(
-            (expectedType1,Seq(("x","a","y"),("y","b","51"))),
-            (expectedType2,Seq(("x","a","y"),("y","b","51")))
+            (expectedType1,Set(("x","a","y"),("y","b","51"))),
+            (expectedType2,Set(("x","a","y"),("y","b","51")))
             ))) {
           schema.matchNode("x", "S", g2)
         }

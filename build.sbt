@@ -3,12 +3,16 @@ import sbt.Keys._
 import AssemblyKeys._
 import ScoverageSbtPlugin._
 
+lazy val CompatTest = config("compat") extend (Test)
+
 lazy val root = (project in file(".")).
+  configs(CompatTest).
+  settings(inConfig(CompatTest)(Defaults.testSettings): _*).
   enablePlugins(BuildInfoPlugin).
   settings(
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, shexTestsFolder, shaclTestsFolder),
     buildInfoPackage := "buildinfo"
-  )
+)
 
 name := "shexcala"
 
@@ -18,6 +22,8 @@ version := "0.6.8"
 
 scalaVersion := "2.11.7"
 
+lazy val wesinVersion = "0.4.7"
+
 lazy val shexTestsFolder = settingKey[String]("Folder where shex tests are downloaded") 
 
 lazy val shaclTestsFolder = settingKey[String]("Folder where shacl tests are downloaded")
@@ -25,6 +31,7 @@ lazy val shaclTestsFolder = settingKey[String]("Folder where shacl tests are dow
 shexTestsFolder := "shexTests"
 
 shaclTestsFolder := "shaclTests" 
+
 
 libraryDependencies ++= Seq(
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
@@ -38,9 +45,12 @@ libraryDependencies ++= Seq(
   , "org.scalactic" % "scalactic_2.11" % "2.2.4"
   , "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
   , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
-  , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
-  , "org.typelevel" %% "scalaz-scalatest" % "0.2.2" % "test"
-  , "es.weso" % "wesin_2.11" % "0.4.7" excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "org.scalatest" % "scalatest_2.11" % "2.2.4" % CompatTest
+  
+//  , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
+//  , "org.typelevel" %% "scalaz-scalatest" % "0.2.2" % "test"
+  , "es.weso" % "wesin_2.11" % wesinVersion excludeAll(ExclusionRule(organization = "org.slf4j"))
+
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
 )
 

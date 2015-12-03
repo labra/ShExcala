@@ -11,6 +11,8 @@ import es.weso.shacl.Cardinality._
 import scala.Either._
 import es.weso.shacl.PREFIXES._
 import es.weso.shacl.Cardinality._
+import es.weso.rdf.PrefixMap
+
 
 class ShaclParserSuite extends ShaclParser
     with FunSpecLike
@@ -26,7 +28,7 @@ class ShaclParserSuite extends ShaclParser
 
         val state: ShapeParserState = ShapeParserState.initial
         val result = ShaclParser.parse(ShaclParser.valueClass(state), str)
-        result.get._1 should be(IRIKind)
+        result.get._1 should be(IRIKind(None,List()))
         result.get._2 should be(state)
       }
 
@@ -50,78 +52,20 @@ class ShaclParserSuite extends ShaclParser
       }
 
     }
-  }
 
-  /*      it("Should parse a value Object made by an IRI") {
+   it("Should parse a value Object made by an IRI") {
         val iri = "http://www.example.org/"
         val str = "<" + iri + ">"
 
         val state: ShapeParserState = ShapeParserState.initial
         val result = parse(valueObject(state), str)
-        result.get._1 should be(RDFNodeObject(IRI(iri)))
+        result.get._1 should be(ValueIRI(IRI(iri)))
         result.get._2 should be(state)
       }
 
-      it("Should parse a value Object made by blank node") {
-        val str = "_:a"
-        val state = ShapeParserState.initial
-        val (id1, state1) = state.newBNode("a")
-        val result = parse(valueObject(state), str)
-        info("result.get_1" + result.get._1)
-        info("result.get_2" + result.get._2)
-        result.get._1 should be(RDFNodeObject(id1))
-        result.get._2 should be(state1)
-        // shouldParseState(valueObject,state, str,(id1,state1))
-      }
-
-      it("Should parse a value Object made by anon blank node") {
-        val str = "[]"
-        val state = ShapeParserState.initial
-        val (id1, state1) = state.newBNode
-        val result = parse(valueObject(state), str)
-        info("result.get_1" + result.get._1)
-        info("result.get_2" + result.get._2)
-        result.get._1 should be(RDFNodeObject(id1))
-        result.get._2 should be(state1)
-        // shouldParseState(valueObject,state, str,(id1,state1))
-      }
-
-      it("Should parse a value Object made by blank node with integer") {
-        val str = "_:1"
-        val state = ShapeParserState.initial
-        val (id1, state1) = state.newBNode("1")
-        val result = parse(valueObject(state), str)
-        info("result.get_1" + result.get._1)
-        info("result.get_2" + result.get._2)
-        result.get._1 should be(RDFNodeObject(id1))
-        result.get._2 should be(state1)
-        // shouldParseState(valueObject,state, str,(id1,state1))
-      }
-      it("Should parse a value Object made by a qualified name") {
-        val prefix = "ex"
-        val localname = "a"
-        val example = "http://example.org/"
-        val strTest = prefix + ":" + localname
-        val state: ShapeParserState = ShapeParserState.initial
-        val state1 = state.addPrefix(prefix, IRI(example))
-
-        val result = ShapeParser.parse(ShapeParser.valueObject(state1), strTest)
-        result.get._1 should be(RDFNodeObject(IRI(example + localname)))
-        result.get._2 should be(state1)
-      }
-
-      it("Should parse a value Object made by a string") {
-        val str = "Hi"
-        val strTest = "\"" + str + "\""
-        val state: ShapeParserState = ShapeParserState.initial
-
-        val result = ShapeParser.parse(ShapeParser.valueObject(state), strTest)
-        result.get._1 should be(RDFNodeObject(StringLiteral(str)))
-        result.get._2 should be(state)
-      }
     }
 
-    describe("Prefix directives") {
+/*    describe("Prefix directives") {
 
       it("should parse prefixes") {
         val state = ShapeParserState.initial
@@ -294,12 +238,14 @@ class ShaclParserSuite extends ShaclParser
                 value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
               ))
-      val expected = Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
+      val expected = 
+        Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
       shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
-    it("Should parse a single shape with a prefix (shaclSchemaParser)") {
+    it("Should parse a single shape with a prefix") {
       val prefix = "http://example.org/"
+      val iriPrefix = IRI(prefix)
       val a = "a"
       val b = "b"
       val c = "c"
@@ -317,12 +263,15 @@ class ShaclParserSuite extends ShaclParser
                 card = defaultCardinality
               ))
       val expected = 
-        Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
+        Schema.empty.copy(
+            pm = PrefixMap(pm = Map("" -> iriPrefix)),
+            shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
       shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
     it("Should parse a single shape with a prefix and a blank line (shaclSchemaParser)") {
       val prefix = "http://example.org/"
+      val iriPrefix = IRI(prefix)
       val a = "a"
       val b = "b"
       val c = "c"
@@ -334,18 +283,23 @@ class ShaclParserSuite extends ShaclParser
       val labelA = IRILabel(IRI(prefix + a))
       val shapeBC: Shape =
         Shape.empty.copy(
-              shapeExpr = TripleConstraint.empty.copy(
+              shapeExpr = 
+                TripleConstraint.empty.copy(
                 id = None,
                 iri = IRI(prefix + b),
                 value = Datatype(IRI(prefix + c), List()),
                 card = defaultCardinality
               ))
-      val expected = Schema.empty.copy(shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
+      val expected = 
+        Schema.empty.copy(
+            pm = PrefixMap(pm = Map("" -> iriPrefix)),
+            shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC)))
       shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 
     it("Should parse several shapes") {
       val prefix = "http://example.org/"
+      val iriPrefix = IRI(prefix)
       val a = "a"
       val b = "b"
       val c = "c"
@@ -365,7 +319,11 @@ class ShaclParserSuite extends ShaclParser
           value = Datatype(IRI(prefix + c), List()),
           card = defaultCardinality
         ))
-      val expected: SHACLSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC, labelB -> shapeBC))
+      val expected: Schema = 
+        Schema.empty.copy(
+           pm = PrefixMap(pm = Map("" -> iriPrefix)),
+           shaclSchema = SHACLSchema.empty.copy(shapes = Map(labelA -> shapeBC, labelB -> shapeBC))
+        )
       shouldParseIgnoreState(shexDoc, state, str, expected)
     }
 

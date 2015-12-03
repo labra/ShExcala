@@ -1,19 +1,15 @@
 package es.weso.shacl.jast
 
 import com.typesafe.config._
-
-import java.io.File
-
-import argonaut._, Argonaut._
-
-import java.nio.ByteBuffer
-import java.nio.channels.ReadableByteChannel
-import scala.util.{ Try, Success => TrySuccess, Failure => TryFailure }
+import argonaut._
+import argonaut.Argonaut._
+import scala.util.{Success => TrySuccess, Failure => TryFailure}
 import scala.io._
-import org.scalatest.FunSpec
 import org.scalatest._
 import es.weso.shacl.jast.AST._
 import es.weso.shacl._
+import scala.util.{Failure => TryFailure}
+import scala.util.{Success => TrySuccess}
 
 class RunASTAll extends Driver {
 

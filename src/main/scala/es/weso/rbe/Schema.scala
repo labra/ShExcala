@@ -26,7 +26,7 @@ case class Schema[Edge,Node,Label,Err](
   type Candidate_ = Candidate[Edge,Node,Label,Err]
   type Candidates_ = Seq[Candidate_]
   type Typing_ = PosNegTyping[Node,Label]
-  type SingleResult_ = (Typing_,Seq[(Node,Edge,Node)])
+  type SingleResult_ = (Typing_,Set[(Node,Edge,Node)])
   type Result_ = Try[Seq[SingleResult_]]
   type Graph_ = Graph[Edge,Node]
   type Schema_ = Schema[Edge,Node,Label,Err]
@@ -283,7 +283,7 @@ case class Schema[Edge,Node,Label,Err](
   
   private def addArcResult(arc: Arc_, result: Result_): Result_ = {
     result match {
-      case Success(rs) => Success(rs.map((pair) => (pair._1,arc +: pair._2)))
+      case Success(rs) => Success(rs.map((pair) => (pair._1,pair._2 + arc)))
       case f@Failure(_) => f
     }
   }
@@ -293,8 +293,7 @@ case class Schema[Edge,Node,Label,Err](
       label: Label,
       g: Graph_,
       t: Typing_): Result_ = {
-    // TODO: Check if we can return triples instead of Seq()
-    val checked = Seq()
+    val checked : Set[(Node,Edge,Node)] = Set()
     val zero : Result_ = t.addPosType(node, label).map(t => Seq((t,checked))) 
     cs.foldRight(zero)(resolveCandidate(node, g))
   }
@@ -405,7 +404,7 @@ case class Schema[Edge,Node,Label,Err](
       node: Node, 
       extras: Seq[DirectedEdge[Edge]], 
       out: Neighs_, 
-      triples: Seq[(Node,Edge,Node)]): Boolean = {
+      triples: Set[(Node,Edge,Node)]): Boolean = {
     def notInIgnored(neigh: Neigh_): Boolean = {
       !(ignored contains neigh.directedEdge)
     }
@@ -438,13 +437,13 @@ case class Schema[Edge,Node,Label,Err](
       label: Label, 
       graph: Graph_): Result_ = {
     log.info(s"Matching node $node with $label\nGraph: $graph")
-    matchNodeInTyping(node,label,graph,(PosNegTyping.empty,Seq()))
+    matchNodeInTyping(node,label,graph,(PosNegTyping.empty,Set()))
   }
   
   def matchNodesLabels(
       ls: Seq[(Node,Label)], 
       graph: Graph_): Result_ = {
-    val empty : SingleResult_ = (PosNegTyping.empty,Seq())
+    val empty : SingleResult_ = (PosNegTyping.empty,Set())
     def comb(pair:(Node,Label), current: SingleResult_): Result_ = {
       matchNodeInTyping(pair._1,pair._2,graph,current)
     }
