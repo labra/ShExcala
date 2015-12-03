@@ -8,7 +8,8 @@ import StringGraph._
 
 class SESchemaTest extends FunSpec with Matchers with TryValues {
   
-/*  def any: NodeShape[String,String,Err] = NodeShape.any
+/* TODO: Restore this...
+  def any: NodeShape[String,String,Err] = NodeShape.any
   
   def ref(n: Int) = ConstraintRef(value = n)
 

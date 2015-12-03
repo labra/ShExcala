@@ -76,13 +76,13 @@ wixProductUpgradeId := "6a710435-9af4-4adb-a597-98d3dd0bade1"
 
 // For performance test...
 
-lazy val PerfTest = config("perf").extend(Test)
+// lazy val PerfTest = config("perf").extend(Test)
 
-testFrameworks in PerfTest += new TestFramework("org.scalameter.ScalaMeterFramework")
+// testFrameworks in PerfTest += new TestFramework("org.scalameter.ScalaMeterFramework")
 
 logBuffered in PerfTest := false
 
-parallelExecution in PerfTest := false
+// parallelExecution in PerfTest := false
 
 net.virtualvoid.sbt.graph.Plugin.graphSettings
 
