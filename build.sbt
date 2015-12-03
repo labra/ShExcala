@@ -80,7 +80,7 @@ wixProductUpgradeId := "6a710435-9af4-4adb-a597-98d3dd0bade1"
 
 // testFrameworks in PerfTest += new TestFramework("org.scalameter.ScalaMeterFramework")
 
-logBuffered in PerfTest := false
+//logBuffered in PerfTest := false
 
 // parallelExecution in PerfTest := false
 
