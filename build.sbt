@@ -91,6 +91,7 @@ site.settings
 
 site.includeScaladoc()
 
+coverageEnabled := true
 coverageEnabled in Test := true
 coverageEnabled in CompatTest := true
 coverageMinimum := 50
