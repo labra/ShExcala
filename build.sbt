@@ -130,7 +130,7 @@ resolvers += Resolver.bintrayRepo("labra", "maven")
 
 
 // For scoverage...
-resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
+// resolvers += Resolver.url("scoverage-bintray", url("https://dl.bintray.com/sksamuel/sbt-plugins/"))(Resolver.ivyStylePatterns)
 
 // Scalariform (default disables formatting)
 // defaultScalariformSettings
