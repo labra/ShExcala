@@ -17,7 +17,7 @@ name := "shexcala"
 
 organization := "es.weso"
 
-version := "0.7.2"
+version := "0.7.3"
 
 scalaVersion := "2.11.7"
 
@@ -92,8 +92,6 @@ site.settings
 site.includeScaladoc()
 
 coverageEnabled := true
-coverageEnabled in Test := true
-coverageEnabled in CompatTest := true
 coverageMinimum := 50
 coverageFailOnMinimum := false
 

@@ -21,6 +21,9 @@ object SchemaFormat {
    */
   lazy val formats : Seq[SchemaFormat] = shexFormats ++ rdfFormats
   
+  lazy val formatNames: Seq[String] = 
+    formats.map(_.name)
+  
   def lookup(str: String): Option[SchemaFormat] = {
     lookupIn(str,formats)
   }
