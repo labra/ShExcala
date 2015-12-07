@@ -3,6 +3,6 @@ language: scala
 scala:
    - 2.11.6
 script:
-  - sbt clean coverage test coverageReport
+  - sbt clean coverage test compat:test coverageReport
 after_success:
   - bash <(curl -s https://codecov.io/bash)

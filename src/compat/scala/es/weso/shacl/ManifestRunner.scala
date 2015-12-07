@@ -116,7 +116,7 @@ trait ManifestRunner
     println(s"Extracting schema...${action.schema.get.str} with base $base")
     for {
       schema <- Try(action.schema.get)
-      schemaFormat <- Try(action.schemaFormat.getOrElse(SchemaFormats.default))
+      schemaFormat <- Try(action.schemaFormat.getOrElse(SchemaFormat.default.name))
       val schemaFilename = relativize(schema, base)
       (schema,pm) <- {
          println(s"Schema file name: $schemaFilename")
@@ -132,7 +132,7 @@ trait ManifestRunner
     println(s"Extracting RDF...${action.data.get.str} with base $base")
     for {
       data <- Try(action.data.get)
-      dataFormat <- Try(action.dataFormat.getOrElse(DataFormats.default))
+      dataFormat <- Try(action.dataFormat.getOrElse(DataFormat.default.name))
       val dataUri = relativize(data, base)
       rdf <- RDFAsJenaModel.fromURI(dataUri,dataFormat,Some(base))
     } yield {

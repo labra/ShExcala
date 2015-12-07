@@ -59,7 +59,7 @@ case class Schema(
        }
       }
       case x =>
-        if (DataFormats.available(x)) {
+        if (DataFormat.available(x)) {
           val rdf = RDFAsJenaModel.empty
           Schema2RDF.schema2RDF(this, rdf)
           rdf.serialize(format)
@@ -104,7 +104,7 @@ object Schema {
         schema <- AST2Schema.cnvAST(schemaAST)
       } yield (schema,schema.pm)
       case x =>
-        if (SchemaFormats.available(x)) {
+        if (SchemaFormat.available(x)) {
           for {
             rdf <- RDFAsJenaModel.fromChars(cs, format, base)
             (schema, pm) <- RDF2Schema.rdf2Schema(rdf)

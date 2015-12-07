@@ -4,8 +4,8 @@ import org.rogach.scallop._
 import org.rogach.scallop.exceptions._
 import buildinfo._
 import com.typesafe.config._
-import es.weso.shacl.SchemaFormats
-import es.weso.shacl.DataFormats
+import es.weso.shacl.SchemaFormat
+import es.weso.shacl.DataFormat
 
 class Opts(
     arguments: Array[String],
@@ -28,14 +28,14 @@ class Opts(
     short = 'f',
     required = false,
     default = Some("TURTLE"),
-    validate = (x => DataFormats.available(x)),
-    descr = "Input data format. Available values: " + DataFormats.toString)
+    validate = (x => DataFormat.available(x)),
+    descr = "Input data format. Available values: " + DataFormat.toString)
 
   val outdata_format = opt[String]("out-data-format",
     required = false,
     default = Some("TURTLE"),
-    descr = "Output data format. Available values: " + DataFormats.toString,
-    validate = (x => DataFormats.available(x)),
+    descr = "Output data format. Available values: " + DataFormat.toString,
+    validate = (x => DataFormat.available(x)),
     noshort = true)
 
   val mode = opt[String]("mode",
@@ -67,9 +67,9 @@ class Opts(
 
   val schema_format = opt[String]("schema-format",
     short = 'x',
-    default = Some(SchemaFormats.default),
-    descr = "Schema Format. Available values: " + SchemaFormats.toString,
-    validate = (x => SchemaFormats.available(x)))
+    default = Some(SchemaFormat.default.name),
+    descr = "Schema Format. Available values: " + SchemaFormat.toString,
+    validate = (x => SchemaFormat.available(x)))
 
   val schema_version = opt[String]("schema-version",
     short = 'r',
@@ -81,8 +81,8 @@ class Opts(
     short = 'u',
     required = false,
     default = Some("SHEXC"),
-    descr = "Output schema format. Available values: " + SchemaFormats.toString,
-    validate = (x => SchemaFormats.available(x)))
+    descr = "Output schema format. Available values: " + SchemaFormat.toString,
+    validate = (x => SchemaFormat.available(x)))
 
   val outschema_file = opt[String]("out-schema",
     short = 'o',

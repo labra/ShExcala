@@ -1,7 +1,6 @@
 import sbt._
 import sbt.Keys._
 import AssemblyKeys._
-import ScoverageSbtPlugin._
 
 lazy val CompatTest = config("compat") extend (Test)
 
@@ -18,7 +17,7 @@ name := "shexcala"
 
 organization := "es.weso"
 
-version := "0.6.8"
+version := "0.7.2"
 
 scalaVersion := "2.11.7"
 
@@ -92,10 +91,9 @@ site.settings
 
 site.includeScaladoc()
 
-lazy val scoverageSettings = Seq(
-  ScoverageKeys.coverageMinimum := 50,
-  ScoverageKeys.coverageFailOnMinimum := false
-)
+coverageEnabled := true
+coverageMinimum := 50
+coverageFailOnMinimum := false
 
 // Testing 
 
