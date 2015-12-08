@@ -17,7 +17,7 @@ name := "shexcala"
 
 organization := "es.weso"
 
-version := "0.7.3"
+version := "0.7.4"
 
 scalaVersion := "2.11.7"
 
@@ -48,9 +48,12 @@ libraryDependencies ++= Seq(
   
 //  , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
 //  , "org.typelevel" %% "scalaz-scalatest" % "0.2.2" % "test"
+
   , "es.weso" % "wesin_2.11" % wesinVersion excludeAll(ExclusionRule(organization = "org.slf4j"))
 
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
+  , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"
+  
 )
 
 autoCompilerPlugins := true

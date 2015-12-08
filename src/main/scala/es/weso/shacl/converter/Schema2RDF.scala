@@ -34,7 +34,8 @@ object Schema2RDF extends Logging {
 
   def shaclSchema2RDF(shaclSchema: SHACLSchema, rdf: RDFBuilder): RDFBuilder = {
     val (schemaNode, _) = rdf.createBNode
-    rdf.addTriple(RDFTriple(schemaNode, rdf_type, sh_Schema))
+    // TODO: Maybe, we could include this using a different namespace
+    // rdf.addTriple(RDFTriple(schemaNode, rdf_type, sh_Schema))
     rules2RDF(shaclSchema.shapes, schemaNode, rdf)
     start2RDF(shaclSchema.start, schemaNode, rdf)
   }
@@ -66,8 +67,9 @@ object Schema2RDF extends Logging {
     schemaNode: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
     val ruleNode = rule._1.getNode
-//    rdf.addTriple(RDFTriple(ruleNode, rdf_type, sh_Shape))
-    rdf.addTriple(RDFTriple(ruleNode, sh_schema, schemaNode))
+    rdf.addTriple(RDFTriple(ruleNode, rdf_type, sh_Shape))
+    // TODO: Maybe we could add this to keep track of the schemas
+    // rdf.addTriple(RDFTriple(ruleNode, sh_schema, schemaNode))
     shapeDefn2RDF(rule._2, ruleNode, rdf)
 //    extensionConditions2RDF(rule.extensionCondition, ruleNode, rdf)
   }

@@ -49,7 +49,6 @@ object SchemaFormat {
   /**
    * Default schema format
    */
-  def default : SchemaFormat = 
-    formats(0)
+  def default : SchemaFormat = SHEXC
   
 }

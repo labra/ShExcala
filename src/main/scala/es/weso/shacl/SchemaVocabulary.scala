@@ -8,8 +8,8 @@ case class SchemaVocabulary(name: String) {
 
 object SchemaVocabulary {
 
-object SHACL extends SchemaVocabulary("SHACL")
 object SHEX extends SchemaVocabulary("SHEX")
+object SHACL extends SchemaVocabulary("SHACL")
   
 val availableVocabularies : List[SchemaVocabulary] = 
     List(SHACL, SHEX)
