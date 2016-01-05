@@ -33,7 +33,7 @@ class RunValASTAll extends Driver {
     for ((file, json) <- validations) {
       it(s"Should parse ${file.getName}") {
         val tryCnv = for {
-          validationAST <- astFile(file)
+          validationAST <- getValidationFromFile(file)
         } yield (validationAST,json)
         tryCnv match {
           case TrySuccess((valAST,json)) => {
