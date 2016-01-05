@@ -11,7 +11,7 @@ import es.weso.shacl._
 import scala.util.{Failure => TryFailure}
 import scala.util.{Success => TrySuccess}
 
-class RunASTAll extends Driver {
+class AllSchemaAST extends Driver {
 
   describe("Test JSON parser only. JSON -> AST -> Schema") {
     val parsedSchemas = getParsedSchemas(schemasFolder)

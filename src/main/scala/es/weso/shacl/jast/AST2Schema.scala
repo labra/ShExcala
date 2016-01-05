@@ -74,18 +74,18 @@ object AST2Schema {
    expr._type match {
      case "tripleConstraint" => {
        val iri = IRI(expr.predicate.getOrElse(""))
-       val id = expr.id.map(str => toLabel(str))
+//       val id = expr.id.map(str => toLabel(str))
        val value = 
          if (expr.valueClassRef.isDefined) 
            cnvValueClassRef(expr.valueClassRef.get)
-         else expr.value.fold[ValueClass](any)(cnvValueClass)
+         else expr.valueExpr.fold[ValueClass](any)(cnvValueClass)
        val card = cnvCard(expr)
        val inverse = cnvInverse(expr.inverse)
        val negated = cnvNegated(expr.negated)
        val annotations = cnvAnnotations(expr.annotations)
        val actions = cnvActions(expr.semAct)
        TripleConstraint.empty.copy(
-           id = id, 
+//           id = id, 
            iri = iri, 
            value = value, 
            card= card, 
@@ -100,32 +100,32 @@ object AST2Schema {
        OneOf(id,shapes)
      }*/
      case "someOf" => {
-       val id = expr.id.map(str => toLabel(str))
+//       val id = expr.id.map(str => toLabel(str))
        val shapes = cnvExpressions(expr.expressions)
-       SomeOf(id,shapes)
+       SomeOf(None,shapes)
      }
      case "group" => {
-      val id = expr.id.map(str => toLabel(str))
+//      val id = expr.id.map(str => toLabel(str))
         val shapes = cnvExpressions(expr.expressions)
        if (expr.min.isEmpty && expr.max.isEmpty && expr.semAct.isEmpty)
-         GroupShape(id,shapes)
+         GroupShape(None,shapes)
        else {
          val card = cnvCard(expr)
          val actions = cnvActions(expr.semAct)
          val annotations = cnvAnnotations(expr.annotations)
          if (shapes.length == 1)
-           RepetitionShape(id,shapes.head,card,annotations,actions)
+           RepetitionShape(None,shapes.head,card,annotations,actions)
          else
-           RepetitionShape(id,GroupShape(None,shapes),card,annotations, actions)
+           RepetitionShape(None,GroupShape(None,shapes),card,annotations, actions)
        }
      }
      
      case "" => EmptyShape()
      
      case "include" => {
-      val id = expr.id.map(str => toLabel(str)) 
+//      val id = expr.id.map(str => toLabel(str)) 
       val label = expr.include.map(str => toLabel(str)).get
-      IncludeShape(id,label) 
+      IncludeShape(None,label) 
      } 
      
      case _=> {

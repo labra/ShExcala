@@ -96,7 +96,7 @@ object Schema2AST {
       case tc: TripleConstraint => cnvTripleConstraint(tc)
       case Or(id, s1, s2) => {
         base.copy(
-          _type = "someOf", id = cnvID(id), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
+          _type = "someOf", expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
 /*      case XOr(id, s1, s2) => {
         base.copy(
@@ -104,7 +104,7 @@ object Schema2AST {
       } */
       case Group2(id, s1, s2) => {
         base.copy(
-          _type = "group", id = cnvID(id), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
+          _type = "group", expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
 /*      case OneOf(id, ss) => {
         base.copy(
@@ -112,16 +112,15 @@ object Schema2AST {
       } */
       case SomeOf(id, ss) => {
         base.copy(
-          _type = "someOf", id = cnvID(id), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
+          _type = "someOf", expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
       }
       case GroupShape(id, ss) => {
         base.copy(
-          _type = "group", id = cnvID(id), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
+          _type = "group", expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
       }
       case RepetitionShape(id, s, card, annotations, actions) => {
         base.copy(
           _type = "group", 
-          id = cnvID(id), 
           expressions = Some(List(cnvShapeExpr(s))), 
           min = cnvMinCard(card), 
           max = cnvMaxCard(card), 
@@ -131,7 +130,6 @@ object Schema2AST {
       case IncludeShape(id, label) => {
         base.copy(
           _type = "include", 
-          id = cnvID(id), 
           include = Some(cnvLabel(label)))
       }
     }
@@ -140,9 +138,8 @@ object Schema2AST {
   def cnvTripleConstraint(tc: TripleConstraint): ExpressionAST = {
     ExpressionAST.empty.copy(
       _type = "tripleConstraint", 
-      id = cnvID(tc.id),
       predicate = Some(cnvIRI(tc.iri)),
-      value = Some(cnvValueClass(tc.value)), 
+      valueExpr = Some(cnvValueClass(tc.value)), 
       min = cnvMinCard(tc.card), 
       max = cnvMaxCard(tc.card), 
       inverse = cnvBoolean(tc.inverse), 

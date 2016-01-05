@@ -11,7 +11,7 @@ import org.scalatest.FunSpec
 import org.scalatest._
 import es.weso.shacl._
 
-class RunValASTAll extends Driver {
+class AllValidationJsonSyntax extends Driver {
 
   describe("Test JSON parser only for validations.") {
     val validations = getValidations(validationFolder) 

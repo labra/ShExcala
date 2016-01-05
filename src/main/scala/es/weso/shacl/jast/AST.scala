@@ -22,10 +22,10 @@ object AST {
 
   case class ExpressionAST(
     _type: String,
-    id: Option[String],
+//    id: Option[String],
     predicate: Option[String],
     include: Option[String],
-    value: Option[ValueClassAST],
+    valueExpr: Option[ValueClassAST],
     inverse: Option[Boolean],
     negated: Option[Boolean],
     min: Option[Int],
@@ -103,10 +103,10 @@ object AST {
     def empty =
       ExpressionAST(
         _type = "",
-        id = None,
+//        id = None,
         predicate = None,
         include = None,
-        value = None,
+        valueExpr = None,
         inverse = None,
         negated = None,
         min = None,
@@ -199,10 +199,10 @@ object AST {
         ("min" :=? n.min) ->?:
         ("negated" :=? n.negated) ->?:
         ("inverse" :=? n.inverse) ->?:
-        ("value" :=? n.value) ->?:
+        ("value" :=? n.valueExpr) ->?:
         ("include" :=? n.include) ->?:
         ("predicate" :=? n.predicate) ->?:
-        ("id" :=? n.id) ->?:
+//        ("id" :=? n.id) ->?:
         ("valueClassRef" :=? n.valueClassRef) ->?:
         ("type" := n._type) ->:
         jEmptyObject)
@@ -314,10 +314,10 @@ object AST {
   implicit def ExpressionDecodeJson: DecodeJson[ExpressionAST] =
     DecodeJson((c) => for {
       _type <- (c --\ "type").as[String]
-      id <- (c --\ "id").as[Option[String]]
+//      id <- (c --\ "id").as[Option[String]]
       predicate <- (c --\ "predicate").as[Option[String]]
       include <- (c --\ "include").as[Option[String]]
-      value <- (c --\ "value").as[Option[ValueClassAST]]
+      valueExpr <- (c --\ "valueExpr").as[Option[ValueClassAST]]
       inverse <- (c --\ "inverse").as[Option[Boolean]]
       negated <- (c --\ "negated").as[Option[Boolean]]
       min <- (c --\ "min").as[Option[Int]]
@@ -329,7 +329,7 @@ object AST {
       valueClassRef <- (c --\ "valueClassRef").as[Option[String]]
     } yield ExpressionAST(
         _type = _type, 
-        id, predicate, include, value, inverse, negated, min, max, 
+        predicate, include, valueExpr, inverse, negated, min, max, 
         expression, expressions, annotations, semAct, valueClassRef))
 
   /* The following declaration would be nice but generates stack overflow...

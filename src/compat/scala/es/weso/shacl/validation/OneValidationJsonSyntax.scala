@@ -11,11 +11,12 @@ import org.scalatest._
 import es.weso.shacl._
 import argonaut._, Argonaut._
 
-class RunValASTSingle extends Driver {
+class OneValidationJsonSyntax extends Driver {
 
   describe("Test JSON parser to do: JSON -> AST -> JSON = JSON") {
- 
+
     val name = "1integerMininclusiveDECIMALLeadTrail_pass-integer-equal"
+    
     val file = new File(validationFolder + "/" + name + ".val")
     val contents = io.Source.fromFile(file)("UTF-8").mkString
     val json = Parse.parse(contents).getOrElse(jEmptyObject)

@@ -20,7 +20,7 @@ import scalaz._, Scalaz._
 import es.weso.shacl.jast.AST._
 import es.weso.shacl._
 
-class ShexParserAll extends Driver {
+class ShExParserAll extends Driver {
 
   describe("Run specific JSON test") {
     val name = "open3groupdotclose"

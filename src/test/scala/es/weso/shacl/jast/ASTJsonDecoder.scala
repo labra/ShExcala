@@ -56,7 +56,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
       val vc = ExpressionAST.empty.copy(
         _type = "tripleConstraint",
         predicate = Some("http://a.example/p1"),
-        value = Some(ValueClassAST.empty.copy(
+        valueExpr = Some(ValueClassAST.empty.copy(
           nodeKind = Some("literal"),
           maxInclusive = Some(NumberAST(Left(5))))))
           
@@ -98,7 +98,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
               expression = Some(ExpressionAST.empty.copy(
                 _type = "tripleConstraint",
                 predicate = Some("http://a.example/p1"),
-                value = Some(ValueClassAST.empty)))))),
+                valueExpr = Some(ValueClassAST.empty)))))),
           prefixes = Some(Map()))
       checkJsonDecoder(str, expected)
     }
@@ -124,7 +124,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
               expression = Some(ExpressionAST.empty.copy(
                 _type = "tripleConstraint",
                 predicate = Some("http://a.example/p1"),
-                value = Some(ValueClassAST.empty),
+                valueExpr = Some(ValueClassAST.empty),
                 negated = Some(true),
                 inverse = Some(true)))))),
           prefixes = Some(Map()))
@@ -156,7 +156,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
               expression = Some(ExpressionAST.empty.copy(
                 _type = "tripleConstraint",
                 predicate = Some("http://a.example/p2"),
-                value = Some(ValueClassAST.empty.copy(
+                valueExpr = Some(ValueClassAST.empty.copy(
                     reference=Some(ReferenceAST(Left("http://a.example/PersonShape")))
                   )
                 ))))
@@ -199,7 +199,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
                    ExpressionAST.empty.copy(
                 _type = "tripleConstraint",
                 predicate = Some("http://a.example/p1"),
-                value = Some(ValueClassAST.empty)
+                valueExpr = Some(ValueClassAST.empty)
             )))
         ))))),
        prefixes = Some(Map()))
@@ -229,7 +229,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
                    ExpressionAST.empty.copy(
                 _type = "tripleConstraint",
                 predicate = Some("http://a.example/p1"),
-                value = Some(ValueClassAST.empty)
+                valueExpr = Some(ValueClassAST.empty)
             )))
         )))
  checkJsonDecoder(str, expected)     

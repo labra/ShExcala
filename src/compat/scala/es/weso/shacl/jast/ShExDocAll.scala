@@ -20,10 +20,19 @@ import scalaz._, Scalaz._
 import es.weso.shacl.jast.AST._
 import es.weso.shacl._
 
-class ShexDocAll extends Driver {
+class ShExDocAll extends Driver {
+  
+  describe("Test...") {
+    it("should pass single test") {
+      info("single test...")
+    }
+  }
 
   describe("Compare as: JSON -> AST -> Schema -> Show -> ShExC -> Schema = Json -> AST -> Schema") {
     val parsedSchemas = getParsedSchemas(schemasFolder)
+    if (parsedSchemas.isEmpty) {
+      info(s"No schemas found in $schemasFolder") 
+    } else
     for ((file, json) <- parsedSchemas) {
       it(s"Should parse ${file.getName} and convert it to doc") {
         val tryCnv = for {

@@ -8,13 +8,14 @@ import util._
 import es.weso.utils.FileUtils._
 
 
-class RunFromManifest extends RDF2Manifest
+class AllFromManifest extends RDF2Manifest
     with FunSpecLike
     with Matchers
     with TryValues 
     with ManifestRunner {
   
   val conf: Config = ConfigFactory.load()
+  
   val validationFolder = conf.getString("validationFolder")
 
   val manifestFile = validationFolder + "manifest.ttl"

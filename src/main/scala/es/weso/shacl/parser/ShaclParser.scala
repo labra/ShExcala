@@ -563,15 +563,17 @@ trait ShaclParser
   }
   
   def valueSet: StateParser[ShapeParserState, ValueSet] = { s => 
-    (openParen ~>
+    (openSquareBracket ~>
       rep1sepState(s, valueObject, WS)
-      <~ closeParen) ^^ {
+      <~ closeSquareBracket) ^^ {
         case (ls, s) => (ValueSet(ls), s)
       }
   }
 
   def openParen: Parser[String] = symbol("(")
   def closeParen: Parser[String] = symbol(")")
+  def openSquareBracket: Parser[String] = symbol("[")
+  def closeSquareBracket: Parser[String] = symbol("]")
 
   def valueObject(s: ShapeParserState): Parser[(ValueObject, ShapeParserState)] = {
     ( // symbol("-") ~> basicValueObject(s) ^^ { case ((vo, s)) => (NoObject(vo), s) } | 
