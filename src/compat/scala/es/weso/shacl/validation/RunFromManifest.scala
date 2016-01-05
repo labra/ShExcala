@@ -15,9 +15,9 @@ class RunFromManifest extends RDF2Manifest
     with ManifestRunner {
   
   val conf: Config = ConfigFactory.load()
-  val validationsDir = conf.getString("validations")
+  val validationFolder = conf.getString("validationFolder")
 
-  val manifestFile = validationsDir + "manifest.ttl"
+  val manifestFile = validationFolder + "manifest.ttl"
   val base = filePath2URI(validationsDir)
   
   describe("Running tests folder") {

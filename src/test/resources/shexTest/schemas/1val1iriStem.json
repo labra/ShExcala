@@ -1,0 +1,20 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes":{
+    "http://a.example/S1": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": {
+          "type": "ValueClass", "values": [
+            { "type": "StemRange",
+              "stem": "http://a.example/v"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

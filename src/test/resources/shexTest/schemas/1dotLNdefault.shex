@@ -2,6 +2,6 @@
 
 PREFIX : <http://a.example/>
 
-:IssueShape {
+:S1 {
    :p1 .
 }

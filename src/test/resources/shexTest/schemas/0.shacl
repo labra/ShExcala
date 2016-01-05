@@ -1,6 +1,6 @@
 @prefix sh:    <http://www.w3.org/ns/shacl/core#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 
-<http://a.example/IssueShape>
+<http://a.example/S1>
         sh:schema  [ a    sh:Schema ] .
 

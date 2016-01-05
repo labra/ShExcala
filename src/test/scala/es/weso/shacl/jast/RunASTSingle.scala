@@ -24,7 +24,7 @@ class RunASTSingle extends Driver {
   
   describe("Run specific JSON test") {
     val name = "1val1vsMinusiri3"
-    val file = new File(parsedSchemasDir + "/" + name + ".json")
+    val file = new File(schemasFolder + "/" + name + ".json")
     val contents = io.Source.fromFile(file)("UTF-8").mkString
     val json = Parse.parse(contents).getOrElse(jEmptyObject)
     
@@ -42,7 +42,7 @@ class RunASTSingle extends Driver {
            println(s"schemaAST to schema:\n$s")
            s
           }
-          shaclFile <- lookupFileWithSameName(file,schemasDir,"shex")
+          shaclFile <- lookupFileWithSameName(file,schemasFolder,"shex")
           shacl <- {
            val shacl = trying("Parsing SHACL", parseShaclSchema(shaclFile))
            println(s"shacl from parsing shex file\n${shacl}")

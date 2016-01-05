@@ -1,0 +1,19 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/PersonShape": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": { "type": "ValueClass" }
+      }
+    },
+    "http://a.example/EmployeeShape": {
+      "type": "Shape",
+      "inherit": [ "http://a.example/PersonShape" ]
+    }
+  }
+}
+

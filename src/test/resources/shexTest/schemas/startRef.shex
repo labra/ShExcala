@@ -1,5 +1,5 @@
-start=<http://a.example/IssueShape>
+start=<http://a.example/S1>
 
-<http://a.example/IssueShape> {
+<http://a.example/S1> {
    <http://a.example/p1> .
 }

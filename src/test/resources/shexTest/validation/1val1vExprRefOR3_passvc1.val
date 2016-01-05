@@ -1,0 +1,21 @@
+{
+  "type": "test",
+  "node": "http://a.example/s1",
+  "shape": "http://a.example/S1",
+  "solution": {
+    "type": "tripleConstraintSolutions",
+    "predicate": "http://a.example/p1",
+    "valueExpr": {
+      "type": "ValueRef",
+      "valueExprRef": "http://a.example/vc4"
+    },
+    "solutions": [
+      {
+        "type": "testedTriple",
+        "subject": "http://a.example/s1",
+        "predicate": "http://a.example/p1",
+        "object": "\"ab\""
+      }
+    ]
+  }
+}

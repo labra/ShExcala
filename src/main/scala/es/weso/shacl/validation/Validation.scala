@@ -11,7 +11,10 @@ object Validation {
     _type: String,
     node: String,
     shape: String,
-    solution: Option[ExpressionAST])
+    solution: Option[ExpressionAST],
+    solutions: Option[List[ExpressionAST]], // This one could be removed later
+    startActs: Option[List[SemActAST]]
+    )
 
   case class ExpressionAST(
     _type: Option[String],
@@ -24,24 +27,48 @@ object Validation {
     _object: Option[String],
     expressions: Option[List[ExpressionAST]],
     referenced: Option[ValAST],
-    annotations: Option[List[List[String]]],
-    semAct: Option[Map[String, String]])
+    annotations: Option[List[AnnotationAST]],
+    semAct: Option[Map[String, String]],
+    semActs: Option[List[SemActAST]],
+    valueExpr: Option[ValueClassAST]
+    )
+    
+/*  case class ValueExprAST(
+    _type: Option[String],
+    valueExprRef: Option[String]
+    ) */
 
+  case class SemActAST(
+    _type: Option[String],
+    name: Option[String],
+    code: Option[String]
+    )
+    
+  case class AnnotationAST(
+    _type: Option[String],
+    predicate: Option[String],
+    _object: Option[String]
+    )
+    
   case class ValueClassAST(
+    _type: Option[String],
     values: Option[List[ValueAST]],
     nodeKind: Option[String],
     pattern: Option[String],
     reference: Option[ReferenceAST],
     length: Option[Int],
-    minInclusive: Option[Int],
-    maxInclusive: Option[Int],
-    minExclusive: Option[Int],
-    maxExclusive: Option[Int],
+    minInclusive: Option[Double],
+    maxInclusive: Option[Double],
+    minExclusive: Option[Double],
+    maxExclusive: Option[Double],
     minLength: Option[Int],
     maxLength: Option[Int],
     totalDigits: Option[Int],
     fractionDigits: Option[Int],
-    datatype: Option[String])
+    datatype: Option[String],
+    valueExprRef: Option[String],
+    valueExprs: Option[List[ValueClassAST]]
+ )
 
   case class MaxAST(val v: Option[Int]) {
   }
@@ -71,7 +98,7 @@ object Validation {
     stem: Option[StemAST])
 
   object ShapeAST {
-    def empty = ValAST("", "", "", None)
+    def empty = ValAST("", "", "", None,None,None)
   }
 
   object ExpressionAST {
@@ -88,11 +115,14 @@ object Validation {
         expressions = None,
         referenced = None,
         annotations = None,
-        semAct = None)
+        semAct = None,
+        semActs = None,
+        valueExpr = None)
   }
 
   object ValueClassAST {
     lazy val empty = ValueClassAST(
+      _type = None,
       values = None,
       nodeKind = None,
       pattern = None,
@@ -106,9 +136,24 @@ object Validation {
       maxLength = None,
       totalDigits = None,
       fractionDigits = None,
-      datatype = None)
+      datatype = None,
+      valueExprRef = None,
+      valueExprs = None
+      )
   }
 
+/*  object ValueExprAST {
+    lazy val empty = ValueExprAST(None,None)
+  } */
+  
+  object SemActAST {
+    lazy val empty = SemActAST(None,None,None)
+  }
+  
+  object AnnotationAST {
+    lazy val empty = AnnotationAST(None,None,None)
+  }
+  
   object ReferenceAST {
     lazy val empty = Left("")
   }
@@ -118,7 +163,11 @@ object Validation {
   }
 
   object StemRangeAST {
-    lazy val empty = StemRangeAST(_type = None, stem = None, exclusions = None)
+    lazy val empty = StemRangeAST(
+        _type = None, 
+        stem = None, 
+        exclusions = None
+    )
   }
 
   object ExclusionAST {
@@ -147,6 +196,8 @@ object Validation {
         ("node" := n.node) ->:
         ("shape" := n.shape) ->:
         ("solution" :=? n.solution) ->?:
+        ("solutions" :=? n.solutions) ->?:
+        ("startActs" :=? n.startActs) ->?:
         jEmptyObject)
 
   implicit def ExpressionEncodeJson: EncodeJson[ExpressionAST] =
@@ -161,13 +212,36 @@ object Validation {
         ("object" :=? n._object) ->?:
         ("expressions" :=? n.expressions) ->?:
         ("referenced" :=? n.referenced) ->?:
-        ("semAct" :=? n.semAct) ->?:
         ("annotations" :=? n.annotations) ->?:
+        ("valueExpr" :=? n.valueExpr) ->?:
+        ("semAct" :=? n.semAct) ->?:
+        ("semActs" :=? n.semActs) ->?:
         jEmptyObject)
 
+/*  implicit def ValueExprEncodeJson: EncodeJson[ValueExprAST] =
+    EncodeJson((n: ValueExprAST) =>
+      ("type" :=? n._type) ->?:
+        ("valueExprRef" :=? n.valueExprRef) ->?:
+        jEmptyObject) */
+        
+  implicit def SemActEncodeJson: EncodeJson[SemActAST] =
+    EncodeJson((n: SemActAST) =>
+      ("type" :=? n._type) ->?:
+        ("name" :=? n.name) ->?:
+        ("code" :=? n.code) ->?:
+        jEmptyObject)
+        
+  implicit def AnnotationJson: EncodeJson[AnnotationAST] =
+    EncodeJson((n: AnnotationAST) =>
+      ("type" :=? n._type) ->?:
+        ("predicate" :=? n.predicate) ->?:
+        ("object" :=? n._object) ->?:
+        jEmptyObject)
+        
   implicit def ValueClassEncodeJson: EncodeJson[ValueClassAST] =
     EncodeJson((n: ValueClassAST) =>
-      ("mininclusive" :=? n.minInclusive) ->?:
+      ("type" :=? n._type) ->?:
+        ("mininclusive" :=? n.minInclusive) ->?:
         ("maxinclusive" :=? n.maxInclusive) ->?:
         ("minexclusive" :=? n.minExclusive) ->?:
         ("maxexclusive" :=? n.maxExclusive) ->?:
@@ -181,7 +255,8 @@ object Validation {
         ("nodeKind" :=? n.nodeKind) ->?:
         ("pattern" :=? n.pattern) ->?:
         ("values" :=? n.values) ->?:
-        ("type" := jString("valueClass")) ->:
+        ("valueExprRef" :=? n.valueExprRef) ->?:
+        ("valueExprs" :=? n.valueExprs) ->?:
         jEmptyObject)
 
   implicit def ValueEncodeJson: EncodeJson[ValueAST] =
@@ -202,20 +277,23 @@ object Validation {
     EncodeJson((n: StemRangeAST) =>
       ("exclusions" :=? n.exclusions) ->?:
         ("stem" :=? n.stem) ->?:
-        ("type" := jString("stemRange")) ->:
+        ("type" := jString("StemRange")) ->:
         jEmptyObject)
 
   implicit def ExclusionEncodeJson: EncodeJson[ExclusionAST] =
     EncodeJson((n: ExclusionAST) =>
-      n.value.asJson)
+      n.value.fold(str => jString(str), v => v.asJson)
+    )
 
   implicit def StemEncodeJson: EncodeJson[StemAST] =
     EncodeJson((n: StemAST) =>
-      n.value.asJson)
+      n.value.fold(str => jString(str), v => v.asJson)
+    )
 
   implicit def WildCardEncodeJson: EncodeJson[WildCardAST] =
     EncodeJson((n: WildCardAST) =>
-      ("type" := jString("wildcard")) ->:
+       ("type" :=? n._type) ->?:
+       ("stem" :=? n.stem) ->?:
         jEmptyObject)
 
   implicit def MaxEncodeJson: EncodeJson[MaxAST] =
@@ -241,7 +319,9 @@ implicit def ValidationDecodeJson: DecodeJson[Validation] = {
       node <- (c --\ "node").as[String]
       shape <- (c --\ "shape").as[String]
       solution <- (c --\ "solution").as[Option[ExpressionAST]]
-    } yield ValAST(_type, node, shape, solution))
+      solutions <- (c --\ "solutions").as[Option[List[ExpressionAST]]]
+      startActs <- (c --\ "startActs").as[Option[List[SemActAST]]]
+    } yield ValAST(_type, node, shape, solution,solutions,startActs))
   }
 
   implicit def ExpressionDecodeJson: DecodeJson[ExpressionAST] =
@@ -257,8 +337,10 @@ implicit def ValidationDecodeJson: DecodeJson[Validation] = {
         _object <- (c --\ "object").as[Option[String]]
         expressions <- (c --\ "expressions").as[Option[List[ExpressionAST]]]
         referenced <- (c --\ "referenced").as[Option[ValAST]]
-        annotations <- (c --\ "annotations").as[Option[List[List[String]]]]
+        annotations <- (c --\ "annotations").as[Option[List[AnnotationAST]]]
         semAct <- (c --\ "semAct").as[Option[Map[String, String]]]
+        semActs <- (c --\ "semActs").as[Option[List[SemActAST]]]
+        valueExpr <- (c --\ "valueExpr").as[Option[ValueClassAST]]
       } yield ExpressionAST.empty.copy(
         _type = _type,
         value = value,
@@ -271,25 +353,65 @@ implicit def ValidationDecodeJson: DecodeJson[Validation] = {
         expressions = expressions,
         referenced = referenced,
         annotations = annotations,
-        semAct = semAct))
+        semAct = semAct,
+        semActs = semActs,
+        valueExpr = valueExpr))
 
+/*  implicit def ValueExprDecodeJson: DecodeJson[ValueExprAST] =
+    DecodeJson((c) =>
+      for {
+        _type <- (c --\ "type").as[Option[String]]
+        valueExprRef <- (c --\ "valueExprRef").as[Option[String]]
+      } yield ValueExprAST.empty.copy(
+        _type = _type,
+        valueExprRef = valueExprRef)
+      ) */
+        
+  implicit def SemActDecodeJson: DecodeJson[SemActAST] =
+    DecodeJson((c) =>
+      for {
+        _type <- (c --\ "type").as[Option[String]]
+        name <- (c --\ "name").as[Option[String]]
+        code <- (c --\ "code").as[Option[String]]
+      } yield SemActAST.empty.copy(
+        _type = _type,
+        name = name,
+        code = code)
+      )
+      
+  implicit def AnnotationDecodeJson: DecodeJson[AnnotationAST] =
+    DecodeJson((c) =>
+      for {
+        _type <- (c --\ "type").as[Option[String]]
+        predicate <- (c --\ "predicate").as[Option[String]]
+        _object <- (c --\ "object").as[Option[String]]
+      } yield AnnotationAST.empty.copy(
+        _type = _type,
+        predicate = predicate,
+        _object = _object)
+      ) 
+      
   implicit def ValueClassDecodeJson: DecodeJson[ValueClassAST] =
     DecodeJson((c) => for {
+      _type <- (c --\ "type").as[Option[String]]
       values <- (c --\ "values").as[Option[List[ValueAST]]]
       length <- (c --\ "length").as[Option[Int]]
       pattern <- (c --\ "pattern").as[Option[String]]
       reference <- (c --\ "reference").as[Option[ReferenceAST]]
       nodeKind <- (c --\ "nodeKind").as[Option[String]]
-      minInclusive <- (c --\ "mininclusive").as[Option[Int]]
-      maxInclusive <- (c --\ "maxinclusive").as[Option[Int]]
-      minExclusive <- (c --\ "minexclusive").as[Option[Int]]
-      maxExclusive <- (c --\ "maxexclusive").as[Option[Int]]
+      minInclusive <- (c --\ "mininclusive").as[Option[Double]]
+      maxInclusive <- (c --\ "maxinclusive").as[Option[Double]]
+      minExclusive <- (c --\ "minexclusive").as[Option[Double]]
+      maxExclusive <- (c --\ "maxexclusive").as[Option[Double]]
       minlength <- (c --\ "minlength").as[Option[Int]]
       maxlength <- (c --\ "maxlength").as[Option[Int]]
       totaldigits <- (c --\ "totaldigits").as[Option[Int]]
       fractiondigits <- (c --\ "fractiondigits").as[Option[Int]]
       datatype <- (c --\ "datatype").as[Option[String]]
+      valueExprRef <- (c --\ "valueExprRef").as[Option[String]]
+      valueExprs <- (c --\ "valueExprs").as[Option[List[ValueClassAST]]]
     } yield ValueClassAST(
+      _type,
       values,
       nodeKind,
       pattern,
@@ -299,7 +421,9 @@ implicit def ValidationDecodeJson: DecodeJson[Validation] = {
       minExclusive, maxExclusive,
       minlength, maxlength,
       totaldigits, fractiondigits,
-      datatype))
+      datatype,
+      valueExprRef, 
+      valueExprs))
 
   implicit def ValueDecodeJson: DecodeJson[ValueAST] =
     DecodeJson((c) =>

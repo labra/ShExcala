@@ -1,0 +1,18 @@
+{
+  "type": "test",
+  "node": "http://a.example/s1",
+  "shape": "http://a.example/S1",
+  "solution": { 
+    "type":"tripleConstraintSolutions", "predicate":"http://a.example/p1",
+    "valueExpr": { "type":"ValueClass" },
+    "solutions":[
+      {"type":"testedTriple","subject":"http://a.example/s1","predicate":"http://a.example/p1","object":"\"a\""},
+      {"type":"testedTriple","subject":"http://a.example/s1","predicate":"http://a.example/p1","object":"\"b\""},
+      {"type":"testedTriple","subject":"http://a.example/s1","predicate":"http://a.example/p1","object":"\"c\""},
+      {"type":"testedTriple","subject":"http://a.example/s1","predicate":"http://a.example/p1","object":"\"d\""},
+      {"type":"testedTriple","subject":"http://a.example/s1","predicate":"http://a.example/p1","object":"\"e\""},
+      {"type":"testedTriple","subject":"http://a.example/s1","predicate":"http://a.example/p1","object":"\"f\""}
+    ],
+    "min": 0, "max": "*"
+  }
+}

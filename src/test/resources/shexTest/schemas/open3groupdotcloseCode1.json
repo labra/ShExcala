@@ -1,0 +1,38 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/S1": {
+      "type": "Shape",
+      "expression": {
+        "type": "EachOf",
+        "expressions": [
+          {
+            "type": "TripleConstraint",
+            "predicate": "http://a.example/p1",
+            "valueExpr": {
+              "type": "ValueClass"
+            }
+          },
+          {
+            "type": "TripleConstraint",
+            "predicate": "http://a.example/p2",
+            "valueExpr": {
+              "type": "ValueClass"
+            }
+          },
+          {
+            "type": "TripleConstraint",
+            "predicate": "http://a.example/p3",
+            "valueExpr": {
+              "type": "ValueClass"
+            }
+          }
+        ],
+        "semActs": [
+          { "type": "SemAct", "name": "http://shex.io/extensions/Test/", "code": " print(\"group semAct\") " }
+        ]
+      }
+    }
+  }
+}

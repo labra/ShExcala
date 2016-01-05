@@ -1,6 +1,6 @@
-%<http://a.example/semAct1>{ code1 %}
-%<http://a.example/semAct2>{ code2 %}
-%<http://a.example/semAct3>{ code3 %}
-<http://a.example/IssueShape> {
+%<http://shex.io/extensions/Test/>{ print("startAct 1") %}
+%<http://shex.io/extensions/Test/>{ print("startAct 2") %}
+%<http://shex.io/extensions/Test/>{ print("startAct 3") %}
+<http://a.example/S1> {
    <http://a.example/p1> .
 }

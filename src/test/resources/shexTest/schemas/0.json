@@ -1,0 +1,9 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes":{
+    "http://a.example/S1": {
+      "type": "Shape"
+    }
+  }
+}

@@ -24,14 +24,14 @@ class ShexParserAll extends Driver {
 
   describe("Run specific JSON test") {
     val name = "open3groupdotclose"
-    val file = new File(parsedSchemasDir + "/" + name + ".json")
+    val file = new File(schemasFolder + "/" + name + ".json")
     it(s"should pass file $name") {
       testComparingJsons(file)
     }
   }
 
   describe("Test Shex parser:JSON -> AST -> Schema = SheXC -> Schema") {
-    val parsedSchemas = getParsedSchemas(parsedSchemasDir)
+    val parsedSchemas = getParsedSchemas(schemasFolder)
     for ((file, json) <- parsedSchemas) {
       it(s"Should handle ${file.getName}") {
         testComparingSchemas(file)
@@ -41,7 +41,7 @@ class ShexParserAll extends Driver {
 
 
   describe("Negative JSON tests (parser should complain...)") {
-    val negativeSyntaxFiles = getFilesFromFolder(negativeSyntaxDir)
+    val negativeSyntaxFiles = getFilesFromFolder(negativeSyntaxFolder)
     for (file <- negativeSyntaxFiles) {
       it(s"Should fail to parse ${file.getName}") {
         val t = Try {

@@ -1,7 +1,0 @@
-{
-  "type": "test",
-  "node": "http://a.example/Issue1",
-  "shape": "http://a.example/IssueShape",
-  "solution": { 
-  }
-}

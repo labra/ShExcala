@@ -23,7 +23,7 @@ import es.weso.shacl._
 class ShexDocAll extends Driver {
 
   describe("Compare as: JSON -> AST -> Schema -> Show -> ShExC -> Schema = Json -> AST -> Schema") {
-    val parsedSchemas = getParsedSchemas(parsedSchemasDir)
+    val parsedSchemas = getParsedSchemas(schemasFolder)
     for ((file, json) <- parsedSchemas) {
       it(s"Should parse ${file.getName} and convert it to doc") {
         val tryCnv = for {

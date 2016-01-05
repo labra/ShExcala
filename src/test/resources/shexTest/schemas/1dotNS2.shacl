@@ -1,9 +1,9 @@
 @prefix p1:    <http://a.example/p1> .
-@prefix IssueShape: <http://a.example/IssueShape> .
+@prefix S1: <http://a.example/IssueShape> .
 @prefix sh:    <http://www.w3.org/ns/shacl/core#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 
-IssueShape: a  sh:Schema;
+S1: a  sh:Schema;
              sh:property  [ a             sh:PropertyConstraint ;
 #                            sh:maxCount   1 ;
 #                            sh:minCount   1 ;

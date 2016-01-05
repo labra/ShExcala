@@ -14,7 +14,7 @@ import scala.util.{Success => TrySuccess}
 class RunASTAll extends Driver {
 
   describe("Test JSON parser only. JSON -> AST -> Schema") {
-    val parsedSchemas = getParsedSchemas(parsedSchemasDir)
+    val parsedSchemas = getParsedSchemas(schemasFolder)
     for ((file, json) <- parsedSchemas) {
       it(s"Should parse ${file.getName}") {
         val tryCnv = for {
@@ -30,7 +30,7 @@ class RunASTAll extends Driver {
   }
 
   describe("Test JSON parser only. JSON -> AST -> JSON = JSON") {
-    val parsedSchemas = getParsedSchemas(parsedSchemasDir)
+    val parsedSchemas = getParsedSchemas(schemasFolder)
     for ((file, json) <- parsedSchemas) {
       it(s"Should parse ${file.getName}") {
         val tryCnv = for {

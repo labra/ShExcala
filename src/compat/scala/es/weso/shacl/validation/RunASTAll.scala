@@ -14,7 +14,7 @@ import es.weso.shacl._
 class RunValASTAll extends Driver {
 
   describe("Test JSON parser only for validations.") {
-    val validations = getValidations(validationsDir) 
+    val validations = getValidations(validationFolder) 
     for ((file, json) <- validations) {
       it(s"Should parse ${file.getName}") {
         val tryCnv = for {
@@ -29,7 +29,7 @@ class RunValASTAll extends Driver {
   }
 
   describe("Test JSON parser to do: JSON -> AST -> JSON = JSON") {
-    val validations = getValidations(validationsDir) 
+    val validations = getValidations(validationFolder) 
     for ((file, json) <- validations) {
       it(s"Should parse ${file.getName}") {
         val tryCnv = for {

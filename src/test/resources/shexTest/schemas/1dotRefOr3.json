@@ -1,0 +1,54 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/PersonShape": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": { "type": "ValueClass" }
+      }
+    },
+    "http://a.example/PlaceShape": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p2",
+        "valueExpr": { "type": "ValueClass" }
+      }
+    },
+    "http://a.example/ThingShape": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p3",
+        "valueExpr": { "type": "ValueClass" }
+      }
+    },
+    "http://a.example/EmployeeShape": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p4",
+        "valueExpr": {
+          "type": "ValueOr",
+          "valueExprs": [
+            {
+              "type": "ValueClass",
+              "reference": "http://a.example/PersonShape"
+            },
+            {
+              "type": "ValueClass",
+              "reference": "http://a.example/PlaceShape"
+            },
+            {
+              "type": "ValueClass",
+              "reference": "http://a.example/ThingShape"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

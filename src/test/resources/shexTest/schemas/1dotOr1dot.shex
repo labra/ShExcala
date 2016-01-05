@@ -1,3 +1,3 @@
 PREFIX : <http://a.example/>
 
-:S { :p1 .| :p2 . }
+:S1 { :p1 .| :p2 . }

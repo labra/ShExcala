@@ -1,0 +1,12 @@
+{
+  "type": "test",
+  "node": "http://a.example/s1",
+  "shape": "http://a.example/S1",
+  "solution": { 
+    "type":"tripleConstraintSolutions", "predicate":"http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+    "valueExpr": { "type":"ValueClass" },
+    "solutions":[
+      {"type":"testedTriple","subject":"http://a.example/s1","predicate":"http://www.w3.org/1999/02/22-rdf-syntax-ns#type","object":"http://a.example/o1"}
+    ]
+  }
+}
