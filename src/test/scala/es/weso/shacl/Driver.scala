@@ -24,7 +24,7 @@ import es.weso.shacl.validation.Validation._
 class Driver extends FunSpec
     with Matchers with TryValues with TestUtils {
 
-  val conf: Config = ConfigFactory.load()
+  val conf: Config           = ConfigFactory.load()
   val schemasFolder          = conf.getString("schemasFolder")
   val negativeSyntaxFolder   = conf.getString("negativeSyntaxFolder")
   val validationFolder       = conf.getString("validationFolder")
@@ -92,7 +92,7 @@ class Driver extends FunSpec
     }
   }
 
-  def testComparingJsons(file: File): Unit = {
+  def testComparingJsons(file: File, verbose: Boolean = false): Unit = {
     val tryConversion = for {
       json <- { jsonFile(file) }
       shaclFile <- { lookupFileWithSameName(file, schemasFolder, "shex") }
@@ -101,7 +101,7 @@ class Driver extends FunSpec
     } yield (json, ast)
     tryConversion match {
       case TrySuccess((json, ast)) => {
-        jsonsEqual(json, ast.asJson)
+        jsonsEqual(json, ast.asJson, verbose)
       }
       case TryFailure(e) => fail("Failure: " + e)
     }

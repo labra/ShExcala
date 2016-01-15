@@ -26,7 +26,7 @@ class CompareJsonSingle extends Driver {
     val name = "1val1dotMinusiriStem3"
     val file = new File(schemasFolder + "/" + name + ".json")
     it (s"should pass file $name") {
-     testComparingJsons(file) 
+     testComparingJsons(file,true) 
     }
   }
 

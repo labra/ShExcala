@@ -96,7 +96,7 @@ object Schema2AST {
       case tc: TripleConstraint => cnvTripleConstraint(tc)
       case Or(id, s1, s2) => {
         base.copy(
-          _type = "someOf", expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
+          _type = Some("someOf"), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
 /*      case XOr(id, s1, s2) => {
         base.copy(
@@ -104,7 +104,7 @@ object Schema2AST {
       } */
       case Group2(id, s1, s2) => {
         base.copy(
-          _type = "group", expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
+          _type = Some("group"), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
 /*      case OneOf(id, ss) => {
         base.copy(
@@ -112,32 +112,33 @@ object Schema2AST {
       } */
       case SomeOf(id, ss) => {
         base.copy(
-          _type = "someOf", expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
+          _type = Some("someOf"), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
       }
       case GroupShape(id, ss) => {
         base.copy(
-          _type = "group", expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
+          _type = Some("group"), 
+          expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
       }
       case RepetitionShape(id, s, card, annotations, actions) => {
         base.copy(
-          _type = "group", 
+          _type = Some("group"), 
           expressions = Some(List(cnvShapeExpr(s))), 
           min = cnvMinCard(card), 
           max = cnvMaxCard(card), 
           annotations = cnvAnnotations(annotations),
-          semAct = cnvActions(actions))
+          semActs = cnvActions(actions))
       }
-      case IncludeShape(id, label) => {
+/*      case IncludeShape(id, label) => {
         base.copy(
           _type = "include", 
           include = Some(cnvLabel(label)))
-      }
+      } */
     }
   }
 
   def cnvTripleConstraint(tc: TripleConstraint): ExpressionAST = {
     ExpressionAST.empty.copy(
-      _type = "tripleConstraint", 
+      _type = "TripleConstraint", 
       predicate = Some(cnvIRI(tc.iri)),
       valueExpr = Some(cnvValueClass(tc.value)), 
       min = cnvMinCard(tc.card), 
@@ -148,16 +149,17 @@ object Schema2AST {
       semAct = cnvActions(tc.actions))
   }
 
-  def cnvAnnotations(annotations: List[Annotation]): Option[List[List[String]]] = {
+  def cnvAnnotations(annotations: List[Annotation]): Option[List[AnnotationAST]] = {
     if (annotations.isEmpty) None
     else {
       Some(annotations.map(a => cnvAnnotation(a)))
     }
   }
 
-  def cnvAnnotation(annotation: Annotation): List[String] = {
-    List(cnvIRI(annotation.iri), 
-        annotation.value.fold(cnvIRI,cnvAnnotationLiteral))
+  def cnvAnnotation(annotation: Annotation): AnnotationAST = {
+    AnnotationAST(_type=Some("Annotation"),
+        predicate = Some(cnvIRI(annotation.iri)),
+        _object = Some(annotation.value.fold(cnvIRI,cnvAnnotationLiteral)))
   }
   
   def cnvIRI(i:IRI): String = i.str
@@ -311,11 +313,15 @@ object Schema2AST {
   def cnvID(id: Option[Label]): Option[String] = {
     id.map(cnvLabel)
   }
-  def cnvActions(actions: Actions): Option[Seq[ActionAST]] = {
+  def cnvActions(actions: Actions): Option[List[SemActAST]] = {
     if (actions.isEmpty) None
     else {
       Some(actions.toList.map {
-        case (iri, str) => ActionAST(cnvIRI(iri), str)
+        case (iri, str) => 
+          SemActAST(
+              _type=Some(""), 
+              name = cnvIRI(iri), 
+              code = str)
       })
     }
   }

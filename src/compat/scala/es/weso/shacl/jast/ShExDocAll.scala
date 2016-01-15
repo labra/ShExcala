@@ -22,12 +22,6 @@ import es.weso.shacl._
 
 class ShExDocAll extends Driver {
   
-  describe("Test...") {
-    it("should pass single test") {
-      info("single test...")
-    }
-  }
-
   describe("Compare as: JSON -> AST -> Schema -> Show -> ShExC -> Schema = Json -> AST -> Schema") {
     val parsedSchemas = getParsedSchemas(schemasFolder)
     if (parsedSchemas.isEmpty) {

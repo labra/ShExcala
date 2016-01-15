@@ -3,14 +3,14 @@ import argonaut._
 import Argonaut._
 import argonaut.DecodeJsons
 
-object AST {
+trait AST {
 
   case class SchemaAST(
     prefixes: Option[Map[String, String]],
-    valueClasses: Option[Map[String,ValueClassAST]],
+    valueClasses: Option[Map[String, ValueClassAST]],
     shapes: Option[Map[String, ShapeAST]],
     start: Option[String],
-    startActions: Option[Seq[ActionAST]])
+    startActions: Option[Seq[SemActAST]])
 
   case class ShapeAST(
     expression: Option[ExpressionAST],
@@ -18,26 +18,36 @@ object AST {
     closed: Option[Boolean],
     inherit: Option[Seq[String]],
     extra: Option[Seq[String]],
-    semAct: Option[Seq[ActionAST]])
+    semAct: Option[Seq[SemActAST]])
 
   case class ExpressionAST(
-    _type: String,
-//    id: Option[String],
-    predicate: Option[String],
-    include: Option[String],
-    valueExpr: Option[ValueClassAST],
-    inverse: Option[Boolean],
-    negated: Option[Boolean],
+    _type: Option[String],
+    value: Option[ValueClassAST],
+    solutions: Option[List[ExpressionAST]],
     min: Option[Int],
-    max: Option[MaxAST], // It can be a number or a star    expressions: Option[List[ExpressionAST]],
-    expression: Option[ExpressionAST],
+    max: Option[MaxAST], // It can be a number or a star
+    subject: Option[String],
+    predicate: Option[String],
+    _object: Option[String],
     expressions: Option[List[ExpressionAST]],
-    annotations: Option[List[List[String]]],
-    semAct: Option[Seq[ActionAST]],
-    valueClassRef: Option[String]
-    )
+    referenced: Option[ValueAST],
+    annotations: Option[List[AnnotationAST]],
+    //    semAct: Option[Map[String, String]],
+    semActs: Option[List[SemActAST]],
+    valueExpr: Option[ValueClassAST])
+
+  case class SemActAST(
+    _type: Option[String],
+    name: Option[String],
+    code: Option[String])
+
+  case class AnnotationAST(
+    _type: Option[String],
+    predicate: Option[String],
+    _object: Option[String])
 
   case class ValueClassAST(
+    _type: Option[String],
     values: Option[List[ValueAST]],
     nodeKind: Option[String],
     pattern: Option[String],
@@ -51,41 +61,43 @@ object AST {
     maxLength: Option[Int],
     totalDigits: Option[Int],
     fractionDigits: Option[Int],
-    datatype: Option[String])
+    datatype: Option[String],
+    valueExprRef: Option[String],
+    valueExprs: Option[List[ValueClassAST]])
 
   case class MaxAST(val v: Option[Int]) {
   }
-  
-  case class NumberAST(val v: Either[Int,Double]) {
-  }
 
+  case class NumberAST(val v: Either[Int, Double]) {
+  }
 
   case class ValueAST(
     value: Either[String, StemRangeAST])
 
   case class ReferenceAST(
-    value: Either[String, AndAST])
+    value: Either[String, OrAST])
 
+  case class OrAST(
+    disjuncts: List[String])
+    
   case class AndAST(
-    conjuncts: List[String])
+    conjuncts: List[String])  
 
   case class StemRangeAST(
-//    _type: Option[String],
-    stem: StemAST,
+    _type: Option[String],
+    stem: Option[StemAST],
     exclusions: Option[List[ExclusionAST]])
 
   case class ExclusionAST(
     value: Either[String, StemAST])
 
-  case class StemAST(value: Either[String, WildCard])
-  
-  case class WildCard(_type: String)
+  case class StemAST(
+    value: Either[String, WildCardAST])
 
-  case class ActionAST(
-    name: String, 
-    contents: String
-  )
-  
+  case class WildCardAST(
+    _type: Option[String],
+    stem: Option[StemAST])
+
   // Empty initializers
   // There should be a better way to do this    
   object SchemaAST {
@@ -95,6 +107,7 @@ object AST {
       start = None,
       startActions = None)
   }
+
   object ShapeAST {
     def empty = ShapeAST(None, None, None, None, None, None)
   }
@@ -102,29 +115,25 @@ object AST {
   object ExpressionAST {
     def empty =
       ExpressionAST(
-        _type = "",
-//        id = None,
-        predicate = None,
-        include = None,
-        valueExpr = None,
-        inverse = None,
-        negated = None,
+        _type = None,
+        value = None,
+        solutions = None,
         min = None,
         max = None,
-        expression = None,
+        subject = None,
+        predicate = None,
+        _object = None,
         expressions = None,
+        referenced = None,
         annotations = None,
-        semAct = None,
-        valueClassRef = None
-        )
-  }
-
-  object MaxAST {
-    def empty = MaxAST(None)
+        //        semAct = None,
+        semActs = None,
+        valueExpr = None)
   }
 
   object ValueClassAST {
     lazy val empty = ValueClassAST(
+      _type = None,
       values = None,
       nodeKind = None,
       pattern = None,
@@ -138,22 +147,37 @@ object AST {
       maxLength = None,
       totalDigits = None,
       fractionDigits = None,
-      datatype = None)
+      datatype = None,
+      valueExprRef = None,
+      valueExprs = None)
+  }
+
+  /*  object ValueExprAST {
+    lazy val empty = ValueExprAST(None,None)
+  } */
+
+  object SemActAST {
+    lazy val empty = SemActAST(None, None, None)
+  }
+
+  object AnnotationAST {
+    lazy val empty = AnnotationAST(None, None, None)
   }
 
   object ReferenceAST {
     lazy val empty = Left("")
   }
 
-  object AndAST {
-    lazy val empty = AndAST(conjuncts = List())
+  object OrAST {
+    lazy val empty = OrAST(disjuncts = List())
   }
 
-/*  object StemRangeAST {
+  object StemRangeAST {
     lazy val empty = StemRangeAST(
-        stem = Right(WildCard("wildcard")), 
-        exclusions = None)
-  } */
+      _type = None,
+      stem = None,
+      exclusions = None)
+  }
 
   object ExclusionAST {
     lazy val empty = ExclusionAST(Left(""))
@@ -162,11 +186,11 @@ object AST {
   object StemAST {
     lazy val empty = StemAST(Left(""))
   }
-  
-  object WildCard {
-    lazy val empty = WildCard(_type = "wildcard")
+
+  object MaxAST {
+    def empty = MaxAST(None)
   }
-  
+
   // JSON Encoders
   implicit def SchemaEncodeJson: EncodeJson[SchemaAST] =
     EncodeJson((n: SchemaAST) =>
@@ -175,7 +199,7 @@ object AST {
         ("valueClasses" :=? n.valueClasses) ->?:
         ("shapes" :=? n.shapes) ->?:
         ("prefixes" := n.prefixes.getOrElse(Map())) ->:
-        ("type" := jString("schema")) ->:
+        ("type" := jString("Schema")) ->:
         jEmptyObject)
 
   implicit def ShapeEncodeJson: EncodeJson[ShapeAST] =
@@ -186,44 +210,51 @@ object AST {
         ("closed" :=? n.closed) ->?:
         ("virtual" :=? n.virtual) ->?:
         ("expression" :=? n.expression) ->?:
-        ("type" := jString("shape")) ->:
+        ("type" := jString("Shape")) ->:
         jEmptyObject)
 
   implicit def ExpressionEncodeJson: EncodeJson[ExpressionAST] =
     EncodeJson((n: ExpressionAST) =>
-      ("semActs" :=? n.semAct) ->?:
-        ("annotations" :=? n.annotations) ->?:
-        ("expression" :=? n.expression) ->?:
-        ("expressions" :=? n.expressions) ->?:
-        ("max" :=? n.max) ->?:
+      ("type" :=? n._type) ->?:
+        ("value" :=? n.value) ->?:
+        ("solutions" :=? n.solutions) ->?:
         ("min" :=? n.min) ->?:
-        ("negated" :=? n.negated) ->?:
-        ("inverse" :=? n.inverse) ->?:
-        ("value" :=? n.valueExpr) ->?:
-        ("include" :=? n.include) ->?:
+        ("max" :=? n.max) ->?:
+        ("subject" :=? n.subject) ->?:
         ("predicate" :=? n.predicate) ->?:
-//        ("id" :=? n.id) ->?:
-        ("valueClassRef" :=? n.valueClassRef) ->?:
-        ("type" := n._type) ->:
+        ("object" :=? n._object) ->?:
+        ("expressions" :=? n.expressions) ->?:
+        ("referenced" :=? n.referenced) ->?:
+        ("annotations" :=? n.annotations) ->?:
+        ("valueExpr" :=? n.valueExpr) ->?:
+        //        ("semAct" :=? n.semAct) ->?:
+        ("semActs" :=? n.semActs) ->?:
         jEmptyObject)
 
-  implicit def MaxEncodeJson: EncodeJson[MaxAST] =
-    EncodeJson((n: MaxAST) =>
-      n.v match {
-        case None    => jString("*")
-        case Some(x) => jNumber(x)
-      })
+  /*  implicit def ValueExprEncodeJson: EncodeJson[ValueExprAST] =
+    EncodeJson((n: ValueExprAST) =>
+      ("type" :=? n._type) ->?:
+        ("valueExprRef" :=? n.valueExprRef) ->?:
+        jEmptyObject) */
 
-  implicit def NumberEncodeJson: EncodeJson[NumberAST] =
-    EncodeJson((n: NumberAST) =>
-      n.v match {
-        case Left(x)  => jNumber(x)
-        case Right(x) => jNumber(x)
-      })
-      
+  implicit def SemActEncodeJson: EncodeJson[SemActAST] =
+    EncodeJson((n: SemActAST) =>
+      ("type" :=? n._type) ->?:
+        ("name" :=? n.name) ->?:
+        ("code" :=? n.code) ->?:
+        jEmptyObject)
+
+  implicit def AnnotationJson: EncodeJson[AnnotationAST] =
+    EncodeJson((n: AnnotationAST) =>
+      ("type" :=? n._type) ->?:
+        ("predicate" :=? n.predicate) ->?:
+        ("object" :=? n._object) ->?:
+        jEmptyObject)
+
   implicit def ValueClassEncodeJson: EncodeJson[ValueClassAST] =
     EncodeJson((n: ValueClassAST) =>
-      ("mininclusive" :=? n.minInclusive) ->?:
+      ("type" :=? n._type) ->?:
+        ("mininclusive" :=? n.minInclusive) ->?:
         ("maxinclusive" :=? n.maxInclusive) ->?:
         ("minexclusive" :=? n.minExclusive) ->?:
         ("maxexclusive" :=? n.maxExclusive) ->?:
@@ -237,7 +268,8 @@ object AST {
         ("nodeKind" :=? n.nodeKind) ->?:
         ("pattern" :=? n.pattern) ->?:
         ("values" :=? n.values) ->?:
-        ("type" := jString("valueClass")) ->:
+        ("valueExprRef" :=? n.valueExprRef) ->?:
+        ("valueExprs" :=? n.valueExprs) ->?:
         jEmptyObject)
 
   implicit def ValueEncodeJson: EncodeJson[ValueAST] =
@@ -248,48 +280,47 @@ object AST {
     EncodeJson((n: ReferenceAST) =>
       n.value.fold(_.asJson, _.asJson))
 
-  implicit def OrEncodeJson: EncodeJson[AndAST] =
-    EncodeJson((n: AndAST) =>
-      ("conjuncts" := n.conjuncts) ->:
-        ("type" := jString("and")) ->:
+  implicit def OrEncodeJson: EncodeJson[OrAST] =
+    EncodeJson((n: OrAST) =>
+      ("disjuncts" := n.disjuncts) ->:
+        ("type" := jString("or")) ->:
         jEmptyObject)
 
   implicit def StemRangeEncodeJson: EncodeJson[StemRangeAST] =
     EncodeJson((n: StemRangeAST) =>
       ("exclusions" :=? n.exclusions) ->?:
-        ("stem" := n.stem) ->:
-        ("type" := jString("stemRange")) ->:
+        ("stem" :=? n.stem) ->?:
+        ("type" := jString("StemRange")) ->:
         jEmptyObject)
 
   implicit def ExclusionEncodeJson: EncodeJson[ExclusionAST] =
     EncodeJson((n: ExclusionAST) =>
-      n.value.fold(_.asJson,(stem) => 
-        ("stem" := stem.asJson) ->:
-        ("type" := jString("stem")) ->:
-        jEmptyObject)
-    )
+      n.value.fold(str => jString(str), v => v.asJson))
 
   implicit def StemEncodeJson: EncodeJson[StemAST] =
     EncodeJson((n: StemAST) =>
-        n.value.fold(_.asJson, _.asJson)
-    )
+      n.value.fold(str => jString(str), v => v.asJson))
 
-/*  implicit def StringStemEncodeJson: EncodeJson[StringStemAST] =
-    EncodeJson((n: StringStemAST) =>
-      ("stem" := n.value) ->:
-        jEmptyObject) */
-        
-  implicit def WildCardEncodeJson: EncodeJson[WildCard] =
-    EncodeJson((n: WildCard) =>
-      ("type" := jString("wildcard")) ->:
+  implicit def WildCardEncodeJson: EncodeJson[WildCardAST] =
+    EncodeJson((n: WildCardAST) =>
+      ("type" :=? n._type) ->?:
+        ("stem" :=? n.stem) ->?:
         jEmptyObject)
-        
-  implicit def ActionEncodeJson: EncodeJson[ActionAST] =
-    EncodeJson((n: ActionAST) =>
-      ("name" := n.name) ->:
-      ("contents" := n.contents) ->:
-        jEmptyObject)
-        
+
+  implicit def NumberEncodeJson: EncodeJson[NumberAST] =
+    EncodeJson((n: NumberAST) =>
+      n.v match {
+        case Left(x)  => jNumber(x)
+        case Right(x) => jNumber(x)
+      })
+
+  implicit def MaxEncodeJson: EncodeJson[MaxAST] =
+    EncodeJson((n: MaxAST) =>
+      n.v match {
+        case None    => jString("*")
+        case Some(x) => jNumber(x)
+      })
+
   // Json decoders
   implicit def SchemaDecodeJson: DecodeJson[SchemaAST] =
     DecodeJson((c) => for {
@@ -297,7 +328,7 @@ object AST {
       valueClasses <- (c --\ "valueClasses").as[Option[Map[String, ValueClassAST]]]
       shapes <- (c --\ "shapes").as[Option[Map[String, ShapeAST]]]
       start <- (c --\ "start").as[Option[String]]
-      startActions <- (c --\ "startActs").as[Option[Seq[ActionAST]]]
+      startActions <- (c --\ "startActs").as[Option[Seq[SemActAST]]]
     } yield SchemaAST(prefixes, valueClasses, shapes, start, startActions))
 
   implicit def ShapeDecodeJson: DecodeJson[ShapeAST] = {
@@ -307,39 +338,78 @@ object AST {
       closed <- (c --\ "closed").as[Option[Boolean]]
       inherit <- (c --\ "inherit").as[Option[List[String]]]
       extra <- (c --\ "extra").as[Option[List[String]]]
-      semAct <- (c --\ "semActs").as[Option[Seq[ActionAST]]]
+      semAct <- (c --\ "semActs").as[Option[Seq[SemActAST]]]
     } yield ShapeAST(expression, virtual, closed, inherit, extra, semAct))
   }
 
   implicit def ExpressionDecodeJson: DecodeJson[ExpressionAST] =
-    DecodeJson((c) => for {
-      _type <- (c --\ "type").as[String]
-//      id <- (c --\ "id").as[Option[String]]
-      predicate <- (c --\ "predicate").as[Option[String]]
-      include <- (c --\ "include").as[Option[String]]
-      valueExpr <- (c --\ "valueExpr").as[Option[ValueClassAST]]
-      inverse <- (c --\ "inverse").as[Option[Boolean]]
-      negated <- (c --\ "negated").as[Option[Boolean]]
-      min <- (c --\ "min").as[Option[Int]]
-      max <- (c --\ "max").as[Option[MaxAST]]
-      expression <- (c --\ "expression").as[Option[ExpressionAST]]
-      expressions <- (c --\ "expressions").as[Option[List[ExpressionAST]]]
-      annotations <- (c --\ "annotations").as[Option[List[List[String]]]]
-      semAct <- (c --\ "semActs").as[Option[Seq[ActionAST]]]
-      valueClassRef <- (c --\ "valueClassRef").as[Option[String]]
-    } yield ExpressionAST(
-        _type = _type, 
-        predicate, include, valueExpr, inverse, negated, min, max, 
-        expression, expressions, annotations, semAct, valueClassRef))
+    DecodeJson((c) =>
+      for {
+        _type <- (c --\ "type").as[Option[String]]
+        value <- (c --\ "value").as[Option[ValueClassAST]]
+        solutions <- (c --\ "solutions").as[Option[List[ExpressionAST]]]
+        min <- (c --\ "min").as[Option[Int]]
+        max <- (c --\ "max").as[Option[MaxAST]]
+        subject <- (c --\ "subject").as[Option[String]]
+        predicate <- (c --\ "predicate").as[Option[String]]
+        _object <- (c --\ "object").as[Option[String]]
+        expressions <- (c --\ "expressions").as[Option[List[ExpressionAST]]]
+        referenced <- (c --\ "referenced").as[Option[ValueAST]]
+        annotations <- (c --\ "annotations").as[Option[List[AnnotationAST]]]
+        semAct <- (c --\ "semAct").as[Option[Map[String, String]]]
+        semActs <- (c --\ "semActs").as[Option[List[SemActAST]]]
+        valueExpr <- (c --\ "valueExpr").as[Option[ValueClassAST]]
+      } yield ExpressionAST.empty.copy(
+        _type = _type,
+        value = value,
+        solutions = solutions,
+        min = min,
+        max = max,
+        subject = subject,
+        predicate = predicate,
+        _object = _object,
+        expressions = expressions,
+        referenced = referenced,
+        annotations = annotations,
+        //        semAct = semAct,
+        semActs = semActs,
+        valueExpr = valueExpr))
 
-  /* The following declaration would be nice but generates stack overflow...
-  implicit def ExpressionASTCodecJson: CodecJson[ExpressionAST] =
-    casecodec9(ExpressionAST.apply, ExpressionAST.unapply)(
-        "type","predicate","value","values","inverse","negated","min","max","expressions"
-    ) */
+  /*  implicit def ValueExprDecodeJson: DecodeJson[ValueExprAST] =
+    DecodeJson((c) =>
+      for {
+        _type <- (c --\ "type").as[Option[String]]
+        valueExprRef <- (c --\ "valueExprRef").as[Option[String]]
+      } yield ValueExprAST.empty.copy(
+        _type = _type,
+        valueExprRef = valueExprRef)
+      ) */
+
+  implicit def SemActDecodeJson: DecodeJson[SemActAST] =
+    DecodeJson((c) =>
+      for {
+        _type <- (c --\ "type").as[Option[String]]
+        name <- (c --\ "name").as[Option[String]]
+        code <- (c --\ "code").as[Option[String]]
+      } yield SemActAST.empty.copy(
+        _type = _type,
+        name = name,
+        code = code))
+
+  implicit def AnnotationDecodeJson: DecodeJson[AnnotationAST] =
+    DecodeJson((c) =>
+      for {
+        _type <- (c --\ "type").as[Option[String]]
+        predicate <- (c --\ "predicate").as[Option[String]]
+        _object <- (c --\ "object").as[Option[String]]
+      } yield AnnotationAST.empty.copy(
+        _type = _type,
+        predicate = predicate,
+        _object = _object))
 
   implicit def ValueClassDecodeJson: DecodeJson[ValueClassAST] =
     DecodeJson((c) => for {
+      _type <- (c --\ "type").as[Option[String]]
       values <- (c --\ "values").as[Option[List[ValueAST]]]
       length <- (c --\ "length").as[Option[Int]]
       pattern <- (c --\ "pattern").as[Option[String]]
@@ -354,7 +424,10 @@ object AST {
       totaldigits <- (c --\ "totaldigits").as[Option[Int]]
       fractiondigits <- (c --\ "fractiondigits").as[Option[Int]]
       datatype <- (c --\ "datatype").as[Option[String]]
+      valueExprRef <- (c --\ "valueExprRef").as[Option[String]]
+      valueExprs <- (c --\ "valueExprs").as[Option[List[ValueClassAST]]]
     } yield ValueClassAST(
+      _type,
       values,
       nodeKind,
       pattern,
@@ -364,7 +437,47 @@ object AST {
       minExclusive, maxExclusive,
       minlength, maxlength,
       totaldigits, fractiondigits,
-      datatype))
+      datatype,
+      valueExprRef,
+      valueExprs))
+
+  implicit def ValueDecodeJson: DecodeJson[ValueAST] =
+    DecodeJson((c) =>
+      (for { value <- c.as[String] } yield ValueAST(Left(value))) |||
+        (for { value <- c.as[StemRangeAST] } yield ValueAST(Right(value))))
+
+  implicit def ReferenceDecodeJson: DecodeJson[ReferenceAST] =
+    DecodeJson((c) =>
+      (for { value <- c.as[String] } yield ReferenceAST(Left(value))) |||
+        (for { value <- c.as[OrAST] } yield ReferenceAST(Right(value))))
+
+  implicit def OrDecodeJson: DecodeJson[OrAST] =
+    DecodeJson((c) => for {
+      disjuncts <- (c --\ "disjuncts").as[List[String]]
+    } yield OrAST(disjuncts))
+
+  implicit def StemRangeDecodeJson: DecodeJson[StemRangeAST] =
+    DecodeJson((c) => for {
+      _type <- (c --\ "type").as[Option[String]]
+      stem <- (c --\ "stem").as[Option[StemAST]]
+      exclusions <- (c --\ "exclusions").as[Option[List[ExclusionAST]]]
+    } yield StemRangeAST(_type = _type, stem = stem, exclusions = exclusions))
+
+  implicit def ExclusionDecodeJson: DecodeJson[ExclusionAST] =
+    DecodeJson((c) =>
+      (for { value <- c.as[String] } yield ExclusionAST(Left(value))) |||
+        (for { value <- c.as[StemAST] } yield ExclusionAST(Right(value))))
+
+  implicit def StemDecodeJson: DecodeJson[StemAST] =
+    DecodeJson((c) =>
+      (for { value <- c.as[String] } yield StemAST(Left(value))) |||
+        (for { value <- c.as[WildCardAST] } yield StemAST(Right(value))))
+
+  implicit def WildCardDecodeJson: DecodeJson[WildCardAST] =
+    DecodeJson((c) => for {
+      _type <- (c --\ "type").as[Option[String]]
+      stem <- (c --\ "stem").as[Option[StemAST]]
+    } yield WildCardAST(_type, stem))
 
   implicit def MaxDecodeJson: DecodeJson[MaxAST] =
     DecodeJson((c) =>
@@ -374,64 +487,9 @@ object AST {
 
   implicit def NumberDecodeJson: DecodeJson[NumberAST] =
     DecodeJson((c) =>
-      // TODO: Check that the string is a *
       (for { value <- c.as[Int] } yield NumberAST(Left(value))) |||
-      (for { value <- c.as[Double] } yield NumberAST(Right(value))))
-        
-  implicit def ValueDecodeJson: DecodeJson[ValueAST] =
-    DecodeJson((c) =>
-      (for { value <- c.as[String] } yield ValueAST(Left(value))) |||
-        (for { value <- c.as[StemRangeAST] } yield ValueAST(Right(value))))
+        (for { value <- c.as[Double] } yield NumberAST(Right(value))))
 
-  implicit def ReferenceDecodeJson: DecodeJson[ReferenceAST] =
-    DecodeJson((c) =>
-      (for { value <- c.as[String] } yield ReferenceAST(Left(value))) |||
-        (for { value <- c.as[AndAST] } yield ReferenceAST(Right(value))))
-
-  implicit def OrDecodeJson: DecodeJson[AndAST] =
-    DecodeJson((c) => for {
-      conjuncts <- (c --\ "conjuncts").as[List[String]]
-    } yield AndAST(conjuncts))
-
-  implicit def StemRangeDecodeJson: DecodeJson[StemRangeAST] =
-    DecodeJson((c) => for {
-//      _type <- (c --\ "type").as[Option[String]]
-      stem <- (c --\ "stem").as[StemAST]
-      exclusions <- (c --\ "exclusions").as[Option[List[ExclusionAST]]]
-    } yield StemRangeAST(stem = stem, exclusions = exclusions))
-
-  implicit def ExclusionDecodeJson: DecodeJson[ExclusionAST] =
-    DecodeJson((c) =>
-      (for { value <- c.as[String] } yield ExclusionAST(Left(value))) |||
-      (for { value <- (c --\ "stem").as[StemAST] } yield ExclusionAST(Right(value))))
-
-  implicit def StemDecodeJson: DecodeJson[StemAST] =
-    DecodeJson((c) =>
-      (for { value <- c.as[String] 
-      } yield StemAST(Left(value))) |||
-      (for { value <- c.as[WildCard] 
-      } yield StemAST(Right(value)))
-    )
-
-  implicit def WildCardDecodeJson: DecodeJson[WildCard] =
-    DecodeJson((c) => for {
-//      _type <- (c --\ "type").as[Option[String]]
-//      if (_type == "wildcard") 
-      _type <- (c --\ "type").as[String]  // Check that the value is wildcard
-//      exclusions <- (c --\ "exclusions").as[List[ExclusionAST]]
-    } yield WildCard(_type))
-
-/*  implicit def StringStemDecodeJson: DecodeJson[StringStemAST] =
-    DecodeJson((c) => if (c. for {
-//      _type <- (c --\ "type").as[Option[String]]
-//      if (_type == "wildcard") 
-      _type <- (c --\ "type").as[Option[String]]  // Check that the value is wildcard
-      exclusions <- (c --\ "exvlusions").as[List[ExclusionAST]]
-    } yield StringStemAST(exclusions)) */
-    
-  implicit def ActionDecodeJson: DecodeJson[ActionAST] =
-    DecodeJson((c) => for {
-      name <- (c --\ "name").as[String]
-      contents <- (c --\ "contents").as[String]
-    } yield ActionAST(name, contents))
 }
+
+object AST extends AST

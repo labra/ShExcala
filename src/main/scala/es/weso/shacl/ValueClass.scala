@@ -211,5 +211,5 @@ sealed trait ShapeConstr extends ValueClass
 case class SingleShape(shape: Label) extends ShapeConstr
 case class NotShape(shape: Label) extends ShapeConstr
 case class ConjShapeConstr(shapes: Seq[Label]) extends ShapeConstr
-// case class DisjShapeConstr(shapes: List[Label]) extends ShapeConstr
+case class DisjShapeConstr(shapes: List[Label]) extends ShapeConstr
   
