@@ -6,20 +6,15 @@ import java.io.File
 
 import argonaut._, Argonaut._
 
-import java.nio.ByteBuffer
-import java.nio.channels.ReadableByteChannel
 import scala.util.{ Try, Success => TrySuccess, Failure => TryFailure }
-
-import scala.io._
 
 import org.scalatest.FunSpec
 import org.scalatest._
 
-import es.weso.shacl.jast.AST._
-import es.weso.shacl._
-import es.weso.utils.testUtils._
 import es.weso.shacl.jast._
-import es.weso.shacl.validation.Validation._
+import AST._
+import es.weso.shacl.validation.Validation.Validation
+import es.weso.utils.testUtils._
 
 class Driver extends FunSpec
     with Matchers with TryValues with TestUtils {

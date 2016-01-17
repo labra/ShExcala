@@ -24,6 +24,8 @@ trait AST {
     _type: Option[String],
     value: Option[ValueClassAST],
     solutions: Option[List[ExpressionAST]],
+    inverse: Option[Boolean],
+    negated: Option[Boolean],    
     min: Option[Int],
     max: Option[MaxAST], // It can be a number or a star
     subject: Option[String],
@@ -75,7 +77,7 @@ trait AST {
     value: Either[String, StemRangeAST])
 
   case class ReferenceAST(
-    value: Either[String, OrAST])
+    value: Either[String, Either[OrAST,AndAST]])
 
   case class OrAST(
     disjuncts: List[String])
@@ -118,6 +120,8 @@ trait AST {
         _type = None,
         value = None,
         solutions = None,
+        inverse = None,
+        negated = None,
         min = None,
         max = None,
         subject = None,
@@ -133,7 +137,7 @@ trait AST {
 
   object ValueClassAST {
     lazy val empty = ValueClassAST(
-      _type = None,
+      _type = Some("ValueClass"),
       values = None,
       nodeKind = None,
       pattern = None,
@@ -190,6 +194,14 @@ trait AST {
   object MaxAST {
     def empty = MaxAST(None)
   }
+  
+  object WildCardAST {
+    lazy val empty = 
+      WildCardAST(
+          _type = Some("Wildcard"),
+          stem = None
+          )
+  }
 
   // JSON Encoders
   implicit def SchemaEncodeJson: EncodeJson[SchemaAST] =
@@ -218,6 +230,8 @@ trait AST {
       ("type" :=? n._type) ->?:
         ("value" :=? n.value) ->?:
         ("solutions" :=? n.solutions) ->?:
+        ("inverse" :=? n.inverse) ->?:
+        ("negated" :=? n.negated) ->?:
         ("min" :=? n.min) ->?:
         ("max" :=? n.max) ->?:
         ("subject" :=? n.subject) ->?:
@@ -278,7 +292,9 @@ trait AST {
 
   implicit def ReferenceEncodeJson: EncodeJson[ReferenceAST] =
     EncodeJson((n: ReferenceAST) =>
-      n.value.fold(_.asJson, _.asJson))
+      n.value.fold(_.asJson, (e: Either[OrAST,AndAST]) => 
+        e.fold(_.asJson, _.asJson)
+      ))
 
   implicit def OrEncodeJson: EncodeJson[OrAST] =
     EncodeJson((n: OrAST) =>
@@ -286,6 +302,12 @@ trait AST {
         ("type" := jString("or")) ->:
         jEmptyObject)
 
+  implicit def AndEncodeJson: EncodeJson[AndAST] =
+    EncodeJson((n: AndAST) =>
+      ("conjuncts" := n.conjuncts) ->:
+        ("type" := jString("and")) ->:
+        jEmptyObject)
+        
   implicit def StemRangeEncodeJson: EncodeJson[StemRangeAST] =
     EncodeJson((n: StemRangeAST) =>
       ("exclusions" :=? n.exclusions) ->?:
@@ -348,6 +370,8 @@ trait AST {
         _type <- (c --\ "type").as[Option[String]]
         value <- (c --\ "value").as[Option[ValueClassAST]]
         solutions <- (c --\ "solutions").as[Option[List[ExpressionAST]]]
+        inverse <- (c --\ "inverse").as[Option[Boolean]]
+        negated <- (c --\ "negated").as[Option[Boolean]]
         min <- (c --\ "min").as[Option[Int]]
         max <- (c --\ "max").as[Option[MaxAST]]
         subject <- (c --\ "subject").as[Option[String]]
@@ -449,13 +473,20 @@ trait AST {
   implicit def ReferenceDecodeJson: DecodeJson[ReferenceAST] =
     DecodeJson((c) =>
       (for { value <- c.as[String] } yield ReferenceAST(Left(value))) |||
-        (for { value <- c.as[OrAST] } yield ReferenceAST(Right(value))))
+      (for { value <- c.as[OrAST] } yield ReferenceAST(Right(Left(value)))) |||
+      (for { value <- c.as[AndAST] } yield ReferenceAST(Right(Right(value))))
+      )
 
   implicit def OrDecodeJson: DecodeJson[OrAST] =
     DecodeJson((c) => for {
       disjuncts <- (c --\ "disjuncts").as[List[String]]
     } yield OrAST(disjuncts))
 
+  implicit def AndDecodeJson: DecodeJson[AndAST] =
+    DecodeJson((c) => for {
+      conjuncts <- (c --\ "conjuncts").as[List[String]]
+    } yield AndAST(conjuncts))
+    
   implicit def StemRangeDecodeJson: DecodeJson[StemRangeAST] =
     DecodeJson((c) => for {
       _type <- (c --\ "type").as[Option[String]]

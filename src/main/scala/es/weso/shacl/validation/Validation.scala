@@ -4,7 +4,7 @@ import Argonaut._
 import argonaut.DecodeJsons
 import es.weso.shacl.jast._
 
-trait Validation extends AST {
+object Validation extends AST {
   
   case class Validation(value: Option[ValAST])
 

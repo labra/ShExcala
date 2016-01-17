@@ -26,7 +26,7 @@ class RunParsedSingle extends Driver {
     val name = "1val1iriStem"
     val file = new File(schemasFolder + "/" + name + ".json")
     it (s"should pass file $name") {
-     testComparingJsons(file) 
+     testComparingJsons(file, true) 
     }
   }
 

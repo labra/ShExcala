@@ -41,7 +41,7 @@ class ValidateSingle extends FunSpec with Matchers with ValidTester {
            |
            |<ProgrammerShape> {
            |  foaf:name xsd:string, 
-           |  ex:experience (ex:senior ex:young), 
+           |  ex:experience [ex:senior ex:young], 
            |  ex:assignedIssue @<ConfirmedIssueShape> *
            |}
            |

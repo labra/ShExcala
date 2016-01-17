@@ -12,7 +12,7 @@ import AST._
 
 case class AST2SchemaException(msg: String) extends Exception(s"ASTSchemaException: $msg")
 
-trait AST2Schema {
+object AST2Schema {
 
   def cnvAST(ast: SchemaAST): Try[Schema] = {
     Try {
@@ -309,8 +309,10 @@ trait AST2Schema {
     ref.map(ref =>
       ref.value match {
         case Left(str) => SingleShape(toLabel(str))
-        case Right(OrAST(disjuncts)) =>
+        case Right(Left(OrAST(disjuncts))) =>
           DisjShapeConstr(disjuncts.map(x => toLabel(x)))
+        case Right(Right(AndAST(conjuncts))) =>
+          ConjShapeConstr(conjuncts.map(x => toLabel(x)))
       })
   }
 

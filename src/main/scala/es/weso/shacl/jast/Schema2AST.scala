@@ -138,7 +138,7 @@ object Schema2AST {
 
   def cnvTripleConstraint(tc: TripleConstraint): ExpressionAST = {
     ExpressionAST.empty.copy(
-      _type = "TripleConstraint", 
+      _type = Some("TripleConstraint"), 
       predicate = Some(cnvIRI(tc.iri)),
       valueExpr = Some(cnvValueClass(tc.value)), 
       min = cnvMinCard(tc.card), 
@@ -146,7 +146,7 @@ object Schema2AST {
       inverse = cnvBoolean(tc.inverse), 
       negated = cnvBoolean(tc.negated), 
       annotations = cnvAnnotations(tc.annotations), 
-      semAct = cnvActions(tc.actions))
+      semActs = cnvActions(tc.actions))
   }
 
   def cnvAnnotations(annotations: List[Annotation]): Option[List[AnnotationAST]] = {
@@ -190,7 +190,7 @@ object Schema2AST {
     }
 
   def cnvValueClass(vc: ValueClass): ValueClassAST = {
-    val base = ValueClassAST.empty
+    val base = ValueClassAST.empty.copy(_type = Some("ValueClass"))
     if (vc == any) base
     else
     vc match {
@@ -225,7 +225,9 @@ object Schema2AST {
       case SingleShape(label) =>
         ReferenceAST(Left(cnvLabel(label)))
       case ConjShapeConstr(shapes) =>
-        ReferenceAST(Right(AndAST(shapes.map(cnvLabel).toList)))
+        ReferenceAST(Right(Right(AndAST(shapes.map(cnvLabel).toList))))
+      case DisjShapeConstr(shapes) =>
+        ReferenceAST(Right(Left(OrAST(shapes.map(cnvLabel).toList))))
     }
   }
 
@@ -285,14 +287,16 @@ object Schema2AST {
 
   def cnvValueStem(v: ValueStem): StemRangeAST = {
     StemRangeAST(
-      stem = StemAST(Left(cnvIRI(v.stem))), 
+      _type= Some("StemRange"),
+      stem = Some(StemAST(Left(cnvIRI(v.stem)))), 
       exclusions = cnvExclusions(v.exclusions))
   }
 
   def cnvValueAny(v: ValueAny): StemRangeAST = {
-    val wildCard = WildCard.empty
+    val wildCard = WildCardAST.empty
     StemRangeAST(
-      stem = StemAST(Right(wildCard)),
+      _type = Some("StemRange"),
+      stem = Some(StemAST(Right(wildCard))),
       exclusions = cnvExclusions(v.exclusions)
     )
   }
@@ -313,6 +317,7 @@ object Schema2AST {
   def cnvID(id: Option[Label]): Option[String] = {
     id.map(cnvLabel)
   }
+  
   def cnvActions(actions: Actions): Option[List[SemActAST]] = {
     if (actions.isEmpty) None
     else {
@@ -320,9 +325,9 @@ object Schema2AST {
         case (iri, str) => 
           SemActAST(
               _type=Some(""), 
-              name = cnvIRI(iri), 
-              code = str)
-      })
+              name = Some(cnvIRI(iri)), 
+              code = Some(str))
+      }.toList)
     }
   }
 

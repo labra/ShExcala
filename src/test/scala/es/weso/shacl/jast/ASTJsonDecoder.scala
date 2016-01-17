@@ -54,7 +54,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
                    |}""".stripMargin
 
       val vc = ExpressionAST.empty.copy(
-        _type = "tripleConstraint",
+        _type = Some("TripleConstraint"),
         predicate = Some("http://a.example/p1"),
         valueExpr = Some(ValueClassAST.empty.copy(
           nodeKind = Some("literal"),
@@ -96,7 +96,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
           shapes = Some(Map("http://a.example/IssueShape" ->
             ShapeAST.empty.copy(
               expression = Some(ExpressionAST.empty.copy(
-                _type = "tripleConstraint",
+                _type = Some("TripleConstraint"),
                 predicate = Some("http://a.example/p1"),
                 valueExpr = Some(ValueClassAST.empty)))))),
           prefixes = Some(Map()))
@@ -122,7 +122,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
           shapes = Some(Map("http://a.example/IssueShape" ->
             ShapeAST.empty.copy(
               expression = Some(ExpressionAST.empty.copy(
-                _type = "tripleConstraint",
+                _type = Some("TripleConstraint"),
                 predicate = Some("http://a.example/p1"),
                 valueExpr = Some(ValueClassAST.empty),
                 negated = Some(true),
@@ -154,7 +154,7 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
             "http://a.example/EmployeeShape" ->
             ShapeAST.empty.copy(
               expression = Some(ExpressionAST.empty.copy(
-                _type = "tripleConstraint",
+                _type = Some("TripleConstraint"),
                 predicate = Some("http://a.example/p2"),
                 valueExpr = Some(ValueClassAST.empty.copy(
                     reference=Some(ReferenceAST(Left("http://a.example/PersonShape")))
@@ -194,10 +194,10 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
             ShapeAST.empty.copy(
               expression = 
                 Some(ExpressionAST.empty.copy(
-                _type = "group",
+                _type = Some("Group"),
                 expressions = Some(List(
                    ExpressionAST.empty.copy(
-                _type = "tripleConstraint",
+                _type = Some("TripleConstraint"),
                 predicate = Some("http://a.example/p1"),
                 valueExpr = Some(ValueClassAST.empty)
             )))
@@ -224,10 +224,10 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
      ShapeAST.empty.copy(
               expression = 
                 Some(ExpressionAST.empty.copy(
-                _type = "group",
+                _type = Some("Group"),
                 expressions = Some(List(
                    ExpressionAST.empty.copy(
-                _type = "tripleConstraint",
+                _type = Some("TripleConstraint"),
                 predicate = Some("http://a.example/p1"),
                 valueExpr = Some(ValueClassAST.empty)
             )))
@@ -256,7 +256,8 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
       val vc = ValueClassAST.empty.copy(
         values = Some(List(ValueAST(Right(
               StemRangeAST(
-                  stem = StemAST(Right(WildCard.empty)),
+                  _type=Some("StemRange"),
+                  stem = Some(StemAST(Right(WildCardAST.empty))),
                   exclusions = Some(List(e1,e2))
                   )
             ))))
@@ -282,7 +283,8 @@ class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
         
 
       val vc = StemRangeAST(
-                  stem = StemAST(Right(WildCard.empty)),
+          _type=Some("StemRange"),
+                  stem = Some(StemAST(Right(WildCardAST.empty))),
                   exclusions = Some(List(e1,e2)
                 )
                   

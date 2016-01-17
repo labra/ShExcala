@@ -23,7 +23,7 @@ import es.weso.rdfgraph.nodes._
 class RunASTSingle extends Driver {
   
   describe("Run specific JSON test") {
-    val name = "1val1vsMinusiri3"
+    val name = "1val1iriStem"
     val file = new File(schemasFolder + "/" + name + ".json")
     val contents = io.Source.fromFile(file)("UTF-8").mkString
     val json = Parse.parse(contents).getOrElse(jEmptyObject)

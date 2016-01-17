@@ -75,7 +75,7 @@ class ValidateTest extends FunSpec with Matchers with ValidTester {
 
       val strSchema =
         """|prefix : <http://example.org/>
-           |<S> { :p (1), :p (2) }
+           |<S> { :p [1], :p [2] }
            |""".stripMargin
 
       shouldNotBeValid(strSchema, strData, "http://example.org/x", "S")
@@ -190,7 +190,7 @@ class ValidateTest extends FunSpec with Matchers with ValidTester {
       val strSchema =
         """|PREFIX : <http://a.example/>
            |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-           |<S> EXTRA :a { :a (1 2) }
+           |<S> EXTRA :a { :a [1 2] }
            |""".stripMargin
 
 
@@ -207,7 +207,7 @@ class ValidateTest extends FunSpec with Matchers with ValidTester {
       val strSchema =
         """|PREFIX : <http://a.example/>
            |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-           |<S> { :a (1 2) }
+           |<S> { :a [1 2] }
            |""".stripMargin
 
 
