@@ -31,7 +31,7 @@ class OneValidationJsonSyntax extends Driver {
           case TrySuccess((valAST,json)) => {
             println("ValAST: " + valAST)
             val jsongenerated = valAST.asJson
-            jsonsEqual(jsongenerated, json,true)
+            jsonsEqual(json, jsongenerated, true)
           }
           case TryFailure(e) => fail("Failure: " + e)
         }

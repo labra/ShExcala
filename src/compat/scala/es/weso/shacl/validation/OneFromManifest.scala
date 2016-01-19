@@ -14,6 +14,8 @@ class OneFromManifest extends RDF2Manifest
     with TryValues 
     with ManifestRunner {
   
+  val name = "bnode1dot_fail-missing"
+  
   val conf: Config = ConfigFactory.load()
   
   val validationFolder = conf.getString("validationFolder")
@@ -26,7 +28,7 @@ class OneFromManifest extends RDF2Manifest
     val maybeManifest = RDF2Manifest.read(manifestFile,base) 
     maybeManifest match {
       case Success(manifest) => {
-        runTestByName(manifest,base,"1literalFractiondigits_pass")
+        runTestByName(manifest,base,name)
       }
       case Failure(e) => Assertions.fail("Exception reading manifest file (" + manifestFile + "): " + e.getMessage)
      }

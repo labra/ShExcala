@@ -1,6 +1,6 @@
 package es.weso.shacl.jast
 import argonaut._
-import Argonaut._
+import Argonaut.{IntDecodeJson => _, _ }
 import argonaut.DecodeJsons
 
 trait AST {
@@ -317,11 +317,19 @@ trait AST {
 
   implicit def ExclusionEncodeJson: EncodeJson[ExclusionAST] =
     EncodeJson((n: ExclusionAST) =>
-      n.value.fold(str => jString(str), v => v.asJson))
+      n.value.fold(str => 
+          jString(str)
+          , v => 
+             ("type" := "Stem") ->: 
+             ("stem" := v.asJson) ->:
+             jEmptyObject)
+          )
 
   implicit def StemEncodeJson: EncodeJson[StemAST] =
     EncodeJson((n: StemAST) =>
-      n.value.fold(str => jString(str), v => v.asJson))
+      n.value.fold(str => jString(str), 
+          _.asJson)
+      )
 
   implicit def WildCardEncodeJson: EncodeJson[WildCardAST] =
     EncodeJson((n: WildCardAST) =>
@@ -520,6 +528,15 @@ trait AST {
     DecodeJson((c) =>
       (for { value <- c.as[Int] } yield NumberAST(Left(value))) |||
         (for { value <- c.as[Double] } yield NumberAST(Right(value))))
+
+  // The following definition has been adapted from Argonaut's internals
+  // It decodes Int only when they are in fact Int's
+  // Source: IntDecodeJson in https://github.com/argonaut-io/argonaut/blob/master/argonaut/src/main/scala/argonaut/DecodeJson.scala 
+  implicit def decodeStrictInt: DecodeJson[Int] = {
+    optionDecoder(x =>
+      (x.number flatMap (_.toInt)).orElse(
+      (x.string flatMap (s => tryTo(s.toInt)))), "Int")
+  }
 
 }
 

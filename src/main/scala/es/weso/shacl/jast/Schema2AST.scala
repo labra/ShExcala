@@ -96,7 +96,8 @@ object Schema2AST {
       case tc: TripleConstraint => cnvTripleConstraint(tc)
       case Or(id, s1, s2) => {
         base.copy(
-          _type = Some("someOf"), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
+          _type = Some("SomeOf"), 
+          expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
 /*      case XOr(id, s1, s2) => {
         base.copy(
@@ -104,7 +105,8 @@ object Schema2AST {
       } */
       case Group2(id, s1, s2) => {
         base.copy(
-          _type = Some("group"), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
+          _type = Some("EachOf"), 
+          expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
 /*      case OneOf(id, ss) => {
         base.copy(
@@ -112,16 +114,16 @@ object Schema2AST {
       } */
       case SomeOf(id, ss) => {
         base.copy(
-          _type = Some("someOf"), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
+          _type = Some("SomeOf"), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
       }
       case GroupShape(id, ss) => {
         base.copy(
-          _type = Some("group"), 
+          _type = Some("EachOf"), 
           expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
       }
       case RepetitionShape(id, s, card, annotations, actions) => {
         base.copy(
-          _type = Some("group"), 
+          _type = Some("EachOf"), 
           expressions = Some(List(cnvShapeExpr(s))), 
           min = cnvMinCard(card), 
           max = cnvMaxCard(card), 
@@ -280,12 +282,12 @@ object Schema2AST {
       case ValueIRI(iri)   => ValueAST(Left(cnvIRI(iri)))
       case ValueLiteral(l) => ValueAST(Left(cnvLiteral(l)))
       case ValueLang(lang) => throw new Exception(s"cnvValue: Unsupported ValueLang $v")
-      case vs: ValueStem   => ValueAST(Right(cnvValueStem(vs)))
+      case sr: StemRange   => ValueAST(Right(cnvValueStem(sr)))
       case va: ValueAny    => ValueAST(Right(cnvValueAny(va)))
     }
   }
 
-  def cnvValueStem(v: ValueStem): StemRangeAST = {
+  def cnvValueStem(v: StemRange): StemRangeAST = {
     StemRangeAST(
       _type= Some("StemRange"),
       stem = Some(StemAST(Left(cnvIRI(v.stem)))), 
@@ -308,8 +310,9 @@ object Schema2AST {
     
     
   def cnvExclusion(ex: Exclusion): ExclusionAST = {
-    if (ex.isStem) 
+    if (ex.isStem) {
       ExclusionAST(Right(StemAST(Left(cnvIRI(ex.iri)))))
+    }
     else 
       ExclusionAST(Left(cnvIRI(ex.iri)))
   }  

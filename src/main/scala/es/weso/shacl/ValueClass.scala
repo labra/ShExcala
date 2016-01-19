@@ -111,7 +111,9 @@ case class ValueLang(lang: Lang) extends ValueObject {
   }
 }
 
-case class ValueStem(stem: IRI, exclusions: List[Exclusion]) extends ValueObject {
+case class StemRange(
+    stem: IRI, 
+    exclusions: List[Exclusion]) extends ValueObject {
   override def check(node: RDFNode): Checker[RDFNode, ValidationError] = {
     err(MsgError(s"Unimplemented value Stem"))
   }
@@ -124,7 +126,9 @@ case class ValueAny(exclusions: List[Exclusion]) extends ValueObject {
   }
 }
 
-case class Exclusion(iri: IRI, isStem: Boolean) extends Positional
+case class Exclusion(
+    iri: IRI, 
+    isStem: Boolean) extends Positional
 
 sealed trait NodeKind extends ValueConstr
     with Positional {

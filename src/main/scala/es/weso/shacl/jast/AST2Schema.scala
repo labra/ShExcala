@@ -73,7 +73,7 @@ object AST2Schema {
 
   def cnvExpr(expr: ExpressionAST): ShapeExpr = {
     expr._type.get match {
-      case "tripleConstraint" => {
+      case "TripleConstraint" => {
         val iri = IRI(expr.predicate.getOrElse(""))
         //       val id = expr.id.map(str => toLabel(str))
         val value =
@@ -101,12 +101,12 @@ object AST2Schema {
        val shapes = cnvExpressions(expr.expressions)
        OneOf(id,shapes)
      }*/
-      case "someOf" => {
+      case "SomeOf" => {
         //       val id = expr.id.map(str => toLabel(str))
         val shapes = cnvExpressions(expr.expressions)
         SomeOf(None, shapes)
       }
-      case "group" => {
+      case "EachOf" => {
         //      val id = expr.id.map(str => toLabel(str))
         val shapes = cnvExpressions(expr.expressions)
         if (expr.min.isEmpty && expr.max.isEmpty && expr.semActs.isEmpty)
@@ -331,7 +331,7 @@ object AST2Schema {
       case Some(st) => {
         val stem = cnvStem(st)
         stem match {
-          case Some(iri) => ValueStem(iri, exclusions)
+          case Some(iri) => StemRange(iri, exclusions)
           case None      => ValueAny(exclusions)
         }
       }

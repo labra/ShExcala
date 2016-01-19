@@ -22,14 +22,6 @@ import es.weso.shacl._
 
 class ShExParserAll extends Driver {
 
-  describe("Run specific JSON test") {
-    val name = "open3groupdotclose"
-    val file = new File(schemasFolder + "/" + name + ".json")
-    it(s"should pass file $name") {
-      testComparingJsons(file)
-    }
-  }
-
   describe("Test Shex parser:JSON -> AST -> Schema = SheXC -> Schema") {
     val parsedSchemas = getParsedSchemas(schemasFolder)
     for ((file, json) <- parsedSchemas) {

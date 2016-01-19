@@ -92,7 +92,12 @@ class Driver extends FunSpec
       json <- { jsonFile(file) }
       shaclFile <- { lookupFileWithSameName(file, schemasFolder, "shex") }
       shacl <- trying("Parsing SHACL", parseShaclSchema(shaclFile))
-      ast <- Schema2AST.cnvSchema(shacl)
+      ast <- {
+        if (verbose) {
+          info("shacl: " + shacl.serialize("SHEXC"))
+        }
+        Schema2AST.cnvSchema(shacl)
+      }
     } yield (json, ast)
     tryConversion match {
       case TrySuccess((json, ast)) => {

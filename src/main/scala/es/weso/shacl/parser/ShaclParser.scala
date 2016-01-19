@@ -609,7 +609,7 @@ trait ShaclParser
   def iriOrStem(pm: PrefixMap, base: IRI): Parser[ValueObject] = { 
       iriBase(pm,base) ~ (opt(symbol("~") ~> rep(exclusion(pm,base)))) ^^ {
         case iri ~ None => ValueIRI(iri)
-        case iri ~ Some(exclusions) => ValueStem(iri,exclusions)
+        case iri ~ Some(exclusions) => StemRange(iri,exclusions)
       }
   }
     

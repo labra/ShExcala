@@ -266,7 +266,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
       case ValueIRI(iri) => iriDoc(iri)
       case ValueLiteral(l) => rdfNodeDoc(l)
       case ValueLang(lang) => text("@") :: text(lang.lang)
-      case ValueStem(stem,exclusions) => 
+      case StemRange(stem,exclusions) => 
         iriDoc(stem) :: text("~") :: exclusionsDoc(exclusions)
       case ValueAny(exclusions) => 
         text(".") :: exclusionsDoc(exclusions)
