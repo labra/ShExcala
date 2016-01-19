@@ -1,7 +1,7 @@
-<http://a.example/PersonShape> {
+<http://a.example/S1> {
    <http://a.example/p1> .
 }
 
-<http://a.example/EmployeeShape> &<http://a.example/PersonShape> {
+<http://a.example/S2> &<http://a.example/S1> {
 }
 

@@ -1,0 +1,11 @@
+{
+  "type": "test",
+  "node": "http://a.example/o1",
+  "shape": "http://a.example/S1",
+  "solution": { 
+    "type":"tripleConstraintSolutions", "predicate":"http://a.example/p1",
+    "valueExpr": { "type":"ValueClass" },
+    "solutions":[
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 # source: IRIREF_datatype.ttl
 
-<http://a.example/IssueShape> {
-   <http://a.example/p1> ("ab"^^<http://a.example/bloodType>)
+<http://a.example/S1> {
+   <http://a.example/p1> ["ab"^^<http://a.example/bloodType>]
 }

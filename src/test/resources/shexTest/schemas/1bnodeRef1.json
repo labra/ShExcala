@@ -1,0 +1,26 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/S1": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": { "type": "ValueClass",
+                       "nodeKind": "bnode",
+                       "reference": "http://a.example/S2"
+                     }
+      }
+    },
+    "http://a.example/S2": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p2",
+        "valueExpr": { "type": "ValueClass" }
+      }
+    }
+  }
+}
+

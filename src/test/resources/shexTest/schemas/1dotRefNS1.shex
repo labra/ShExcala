@@ -1,10 +1,10 @@
-PREFIX PersonShape: <http://a.example/PersonShape>
+PREFIX S2: <http://a.example/S2>
 
-<http://a.example/PersonShape> {
-   <http://a.example/p1> .
+<http://a.example/S1> {
+   <http://a.example/p1> @S2:
 }
 
-<http://a.example/EmployeeShape> {
-   <http://a.example/p2> @PersonShape:
+<http://a.example/S2> {
+   <http://a.example/p2> .
 }
 

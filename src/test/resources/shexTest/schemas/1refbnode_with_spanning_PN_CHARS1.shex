@@ -1,9 +1,8 @@
-# source: labeled_blank_node_with_non_leading_extras.ttl
-_:a·̀ͯ‿.⁀ {
-   <http://a.example/p1> .
+<http://a.example/S1> {
+   <http://a.example/p1> @_:a·̀ͯ‿.⁀
 }
 
-<http://a.example/EmployeeShape> {
-   <http://a.example/p2> @_:a·̀ͯ‿.⁀
+_:a·̀ͯ‿.⁀ {
+   <http://a.example/p2> .
 }
 

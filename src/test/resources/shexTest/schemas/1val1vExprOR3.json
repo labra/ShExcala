@@ -1,0 +1,33 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/S1": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": {
+          "type": "ValueOr",
+          "valueExprs": [
+            {
+              "type": "ValueClass",
+              "nodeKind": "literal",
+              "pattern": "^ab"
+            },
+            {
+              "type": "ValueClass",
+              "nodeKind": "literal",
+              "pattern": "cd"
+            },
+            {
+              "type": "ValueClass",
+              "nodeKind": "literal",
+              "pattern": "ef$"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

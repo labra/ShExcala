@@ -1,0 +1,33 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/S1": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": {
+          "type": "ValueAnd",
+          "valueExprs": [
+            {
+              "type": "ValueClass",
+              "nodeKind": "literal",
+              "minlength": 4
+            },
+            {
+              "type": "ValueClass",
+              "nodeKind": "literal",
+              "maxlength": 5
+            },
+            {
+              "type": "ValueClass",
+              "nodeKind": "literal",
+              "pattern": "^(ab)+"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,46 +1,46 @@
 {
   "type": "AST",
   "shapes": {
-    "http://a.example/IssueShape": {
+    "http://a.example/S1": {
       "type": "ASTshape",
       "expression": {
-        "type":"Group", "conjuncts": [
+        "type":"EachOf", "conjuncts": [
           {
             "type": "TripleConstraint", "inverse": false, "negated": false,
             "predicate": "http://a.example/p1",
-            "value": {
-              "type": "valueClass"
+            "valueExpr": {
+              "type": "ValueClass"
             }
           },
           {
             "type": "TripleConstraint", "inverse": false, "negated": false,
             "predicate": "http://a.example/p1",
-            "value": {
-              "type": "valueClass"
+            "valueExpr": {
+              "type": "ValueClass"
             }
           },
           {
             "type":"Choice", "disjuncts": [
               {
-                "type":"Group", "conjuncts": 
+                "type":"EachOf", "conjuncts": 
                 [
                   {
                     "type": "TripleConstraint", "inverse": false, "negated": false,
                     "predicate": "http://a.example/p1",
-                    "value": {
-                      "type": "valueClass"
+                    "valueExpr": {
+                      "type": "ValueClass"
                     }
                   },
                   {
                     "type":"Choice", "disjuncts": [
                       {
-                        "type":"Group", "conjuncts":
+                        "type":"EachOf", "conjuncts":
                         [
                           {
                             "type": "TripleConstraint", "inverse": false, "negated": false,
                             "predicate": "http://a.example/p1",
-                            "value": {
-                              "type": "valueClass"
+                            "valueExpr": {
+                              "type": "ValueClass"
                             }
                           },
                           {
@@ -48,8 +48,8 @@
                               {
                                 "type": "TripleConstraint", "inverse": false, "negated": false,
                                 "predicate": "http://a.example/p1",
-                                "value": {
-                                  "type": "valueClass"
+                                "valueExpr": {
+                                  "type": "ValueClass"
                                 }
                               }, { "type": "Epsilon" }
                             ]

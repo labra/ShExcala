@@ -1,0 +1,14 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes":{
+    "http://a.example/S1": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": { "type": "ValueClass", "values": ["\"true\"^^http://www.w3.org/2001/XMLSchema#boolean"] }
+      }
+    }
+  }
+}

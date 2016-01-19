@@ -1,0 +1,86 @@
+{ "type": "test",
+  "node": "x",
+  "shape": "S",
+  "solution": {
+    "type": "eachOfSolutions",
+    "solutions": [
+      {
+        "type": "eachOfSolution",
+        "expressions": [
+          {
+            "type": "eachOfSolutions",
+            "solutions": [
+              {
+                "type": "eachOfSolution",
+                "expressions": [
+                  {
+                    "type": "tripleConstraintSolutions", "predicate": "http://a.example/a",
+                    "valueExpr": { "type": "ValueClass" },
+                    "solutions": [
+                      { "type": "testedTriple", "subject": "x", "predicate": "http://a.example/a", "object": "\"1\"" }
+                    ]
+                  },
+                  {
+                    "type": "tripleConstraintSolutions", "predicate": "http://a.example/b",
+                    "valueExpr": { "type": "ValueClass" },
+                    "solutions": [
+                      { "type": "testedTriple", "subject": "x", "predicate": "http://a.example/b", "object": "\"1\"" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "eachOfSolution",
+                "expressions": [
+                  {
+                    "type": "tripleConstraintSolutions", "predicate": "http://a.example/a",
+                    "valueExpr": { "type": "ValueClass" },
+                    "solutions": [
+                      { "type": "testedTriple", "subject": "x", "predicate": "http://a.example/a", "object": "\"2\"" }
+                    ]
+                  },
+                  {
+                    "type": "tripleConstraintSolutions", "predicate": "http://a.example/b",
+                    "valueExpr": { "type": "ValueClass" },
+                    "solutions": [
+                      { "type": "testedTriple", "subject": "x", "predicate": "http://a.example/b", "object": "\"2\"" }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "eachOfSolution",
+                "expressions": [
+                  {
+                    "type": "tripleConstraintSolutions", "predicate": "http://a.example/a",
+                    "valueExpr": { "type": "ValueClass" },
+                    "solutions": [
+                      { "type": "testedTriple", "subject": "x", "predicate": "http://a.example/a", "object": "\"3\"" }
+                    ]
+                  },
+                  {
+                    "type": "tripleConstraintSolutions", "predicate": "http://a.example/b",
+                    "valueExpr": { "type": "ValueClass" },
+                    "solutions": [
+                      { "type": "testedTriple", "subject": "x", "predicate": "http://a.example/b", "object": "\"3\"" }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "min": 2,
+            "max": 5
+          },
+          {
+            "type": "tripleConstraintSolutions",
+            "predicate": "http://a.example/c",
+            "valueExpr": { "type": "ValueClass" },
+            "solutions": [
+              { "type": "testedTriple", "subject": "x", "predicate": "http://a.example/c", "object": "\"1\"" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -16,7 +16,7 @@ added wherever possible.
 <S> { :p1 .| :p2 ., :p3 . }	<S> { :p1 .,| :p2 ., :p3 ., }
 open2dotclose			open2dotcommasclose
 <S> { (:p1 ., :p2 .) }		<S> { (:p1 ., :p2 .,), }
-open1dotOr1dot			open1dotCommaOr1dotCommacloseComma
+open1dotOr1dotClose		open1dotCommaOr1dotCommacloseComma
 <S> { (:p1 .| :p2 .) }		<S> { (:p1 .,| :p2 .,), }
 openopen1dotOr1dotclose1dotclose	openopen1dotCommaOr1dotCommaclose1dotCommacloseComma
 <S> { ((:p1 .| :p2 .), :p3 .) }	<S> { ((:p1 .,| :p2 .,), :p3 .,), }

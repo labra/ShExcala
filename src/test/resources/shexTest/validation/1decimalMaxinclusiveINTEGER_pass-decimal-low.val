@@ -1,0 +1,22 @@
+{
+  "type": "test",
+  "node": "http://a.example/s1",
+  "shape": "http://a.example/S1",
+  "solution": {
+    "type": "tripleConstraintSolutions",
+    "predicate": "http://a.example/p1",
+    "valueExpr": {
+      "type": "ValueClass",
+      "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+      "maxinclusive": 5
+    },
+    "solutions": [
+      {
+        "type": "testedTriple",
+        "subject": "http://a.example/s1",
+        "predicate": "http://a.example/p1",
+        "object": "\"4.4\"^^http://www.w3.org/2001/XMLSchema#decimal"
+      }
+    ]
+  }
+}

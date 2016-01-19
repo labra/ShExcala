@@ -1,4 +1,4 @@
-%<http://a.example/semAct1>{ code1 %}
-<http://a.example/IssueShape> {
+%<http://shex.io/extensions/Test/>{ print("startAct") %}
+<http://a.example/S1> {
    <http://a.example/p1> .
 }

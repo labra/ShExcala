@@ -2,7 +2,7 @@
 
 PREFIX ex: <http://a.example/>
 
-ex:IssueShape {
+ex:S1 {
    ex:p1#comment
      .
 }

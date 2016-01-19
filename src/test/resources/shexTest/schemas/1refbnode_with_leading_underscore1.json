@@ -1,0 +1,23 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/S1": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": { "type": "ValueClass", "reference": "_:_" }
+      }
+    },
+    "_:_": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p2",
+        "valueExpr": { "type": "ValueClass" }
+      }
+    }
+  }
+}
+

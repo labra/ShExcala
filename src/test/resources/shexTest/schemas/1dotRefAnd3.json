@@ -1,0 +1,54 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "shapes": {
+    "http://a.example/S1": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": {
+          "type": "ValueAnd",
+          "valueExprs": [
+            {
+              "type": "ValueClass",
+              "reference": "http://a.example/S2"
+            },
+            {
+              "type": "ValueClass",
+              "reference": "http://a.example/S3"
+            },
+            {
+              "type": "ValueClass",
+              "reference": "http://a.example/S4"
+            }
+          ]
+        }
+      }
+    },
+    "http://a.example/S2": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p2",
+        "valueExpr": { "type": "ValueClass" }
+      }
+    },
+    "http://a.example/S3": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p3",
+        "valueExpr": { "type": "ValueClass" }
+      }
+    },
+    "http://a.example/S4": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p4",
+        "valueExpr": { "type": "ValueClass" }
+      }
+    }
+  }
+}

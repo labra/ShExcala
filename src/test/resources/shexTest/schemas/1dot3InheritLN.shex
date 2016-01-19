@@ -1,18 +1,18 @@
 PREFIX ex: <http://a.example/>
 
-ex:PersonShape {
+ex:S1 {
    ex:p1 .
 }
 
-ex:MemberShape {
+ex:S2 {
    ex:p2 .
 }
 
-ex:ManagedShape {
+ex:S3 {
    ex:p3 .
 }
 
-ex:EmployeeShape &ex:PersonShape &ex:MemberShape &ex:ManagedShape {
+ex:S4 &ex:S1 &ex:S2 &ex:S3 {
    ex:p4 .
 }
 

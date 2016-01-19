@@ -5,6 +5,7 @@ import util._
 import argonaut._, Argonaut._
 import Json._
 import java.io.File
+import es.weso.utils.JsonDiff
 
 trait TestUtils extends FunSpec {
 
@@ -105,101 +106,14 @@ trait TestUtils extends FunSpec {
     }
   }
 
-  def jsonsEqual(json1: Json, json2: Json): Unit = {
+  def jsonsEqual(json1: Json, json2: Json, showIfFail: Boolean = false): Unit = {
     if (json1 == json2) {
     } else {
-      fail(s"JSons are different. Diff = ${diff(json1, json2)}")  // \nJson1:${json1.spaces2}\nJson2:${json2.spaces2}.
+      if (showIfFail) {
+         info(s"JSONs\nJson1:${json1.spaces2}\nJson2:${json2.spaces2}.")
+      }
+      fail(s"JSons are different. Diff = ${JsonDiff.diff(json1, json2)}")
     }
   }
 
-  def diff(json1: Json, json2: Json): String = {
-    json1.fold(
-      checkNull(json2),
-      checkBool(json2),
-      checkNumber(json2),
-      checkString(json2),
-      checkArray(json2),
-      checkObject(json2))
-  }
-
-  def checkNull(json: Json): String = {
-    if (json.isNull) ""
-    else s"json $json should be null"
-  }
-
-  def checkBool(json: Json)(v: Boolean): String = {
-    if (json.isBool) {
-      if (json.bool.get == v) {
-        ""
-      } else
-        s"json $json should be bool $v"
-    } else s"json $json should be bool $v"
-  }
-
-  def checkNumber(json: Json)(v: JsonNumber): String = {
-    if (json.isNumber) {
-      if (json.number.get == v) {
-        ""
-      } else
-        s"json $json should be number $v"
-    } else s"json $json should be numer $v"
-  }
-  def checkString(json: Json)(v: String): String = {
-    if (json.isString) {
-      if (json.string.get == v) {
-        ""
-      } else
-        s"json $json should be string $v"
-    } else s"json $json should be string $v"
-  }
-
-  def checkArray(json: Json)(v: JsonArray): String = {
-    if (json.isArray) {
-      val array = json.array.get
-      if (array == v) {
-        ""
-      } else {
-        diffArrays(array, v)
-      }
-
-    } else s"json $json should be array $v"
-  }
-  
-  def checkObject(json: Json)(v: JsonObject): String = {
-    if (json.isObject) {
-      val obj = json.obj.get
-      if (obj == v) {
-        ""
-      } else {
-        s"Objects different...${diffObjects(obj, v)}"
-      }
-    } else 
-      s"json $json should be object to be able to compare with $v"
-  }
-
-  def diffObjects(o1: JsonObject, o2: JsonObject): String = {
-    val zero = ""
-    def cont: ((JsonField, Json), String) => String = { (pair, rest) =>
-      val (field, value) = pair
-      o1(field) match {
-        case None    => s"obj1 $o1 doesn't contain field $field with value $value\n" + rest
-        case Some(v) => diff(value, v) + rest
-      }
-    }
-    o2.toMap.foldRight(zero)(cont)
-  }
-
-  def diffArrays(o1: JsonArray, o2: JsonArray): String = {
-    if (o1.length == o2.length) {
-      val zero = ""
-      def cont: (((Json, Json), Int), String) => String = { (t, rest) =>
-        val ((v1, v2), n) = t
-        if (v1 == v2) rest
-        else s"Array diff at index $n\n${diff(v1, v2)}\n$rest"
-      }
-      (o1.toList zip o2.toList zip (1 to o1.length)).foldRight(zero)(cont)
-    } else {
-      s"Arrays have different lengths: ${o1.length}!=${o2.length}"
-    }
-  }
 }

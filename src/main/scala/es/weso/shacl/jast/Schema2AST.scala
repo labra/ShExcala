@@ -96,7 +96,7 @@ object Schema2AST {
       case tc: TripleConstraint => cnvTripleConstraint(tc)
       case Or(id, s1, s2) => {
         base.copy(
-          _type = "someOf", id = cnvID(id), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
+          _type = Some("someOf"), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
 /*      case XOr(id, s1, s2) => {
         base.copy(
@@ -104,7 +104,7 @@ object Schema2AST {
       } */
       case Group2(id, s1, s2) => {
         base.copy(
-          _type = "group", id = cnvID(id), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
+          _type = Some("group"), expressions = Some(List(cnvShapeExpr(s1), cnvShapeExpr(s2))))
       }
 /*      case OneOf(id, ss) => {
         base.copy(
@@ -112,55 +112,54 @@ object Schema2AST {
       } */
       case SomeOf(id, ss) => {
         base.copy(
-          _type = "someOf", id = cnvID(id), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
+          _type = Some("someOf"), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
       }
       case GroupShape(id, ss) => {
         base.copy(
-          _type = "group", id = cnvID(id), expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
+          _type = Some("group"), 
+          expressions = Some(ss.map(e => cnvShapeExpr(e)).toList))
       }
       case RepetitionShape(id, s, card, annotations, actions) => {
         base.copy(
-          _type = "group", 
-          id = cnvID(id), 
+          _type = Some("group"), 
           expressions = Some(List(cnvShapeExpr(s))), 
           min = cnvMinCard(card), 
           max = cnvMaxCard(card), 
           annotations = cnvAnnotations(annotations),
-          semAct = cnvActions(actions))
+          semActs = cnvActions(actions))
       }
-      case IncludeShape(id, label) => {
+/*      case IncludeShape(id, label) => {
         base.copy(
           _type = "include", 
-          id = cnvID(id), 
           include = Some(cnvLabel(label)))
-      }
+      } */
     }
   }
 
   def cnvTripleConstraint(tc: TripleConstraint): ExpressionAST = {
     ExpressionAST.empty.copy(
-      _type = "tripleConstraint", 
-      id = cnvID(tc.id),
+      _type = Some("TripleConstraint"), 
       predicate = Some(cnvIRI(tc.iri)),
-      value = Some(cnvValueClass(tc.value)), 
+      valueExpr = Some(cnvValueClass(tc.value)), 
       min = cnvMinCard(tc.card), 
       max = cnvMaxCard(tc.card), 
       inverse = cnvBoolean(tc.inverse), 
       negated = cnvBoolean(tc.negated), 
       annotations = cnvAnnotations(tc.annotations), 
-      semAct = cnvActions(tc.actions))
+      semActs = cnvActions(tc.actions))
   }
 
-  def cnvAnnotations(annotations: List[Annotation]): Option[List[List[String]]] = {
+  def cnvAnnotations(annotations: List[Annotation]): Option[List[AnnotationAST]] = {
     if (annotations.isEmpty) None
     else {
       Some(annotations.map(a => cnvAnnotation(a)))
     }
   }
 
-  def cnvAnnotation(annotation: Annotation): List[String] = {
-    List(cnvIRI(annotation.iri), 
-        annotation.value.fold(cnvIRI,cnvAnnotationLiteral))
+  def cnvAnnotation(annotation: Annotation): AnnotationAST = {
+    AnnotationAST(_type=Some("Annotation"),
+        predicate = Some(cnvIRI(annotation.iri)),
+        _object = Some(annotation.value.fold(cnvIRI,cnvAnnotationLiteral)))
   }
   
   def cnvIRI(i:IRI): String = i.str
@@ -191,7 +190,7 @@ object Schema2AST {
     }
 
   def cnvValueClass(vc: ValueClass): ValueClassAST = {
-    val base = ValueClassAST.empty
+    val base = ValueClassAST.empty.copy(_type = Some("ValueClass"))
     if (vc == any) base
     else
     vc match {
@@ -226,7 +225,9 @@ object Schema2AST {
       case SingleShape(label) =>
         ReferenceAST(Left(cnvLabel(label)))
       case ConjShapeConstr(shapes) =>
-        ReferenceAST(Right(AndAST(shapes.map(cnvLabel).toList)))
+        ReferenceAST(Right(Right(AndAST(shapes.map(cnvLabel).toList))))
+      case DisjShapeConstr(shapes) =>
+        ReferenceAST(Right(Left(OrAST(shapes.map(cnvLabel).toList))))
     }
   }
 
@@ -286,14 +287,16 @@ object Schema2AST {
 
   def cnvValueStem(v: ValueStem): StemRangeAST = {
     StemRangeAST(
-      stem = StemAST(Left(cnvIRI(v.stem))), 
+      _type= Some("StemRange"),
+      stem = Some(StemAST(Left(cnvIRI(v.stem)))), 
       exclusions = cnvExclusions(v.exclusions))
   }
 
   def cnvValueAny(v: ValueAny): StemRangeAST = {
-    val wildCard = WildCard.empty
+    val wildCard = WildCardAST.empty
     StemRangeAST(
-      stem = StemAST(Right(wildCard)),
+      _type = Some("StemRange"),
+      stem = Some(StemAST(Right(wildCard))),
       exclusions = cnvExclusions(v.exclusions)
     )
   }
@@ -314,12 +317,17 @@ object Schema2AST {
   def cnvID(id: Option[Label]): Option[String] = {
     id.map(cnvLabel)
   }
-  def cnvActions(actions: Actions): Option[Seq[ActionAST]] = {
+  
+  def cnvActions(actions: Actions): Option[List[SemActAST]] = {
     if (actions.isEmpty) None
     else {
       Some(actions.toList.map {
-        case (iri, str) => ActionAST(cnvIRI(iri), str)
-      })
+        case (iri, str) => 
+          SemActAST(
+              _type=Some(""), 
+              name = Some(cnvIRI(iri)), 
+              code = Some(str))
+      }.toList)
     }
   }
 

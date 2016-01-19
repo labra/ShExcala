@@ -1,7 +1,7 @@
 @prefix sh:    &lt;http://www.w3.org/ns/shacl/core#&gt; .
 @prefix xsd:   &lt;http://www.w3.org/2001/XMLSchema#&gt; .
 
-&lt;http://a.example/IssueShape&gt;
+&lt;http://a.example/S1&gt;
         sh:property  [ a                 sh:PropertyConstraint ;
                        sh:allowedValues  ( 0 ) ;
                        sh:maxCount       1 ;

@@ -2,6 +2,6 @@
 
 PREFIX ex: <http://a.example/>
 
-<http://a.example/IssueShape> {
-   <http://a.example/p1> ("ab"^^ex:bloodType)
+<http://a.example/S1> {
+   <http://a.example/p1> ["ab"^^ex:bloodType]
 }

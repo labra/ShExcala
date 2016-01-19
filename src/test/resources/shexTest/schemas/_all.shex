@@ -54,7 +54,7 @@ VIRTUAL prefix1:S3 EXTRA a:a prefix:prefix base:base &a:S1 {
       BaSe:BaSe @prefix1:S5{2},
     | virtual:virtual NONLITERAL @ prefix1:S5{2,},
     | closed:closed  BNODE @S5: OR @<http://all.example/S5> MINLENGTH 2 MAXLENGTH 4 {2,*},
-    | (  ^extra:extra { prefix1:p1 (
+    | (  ^extra:extra { prefix1:p1 [
               "STRING_LITERAL2" "STRING_LITERAL2"@en-UK : prefix1:val1#comment
 	      prefix1:#comment
 	      <scheme:!$%25&amp;'()*+,-./0123456789:/@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~?#>
@@ -66,7 +66,7 @@ VIRTUAL prefix1:S3 EXTRA a:a prefix:prefix base:base &a:S1 {
 	      "\"\\"
 	      "𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡" # outside of BMP
 	      """STRING_LITERAL_LONG2"""@en-UK
-            ) }{2,3} %prefix1:act1{ code1 %},
+            ] }{2,3} %prefix1:act1{ code1 %},
          !iri:iri LITERAL+ ;
       <http://a.example/annot1> <http://a.example/IRIREF> ;
       <http://a.example/annot2> "STRING_LITERAL2" ;
@@ -76,8 +76,8 @@ VIRTUAL prefix1:S3 EXTRA a:a prefix:prefix base:base &a:S1 {
       ),
       nonliteral:nonliteral xsd:integer MININCLUSIVE 5 MAXINCLUSIVE 5 TOTALDIGITS 1 FRACTIONDIGITS 1
    ),
-   or:or (<http://a.example/a1> prefix:~ - prefix:a~ - prefix:b),
-   pattern:pattern (. - prefix:a~ - prefix:b) %prefix1:act1{ code1 %} %prefix1:act2{ code2 %},
+   or:or [<http://a.example/a1> prefix:~ - prefix:a~ - prefix:b],
+   pattern:pattern [. - prefix:a~ - prefix:b] %prefix1:act1{ code1 %} %prefix1:act2{ code2 %},
 }
 
 _:a·̀ͯ‿.⁀ CLOSED &_:a·̀ͯ‿.⁀ &<http://all.example/S2> {

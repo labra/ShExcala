@@ -1,0 +1,40 @@
+{
+  "type": "test",
+  "node": "http://a.example/s1",
+  "shape": "http://a.example/S1",
+  "solution": {
+    "type": "tripleConstraintSolutions",
+    "predicate": "http://a.example/p1",
+    "valueExpr": {
+      "type": "ValueClass",
+      "values": [
+        {
+          "type": "StemRange",
+          "stem": "http://a.example/v",
+          "exclusions": [
+            {
+              "type": "Stem",
+              "stem": "http://a.example/v1"
+            },
+            {
+              "type": "Stem",
+              "stem": "http://a.example/v2"
+            },
+            {
+              "type": "Stem",
+              "stem": "http://a.example/v3"
+            }
+          ]
+        }
+      ]
+    },
+    "solutions": [
+      {
+        "type": "testedTriple",
+        "subject": "http://a.example/s1",
+        "predicate": "http://a.example/p1",
+        "object": "http://a.example/v4"
+      }
+    ]
+  }
+}
