@@ -2,20 +2,20 @@
   "type": "Schema",
   "prefixes": {},
   "shapes": {
-    "_:b0": {
+    "http://a.example/S1": {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
         "predicate": "http://a.example/p1",
-        "valueExpr": { "type": "ValueClass" }
+        "valueExpr": { "type": "ValueClass", "reference": "_:b0" }
       }
     },
-    "http://a.example/EmployeeShape": {
+    "_:b0": {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
         "predicate": "http://a.example/p2",
-        "valueExpr": { "type": "ValueClass", "reference": "_:b0" }
+        "valueExpr": { "type": "ValueClass" }
       }
     }
   }

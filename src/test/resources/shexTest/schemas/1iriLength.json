@@ -7,10 +7,7 @@
       "expression": {
         "type": "TripleConstraint",
         "predicate": "http://a.example/p1",
-        "valueExpr": { "type": "ValueClass",
-                   "nodeKind": "iri",
-                   "length": 20
-                 }
+        "valueExpr": { "type": "ValueClass", "nodeKind": "iri", "length": 19 }
       }
     }
   }

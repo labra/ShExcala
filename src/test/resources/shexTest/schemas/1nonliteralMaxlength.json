@@ -9,7 +9,7 @@
         "predicate": "http://a.example/p1",
         "valueExpr": { "type": "ValueClass",
                    "nodeKind": "nonliteral",
-                   "maxlength": 20
+                   "maxlength": 19
                  }
       }
     }

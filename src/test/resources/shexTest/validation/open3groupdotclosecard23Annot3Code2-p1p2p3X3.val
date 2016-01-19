@@ -3,10 +3,10 @@
   "node": "x",
   "shape": "http://a.example/S1",
   "solution": {
-    "type": "groupSolutions",
+    "type": "eachOfSolutions",
     "solutions": [
       {
-        "type": "groupSolution",
+        "type": "eachOfSolution",
         "expressions": [
           {
             "type": "tripleConstraintSolutions","predicate": "http://a.example/p1",
@@ -32,7 +32,7 @@
         ]
       },
       {
-        "type": "groupSolution",
+        "type": "eachOfSolution",
         "expressions":[
           {
             "type": "tripleConstraintSolutions","predicate": "http://a.example/p1",
@@ -59,7 +59,7 @@
         ]
       },
       {
-        "type": "groupSolution",
+        "type": "eachOfSolution",
         "expressions":[
           {
             "type": "tripleConstraintSolutions","predicate": "http://a.example/p1",

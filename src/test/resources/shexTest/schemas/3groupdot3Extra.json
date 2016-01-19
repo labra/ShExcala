@@ -10,17 +10,17 @@
           {
             "type": "TripleConstraint",
             "predicate": "http://a.example/p1",
-            "valueExpr": { "type": "ValueClass" }
+            "valueExpr": { "type": "ValueClass", "values": [ "http://a.example/o1" ] }
           },
           {
             "type": "TripleConstraint",
             "predicate": "http://a.example/p2",
-            "valueExpr": { "type": "ValueClass" }
+            "valueExpr": { "type": "ValueClass", "values": [ "http://a.example/o2" ] }
           },
           {
             "type": "TripleConstraint",
             "predicate": "http://a.example/p3",
-            "valueExpr": { "type": "ValueClass" }
+            "valueExpr": { "type": "ValueClass", "values": [ "http://a.example/o3" ] }
           }
         ]
       },

@@ -2,20 +2,20 @@
   "type": "Schema",
   "prefixes": {},
   "shapes": {
-    "_:AZazÀÖØöø˿ͰͽͿ῿‌‍⁰↏Ⰰ⿯、퟿豈﷏ﷰ�𐀀󯿽": {
+    "http://a.example/S1": {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
         "predicate": "http://a.example/p1",
-        "valueExpr": { "type": "ValueClass" }
+        "valueExpr": { "type": "ValueClass", "reference": "_:AZazÀÖØöø˿ͰͽͿ῿‌‍⁰↏Ⰰ⿯、퟿豈﷏ﷰ�𐀀󯿽" }
       }
     },
-    "http://a.example/EmployeeShape": {
+    "_:AZazÀÖØöø˿ͰͽͿ῿‌‍⁰↏Ⰰ⿯、퟿豈﷏ﷰ�𐀀󯿽": {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
         "predicate": "http://a.example/p2",
-        "valueExpr": { "type": "ValueClass", "reference": "_:AZazÀÖØöø˿ͰͽͿ῿‌‍⁰↏Ⰰ⿯、퟿豈﷏ﷰ�𐀀󯿽" }
+        "valueExpr": { "type": "ValueClass" }
       }
     }
   }

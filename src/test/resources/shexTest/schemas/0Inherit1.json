@@ -2,7 +2,7 @@
   "type": "Schema",
   "prefixes": {},
   "shapes": {
-    "http://a.example/PersonShape": {
+    "http://a.example/S1": {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
@@ -10,9 +10,9 @@
         "valueExpr": { "type": "ValueClass" }
       }
     },
-    "http://a.example/EmployeeShape": {
+    "http://a.example/S2": {
       "type": "Shape",
-      "inherit": [ "http://a.example/PersonShape" ]
+      "inherit": [ "http://a.example/S1" ]
     }
   }
 }

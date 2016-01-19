@@ -1,0 +1,42 @@
+{
+  "type": "test",
+  "node": "http://a.example/n1",
+  "shape": "http://a.example/S1",
+  "solution": {
+    "type": "tripleConstraintSolutions",
+    "predicate": "http://a.example/p1",
+    "valueExpr": {
+      "type": "ValueClass",
+      "nodeKind": "bnode",
+      "reference": "http://a.example/S2"
+    },
+    "solutions": [
+      {
+        "type": "testedTriple",
+        "subject": "http://a.example/n1",
+        "predicate": "http://a.example/p1",
+        "object": "_:n2",
+        "referenced": {
+          "type": "test",
+          "node": "_:n2",
+          "shape": "http://a.example/S2",
+          "solution": {
+            "type": "tripleConstraintSolutions",
+            "predicate": "http://a.example/p2",
+            "valueExpr": {
+              "type": "ValueClass"
+            },
+            "solutions": [
+              {
+                "type": "testedTriple",
+                "subject": "_:n2",
+                "predicate": "http://a.example/p2",
+                "object": "\"X\""
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

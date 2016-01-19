@@ -9,7 +9,7 @@
         "predicate": "http://a.example/p1",
         "valueExpr": { "type": "ValueClass",
                    "nodeKind": "bnode",
-                   "minlength": 20
+                   "minlength": 5
                  }
       }
     }

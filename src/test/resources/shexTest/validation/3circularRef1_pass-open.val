@@ -1,0 +1,120 @@
+{
+  "type": "test",
+  "node": "http://a.example/n1",
+  "shape": "http://a.example/S1",
+  "solution": {
+    "type": "eachOfSolutions",
+    "solutions": [
+      {
+        "type": "eachOfSolution",
+        "expressions": [
+          {
+            "type": "tripleConstraintSolutions",
+            "predicate": "http://a.example/p1",
+            "valueExpr": {
+              "type": "ValueClass"
+            },
+            "solutions": [
+              {
+                "type": "testedTriple",
+                "subject": "http://a.example/n1",
+                "predicate": "http://a.example/p1",
+                "object": "\"X\""
+              }
+            ]
+          },
+          {
+            "type": "tripleConstraintSolutions",
+            "predicate": "http://a.example/p2",
+            "valueExpr": {
+              "type": "ValueClass",
+              "reference": "http://a.example/S2"
+            },
+            "solutions": [
+              {
+                "type": "testedTriple",
+                "subject": "http://a.example/n1",
+                "predicate": "http://a.example/p2",
+                "object": "http://a.example/n2",
+                "referenced": {
+                  "type": "test",
+                  "node": "http://a.example/n2",
+                  "shape": "http://a.example/S2",
+                  "solution": {
+                    "type": "tripleConstraintSolutions",
+                    "predicate": "http://a.example/p3",
+                    "valueExpr": {
+                      "type": "ValueClass",
+                      "reference": "http://a.example/S3"
+                    },
+                    "solutions": [
+                      {
+                        "type": "testedTriple",
+                        "subject": "http://a.example/n2",
+                        "predicate": "http://a.example/p3",
+                        "object": "http://a.example/n3",
+                        "referenced": {
+                          "type": "test",
+                          "node": "http://a.example/n3",
+                          "shape": "http://a.example/S3",
+                          "solution": {
+                            "type": "tripleConstraintSolutions",
+                            "predicate": "http://a.example/p4",
+                            "valueExpr": {
+                              "type": "ValueClass",
+                              "reference": "http://a.example/S1"
+                            },
+                            "solutions": [
+                              {
+                                "type": "testedTriple",
+                                "subject": "http://a.example/n3",
+                                "predicate": "http://a.example/p4",
+                                "object": "http://a.example/n5",
+                                "referenced": {
+                                  "type": "test",
+                                  "node": "http://a.example/n5",
+                                  "shape": "http://a.example/S1",
+                                  "solution": {
+                                    "type": "eachOfSolutions",
+                                    "solutions": [
+                                      {
+                                        "type": "eachOfSolution",
+                                        "expressions": [
+                                          {
+                                            "type": "tripleConstraintSolutions",
+                                            "predicate": "http://a.example/p1",
+                                            "valueExpr": {
+                                              "type": "ValueClass"
+                                            },
+                                            "solutions": [
+                                              {
+                                                "type": "testedTriple",
+                                                "subject": "http://a.example/n5",
+                                                "predicate": "http://a.example/p1",
+                                                "object": "\"X\""
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "min": 0,
+            "max": 1
+          }
+        ]
+      }
+    ]
+  }
+}

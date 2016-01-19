@@ -1,0 +1,27 @@
+{
+  "type": "Schema",
+  "prefixes": {},
+  "valueExprDefns": {
+    "_:vc1": {
+      "type": "ValueExprDefn",
+      "valueExpr": {
+        "type": "ValueClass",
+        "nodeKind": "literal",
+        "minlength": 5
+      }
+    }
+  },
+  "shapes": {
+    "http://a.example/S1": {
+      "type": "Shape",
+      "expression": {
+        "type": "TripleConstraint",
+        "predicate": "http://a.example/p1",
+        "valueExpr": {
+          "type": "ValueRef",
+          "valueExprRef": "_:vc1"
+        }
+      }
+    }
+  }
+}

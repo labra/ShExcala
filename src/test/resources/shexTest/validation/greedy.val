@@ -3,10 +3,10 @@
   "node": "x",
   "shape": "S",
   "solution": {
-    "type": "groupSolutions",
+    "type": "eachOfSolutions",
     "solutions": [
       {
-        "type": "groupSolution",
+        "type": "eachOfSolution",
         "expressions": [
           {
             "type": "someOfSolutions",

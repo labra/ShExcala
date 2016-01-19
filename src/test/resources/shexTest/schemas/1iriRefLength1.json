@@ -2,24 +2,24 @@
   "type": "Schema",
   "prefixes": {},
   "shapes": {
-    "http://a.example/PersonShape": {
+    "http://a.example/S1": {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
         "predicate": "http://a.example/p1",
-        "valueExpr": { "type": "ValueClass" }
+        "valueExpr": { "type": "ValueClass",
+                   "nodeKind": "iri",
+                   "reference": "http://a.example/S2",
+                   "length": 19
+                 }
       }
     },
-    "http://a.example/EmployeeShape": {
+    "http://a.example/S2": {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
         "predicate": "http://a.example/p2",
-        "valueExpr": { "type": "ValueClass",
-                   "nodeKind": "iri",
-                   "reference": "http://a.example/PersonShape",
-                   "length": 20
-                 }
+        "valueExpr": { "type": "ValueClass" }
       }
     }
   }

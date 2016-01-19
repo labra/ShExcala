@@ -134,7 +134,9 @@ function gen (worksheetName, shexCol, start, end, headings) {
 	    testHeading in testValues ?
             testValues[testHeading] :                                // 05
             warn("undefined feature dataProfiles["+testDT+"].values["+testHeading+"]");
-          var suffix = testProfile.label+testValue.replace(/\./g, "_"); // INT05, DEC5_5
+          var suffix = testProfile.label+testValue.                  // INT05
+	    replace(/\./g, "_").                                     // DEC5_5
+	    replace(/\:/g, "_");                                     // 2015-12-25T01_23_45Z
 	  var dataRepresentation = testProfile.datatype ?
 	    "'"+testValue+"'^^"+testProfile.datatype :               // "lexical"^^<datatype>
 	    testValue;                                               // Turtle bareword
@@ -149,6 +151,7 @@ function gen (worksheetName, shexCol, start, end, headings) {
 	  var dfn =
             "<#" + testName + "> a " + typeRes[0] + " ;\n" +
             "    mf:name \"" + testName + "\" ;\n" +
+            "    prov:wasDerivedFrom <" + args[0] + "#" + worksheetName + '.' + testAddress + "> ;\n" +
             "    rdfs:comment \"<S1> { <p1> "+nodeKind+" " + facet + " "+quote(shexRepresentation)+" } / { <s1> <p1> " + dataRepresentation + " }\" ;\n" +
             "    mf:status mf:proposed ;\n" +
             "    mf:action [\n" +

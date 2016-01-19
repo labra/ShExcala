@@ -33,7 +33,7 @@ function report (msg) {
 var fs = require('fs');
 var path = require("path");
 var N3 = require("n3");
-var parser = N3.Parser();
+var parser = N3.Parser({blankNodePrefix: ""});
 var util = N3.Util;
 var store = N3.Store();
 //var json = fs.readFileSync(args[0]).toString();
@@ -150,6 +150,11 @@ function genText () {
       return [
         //      ["rdf"  , "type"    , function (v) { return v.substr(P.sht.length); }],
         [s, "mf"   , "name"    , function (v) { return util.getLiteralValue(v[0]); }],
+        [s, "sht", "trait"  , function (v) {
+          return v.map(function (x) {
+            return x.substr(P.sht.length);;
+          });
+        }],
         [s, "rdfs" , "comment" , function (v) { return util.getLiteralValue(v[0]); }],
         [s, "mf", "status"  , function (v) { return "mf:"+v[0].substr(P.mf.length); }],
         [a, "sht", "schema"  , function (v) { return exists("../" + v[0].substr(stripPath-12)); }], // could be more judicious in creating a relative path from an absolute path.
@@ -167,7 +172,6 @@ function genText () {
         }]
       ].reduce(function (ret, row) {
         var found = store.findByIRI(row[0], P[row[1]]+row[2], null).map(expandCollection);
-        // console.warn(found);
         var target = row[0] === s ? ret : row[0] === a ? ret.action : ret.extensionResults;
         if (found.length)
           target[row[2]] = row[3](found);

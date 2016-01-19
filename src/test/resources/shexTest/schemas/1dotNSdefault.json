@@ -1,14 +1,14 @@
 {
   "type": "Schema",
   "prefixes": {
-    "": "http://a.example/"
+    "": "http://a.example/p1"
   },
   "shapes": {
-    "http://a.example/": {
+    "http://a.example/S1": {
       "type": "Shape",
       "expression": {
         "type": "TripleConstraint",
-        "predicate": "http://a.example/",
+        "predicate": "http://a.example/p1",
         "valueExpr": { "type": "ValueClass" }
       }
     }

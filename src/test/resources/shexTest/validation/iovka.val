@@ -1,10 +1,10 @@
 {
   "type": "test", "node": "x", "shape": "S",
   "solution": {
-    "type": "groupSolutions",
+    "type": "eachOfSolutions",
     "solutions": [
       {
-        "type": "groupSolution",
+        "type": "eachOfSolution",
         "expressions": [
           {
             "type": "tripleConstraintSolutions", "predicate": "http://a.example/a",
