@@ -82,8 +82,8 @@ object AST2Schema {
          else */
           expr.valueExpr.fold[ValueClass](any)(cnvValueClass)
         val card = cnvCard(expr)
-        //       val inverse = cnvInverse(expr.inverse)
-        //       val negated = cnvNegated(expr.negated)
+        val inverse = cnvInverse(expr.inverse)
+        val negated = cnvNegated(expr.negated)
         val annotations = cnvAnnotations(expr.annotations)
         val actions = cnvActions(expr.semActs)
         TripleConstraint.empty.copy(
@@ -91,8 +91,8 @@ object AST2Schema {
           iri = iri,
           value = value,
           card = card,
-          //           inverse = inverse,
-          //           negated = negated,
+          inverse = inverse,
+          negated = negated,
           annotations = annotations,
           actions = actions)
       }
