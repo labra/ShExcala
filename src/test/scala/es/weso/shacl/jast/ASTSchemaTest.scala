@@ -31,7 +31,26 @@ class ASTSchema
           }
           case Failure(e) => fail(s"Failing converting schema $e")
         }
+    }
+  
+    it("Should convert schema with empty Shape") {
+        val shape = ShapeAST.empty
+        val ast = SchemaAST.empty.copy(
+            shapes = Some(Map("http://example.org/S1" -> shape))
+        )
+        val shaclSchema = SHACLSchema(None, Map(), Map(), None, Actions.empty)
+        val expected = Schema(PrefixMap.empty, shaclSchema)
+        val tryCnv = for {
+          schema <- astSchema(ast)
+        } yield schema
+        tryCnv match {
+          case Success(schema) => {
+            schemasEqual(schema,expected)
+          }
+          case Failure(e) => fail(s"Failing converting schema $e")
+        }
        }
 
     }
+
 }

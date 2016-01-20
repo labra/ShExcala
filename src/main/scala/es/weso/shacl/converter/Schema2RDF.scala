@@ -176,6 +176,11 @@ object Schema2RDF extends Logging {
       case ValueSet(s) => {
         valueSet2RDF(s,node,rdf)
       }
+      
+      case ValueClassRef(r) => {
+        valueClass2RDF(r,node,rdf)
+      }
+      
       case nk: NodeKind => {
         nodeKind2RDF(nk,node,rdf)
       }
@@ -185,7 +190,14 @@ object Schema2RDF extends Logging {
     }
     rdf
   }
-  
+
+  def valueClass2RDF(r: Label,
+      node: RDFNode,
+      rdf: RDFBuilder): RDFBuilder = {
+    // TODO: add valueClass reference
+    rdf
+  }
+
   def valueShape2RDF(
       valueShape: ShapeConstr,
       node: RDFNode,

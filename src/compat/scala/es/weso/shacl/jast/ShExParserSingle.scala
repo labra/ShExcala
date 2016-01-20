@@ -29,7 +29,7 @@ class ShExParserSingle extends Driver {
       testComparingJsons(file,true)
     }
     it(s"should pass Schema comparisons on file $name") {
-      testComparingSchemas(file)
+      testComparingSchemas(file,true)
     }
   }
 

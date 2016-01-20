@@ -130,11 +130,12 @@ object Schema2AST {
           annotations = cnvAnnotations(annotations),
           semActs = cnvActions(actions))
       }
-/*      case IncludeShape(id, label) => {
+      case IncludeShape(id, label) => {
         base.copy(
-          _type = "include", 
-          include = Some(cnvLabel(label)))
-      } */
+          _type = Some("Include") 
+          // TODO: include = Some(cnvLabel(label))
+          )
+      } 
     }
   }
 
@@ -225,6 +226,9 @@ object Schema2AST {
   def cnvShapeConstr(sc: ShapeConstr): ReferenceAST = {
     sc match {
       case SingleShape(label) =>
+        ReferenceAST(Left(cnvLabel(label)))
+      case NotShape(label) =>
+        // TODO: Implement NotShape?
         ReferenceAST(Left(cnvLabel(label)))
       case ConjShapeConstr(shapes) =>
         ReferenceAST(Right(Right(AndAST(shapes.map(cnvLabel).toList))))

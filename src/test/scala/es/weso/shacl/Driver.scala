@@ -72,12 +72,22 @@ class Driver extends FunSpec
     trying("AST->Schema", AST2Schema.cnvAST(ast))
   }
 
-  def testComparingSchemas(file: File): Unit = {
+  def testComparingSchemas(file: File, verbose: Boolean = false): Unit = {
     val tryConversion = for {
       schemaAST <- getASTFromFile(file)
-      schema <- astSchema(schemaAST)
-      shaclFile <- lookupFileWithSameName(file, schemasFolder, "shex")
-      shacl <- trying("Parsing SHACL", parseShaclSchema(shaclFile))
+      schema <- {
+        if (verbose) info("schemaAST: " + schemaAST.asJson.spaces2) 
+        astSchema(schemaAST)
+      }
+      shaclFile <- {
+        if (verbose) info("Schema: " + schema) 
+        lookupFileWithSameName(file, schemasFolder, "shex")
+      }
+      shacl <- {
+        val s = trying("Parsing SHACL", parseShaclSchema(shaclFile))
+        if (verbose) info(s"Parsed: ${s}")
+        s
+      }
     } yield (schemaAST, schema, shacl)
     tryConversion match {
       case TrySuccess((schemaAST, schema, shacl)) => {
