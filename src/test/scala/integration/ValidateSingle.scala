@@ -8,62 +8,53 @@ import util._
 import es.weso.rdfgraph.nodes._
 import es.weso.shacl.Shacl._
 import es.weso.rdf.validator._
+import es.weso.utils.Logging
+import org.slf4j._
+import org.apache.log4j._
 
-class ValidateSingle extends FunSpec with Matchers with ValidTester {
+
+class ValidateSingle 
+  extends FunSpec
+  with Matchers 
+  with ValidTester 
+  with Logging {
+  
+  BasicConfigurator.configure()
+  
   describe("Single Test") {
     it("Should be valid single") {
       val strData =
-        """|@prefix ex: <http://example.org/> .
-           |@prefix foaf: <http://xmlns.com/foaf/0.1/> .
-           |@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+        """|PREFIX : <http://a.example/>
+           |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
            |
-           |ex:john foaf:name "John" ; 
-           |        ex:role ex:Tester .
-           |ex:tom  foaf:name "Tomas" ;  
-           |        ex:experience ex:senior ;  
-           |        ex:assignedIssue ex:issue1 .
-           |ex:mary foaf:givenName "Maria"; 
-           |        foaf:lastName "Smith" .
-           |ex:client1 ex:clientNumber 1 .
-           |ex:issue1  ex:reportedBy ex:mary ; 
-           |           ex:reproducedBy ex:john ; 
-           |           ex:reproducedBy ex:tom .""".stripMargin
+           |:x :a :x1 . # C1
+           |:x :a :x2 . # C2
+           |:x :a :x3 . # C1
+           |:x :b :x4 . # C3
+           |# <x> :b 1 .
+           |:x1 :b :y1 .
+           |:x2 :b :y2 .
+           |:x3 :b :y3 .
+           |:y1 :c 1 .
+           |:y2 :d 2 .
+           |:y3 :c 3 .
+           |:z :b :x4 .""".stripMargin
 
       val strSchema =
-        """|prefix ex: <http://example.org/>
-           |prefix foaf: <http://xmlns.com/foaf/0.1/>
-           |prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+        """|PREFIX : <http://a.example/>
+           |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
            |
-           |<TesterShape> {
-           | foaf:name xsd:string,
-           | ex:role IRI
-           |}
-           |
-           |<ProgrammerShape> {
-           |  foaf:name xsd:string, 
-           |  ex:experience [ex:senior ex:young], 
-           |  ex:assignedIssue @<ConfirmedIssueShape> *
-           |}
-           |
-           |<UserShape> {
-           | ( foaf:givenName xsd:string, foaf:lastName xsd:string
-           | | foaf:name xsd:string
-           | )
-           |}
-           |
-           |<ClientShape> { 
-           | ex:clientNumber xsd:integer    
-           |}
-           |
-           |<ConfirmedIssueShape> {
-           |  ex:reportedBy @<UserShape>
-           |, ex:reproducedBy @<TesterShape>+
-           |, ex:reproducedBy @<ProgrammerShape>+
-           |, ^ex:assignedIssue @<ProgrammerShape>
-           |}""".stripMargin
+           |<S1> { :a @<T1>*, (:a @<T2>+ | :b xsd:integer), :b IRI }
+           |<S> { :b IRI ~ "x4$" }
+           |<T1> { :b @<T3> }
+           |<T2> { :b @<T4> }
+           |<T3> { :c . }
+           |<T4> { :d . }
+           |""".stripMargin
 
-
-      shouldBeValid(strSchema, strData,"http://example.org/issue1","ConfirmedIssueShape")
+      println(s"Log level = $log")
+      setInfo()
+      shouldBeValid(strSchema, strData,"http://a.example/z","S")
     } 
     
   }

@@ -25,7 +25,12 @@ trait ValidTester extends FunSpec with Matchers {
         else info(s"Validated with typings $ts")
     }
   }
-def shouldBeValid(strSchema: String, strData: String, strNode: String, strLabel: String): Unit = {
+def shouldBeValid(
+    strSchema: String, 
+    strData: String, 
+    strNode: String, 
+    strLabel: String,
+    verbose: Boolean = false): Unit = {
     val result = for {
       (schema,pm) <- Schema.fromString(strSchema,"SHEXC",Some(""))
       data <- RDFAsJenaModel.fromChars(strData,"TURTLE",Some(""))
@@ -38,8 +43,10 @@ def shouldBeValid(strSchema: String, strData: String, strNode: String, strLabel:
        fail(s"Exception: ${e.getStackTrace}") 
       }
       case Success(ts) => 
-        if (ts.isEmpty) fail("No results")
-        else info(s"Validated with typings $ts")
+        if (ts.isEmpty) 
+          fail("No results")
+        else 
+          info(s"Validated with typings $ts")
     }
   }
     

@@ -1,6 +1,7 @@
 package es.weso.shacl.jast
 
 import es.weso.shacl._
+import Label._
 import es.weso.shacl.jast.AST._
 
 import org.scalatest._
@@ -34,11 +35,16 @@ class ASTSchema
     }
   
     it("Should convert schema with empty Shape") {
+      val s1 = "http://example.org/S1"
         val shape = ShapeAST.empty
         val ast = SchemaAST.empty.copy(
-            shapes = Some(Map("http://example.org/S1" -> shape))
+            shapes = Some(Map(s1 -> shape))
         )
-        val shaclSchema = SHACLSchema(None, Map(), Map(), None, Actions.empty)
+        
+        val shaclSchema = 
+          SHACLSchema.empty.copy(
+              shapes = Map(labelStr(s1) -> Shape.empty)
+          )
         val expected = Schema(PrefixMap.empty, shaclSchema)
         val tryCnv = for {
           schema <- astSchema(ast)

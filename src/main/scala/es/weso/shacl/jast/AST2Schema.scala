@@ -72,6 +72,8 @@ object AST2Schema {
   }
 
   def cnvExpr(expr: ExpressionAST): ShapeExpr = {
+    if (!expr._type.isDefined) EmptyShape()
+    else
     expr._type.get match {
       case "TripleConstraint" => {
         val iri = IRI(expr.predicate.getOrElse(""))

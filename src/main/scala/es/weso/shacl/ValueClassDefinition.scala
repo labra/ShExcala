@@ -1,6 +1,8 @@
 package es.weso.shacl
 
-case class ValueClassDefinition(defn: Either[(ValueClass,Actions), External])
+case class ValueClassDefinition(
+    defn: Either[(ValueClass,Actions), External]
+)
 
 object ValueClassDefinition {
   

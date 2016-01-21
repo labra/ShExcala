@@ -14,7 +14,7 @@ class OneFromManifest extends RDF2Manifest
     with TryValues 
     with ManifestRunner {
   
-  val name = "bnode1dot_fail-missing"
+  val name = "iovka"
   
   val conf: Config = ConfigFactory.load()
   

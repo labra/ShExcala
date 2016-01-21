@@ -7,7 +7,7 @@ import NumericFacetTypeClass._
 import PREFIXES._
 import org.slf4j._
 import org.apache.log4j.LogManager
-
+import scala.util.matching.Regex
 
 sealed trait XSFacet extends Positional with Logging {
   def check(node: RDFNode): Checker[RDFNode, ValidationError]
@@ -154,12 +154,12 @@ sealed trait StringFacet extends XSFacet with Positional
 case class Pattern(regexStr: String) extends StringFacet {
   def check(node: RDFNode): Checker[RDFNode, ValidationError] = {
     log.info(s"Checking pattern $regexStr facet on node $node")
-    val regex = regexStr.r
+    val regex : Regex = regexStr.r
     log.info(s"Regex = \\$regex\\")
     val str = node.getLexicalForm
-    str match {
-      case regex(_*) => ok(node)
-      case _         => err(MsgError(s"Facet pattern($regex) doesn't match node $node with lexical form $str"))
+    regex.findFirstIn(str) match {
+      case Some(_) => ok(node)
+      case None    => err(MsgError(s"Facet pattern($regex) doesn't match node $node with lexical form $str"))
     }
   }
 }
