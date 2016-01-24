@@ -58,7 +58,7 @@ class ShaclParserSuite extends ShaclParser
         val str = "<" + iri + ">"
 
         val state: ShapeParserState = ShapeParserState.initial
-        val result = parse(valueObject(state), str)
+        val result = parse(value(state), str)
         result.get._1 should be(ValueIRI(IRI(iri)))
         result.get._2 should be(state)
       }
@@ -117,7 +117,7 @@ class ShaclParserSuite extends ShaclParser
       val state = ShapeParserState.initial
       val iri = "Label"
       val str = "<" + iri + ">"
-      val result = ShaclParser.parse(ShaclParser.label(state), str)
+      val result = ShaclParser.parse(ShaclParser.shapeLabel(state), str)
       result.get._1 should be(IRILabel(IRI(iri)))
     }
 
@@ -127,7 +127,7 @@ class ShaclParserSuite extends ShaclParser
       val alias = "ex"
       val str = alias + ":" + localName
       val state = ShapeParserState.initial.addPrefix(alias, IRI(prefix))
-      val result = ShaclParser.parse(ShaclParser.label(state), str)
+      val result = ShaclParser.parse(ShaclParser.shapeLabel(state), str)
       result.get._1 should be(IRILabel(IRI(prefix + localName)))
     }
 
