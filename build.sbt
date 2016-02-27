@@ -52,7 +52,7 @@ libraryDependencies ++= Seq(
   , "es.weso" % "wesin_2.11" % wesinVersion excludeAll(ExclusionRule(organization = "org.slf4j"))
 
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
-  , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"
+//  , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"
   
 )
 

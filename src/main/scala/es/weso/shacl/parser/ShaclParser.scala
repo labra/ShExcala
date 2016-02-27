@@ -146,6 +146,10 @@ trait ShaclParser
       case (iri) => s.newBase(s.baseIRI.resolve(iri))
     }
   }
+  
+  def base: Parser[(IRI)] =
+    ignoreCaseToken("BASE") ~> (WS ~> IRIREF)
+
 
   // [6s] prefixDecl ::= "PREFIX" PNAME_NS IRIREF  
   def prefixDecl(s: ShapeParserState): Parser[ShapeParserState] = {
@@ -153,6 +157,14 @@ trait ShaclParser
       case (prefix, iri) => s.addPrefix(prefix, iri)
     }
   }
+  
+  // [6s]    prefixDecl            ::= "PREFIX" PNAME_NS IRIREF  
+  def prefix: Parser[(String, IRI)] = {
+    ignoreCaseToken("PREFIX") ~> PNAME_NS_Parser ~ (WS ~> IRIREF) ^^ {
+      case s ~ iri => (s, iri)
+    }
+  }
+
 
   // [4]     start                 ::= 'start' '=' ( shapeLabel | shapeDefinition semanticActions )
   def start(s: ShapeParserState): Parser[ShapeParserState] = {
@@ -789,20 +801,6 @@ trait ShaclParser
   }
   
    
-def unscapePercent(s: String): String = {
-    @tailrec
-    def unscapeHelper(s: LinearSeq[Char], tmp: StringBuilder): String = {
-      s match {
-        case '\\' :: '\\' :: rs =>
-          unscapeHelper(rs, tmp ++= "\\" )
-        case '\\' :: '%' :: rs =>
-          unscapeHelper(rs, tmp ++= "%")
-        case c :: rs => unscapeHelper(rs, tmp += c)
-        case Nil => tmp.mkString
-      }
-    }
-    unscapeHelper(s.toList, new StringBuilder)
-}
 
  def dot = opt(WS) ~> symbol(".") <~ opt(WS)
 
@@ -842,17 +840,8 @@ def unscapePercent(s: String): String = {
     iri(pm) ^^ { case iri => base.resolve(iri) }
   }
   
-  def base: Parser[(IRI)] =
-    ignoreCaseToken("BASE") ~> (WS ~> IRIREF)
     
-  def prefix: Parser[(String, IRI)] = {
-    ignoreCaseToken("PREFIX") ~> PNAME_NS_Parser ~ (WS ~> IRIREF) ^^ {
-      case s ~ iri => (s, iri)
-    }
-  }
   
-
-
   
   def token(tk: String): Parser[String] =
     (opt(WS) ~> tk.r <~ opt(WS)
@@ -866,6 +855,23 @@ def unscapePercent(s: String): String = {
   private def rules2Map(rules: List[Option[ShapeRule]]): Map[Label, Shape] = {
     rules.flatten.map(x => (x.label,x.shape)).toMap
   }
+  
+  
+  def unscapePercent(s: String): String = {
+    @tailrec
+    def unscapeHelper(s: LinearSeq[Char], tmp: StringBuilder): String = {
+      s match {
+        case '\\' :: '\\' :: rs =>
+          unscapeHelper(rs, tmp ++= "\\" )
+        case '\\' :: '%' :: rs =>
+          unscapeHelper(rs, tmp ++= "%")
+        case c :: rs => unscapeHelper(rs, tmp += c)
+        case Nil => tmp.mkString
+      }
+    }
+    unscapeHelper(s.toList, new StringBuilder)
+}
+
       
  // TODO: Move these methods to StateParser
  def parseCond[A,S](
