@@ -55,6 +55,8 @@ trait RDFParser {
     } yield 
     if (ts.size == 1) 
       ts.head
+    else if (ts.size== 0)
+      throw RDFParserException("Node " + n + " has no type")
     else 
       throw RDFParserException("Type for node " + n + " is not single. Found types = " + ts)
   } 
