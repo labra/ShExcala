@@ -11,8 +11,8 @@ import es.weso.shacl.Label._
 import es.weso.shacl.XSFacet._
 import es.weso.shacl.ValueClass._
 import util._
-import es.weso.rdfgraph.nodes._
-import es.weso.rdfgraph.statements._
+import es.weso.rdf.nodes._
+import es.weso.rdf.triples._
 import es.weso.rdf._
 
 class RDF2ShaclSpec

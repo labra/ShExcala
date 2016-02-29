@@ -1,5 +1,5 @@
 package es.weso.manifest
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 
 case class Manifest(
     label: Option[String], 

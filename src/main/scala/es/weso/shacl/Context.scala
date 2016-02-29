@@ -2,12 +2,12 @@ package es.weso.shacl
 
 import es.weso.rdf._
 import es.weso.shacl.Shacl._
-import es.weso.rdfgraph.statements.RDFTriple
+import es.weso.rdf.triples.RDFTriple
 import es.weso.monads.Result
 import es.weso.monads.Result._
-import es.weso.rdfgraph.nodes.IRI
+import es.weso.rdf.nodes.IRI
 import org.slf4j._
-import es.weso.rdfgraph.nodes.RDFNode
+import es.weso.rdf.nodes.RDFNode
 import es.weso.rdf.PrefixMap
 import es.weso.typing._
 import util._

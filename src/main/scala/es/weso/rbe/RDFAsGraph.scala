@@ -1,6 +1,6 @@
 package es.weso.rbe
 
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.rdf._
 import es.weso.utils.Logging
 

@@ -1,7 +1,7 @@
 package es.weso.shacl
 
-import es.weso.rdfgraph.nodes._
-import es.weso.rdfgraph._
+import es.weso.rdf.nodes._
+import es.weso.rdf._
 import scala.collection.immutable.StringOps
 import scala.text._
 import Document._

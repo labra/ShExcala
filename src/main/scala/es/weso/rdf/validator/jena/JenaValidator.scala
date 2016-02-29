@@ -4,7 +4,7 @@ import com.hp.hpl.jena.rdf.model.Model
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.shacl._
 import es.weso.rdf.validator._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import util._
 
 object JenaValidator {

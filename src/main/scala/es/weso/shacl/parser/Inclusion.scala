@@ -1,7 +1,7 @@
 package es.weso.shacl.parser
 
 import es.weso.shacl._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 
 
 case class Inclusion(

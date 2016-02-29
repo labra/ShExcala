@@ -1,7 +1,7 @@
 package es.weso.shacl
 
 import es.weso.rdf.PrefixMap
-import es.weso.rdfgraph.nodes.IRI
+import es.weso.rdf.nodes.IRI
 import PREFIXES._
 
 object PrefixMaps {

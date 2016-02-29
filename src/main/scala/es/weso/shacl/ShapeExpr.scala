@@ -1,6 +1,6 @@
 package es.weso.shacl
 import scala.util.parsing.input.Positional
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import ValueClass.any
 import Cardinality.defaultCardinality
 import PREFIXES.rdf_type

@@ -8,7 +8,7 @@ import es.weso.shacl.PREFIXES._
 import es.weso.shacl.Cardinality._
 import es.weso.shacl.ValueClass._
 import es.weso.rdf.PrefixMap
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.utils.PrefixMapUtils._
 
 object Schema2AST {

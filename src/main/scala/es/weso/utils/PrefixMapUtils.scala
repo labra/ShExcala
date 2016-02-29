@@ -1,9 +1,9 @@
 package es.weso.utils
 
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.rdf.PrefixMap
-import es.weso.rdfgraph.nodes._
-import es.weso.rdfgraph.statements._
+import es.weso.rdf.nodes._
+import es.weso.rdf.triples._
 
 object PrefixMapUtils {
   

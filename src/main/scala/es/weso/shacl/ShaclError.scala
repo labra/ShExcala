@@ -1,7 +1,7 @@
 package es.weso.shacl
 
-import es.weso.rdfgraph.statements.RDFTriple
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.triples.RDFTriple
+import es.weso.rdf.nodes._
 import es.weso.shacl.Shacl._
 import es.weso.rdf.PrefixMap
 import es.weso.utils.PrefixMapUtils._

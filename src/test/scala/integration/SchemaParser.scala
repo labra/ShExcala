@@ -5,7 +5,7 @@ import org.scalatest.prop._
 import es.weso.shacl._
 import SHACLSchema._
 import Label._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import util._
 import es.weso.rdf.PrefixMap
 

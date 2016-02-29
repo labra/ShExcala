@@ -7,7 +7,7 @@ import com.hp.hpl.jena.rdf.model.{
   Property,
   RDFNode => JenaNode 
   }
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.monads.Result._
 import com.typesafe.config._
 import java.io.ByteArrayInputStream

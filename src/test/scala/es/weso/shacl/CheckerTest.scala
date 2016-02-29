@@ -1,7 +1,7 @@
 package es.weso.shacl
 
 import org.scalatest._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.utils.Checker
 
 

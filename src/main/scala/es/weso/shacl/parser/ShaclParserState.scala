@@ -3,8 +3,8 @@ package es.weso.shacl.parser
 import scala.util.parsing.input._
 import es.weso.parser._
 import es.weso.rdf._
-import es.weso.rdfgraph.nodes._
-import es.weso.rdfgraph._
+import es.weso.rdf.nodes._
+import es.weso.rdf._
 import es.weso.shacl._
 
 /*

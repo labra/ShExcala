@@ -1,12 +1,12 @@
 package es.weso.rdf.parser
 
-import es.weso.rdfgraph.nodes._
-import es.weso.rdfgraph._
+import es.weso.rdf.nodes._
+import es.weso.rdf._
 import scala.util._
 import es.weso.rdf._
 import es.weso.shacl.Schema
 import es.weso.shacl.PREFIXES._
-import es.weso.rdfgraph.statements.RDFTriple
+import es.weso.rdf.triples.RDFTriple
 import es.weso.rdf.PrefixMap
 import es.weso.utils.{Success => TrySuccess}
 
