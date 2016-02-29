@@ -2,7 +2,7 @@ package es.weso.shacl
 
 import util._
 import es.weso.typing._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.rdf.validator._
 import es.weso.shacl.Shacl._
 import es.weso.rdf.PrefixMap

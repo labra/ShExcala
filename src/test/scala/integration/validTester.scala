@@ -4,7 +4,7 @@ import es.weso.shacl.Schema
 import es.weso.shacl.ShaclMatcher
 import es.weso.rdf.jena.RDFAsJenaModel
 import util._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.shacl.Label._
 import es.weso.rdf.validator._
 import org.scalatest._

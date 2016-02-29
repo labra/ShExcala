@@ -3,7 +3,7 @@ package es.weso.rdf.parser
 import org.scalatest._
 import util._
 import es.weso.rdf.jena.RDFAsJenaModel
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.rdf.parser._
 
 class RDFParserTest extends FunSpec with Matchers with RDFParser with TryValues {

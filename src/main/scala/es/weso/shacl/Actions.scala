@@ -1,5 +1,5 @@
 package es.weso.shacl
-import es.weso.rdfgraph.nodes.IRI
+import es.weso.rdf.nodes.IRI
 
 case class Actions(as: Seq[Action]) {
   def isEmpty: Boolean = {

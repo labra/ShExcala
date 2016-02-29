@@ -1,6 +1,6 @@
 package es.weso.shacl
 
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import scala.util.parsing.input.Positional
 
 

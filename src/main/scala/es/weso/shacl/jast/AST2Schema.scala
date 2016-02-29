@@ -7,7 +7,7 @@ import es.weso.shacl.Cardinality._
 import es.weso.shacl.ValueClass._
 import es.weso.shacl.Label._
 import es.weso.rdf.PrefixMap
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import AST._
 
 case class AST2SchemaException(msg: String) extends Exception(s"ASTSchemaException: $msg")

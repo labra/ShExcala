@@ -3,14 +3,14 @@ package es.weso.shacl.converter
 import es.weso.shacl._
 import es.weso.shacl.Cardinality._
 import es.weso.shacl.ValueClass._
-import es.weso.rdfgraph.nodes._
-import es.weso.rdfgraph._
+import es.weso.rdf.nodes._
+import es.weso.rdf._
 import scala.util.Try
 import es.weso.rdf._
 import es.weso.rdf.jena._
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.shacl.PREFIXES._
-import es.weso.rdfgraph.statements.RDFTriple
+import es.weso.rdf.triples.RDFTriple
 import es.weso.utils.{
   Logging
 }

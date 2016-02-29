@@ -2,7 +2,7 @@ package es.weso.manifest
 
 import org.scalatest._
 import org.scalatest.prop._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.manifest.ManifestPrefixes._
 import es.weso.rdf.jena.RDFAsJenaModel
 

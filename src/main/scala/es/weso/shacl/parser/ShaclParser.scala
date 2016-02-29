@@ -6,8 +6,8 @@ import es.weso.shacl.PREFIXES._
 import scala.util.parsing.combinator.RegexParsers
 import scala.util.parsing.input._
 import scala.util.parsing.input.Positional
-import es.weso.rdfgraph.nodes._
-import es.weso.rdfgraph._
+import es.weso.rdf.nodes._
+import es.weso.rdf._
 import scala.util.{ Try, Success => UtilSuccess, Failure => UtilFailure }
 import org.slf4j._
 import scala.util.{Failure => UtilFailure}

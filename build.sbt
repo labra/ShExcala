@@ -17,11 +17,11 @@ name := "shexcala"
 
 organization := "es.weso"
 
-version := "0.7.4"
+version := "0.7.5"
 
 scalaVersion := "2.11.7"
 
-lazy val wesinVersion = "0.4.7"
+lazy val wesinVersion = "0.4.8"
 
 lazy val shexTestsFolder = settingKey[String]("Folder where shex tests are downloaded") 
 
@@ -46,13 +46,9 @@ libraryDependencies ++= Seq(
   , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
   , "org.scalatest" % "scalatest_2.11" % "2.2.4" % CompatTest
   
-//  , "com.github.axel22" %% "scalameter" % "0.5-M2" % "test"
-//  , "org.typelevel" %% "scalaz-scalatest" % "0.2.2" % "test"
-
   , "es.weso" % "wesin_2.11" % wesinVersion excludeAll(ExclusionRule(organization = "org.slf4j"))
 
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
-//  , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"
   
 )
 
@@ -85,8 +81,6 @@ wixProductUpgradeId := "6a710435-9af4-4adb-a597-98d3dd0bade1"
 //logBuffered in PerfTest := false
 
 // parallelExecution in PerfTest := false
-
-net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 // Publish site info
 

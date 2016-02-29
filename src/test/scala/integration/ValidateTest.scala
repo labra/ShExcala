@@ -4,7 +4,7 @@ import org.scalatest._
 import es.weso.shacl.Schema
 import es.weso.rdf.jena.RDFAsJenaModel
 import util._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.shacl.Shacl._
 
 class ValidateTest extends FunSpec with Matchers with ValidTester {

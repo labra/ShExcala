@@ -18,7 +18,7 @@ import org.scalatest._
 import es.weso.shacl.jast.AST._
 import es.weso.shacl._
 import es.weso.shacl.Shacl._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 
 class RunASTSingle extends Driver {
   

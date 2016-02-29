@@ -1,6 +1,6 @@
 package es.weso.manifest
 
-import es.weso.rdfgraph.nodes.IRI
+import es.weso.rdf.nodes.IRI
 
 object ManifestPrefixes {
 

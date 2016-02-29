@@ -1,7 +1,7 @@
 package es.weso.shacl
 import scala.util.parsing.input.Positional
 import es.weso.utils._
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import Checker._
 import NumericFacetTypeClass._
 import PREFIXES._

@@ -4,7 +4,7 @@ import es.weso.manifest.{Entry => ManifestEntry, _}
 import org.scalatest._
 import es.weso.utils.Logging
 import es.weso.rdf.RDFReader
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.shacl.Shacl._
 import util._
 import es.weso.utils.IO._

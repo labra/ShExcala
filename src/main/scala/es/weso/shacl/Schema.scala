@@ -1,7 +1,7 @@
 package es.weso.shacl
 
-import es.weso.rdfgraph.nodes._
-import es.weso.rdfgraph._
+import es.weso.rdf.nodes._
+import es.weso.rdf._
 import es.weso.rdf._
 import es.weso.shacl.Shacl._
 import es.weso.shacl.parser._

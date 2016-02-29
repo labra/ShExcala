@@ -6,9 +6,9 @@ import java.io.ByteArrayInputStream
 import com.hp.hpl.jena.rdf.model.Model
 import java.io.InputStream
 import org.scalatest.Matchers
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.rdf.jena.JenaMapper._
-import es.weso.rdfgraph.statements.RDFTriple
+import es.weso.rdf.triples.RDFTriple
 import es.weso.rdf.jena._
 
 trait RDFBased extends FunSpec with Matchers {

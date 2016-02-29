@@ -1,7 +1,7 @@
 package es.weso.shacl
 
 import scala.util.parsing.input.Positional
-import es.weso.rdfgraph.nodes._
+import es.weso.rdf.nodes._
 import es.weso.utils.Checker._
 import es.weso.utils.{ Success => _, _}
 import XSFacet._

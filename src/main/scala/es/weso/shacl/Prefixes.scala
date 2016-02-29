@@ -1,6 +1,6 @@
 package es.weso.shacl
 
-import es.weso.rdfgraph.nodes.IRI
+import es.weso.rdf.nodes.IRI
 
 object PREFIXES {
 
