@@ -1,0 +1,1928 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>shacl - es.weso.shacl</title>
+          <meta name="description" content="shacl - es.weso.shacl" />
+          <meta name="keywords" content="shacl es.weso.shacl" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 'es.weso.shacl.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="es">es</a>.<a href="../package.html" class="extype" name="es.weso">weso</a></p>
+        <h1>shacl</h1><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">shacl</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="es.weso.shacl.Action" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ActionextendsProductwithSerializable"></a>
+      <a id="Action:Action"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Action.html"><span class="name">Action</span></a><span class="params">(<span name="name">name: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>, <span name="contents">contents: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ActionextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Actions" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ActionsextendsProductwithSerializable"></a>
+      <a id="Actions:Actions"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Actions.html"><span class="name">Actions</span></a><span class="params">(<span name="as">as: <span class="extype" name="scala.Seq">Seq</span>[<a href="Action.html" class="extype" name="es.weso.shacl.Action">Action</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ActionsextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Annotation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AnnotationextendsProductwithSerializable"></a>
+      <a id="Annotation:Annotation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Annotation.html"><span class="name">Annotation</span></a><span class="params">(<span name="iri">iri: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>, <span name="value">value: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>, <span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@AnnotationextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.BNodeKind" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BNodeKindextendsNodeKindwithProductwithSerializable"></a>
+      <a id="BNodeKind:BNodeKind"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="BNodeKind.html"><span class="name">BNodeKind</span></a><span class="params">(<span name="shapeConstr">shapeConstr: <span class="extype" name="scala.Option">Option</span>[<a href="ShapeConstr.html" class="extype" name="es.weso.shacl.ShapeConstr">ShapeConstr</a>]</span>, <span name="facets">facets: <span class="extype" name="scala.List">List</span>[<a href="StringFacet.html" class="extype" name="es.weso.shacl.StringFacet">StringFacet</a>]</span>)</span><span class="result"> extends <a href="NodeKind.html" class="extype" name="es.weso.shacl.NodeKind">NodeKind</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@BNodeKindextendsNodeKindwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.BNodeLabel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BNodeLabelextendsLabelwithProductwithSerializable"></a>
+      <a id="BNodeLabel:BNodeLabel"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="BNodeLabel.html"><span class="name">BNodeLabel</span></a><span class="params">(<span name="bnode">bnode: <span class="extype" name="es.weso.rdf.nodes.BNodeId">BNodeId</span></span>)</span><span class="result"> extends <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@BNodeLabelextendsLabelwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Cardinality" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CardinalityextendsPositional"></a>
+      <a id="Cardinality:Cardinality"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Cardinality.html"><span class="name">Cardinality</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@CardinalityextendsPositional" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ConjShapeConstr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ConjShapeConstrextendsShapeConstrwithProductwithSerializable"></a>
+      <a id="ConjShapeConstr:ConjShapeConstr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ConjShapeConstr.html"><span class="name">ConjShapeConstr</span></a><span class="params">(<span name="shapes">shapes: <span class="extype" name="scala.Seq">Seq</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>)</span><span class="result"> extends <a href="ShapeConstr.html" class="extype" name="es.weso.shacl.ShapeConstr">ShapeConstr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ConjShapeConstrextendsShapeConstrwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Context" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ContextextendsProductwithSerializable"></a>
+      <a id="Context:Context"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Context.html"><span class="name">Context</span></a><span class="params">(<span name="rdf">rdf: <span class="extype" name="es.weso.rdf.RDFReader">RDFReader</span></span>, <span name="schema">schema: <a href="SHACLSchema.html" class="extype" name="es.weso.shacl.SHACLSchema">SHACLSchema</a></span>, <span name="typing">typing: <a href="../typing/PosNegTyping.html" class="extype" name="es.weso.typing.PosNegTyping">PosNegTyping</a>[<span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span>, <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="pm">pm: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>, <span name="pending">pending: <span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.rdf.triples.RDFTriple">RDFTriple</span>]</span>, <span name="validateIncoming">validateIncoming: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ContextextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ContextException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ContextExceptionextendsRuntimeExceptionwithProductwithSerializable"></a>
+      <a id="ContextException:ContextException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ContextException.html"><span class="name">ContextException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.RuntimeException">RuntimeException</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ContextExceptionextendsRuntimeExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.DataFormat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DataFormatextendsProductwithSerializable"></a>
+      <a id="DataFormat:DataFormat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DataFormat.html"><span class="name">DataFormat</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@DataFormatextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Datatype" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DatatypeextendsValueConstrwithPositionalwithProductwithSerializable"></a>
+      <a id="Datatype:Datatype"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Datatype.html"><span class="name">Datatype</span></a><span class="params">(<span name="v">v: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>, <span name="facets">facets: <span class="extype" name="scala.List">List</span>[<a href="XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a>]</span>)</span><span class="result"> extends <a href="ValueConstr.html" class="extype" name="es.weso.shacl.ValueConstr">ValueConstr</a> with <span class="extype" name="scala.util.parsing.input.Positional">Positional</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@DatatypeextendsValueConstrwithPositionalwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.DisjShapeConstr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DisjShapeConstrextendsShapeConstrwithProductwithSerializable"></a>
+      <a id="DisjShapeConstr:DisjShapeConstr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DisjShapeConstr.html"><span class="name">DisjShapeConstr</span></a><span class="params">(<span name="shapes">shapes: <span class="extype" name="scala.Seq">Seq</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>)</span><span class="result"> extends <a href="ShapeConstr.html" class="extype" name="es.weso.shacl.ShapeConstr">ShapeConstr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@DisjShapeConstrextendsShapeConstrwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.EmptyShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="EmptyShapeextendsShapeExprwithProductwithSerializable"></a>
+      <a id="EmptyShape:EmptyShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="EmptyShape.html"><span class="name">EmptyShape</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>)</span><span class="result"> extends <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@EmptyShapeextendsShapeExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ExcError" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ExcErrorextendsValidationErrorwithProductwithSerializable"></a>
+      <a id="ExcError:ExcError"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ExcError.html"><span class="name">ExcError</span></a><span class="params">(<span name="e">e: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <a href="ValidationError.html" class="extype" name="es.weso.shacl.ValidationError">ValidationError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ExcErrorextendsValidationErrorwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Exclusion" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ExclusionextendsPositionalwithProductwithSerializable"></a>
+      <a id="Exclusion:Exclusion"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Exclusion.html"><span class="name">Exclusion</span></a><span class="params">(<span name="iri">iri: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>, <span name="isStem">isStem: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ExclusionextendsPositionalwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.External" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ExternalextendsProductwithSerializable"></a>
+      <a id="External:External"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="External.html"><span class="name">External</span></a><span class="params">()</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ExternalextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.FractionDigits" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="FractionDigitsextendsNumericFacetwithProductwithSerializable"></a>
+      <a id="FractionDigits:FractionDigits"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="FractionDigits.html"><span class="name">FractionDigits</span></a><span class="params">(<span name="n">n: <span class="extype" name="java.lang.Integer">Integer</span></span>)</span><span class="result"> extends <a href="NumericFacet.html" class="extype" name="es.weso.shacl.NumericFacet">NumericFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@FractionDigitsextendsNumericFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Group2" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Group2extendsShapeExprwithProductwithSerializable"></a>
+      <a id="Group2:Group2"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Group2.html"><span class="name">Group2</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="shape1">shape1: <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a></span>, <span name="shape2">shape2: <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a></span>)</span><span class="result"> extends <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@Group2extendsShapeExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.GroupShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="GroupShapeextendsShapeExprwithProductwithSerializable"></a>
+      <a id="GroupShape:GroupShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="GroupShape.html"><span class="name">GroupShape</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="shapes">shapes: <span class="extype" name="scala.Seq">Seq</span>[<a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a>]</span>)</span><span class="result"> extends <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@GroupShapeextendsShapeExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.IRIKind" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IRIKindextendsNodeKindwithProductwithSerializable"></a>
+      <a id="IRIKind:IRIKind"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="IRIKind.html"><span class="name">IRIKind</span></a><span class="params">(<span name="shapeConstr">shapeConstr: <span class="extype" name="scala.Option">Option</span>[<a href="ShapeConstr.html" class="extype" name="es.weso.shacl.ShapeConstr">ShapeConstr</a>]</span>, <span name="facets">facets: <span class="extype" name="scala.List">List</span>[<a href="StringFacet.html" class="extype" name="es.weso.shacl.StringFacet">StringFacet</a>]</span>)</span><span class="result"> extends <a href="NodeKind.html" class="extype" name="es.weso.shacl.NodeKind">NodeKind</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@IRIKindextendsNodeKindwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.IRILabel" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IRILabelextendsLabelwithProductwithSerializable"></a>
+      <a id="IRILabel:IRILabel"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="IRILabel.html"><span class="name">IRILabel</span></a><span class="params">(<span name="iri">iri: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>)</span><span class="result"> extends <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@IRILabelextendsLabelwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.IncludeShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="IncludeShapeextendsShapeExprwithProductwithSerializable"></a>
+      <a id="IncludeShape:IncludeShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="IncludeShape.html"><span class="name">IncludeShape</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="label">label: <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a></span>)</span><span class="result"> extends <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@IncludeShapeextendsShapeExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Label" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="LabelextendsAnyRef"></a>
+      <a id="Label:Label"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Label.html"><span class="name">Label</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@LabelextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Labels
+</p>
+    </li><li name="es.weso.shacl.Length" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LengthextendsStringFacetwithProductwithSerializable"></a>
+      <a id="Length:Length"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Length.html"><span class="name">Length</span></a><span class="params">(<span name="n">n: <span class="extype" name="java.lang.Integer">Integer</span></span>)</span><span class="result"> extends <a href="StringFacet.html" class="extype" name="es.weso.shacl.StringFacet">StringFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@LengthextendsStringFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.LiteralKind" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="LiteralKindextendsNodeKindwithProductwithSerializable"></a>
+      <a id="LiteralKind:LiteralKind"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="LiteralKind.html"><span class="name">LiteralKind</span></a><span class="params">(<span name="facets">facets: <span class="extype" name="scala.List">List</span>[<a href="XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a>]</span>)</span><span class="result"> extends <a href="NodeKind.html" class="extype" name="es.weso.shacl.NodeKind">NodeKind</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@LiteralKindextendsNodeKindwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.MaxExclusive" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MaxExclusiveextendsNumericFacetwithProductwithSerializable"></a>
+      <a id="MaxExclusive:MaxExclusive"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MaxExclusive.html"><span class="name">MaxExclusive</span></a><span class="params">(<span name="n">n: <span class="extype" name="java.lang.Integer">Integer</span></span>)</span><span class="result"> extends <a href="NumericFacet.html" class="extype" name="es.weso.shacl.NumericFacet">NumericFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@MaxExclusiveextendsNumericFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.MaxInclusive" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MaxInclusiveextendsNumericFacetwithProductwithSerializable"></a>
+      <a id="MaxInclusive:MaxInclusive"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MaxInclusive.html"><span class="name">MaxInclusive</span></a><span class="params">(<span name="n">n: <span class="extype" name="java.lang.Integer">Integer</span></span>)</span><span class="result"> extends <a href="NumericFacet.html" class="extype" name="es.weso.shacl.NumericFacet">NumericFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@MaxInclusiveextendsNumericFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.MaxLength" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MaxLengthextendsStringFacetwithProductwithSerializable"></a>
+      <a id="MaxLength:MaxLength"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MaxLength.html"><span class="name">MaxLength</span></a><span class="params">(<span name="n">n: <span class="extype" name="java.lang.Integer">Integer</span></span>)</span><span class="result"> extends <a href="StringFacet.html" class="extype" name="es.weso.shacl.StringFacet">StringFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@MaxLengthextendsStringFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.MinExclusive" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MinExclusiveextendsNumericFacetwithProductwithSerializable"></a>
+      <a id="MinExclusive:MinExclusive"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MinExclusive.html"><span class="name">MinExclusive</span></a><span class="params">(<span name="n">n: <span class="extype" name="java.lang.Integer">Integer</span></span>)</span><span class="result"> extends <a href="NumericFacet.html" class="extype" name="es.weso.shacl.NumericFacet">NumericFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@MinExclusiveextendsNumericFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.MinInclusive" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MinInclusiveextendsNumericFacetwithProductwithSerializable"></a>
+      <a id="MinInclusive:MinInclusive"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MinInclusive.html"><span class="name">MinInclusive</span></a><span class="params">(<span name="n">n: <span class="extype" name="java.lang.Integer">Integer</span></span>)</span><span class="result"> extends <a href="NumericFacet.html" class="extype" name="es.weso.shacl.NumericFacet">NumericFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@MinInclusiveextendsNumericFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.MinLength" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MinLengthextendsStringFacetwithProductwithSerializable"></a>
+      <a id="MinLength:MinLength"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MinLength.html"><span class="name">MinLength</span></a><span class="params">(<span name="n">n: <span class="extype" name="java.lang.Integer">Integer</span></span>)</span><span class="result"> extends <a href="StringFacet.html" class="extype" name="es.weso.shacl.StringFacet">StringFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@MinLengthextendsStringFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.MsgError" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="MsgErrorextendsValidationErrorwithProductwithSerializable"></a>
+      <a id="MsgError:MsgError"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="MsgError.html"><span class="name">MsgError</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="ValidationError.html" class="extype" name="es.weso.shacl.ValidationError">ValidationError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@MsgErrorextendsValidationErrorwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NoLiteral_MatchLiteralDatatype" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NoLiteral_MatchLiteralDatatypeextendsValidationErrorwithProductwithSerializable"></a>
+      <a id="NoLiteral_MatchLiteralDatatype:NoLiteral_MatchLiteralDatatype"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NoLiteral_MatchLiteralDatatype.html"><span class="name">NoLiteral_MatchLiteralDatatype</span></a><span class="params">(<span name="obj">obj: <span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span></span>, <span name="ld">ld: <a href="Datatype.html" class="extype" name="es.weso.shacl.Datatype">Datatype</a></span>)</span><span class="result"> extends <a href="ValidationError.html" class="extype" name="es.weso.shacl.ValidationError">ValidationError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NoLiteral_MatchLiteralDatatypeextendsValidationErrorwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NoMatchLiteralDatatype" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NoMatchLiteralDatatypeextendsValidationErrorwithProductwithSerializable"></a>
+      <a id="NoMatchLiteralDatatype:NoMatchLiteralDatatype"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NoMatchLiteralDatatype.html"><span class="name">NoMatchLiteralDatatype</span></a><span class="params">(<span name="l">l: <span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span></span>, <span name="ld">ld: <a href="Datatype.html" class="extype" name="es.weso.shacl.Datatype">Datatype</a></span>)</span><span class="result"> extends <a href="ValidationError.html" class="extype" name="es.weso.shacl.ValidationError">ValidationError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NoMatchLiteralDatatypeextendsValidationErrorwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NoMatchValueSet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NoMatchValueSetextendsValidationErrorwithProductwithSerializable"></a>
+      <a id="NoMatchValueSet:NoMatchValueSet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NoMatchValueSet.html"><span class="name">NoMatchValueSet</span></a><span class="params">(<span name="n">n: <span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span></span>, <span name="vs">vs: <a href="ValueSet.html" class="extype" name="es.weso.shacl.ValueSet">ValueSet</a></span>)</span><span class="result"> extends <a href="ValidationError.html" class="extype" name="es.weso.shacl.ValidationError">ValidationError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NoMatchValueSetextendsValidationErrorwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NoNodeKind" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NoNodeKindextendsValidationErrorwithProductwithSerializable"></a>
+      <a id="NoNodeKind:NoNodeKind"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NoNodeKind.html"><span class="name">NoNodeKind</span></a><span class="params">(<span name="n">n: <span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span></span>, <span name="nk">nk: <a href="NodeKind.html" class="extype" name="es.weso.shacl.NodeKind">NodeKind</a></span>)</span><span class="result"> extends <a href="ValidationError.html" class="extype" name="es.weso.shacl.ValidationError">ValidationError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NoNodeKindextendsValidationErrorwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NoTypingFound" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NoTypingFoundextendsValidationErrorwithProductwithSerializable"></a>
+      <a id="NoTypingFound:NoTypingFound"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NoTypingFound.html"><span class="name">NoTypingFound</span></a><span class="params">(<span name="obj">obj: <span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span></span>, <span name="label">label: <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a></span>)</span><span class="result"> extends <a href="ValidationError.html" class="extype" name="es.weso.shacl.ValidationError">ValidationError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NoTypingFoundextendsValidationErrorwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NodeKind" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="NodeKindextendsValueConstrwithPositional"></a>
+      <a id="NodeKind:NodeKind"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="NodeKind.html"><span class="name">NodeKind</span></a><span class="result"> extends <a href="ValueConstr.html" class="extype" name="es.weso.shacl.ValueConstr">ValueConstr</a> with <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NodeKindextendsValueConstrwithPositional" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NonLiteralKind" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NonLiteralKindextendsNodeKindwithProductwithSerializable"></a>
+      <a id="NonLiteralKind:NonLiteralKind"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NonLiteralKind.html"><span class="name">NonLiteralKind</span></a><span class="params">(<span name="shapeConstr">shapeConstr: <span class="extype" name="scala.Option">Option</span>[<a href="ShapeConstr.html" class="extype" name="es.weso.shacl.ShapeConstr">ShapeConstr</a>]</span>, <span name="facets">facets: <span class="extype" name="scala.List">List</span>[<a href="XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a>]</span>)</span><span class="result"> extends <a href="NodeKind.html" class="extype" name="es.weso.shacl.NodeKind">NodeKind</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NonLiteralKindextendsNodeKindwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NotShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NotShapeextendsShapeConstrwithProductwithSerializable"></a>
+      <a id="NotShape:NotShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NotShape.html"><span class="name">NotShape</span></a><span class="params">(<span name="shape">shape: <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a></span>)</span><span class="result"> extends <a href="ShapeConstr.html" class="extype" name="es.weso.shacl.ShapeConstr">ShapeConstr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NotShapeextendsShapeConstrwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NumericFacet" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="NumericFacetextendsXSFacetwithPositional"></a>
+      <a id="NumericFacet:NumericFacet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="NumericFacet.html"><span class="name">NumericFacet</span></a><span class="result"> extends <a href="XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a> with <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NumericFacetextendsXSFacetwithPositional" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NumericFacetTypeClass" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="NumericFacetTypeClass[T]extendsAnyRef"></a>
+      <a id="NumericFacetTypeClass[T]:NumericFacetTypeClass[T]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="NumericFacetTypeClass.html"><span class="name">NumericFacetTypeClass</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NumericFacetTypeClass[T]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Or" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OrextendsShapeExprwithProductwithSerializable"></a>
+      <a id="Or:Or"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Or.html"><span class="name">Or</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="shape1">shape1: <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a></span>, <span name="shape2">shape2: <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a></span>)</span><span class="result"> extends <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@OrextendsShapeExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Pattern" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PatternextendsStringFacetwithProductwithSerializable"></a>
+      <a id="Pattern:Pattern"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Pattern.html"><span class="name">Pattern</span></a><span class="params">(<span name="regexStr">regexStr: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <a href="StringFacet.html" class="extype" name="es.weso.shacl.StringFacet">StringFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@PatternextendsStringFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.RangeCardinality" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RangeCardinalityextendsCardinalitywithProductwithSerializable"></a>
+      <a id="RangeCardinality:RangeCardinality"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RangeCardinality.html"><span class="name">RangeCardinality</span></a><span class="params">(<span name="m">m: <span class="extype" name="scala.Int">Int</span></span>, <span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="Cardinality.html" class="extype" name="es.weso.shacl.Cardinality">Cardinality</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@RangeCardinalityextendsCardinalitywithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.RepetitionShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RepetitionShapeextendsShapeExprwithProductwithSerializable"></a>
+      <a id="RepetitionShape:RepetitionShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RepetitionShape.html"><span class="name">RepetitionShape</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="shape">shape: <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a></span>, <span name="card">card: <a href="Cardinality.html" class="extype" name="es.weso.shacl.Cardinality">Cardinality</a></span>, <span name="annotations">annotations: <span class="extype" name="scala.List">List</span>[<a href="Annotation.html" class="extype" name="es.weso.shacl.Annotation">Annotation</a>]</span>, <span name="actions">actions: <a href="Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a></span>)</span><span class="result"> extends <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@RepetitionShapeextendsShapeExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SEShaclException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SEShaclExceptionextendsExceptionwithProductwithSerializable"></a>
+      <a id="SEShaclException:SEShaclException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SEShaclException.html"><span class="name">SEShaclException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SEShaclExceptionextendsExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SHACLSchema" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SHACLSchemaextendsPositionalwithProductwithSerializable"></a>
+      <a id="SHACLSchema:SHACLSchema"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SHACLSchema.html"><span class="name">SHACLSchema</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="valueClasses">valueClasses: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>, <a href="ValueClassDefinition.html" class="extype" name="es.weso.shacl.ValueClassDefinition">ValueClassDefinition</a>]</span>, <span name="shapes">shapes: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>, <a href="Shape.html" class="extype" name="es.weso.shacl.Shape">Shape</a>]</span>, <span name="start">start: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="startActions">startActions: <a href="Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a></span>)</span><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SHACLSchemaextendsPositionalwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Schema" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SchemaextendsPositionalwithLoggingwithProductwithSerializable"></a>
+      <a id="Schema:Schema"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Schema.html"><span class="name">Schema</span></a><span class="params">(<span name="pm">pm: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>, <span name="shaclSchema">shaclSchema: <a href="SHACLSchema.html" class="extype" name="es.weso.shacl.SHACLSchema">SHACLSchema</a></span>)</span><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span> with <a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SchemaextendsPositionalwithLoggingwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SchemaFormat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SchemaFormatextendsProductwithSerializable"></a>
+      <a id="SchemaFormat:SchemaFormat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SchemaFormat.html"><span class="name">SchemaFormat</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SchemaFormatextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SchemaLanguage" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SchemaLanguageextendsProductwithSerializable"></a>
+      <a id="SchemaLanguage:SchemaLanguage"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SchemaLanguage.html"><span class="name">SchemaLanguage</span></a><span class="params">(<span name="format">format: <a href="SchemaFormat.html" class="extype" name="es.weso.shacl.SchemaFormat">SchemaFormat</a></span>, <span name="vocabulary">vocabulary: <a href="SchemaVocabulary.html" class="extype" name="es.weso.shacl.SchemaVocabulary">SchemaVocabulary</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SchemaLanguageextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SchemaVocabulary" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SchemaVocabularyextendsProductwithSerializable"></a>
+      <a id="SchemaVocabulary:SchemaVocabulary"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SchemaVocabulary.html"><span class="name">SchemaVocabulary</span></a><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SchemaVocabularyextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ShaclDoc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShaclDocextendsLoggingwithProductwithSerializable"></a>
+      <a id="ShaclDoc:ShaclDoc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ShaclDoc.html"><span class="name">ShaclDoc</span></a><span class="params">(<span name="prefixMap">prefixMap: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>)</span><span class="result"> extends <a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShaclDocextendsLoggingwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ShaclMatcher" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShaclMatcherextendsRDFValidatorwithProductwithSerializable"></a>
+      <a id="ShaclMatcher:ShaclMatcher"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ShaclMatcher.html"><span class="name">ShaclMatcher</span></a><span class="params">(<span name="schema">schema: <a href="Schema.html" class="extype" name="es.weso.shacl.Schema">shacl.Schema</a></span>, <span name="rdf">rdf: <span class="extype" name="es.weso.rdf.RDFReader">RDFReader</span></span>)</span><span class="result"> extends <a href="../rdf/validator/RDFValidator.html" class="extype" name="es.weso.rdf.validator.RDFValidator">RDFValidator</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShaclMatcherextendsRDFValidatorwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ShaclResult" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShaclResultextendsValidationResult[es.weso.rdf.nodes.RDFNode,es.weso.shacl.Label,Throwable]withProductwithSerializable"></a>
+      <a id="ShaclResult:ShaclResult"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ShaclResult.html"><span class="name">ShaclResult</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="scala.Seq">Seq</span>[<a href="../typing/PosNegTyping.html" class="extype" name="es.weso.typing.PosNegTyping">PosNegTyping</a>[<span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span>, <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]]]</span>)</span><span class="result"> extends <a href="../rdf/validator/ValidationResult.html" class="extype" name="es.weso.rdf.validator.ValidationResult">ValidationResult</a>[<span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span>, <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>, <span class="extype" name="scala.Throwable">Throwable</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShaclResultextendsValidationResult[es.weso.rdf.nodes.RDFNode,es.weso.shacl.Label,Throwable]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Shape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShapeextendsPositionalwithProductwithSerializable"></a>
+      <a id="Shape:Shape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Shape.html"><span class="name">Shape</span></a><span class="params">(<span name="shapeExpr">shapeExpr: <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a></span>, <span name="isClosed">isClosed: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="isVirtual">isVirtual: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="inherit">inherit: <span class="extype" name="scala.Seq">Seq</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="extras">extras: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>, <span name="actions">actions: <a href="Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a></span>)</span><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShapeextendsPositionalwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ShapeConstr" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ShapeConstrextendsValueClasswithPositional"></a>
+      <a id="ShapeConstr:ShapeConstr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ShapeConstr.html"><span class="name">ShapeConstr</span></a><span class="result"> extends <a href="ValueClass.html" class="extype" name="es.weso.shacl.ValueClass">ValueClass</a> with <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShapeConstrextendsValueClasswithPositional" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">ShapeConstr ::= SingleShape | NotShape | DisjShapeConstr | ConjShapeConstr
+</p>
+    </li><li name="es.weso.shacl.ShapeDocException" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShapeDocExceptionextendsExceptionwithProductwithSerializable"></a>
+      <a id="ShapeDocException:ShapeDocException"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ShapeDocException.html"><span class="name">ShapeDocException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShapeDocExceptionextendsExceptionwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ShapeExpr" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ShapeExprextendsPositional"></a>
+      <a id="ShapeExpr:ShapeExpr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ShapeExpr.html"><span class="name">ShapeExpr</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShapeExprextendsPositional" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SingleShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SingleShapeextendsShapeConstrwithProductwithSerializable"></a>
+      <a id="SingleShape:SingleShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SingleShape.html"><span class="name">SingleShape</span></a><span class="params">(<span name="shape">shape: <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a></span>)</span><span class="result"> extends <a href="ShapeConstr.html" class="extype" name="es.weso.shacl.ShapeConstr">ShapeConstr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SingleShapeextendsShapeConstrwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SomeOf" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SomeOfextendsShapeExprwithProductwithSerializable"></a>
+      <a id="SomeOf:SomeOf"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="SomeOf.html"><span class="name">SomeOf</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="shapes">shapes: <span class="extype" name="scala.Seq">Seq</span>[<a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a>]</span>)</span><span class="result"> extends <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SomeOfextendsShapeExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.StemRange" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="StemRangeextendsValueObjectwithProductwithSerializable"></a>
+      <a id="StemRange:StemRange"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="StemRange.html"><span class="name">StemRange</span></a><span class="params">(<span name="stem">stem: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>, <span name="exclusions">exclusions: <span class="extype" name="scala.List">List</span>[<a href="Exclusion.html" class="extype" name="es.weso.shacl.Exclusion">Exclusion</a>]</span>)</span><span class="result"> extends <a href="ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@StemRangeextendsValueObjectwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.StringFacet" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="StringFacetextendsXSFacetwithPositional"></a>
+      <a id="StringFacet:StringFacet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="StringFacet.html"><span class="name">StringFacet</span></a><span class="result"> extends <a href="XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a> with <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@StringFacetextendsXSFacetwithPositional" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.TotalDigits" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TotalDigitsextendsNumericFacetwithProductwithSerializable"></a>
+      <a id="TotalDigits:TotalDigits"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TotalDigits.html"><span class="name">TotalDigits</span></a><span class="params">(<span name="n">n: <span class="extype" name="java.lang.Integer">Integer</span></span>)</span><span class="result"> extends <a href="NumericFacet.html" class="extype" name="es.weso.shacl.NumericFacet">NumericFacet</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@TotalDigitsextendsNumericFacetwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.TripleConstraint" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TripleConstraintextendsShapeExprwithProductwithSerializable"></a>
+      <a id="TripleConstraint:TripleConstraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="TripleConstraint.html"><span class="name">TripleConstraint</span></a><span class="params">(<span name="id">id: <span class="extype" name="scala.Option">Option</span>[<a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>, <span name="iri">iri: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>, <span name="value">value: <a href="ValueClass.html" class="extype" name="es.weso.shacl.ValueClass">ValueClass</a></span>, <span name="card">card: <a href="Cardinality.html" class="extype" name="es.weso.shacl.Cardinality">Cardinality</a></span>, <span name="inverse">inverse: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="negated">negated: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="annotations">annotations: <span class="extype" name="scala.List">List</span>[<a href="Annotation.html" class="extype" name="es.weso.shacl.Annotation">Annotation</a>]</span>, <span name="actions">actions: <a href="Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a></span>)</span><span class="result"> extends <a href="ShapeExpr.html" class="extype" name="es.weso.shacl.ShapeExpr">ShapeExpr</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@TripleConstraintextendsShapeExprwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.UnboundedCardinalityFrom" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="UnboundedCardinalityFromextendsCardinalitywithProductwithSerializable"></a>
+      <a id="UnboundedCardinalityFrom:UnboundedCardinalityFrom"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="UnboundedCardinalityFrom.html"><span class="name">UnboundedCardinalityFrom</span></a><span class="params">(<span name="m">m: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="Cardinality.html" class="extype" name="es.weso.shacl.Cardinality">Cardinality</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@UnboundedCardinalityFromextendsCardinalitywithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">UnboundedCardinality represents ranges (m,unbounded)
+</p>
+    </li><li name="es.weso.shacl.ValidationError" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ValidationErrorextendsAnyRef"></a>
+      <a id="ValidationError:ValidationError"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValidationError.html"><span class="name">ValidationError</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValidationErrorextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueAny" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueAnyextendsValueObjectwithProductwithSerializable"></a>
+      <a id="ValueAny:ValueAny"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueAny.html"><span class="name">ValueAny</span></a><span class="params">(<span name="exclusions">exclusions: <span class="extype" name="scala.List">List</span>[<a href="Exclusion.html" class="extype" name="es.weso.shacl.Exclusion">Exclusion</a>]</span>)</span><span class="result"> extends <a href="ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueAnyextendsValueObjectwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueClass" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ValueClassextendsPositional"></a>
+      <a id="ValueClass:ValueClass"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueClass.html"><span class="name">ValueClass</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueClassextendsPositional" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">ValueClass ::= ValueConstr | ShapeConstr | ValueClassRef</p>
+    </li><li name="es.weso.shacl.ValueClassDefinition" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueClassDefinitionextendsProductwithSerializable"></a>
+      <a id="ValueClassDefinition:ValueClassDefinition"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueClassDefinition.html"><span class="name">ValueClassDefinition</span></a><span class="params">(<span name="defn">defn: <span class="extype" name="scala.Either">Either</span>[(<a href="ValueClass.html" class="extype" name="es.weso.shacl.ValueClass">ValueClass</a>, <a href="Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a>), <a href="External.html" class="extype" name="es.weso.shacl.External">External</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueClassDefinitionextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueClassRef" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueClassRefextendsValueClasswithProductwithSerializable"></a>
+      <a id="ValueClassRef:ValueClassRef"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueClassRef.html"><span class="name">ValueClassRef</span></a><span class="params">(<span name="label">label: <a href="Label.html" class="extype" name="es.weso.shacl.Label">Label</a></span>)</span><span class="result"> extends <a href="ValueClass.html" class="extype" name="es.weso.shacl.ValueClass">ValueClass</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueClassRefextendsValueClasswithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueConstr" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ValueConstrextendsValueClasswithPositional"></a>
+      <a id="ValueConstr:ValueConstr"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueConstr.html"><span class="name">ValueConstr</span></a><span class="result"> extends <a href="ValueClass.html" class="extype" name="es.weso.shacl.ValueClass">ValueClass</a> with <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueConstrextendsValueClasswithPositional" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">ValueConstr ::= LiteralDatatype | ValueSet | NodeKind
+</p>
+    </li><li name="es.weso.shacl.ValueIRI" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueIRIextendsValueObjectwithProductwithSerializable"></a>
+      <a id="ValueIRI:ValueIRI"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueIRI.html"><span class="name">ValueIRI</span></a><span class="params">(<span name="iri">iri: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>)</span><span class="result"> extends <a href="ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueIRIextendsValueObjectwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueLang" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueLangextendsValueObjectwithProductwithSerializable"></a>
+      <a id="ValueLang:ValueLang"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueLang.html"><span class="name">ValueLang</span></a><span class="params">(<span name="lang">lang: <span class="extype" name="es.weso.rdf.nodes.Lang">Lang</span></span>)</span><span class="result"> extends <a href="ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueLangextendsValueObjectwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueLiteral" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueLiteralextendsValueObjectwithProductwithSerializable"></a>
+      <a id="ValueLiteral:ValueLiteral"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueLiteral.html"><span class="name">ValueLiteral</span></a><span class="params">(<span name="literal">literal: <span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span></span>)</span><span class="result"> extends <a href="ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueLiteralextendsValueObjectwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueObject" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ValueObjectextendsPositional"></a>
+      <a id="ValueObject:ValueObject"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueObject.html"><span class="name">ValueObject</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueObjectextendsPositional" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueSet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueSetextendsValueConstrwithPositionalwithProductwithSerializable"></a>
+      <a id="ValueSet:ValueSet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueSet.html"><span class="name">ValueSet</span></a><span class="params">(<span name="s">s: <span class="extype" name="scala.Seq">Seq</span>[<a href="ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a>]</span>)</span><span class="result"> extends <a href="ValueConstr.html" class="extype" name="es.weso.shacl.ValueConstr">ValueConstr</a> with <span class="extype" name="scala.util.parsing.input.Positional">Positional</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueSetextendsValueConstrwithPositionalwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.XSFacet" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="XSFacetextendsPositionalwithLogging"></a>
+      <a id="XSFacet:XSFacet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed </span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="XSFacet.html"><span class="name">XSFacet</span></a><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span> with <a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@XSFacetextendsPositionalwithLogging" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="es.weso.shacl.Action" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Action"></a>
+      <a id="Action:Action"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Action$.html"><span class="name">Action</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@Action" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Actions" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Actions"></a>
+      <a id="Actions:Actions"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Actions$.html"><span class="name">Actions</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@Actions" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Cardinality" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Cardinality"></a>
+      <a id="Cardinality:Cardinality"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Cardinality$.html"><span class="name">Cardinality</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@Cardinality" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Context" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Context"></a>
+      <a id="Context:Context"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Context$.html"><span class="name">Context</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@Context" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.DataFormat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DataFormat"></a>
+      <a id="DataFormat:DataFormat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="DataFormat$.html"><span class="name">DataFormat</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@DataFormat" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.EmptyShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="EmptyShape"></a>
+      <a id="EmptyShape:EmptyShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="EmptyShape$.html"><span class="name">EmptyShape</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@EmptyShape" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Label" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Label"></a>
+      <a id="Label:Label"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Label$.html"><span class="name">Label</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@Label" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.NumericFacetTypeClass" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NumericFacetTypeClass"></a>
+      <a id="NumericFacetTypeClass:NumericFacetTypeClass"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="NumericFacetTypeClass$.html"><span class="name">NumericFacetTypeClass</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@NumericFacetTypeClass" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.PREFIXES" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PREFIXES"></a>
+      <a id="PREFIXES:PREFIXES"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PREFIXES$.html"><span class="name">PREFIXES</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@PREFIXES" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.PrefixMaps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PrefixMaps"></a>
+      <a id="PrefixMaps:PrefixMaps"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PrefixMaps$.html"><span class="name">PrefixMaps</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@PrefixMaps" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SEShacl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SEShacl"></a>
+      <a id="SEShacl:SEShacl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SEShacl$.html"><span class="name">SEShacl</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SEShacl" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Shacl Abstract Syntax to SESchema
+</p>
+    </li><li name="es.weso.shacl.SHACLSchema" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SHACLSchema"></a>
+      <a id="SHACLSchema:SHACLSchema"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SHACLSchema$.html"><span class="name">SHACLSchema</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SHACLSchema" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Schema" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Schema"></a>
+      <a id="Schema:Schema"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Schema$.html"><span class="name">Schema</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@Schema" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SchemaFormat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SchemaFormat"></a>
+      <a id="SchemaFormat:SchemaFormat"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SchemaFormat$.html"><span class="name">SchemaFormat</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SchemaFormat" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SchemaLanguage" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SchemaLanguage"></a>
+      <a id="SchemaLanguage:SchemaLanguage"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SchemaLanguage$.html"><span class="name">SchemaLanguage</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SchemaLanguage" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.SchemaVocabulary" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SchemaVocabulary"></a>
+      <a id="SchemaVocabulary:SchemaVocabulary"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SchemaVocabulary$.html"><span class="name">SchemaVocabulary</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@SchemaVocabulary" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Shacl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Shacl"></a>
+      <a id="Shacl:Shacl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Shacl$.html"><span class="name">Shacl</span></a><span class="result"> extends <a href="../rdf/parser/RDFParser.html" class="extype" name="es.weso.rdf.parser.RDFParser">RDFParser</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@Shacl" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ShaclDoc" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShaclDoc"></a>
+      <a id="ShaclDoc:ShaclDoc"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ShaclDoc$.html"><span class="name">ShaclDoc</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShaclDoc" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ShaclMatcher" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShaclMatcher"></a>
+      <a id="ShaclMatcher:ShaclMatcher"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ShaclMatcher$.html"><span class="name">ShaclMatcher</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShaclMatcher" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ShaclResult" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ShaclResult"></a>
+      <a id="ShaclResult:ShaclResult"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ShaclResult$.html"><span class="name">ShaclResult</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ShaclResult" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.Shape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Shape"></a>
+      <a id="Shape:Shape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Shape$.html"><span class="name">Shape</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@Shape" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.TripleConstraint" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TripleConstraint"></a>
+      <a id="TripleConstraint:TripleConstraint"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TripleConstraint$.html"><span class="name">TripleConstraint</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@TripleConstraint" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueClass" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueClass"></a>
+      <a id="ValueClass:ValueClass"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueClass$.html"><span class="name">ValueClass</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueClass" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.ValueClassDefinition" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ValueClassDefinition"></a>
+      <a id="ValueClassDefinition:ValueClassDefinition"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ValueClassDefinition$.html"><span class="name">ValueClassDefinition</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@ValueClassDefinition" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.XSFacet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="XSFacet"></a>
+      <a id="XSFacet:XSFacet"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="XSFacet$.html"><span class="name">XSFacet</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@XSFacet" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.converter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="converter"></a>
+      <a id="converter:converter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="converter/package.html"><span class="name">converter</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@converter" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.jast" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="jast"></a>
+      <a id="jast:jast"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="jast/package.html"><span class="name">jast</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@jast" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.parser" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="parser"></a>
+      <a id="parser:parser"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="parser/package.html"><span class="name">parser</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@parser" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.validation" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="validation"></a>
+      <a id="validation:validation"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a href="validation/package.html"><span class="name">validation</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shacl.package@validation" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
