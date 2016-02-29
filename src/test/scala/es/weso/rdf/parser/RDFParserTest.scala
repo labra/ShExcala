@@ -90,10 +90,51 @@ class RDFParserTest extends FunSpec with Matchers with RDFParser with TryValues 
           rdf <- RDFAsJenaModel.fromChars(cs, "TURTLE")
           val n: RDFNode = IRI("http://example.org/x")
           val p = IRI("http://example.org/p")
-          nodeLs <- objectFromPredicate(p)(n,rdf)
+          nodeLs <- objectFromPredicate(p)(n, rdf)
           ls <- rdfList(nodeLs, rdf)
         } yield (ls)
-        try1.success.value should be(List(IntegerLiteral(1),IntegerLiteral(2),IntegerLiteral(3)))
+        try1.success.value should be(List(IntegerLiteral(1), IntegerLiteral(2), IntegerLiteral(3)))
+      }
+
+      it("rdfList empty") {
+        val cs = """|prefix : <http://example.org/>
+                  |:x :p () .""".stripMargin
+        val try1 = for {
+          rdf <- RDFAsJenaModel.fromChars(cs, "TURTLE")
+          val n: RDFNode = IRI("http://example.org/x")
+          val p = IRI("http://example.org/p")
+          nodeLs <- objectFromPredicate(p)(n, rdf)
+          ls <- rdfList(nodeLs, rdf)
+        } yield (ls)
+        try1.success.value should be(List())
+      }
+
+    }
+    describe("rdfListForPredicate") {
+      it("rdfListForPredicate happy path") {
+        val cs = """|prefix : <http://example.org/>
+                  |:x :p (1 2 3) .""".stripMargin
+        val try1 = for {
+          rdf <- RDFAsJenaModel.fromChars(cs, "TURTLE")
+          val n: RDFNode = IRI("http://example.org/x")
+          val p = IRI("http://example.org/p")
+          ls <- rdfListForPredicate(p)(n, rdf)
+        } yield (ls)
+        try1.success.value should be(List(IntegerLiteral(1), IntegerLiteral(2), IntegerLiteral(3)))
+      }
+    }
+
+    describe("integerLiteralForPredicate") {
+      it("integerLiteralForPredicate happy path") {
+        val cs = """|prefix : <http://example.org/>
+                  |:x :p 1 .""".stripMargin
+        val try1 = for {
+          rdf <- RDFAsJenaModel.fromChars(cs, "TURTLE")
+          val n: RDFNode = IRI("http://example.org/x")
+          val p = IRI("http://example.org/p")
+          n <- integerLiteralForPredicate(p)(n, rdf)
+        } yield (n)
+        try1.success.value should be(1)
       }
     }
   }

@@ -18,9 +18,6 @@ trait RDFParser {
   type RDFParser[a] = (RDFNode, RDFReader) => Try[a]
 
 
-  def hasPredicateWithSubject(n: RDFNode, p: IRI, rdf: RDFReader): Boolean = {
-    rdf.triplesWithSubjectPredicate(n, p).size > 0
-  }
 
   def iriFromPredicate(p: IRI): RDFParser[IRI] = { (n, rdf) =>
     for {
@@ -94,17 +91,9 @@ trait RDFParser {
   }
 
   def rdfListForPredicate(p: IRI): RDFParser[List[RDFNode]] = { (n, rdf) =>
-    println("rdfList...predicate..." + p)
     for {
-      value <- {
-        val v = objectFromPredicate(p)(n, rdf)
-        println("value..." + v)
-        v
-      }
-      ls <- {
-        println("value found..." + value)
-        rdfList(value, rdf)
-      }
+      value <- objectFromPredicate(p)(n, rdf)
+      ls <- rdfList(value, rdf)
     } yield ls
   }
 
@@ -117,13 +106,6 @@ trait RDFParser {
     }
   }
 
-  def getIntegerLiteral(t: RDFTriple): Try[Integer] = {
-    t.obj match {
-      case l: IntegerLiteral => Success(l.int)
-      // TODO: case l: DatatypeLiteral(lexicalForm,datatype) => ...
-      case _                 => fail("getIntegerLiteral: Object " + t.obj + " must be a literal")
-    }
-  }
 
   def hasNoRDFType(t: IRI): RDFParser[Boolean] = { (n, rdf) =>
     for {
@@ -213,6 +195,7 @@ trait RDFParser {
     Failure(RDFParserException(str))
   }
 
+  // TODO: Move the following methods to some utils place
   def subjectsWithType(t: RDFNode, rdf: RDFReader): Set[RDFNode] = {
     subjectsFromTriples(rdf.triplesWithPredicateObject(rdf_type, t))
   }
@@ -227,6 +210,19 @@ trait RDFParser {
 
   def objectsFromTriples(triples: Set[RDFTriple]): Set[RDFNode] = {
     triples.map { case RDFTriple(_, _, o) => o }
+  }
+
+ def getIntegerLiteral(t: RDFTriple): Try[Integer] = {
+    t.obj match {
+      case l: IntegerLiteral => Success(l.int)
+      // TODO: case l: DatatypeLiteral(lexicalForm,datatype) => ...
+      case _                 => fail("getIntegerLiteral: Object " + t.obj + " must be a literal")
+    }
+  }
+
+ // TODO: This method could be removed
+ def hasPredicateWithSubject(n: RDFNode, p: IRI, rdf: RDFReader): Boolean = {
+    rdf.triplesWithSubjectPredicate(n, p).size > 0
   }
 
 }
