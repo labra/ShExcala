@@ -12,7 +12,7 @@
       <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -49,9 +49,9 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/labra/ShExcala/tree/master/src/main/scala/es/weso/shacl/validation/Validation.scala" target="_blank">Validation.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../jast/AST.html" class="extype" name="es.weso.shacl.jast.AST">AST</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../jast/AST.html" class="extype" name="es.weso.shacl.jast.AST">AST</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></div>
         </div></div>
         
 
@@ -99,7 +99,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$AndAST.html"><span class="name">AndAST</span></a><span class="params">(<span name="conjuncts">conjuncts: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$AndAST.html"><span class="name">AndAST</span></a><span class="params">(<span name="conjuncts">conjuncts: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@AndASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -116,7 +116,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$AnnotationAST.html"><span class="name">AnnotationAST</span></a><span class="params">(<span name="_type">_type: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="predicate">predicate: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="_object">_object: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$AnnotationAST.html"><span class="name">AnnotationAST</span></a><span class="params">(<span name="_type">_type: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="predicate">predicate: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="_object">_object: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@AnnotationASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -133,7 +133,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ExclusionAST.html"><span class="name">ExclusionAST</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$StemAST.html" class="extype" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ExclusionAST.html"><span class="name">ExclusionAST</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$StemAST.html" class="extype" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ExclusionASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -150,7 +150,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ExpressionAST.html"><span class="name">ExpressionAST</span></a><span class="params">(<span name="_type">_type: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="value">value: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$ValueClassAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]</span>, <span name="solutions">solutions: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ExpressionAST.html" class="extype" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]]</span>, <span name="inverse">inverse: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="negated">negated: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="min">min: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="max">max: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$MaxAST.html" class="extype" name="es.weso.shacl.jast.AST.MaxAST">MaxAST</a>]</span>, <span name="subject">subject: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="predicate">predicate: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="_object">_object: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="expressions">expressions: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ExpressionAST.html" class="extype" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]]</span>, <span name="referenced">referenced: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$ValueAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueAST">ValueAST</a>]</span>, <span name="annotations">annotations: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$AnnotationAST.html" class="extype" name="es.weso.shacl.jast.AST.AnnotationAST">AnnotationAST</a>]]</span>, <span name="semActs">semActs: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$SemActAST.html" class="extype" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]]</span>, <span name="valueExpr">valueExpr: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$ValueClassAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ExpressionAST.html"><span class="name">ExpressionAST</span></a><span class="params">(<span name="_type">_type: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="value">value: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$ValueClassAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]</span>, <span name="solutions">solutions: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ExpressionAST.html" class="extype" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]]</span>, <span name="inverse">inverse: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>]</span>, <span name="negated">negated: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>]</span>, <span name="min">min: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>, <span name="max">max: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$MaxAST.html" class="extype" name="es.weso.shacl.jast.AST.MaxAST">MaxAST</a>]</span>, <span name="subject">subject: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="predicate">predicate: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="_object">_object: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="expressions">expressions: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ExpressionAST.html" class="extype" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]]</span>, <span name="referenced">referenced: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$ValueAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueAST">ValueAST</a>]</span>, <span name="annotations">annotations: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$AnnotationAST.html" class="extype" name="es.weso.shacl.jast.AST.AnnotationAST">AnnotationAST</a>]]</span>, <span name="semActs">semActs: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$SemActAST.html" class="extype" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]]</span>, <span name="valueExpr">valueExpr: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$ValueClassAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ExpressionASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -167,7 +167,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$MaxAST.html"><span class="name">MaxAST</span></a><span class="params">(<span name="v">v: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$MaxAST.html"><span class="name">MaxAST</span></a><span class="params">(<span name="v">v: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@MaxASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -184,7 +184,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$NumberAST.html"><span class="name">NumberAST</span></a><span class="params">(<span name="v">v: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="scala.Int">Int</span>, <span class="extype" name="scala.Double">Double</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$NumberAST.html"><span class="name">NumberAST</span></a><span class="params">(<span name="v">v: <span class="extype" name="scala.Either">Either</span>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Double" class="extype" target="_top">Double</a>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@NumberASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -201,7 +201,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$OrAST.html"><span class="name">OrAST</span></a><span class="params">(<span name="disjuncts">disjuncts: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$OrAST.html"><span class="name">OrAST</span></a><span class="params">(<span name="disjuncts">disjuncts: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@OrASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -218,7 +218,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ReferenceAST.html"><span class="name">ReferenceAST</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Either">Either</span>[<a href="../jast/AST$OrAST.html" class="extype" name="es.weso.shacl.jast.AST.OrAST">OrAST</a>, <a href="../jast/AST$AndAST.html" class="extype" name="es.weso.shacl.jast.AST.AndAST">AndAST</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ReferenceAST.html"><span class="name">ReferenceAST</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Either">Either</span>[<a href="../jast/AST$OrAST.html" class="extype" name="es.weso.shacl.jast.AST.OrAST">OrAST</a>, <a href="../jast/AST$AndAST.html" class="extype" name="es.weso.shacl.jast.AST.AndAST">AndAST</a>]]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ReferenceASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -235,7 +235,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$SchemaAST.html"><span class="name">SchemaAST</span></a><span class="params">(<span name="prefixes">prefixes: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>]]</span>, <span name="valueClasses">valueClasses: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$ValueClassAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]]</span>, <span name="shapes">shapes: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$ShapeAST.html" class="extype" name="es.weso.shacl.jast.AST.ShapeAST">ShapeAST</a>]]</span>, <span name="start">start: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="startActions">startActions: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Seq">Seq</span>[<a href="../jast/AST$SemActAST.html" class="extype" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$SchemaAST.html"><span class="name">SchemaAST</span></a><span class="params">(<span name="prefixes">prefixes: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Predef.String">String</span>]]</span>, <span name="valueClasses">valueClasses: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$ValueClassAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]]</span>, <span name="shapes">shapes: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$ShapeAST.html" class="extype" name="es.weso.shacl.jast.AST.ShapeAST">ShapeAST</a>]]</span>, <span name="start">start: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="startActions">startActions: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Seq">Seq</span>[<a href="../jast/AST$SemActAST.html" class="extype" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@SchemaASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -252,7 +252,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$SemActAST.html"><span class="name">SemActAST</span></a><span class="params">(<span name="_type">_type: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="name">name: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="code">code: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$SemActAST.html"><span class="name">SemActAST</span></a><span class="params">(<span name="_type">_type: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="name">name: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="code">code: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@SemActASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -269,7 +269,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ShapeAST.html"><span class="name">ShapeAST</span></a><span class="params">(<span name="expression">expression: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$ExpressionAST.html" class="extype" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]</span>, <span name="virtual">virtual: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="closed">closed: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="inherit">inherit: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>]]</span>, <span name="extra">extra: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>]]</span>, <span name="semAct">semAct: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Seq">Seq</span>[<a href="../jast/AST$SemActAST.html" class="extype" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ShapeAST.html"><span class="name">ShapeAST</span></a><span class="params">(<span name="expression">expression: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$ExpressionAST.html" class="extype" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]</span>, <span name="virtual">virtual: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>]</span>, <span name="closed">closed: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>]</span>, <span name="inherit">inherit: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>]]</span>, <span name="extra">extra: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Predef.String">String</span>]]</span>, <span name="semAct">semAct: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Seq">Seq</span>[<a href="../jast/AST$SemActAST.html" class="extype" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ShapeASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -286,7 +286,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$StemAST.html"><span class="name">StemAST</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$WildCardAST.html" class="extype" name="es.weso.shacl.jast.AST.WildCardAST">WildCardAST</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$StemAST.html"><span class="name">StemAST</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$WildCardAST.html" class="extype" name="es.weso.shacl.jast.AST.WildCardAST">WildCardAST</a>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@StemASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -303,7 +303,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$StemRangeAST.html"><span class="name">StemRangeAST</span></a><span class="params">(<span name="_type">_type: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="stem">stem: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$StemAST.html" class="extype" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>, <span name="exclusions">exclusions: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ExclusionAST.html" class="extype" name="es.weso.shacl.jast.AST.ExclusionAST">ExclusionAST</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$StemRangeAST.html"><span class="name">StemRangeAST</span></a><span class="params">(<span name="_type">_type: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="stem">stem: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$StemAST.html" class="extype" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>, <span name="exclusions">exclusions: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ExclusionAST.html" class="extype" name="es.weso.shacl.jast.AST.ExclusionAST">ExclusionAST</a>]]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@StemRangeASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -320,7 +320,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Validation$$ValAST.html"><span class="name">ValAST</span></a><span class="params">(<span name="_type">_type: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="node">node: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="shape">shape: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="solution">solution: <span class="extype" name="scala.Option">Option</span>[<a href="#ExpressionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExpressionAST">Validation.ExpressionAST</a>]</span>, <span name="solutions">solutions: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="#ExpressionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExpressionAST">Validation.ExpressionAST</a>]]</span>, <span name="startActs">startActs: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="#SemActASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SemActAST">Validation.SemActAST</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Validation$$ValAST.html"><span class="name">ValAST</span></a><span class="params">(<span name="_type">_type: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="node">node: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="shape">shape: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="solution">solution: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="#ExpressionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExpressionAST">Validation.ExpressionAST</a>]</span>, <span name="solutions">solutions: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.List">List</span>[<a href="#ExpressionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExpressionAST">Validation.ExpressionAST</a>]]</span>, <span name="startActs">startActs: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.List">List</span>[<a href="#SemActASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SemActAST">Validation.SemActAST</a>]]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -337,7 +337,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Validation$$Validation.html"><span class="name">Validation</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Option">Option</span>[<a href="Validation$$ValAST.html" class="extype" name="es.weso.shacl.validation.Validation.ValAST">ValAST</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Validation$$Validation.html"><span class="name">Validation</span></a><span class="params">(<span name="value">value: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="Validation$$ValAST.html" class="extype" name="es.weso.shacl.validation.Validation.ValAST">ValAST</a>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValidationextendsProductwithSerializable" title="Permalink" target="_top">
@@ -354,7 +354,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ValueAST.html"><span class="name">ValueAST</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$StemRangeAST.html" class="extype" name="es.weso.shacl.jast.AST.StemRangeAST">StemRangeAST</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ValueAST.html"><span class="name">ValueAST</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Either">Either</span>[<span class="extype" name="scala.Predef.String">String</span>, <a href="../jast/AST$StemRangeAST.html" class="extype" name="es.weso.shacl.jast.AST.StemRangeAST">StemRangeAST</a>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ValueASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -371,7 +371,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ValueClassAST.html"><span class="name">ValueClassAST</span></a><span class="params">(<span name="_type">_type: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="values">values: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ValueAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueAST">ValueAST</a>]]</span>, <span name="nodeKind">nodeKind: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="pattern">pattern: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="reference">reference: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$ReferenceAST.html" class="extype" name="es.weso.shacl.jast.AST.ReferenceAST">ReferenceAST</a>]</span>, <span name="length">length: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="minInclusive">minInclusive: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$NumberAST.html" class="extype" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>, <span name="maxInclusive">maxInclusive: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$NumberAST.html" class="extype" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>, <span name="minExclusive">minExclusive: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$NumberAST.html" class="extype" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>, <span name="maxExclusive">maxExclusive: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$NumberAST.html" class="extype" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>, <span name="minLength">minLength: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="maxLength">maxLength: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="totalDigits">totalDigits: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="fractionDigits">fractionDigits: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="datatype">datatype: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="valueExprRef">valueExprRef: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="valueExprs">valueExprs: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ValueClassAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ValueClassAST.html"><span class="name">ValueClassAST</span></a><span class="params">(<span name="_type">_type: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="values">values: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ValueAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueAST">ValueAST</a>]]</span>, <span name="nodeKind">nodeKind: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="pattern">pattern: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="reference">reference: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$ReferenceAST.html" class="extype" name="es.weso.shacl.jast.AST.ReferenceAST">ReferenceAST</a>]</span>, <span name="length">length: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>, <span name="minInclusive">minInclusive: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$NumberAST.html" class="extype" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>, <span name="maxInclusive">maxInclusive: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$NumberAST.html" class="extype" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>, <span name="minExclusive">minExclusive: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$NumberAST.html" class="extype" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>, <span name="maxExclusive">maxExclusive: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$NumberAST.html" class="extype" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>, <span name="minLength">minLength: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>, <span name="maxLength">maxLength: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>, <span name="totalDigits">totalDigits: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>, <span name="fractionDigits">fractionDigits: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>, <span name="datatype">datatype: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="valueExprRef">valueExprRef: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="valueExprs">valueExprs: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.List">List</span>[<a href="../jast/AST$ValueClassAST.html" class="extype" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ValueClassASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -388,7 +388,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$WildCardAST.html"><span class="name">WildCardAST</span></a><span class="params">(<span name="_type">_type: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="stem">stem: <span class="extype" name="scala.Option">Option</span>[<a href="../jast/AST$StemAST.html" class="extype" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$WildCardAST.html"><span class="name">WildCardAST</span></a><span class="params">(<span name="_type">_type: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>, <span name="stem">stem: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../jast/AST$StemAST.html" class="extype" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@WildCardASTextendsProductwithSerializable" title="Permalink" target="_top">
@@ -412,7 +412,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -429,7 +429,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@##():Int" title="Permalink" target="_top">
@@ -446,7 +446,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@==(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -463,7 +463,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">AndDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#AndASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.AndAST">AndAST</a>]</span>
+        <span class="name">AndDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#AndASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.AndAST">AndAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@AndDecodeJson:argonaut.DecodeJson[AST.this.AndAST]" title="Permalink" target="_top">
@@ -480,7 +480,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">AndEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#AndASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.AndAST">AndAST</a>]</span>
+        <span class="name">AndEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#AndASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.AndAST">AndAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@AndEncodeJson:argonaut.EncodeJson[AST.this.AndAST]" title="Permalink" target="_top">
@@ -497,7 +497,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$AnnotationAST$.html"><span class="name">AnnotationAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$AnnotationAST$.html"><span class="name">AnnotationAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@AnnotationAST" title="Permalink" target="_top">
@@ -514,7 +514,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">AnnotationDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#AnnotationASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.AnnotationAST">AnnotationAST</a>]</span>
+        <span class="name">AnnotationDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#AnnotationASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.AnnotationAST">AnnotationAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@AnnotationDecodeJson:argonaut.DecodeJson[AST.this.AnnotationAST]" title="Permalink" target="_top">
@@ -531,7 +531,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">AnnotationJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#AnnotationASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.AnnotationAST">AnnotationAST</a>]</span>
+        <span class="name">AnnotationJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#AnnotationASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.AnnotationAST">AnnotationAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@AnnotationJson:argonaut.EncodeJson[AST.this.AnnotationAST]" title="Permalink" target="_top">
@@ -548,7 +548,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ExclusionAST$.html"><span class="name">ExclusionAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ExclusionAST$.html"><span class="name">ExclusionAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ExclusionAST" title="Permalink" target="_top">
@@ -565,7 +565,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ExclusionDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#ExclusionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExclusionAST">ExclusionAST</a>]</span>
+        <span class="name">ExclusionDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#ExclusionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExclusionAST">ExclusionAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ExclusionDecodeJson:argonaut.DecodeJson[AST.this.ExclusionAST]" title="Permalink" target="_top">
@@ -582,7 +582,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ExclusionEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#ExclusionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExclusionAST">ExclusionAST</a>]</span>
+        <span class="name">ExclusionEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#ExclusionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExclusionAST">ExclusionAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ExclusionEncodeJson:argonaut.EncodeJson[AST.this.ExclusionAST]" title="Permalink" target="_top">
@@ -599,7 +599,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ExpressionAST$.html"><span class="name">ExpressionAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ExpressionAST$.html"><span class="name">ExpressionAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ExpressionAST" title="Permalink" target="_top">
@@ -616,7 +616,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ExpressionDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#ExpressionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]</span>
+        <span class="name">ExpressionDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#ExpressionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ExpressionDecodeJson:argonaut.DecodeJson[AST.this.ExpressionAST]" title="Permalink" target="_top">
@@ -633,7 +633,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ExpressionEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#ExpressionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]</span>
+        <span class="name">ExpressionEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#ExpressionASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ExpressionAST">ExpressionAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ExpressionEncodeJson:argonaut.EncodeJson[AST.this.ExpressionAST]" title="Permalink" target="_top">
@@ -650,7 +650,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$MaxAST$.html"><span class="name">MaxAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$MaxAST$.html"><span class="name">MaxAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@MaxAST" title="Permalink" target="_top">
@@ -667,7 +667,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">MaxDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#MaxASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.MaxAST">MaxAST</a>]</span>
+        <span class="name">MaxDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#MaxASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.MaxAST">MaxAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@MaxDecodeJson:argonaut.DecodeJson[AST.this.MaxAST]" title="Permalink" target="_top">
@@ -684,7 +684,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">MaxEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#MaxASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.MaxAST">MaxAST</a>]</span>
+        <span class="name">MaxEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#MaxASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.MaxAST">MaxAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@MaxEncodeJson:argonaut.EncodeJson[AST.this.MaxAST]" title="Permalink" target="_top">
@@ -701,7 +701,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">NumberDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#NumberASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>
+        <span class="name">NumberDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#NumberASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@NumberDecodeJson:argonaut.DecodeJson[AST.this.NumberAST]" title="Permalink" target="_top">
@@ -718,7 +718,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">NumberEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#NumberASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>
+        <span class="name">NumberEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#NumberASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.NumberAST">NumberAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@NumberEncodeJson:argonaut.EncodeJson[AST.this.NumberAST]" title="Permalink" target="_top">
@@ -735,7 +735,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$OrAST$.html"><span class="name">OrAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$OrAST$.html"><span class="name">OrAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@OrAST" title="Permalink" target="_top">
@@ -752,7 +752,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">OrDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#OrASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.OrAST">OrAST</a>]</span>
+        <span class="name">OrDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#OrASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.OrAST">OrAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@OrDecodeJson:argonaut.DecodeJson[AST.this.OrAST]" title="Permalink" target="_top">
@@ -769,7 +769,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">OrEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#OrASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.OrAST">OrAST</a>]</span>
+        <span class="name">OrEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#OrASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.OrAST">OrAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@OrEncodeJson:argonaut.EncodeJson[AST.this.OrAST]" title="Permalink" target="_top">
@@ -786,7 +786,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ReferenceAST$.html"><span class="name">ReferenceAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ReferenceAST$.html"><span class="name">ReferenceAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ReferenceAST" title="Permalink" target="_top">
@@ -803,7 +803,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ReferenceDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#ReferenceASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ReferenceAST">ReferenceAST</a>]</span>
+        <span class="name">ReferenceDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#ReferenceASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ReferenceAST">ReferenceAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ReferenceDecodeJson:argonaut.DecodeJson[AST.this.ReferenceAST]" title="Permalink" target="_top">
@@ -820,7 +820,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ReferenceEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#ReferenceASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ReferenceAST">ReferenceAST</a>]</span>
+        <span class="name">ReferenceEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#ReferenceASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ReferenceAST">ReferenceAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ReferenceEncodeJson:argonaut.EncodeJson[AST.this.ReferenceAST]" title="Permalink" target="_top">
@@ -837,7 +837,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$SchemaAST$.html"><span class="name">SchemaAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$SchemaAST$.html"><span class="name">SchemaAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@SchemaAST" title="Permalink" target="_top">
@@ -854,7 +854,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">SchemaDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#SchemaASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SchemaAST">SchemaAST</a>]</span>
+        <span class="name">SchemaDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#SchemaASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SchemaAST">SchemaAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@SchemaDecodeJson:argonaut.DecodeJson[AST.this.SchemaAST]" title="Permalink" target="_top">
@@ -871,7 +871,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">SchemaEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#SchemaASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SchemaAST">SchemaAST</a>]</span>
+        <span class="name">SchemaEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#SchemaASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SchemaAST">SchemaAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@SchemaEncodeJson:argonaut.EncodeJson[AST.this.SchemaAST]" title="Permalink" target="_top">
@@ -888,7 +888,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$SemActAST$.html"><span class="name">SemActAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$SemActAST$.html"><span class="name">SemActAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@SemActAST" title="Permalink" target="_top">
@@ -905,7 +905,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">SemActDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#SemActASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]</span>
+        <span class="name">SemActDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#SemActASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@SemActDecodeJson:argonaut.DecodeJson[AST.this.SemActAST]" title="Permalink" target="_top">
@@ -922,7 +922,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">SemActEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#SemActASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]</span>
+        <span class="name">SemActEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#SemActASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.SemActAST">SemActAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@SemActEncodeJson:argonaut.EncodeJson[AST.this.SemActAST]" title="Permalink" target="_top">
@@ -939,7 +939,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ShapeAST$.html"><span class="name">ShapeAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ShapeAST$.html"><span class="name">ShapeAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ShapeAST" title="Permalink" target="_top">
@@ -956,7 +956,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ShapeDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#ShapeASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ShapeAST">ShapeAST</a>]</span>
+        <span class="name">ShapeDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#ShapeASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ShapeAST">ShapeAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ShapeDecodeJson:argonaut.DecodeJson[AST.this.ShapeAST]" title="Permalink" target="_top">
@@ -973,7 +973,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ShapeEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#ShapeASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ShapeAST">ShapeAST</a>]</span>
+        <span class="name">ShapeEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#ShapeASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ShapeAST">ShapeAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ShapeEncodeJson:argonaut.EncodeJson[AST.this.ShapeAST]" title="Permalink" target="_top">
@@ -990,7 +990,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$StemAST$.html"><span class="name">StemAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$StemAST$.html"><span class="name">StemAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@StemAST" title="Permalink" target="_top">
@@ -1007,7 +1007,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">StemDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#StemASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>
+        <span class="name">StemDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#StemASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@StemDecodeJson:argonaut.DecodeJson[AST.this.StemAST]" title="Permalink" target="_top">
@@ -1024,7 +1024,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">StemEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#StemASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>
+        <span class="name">StemEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#StemASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.StemAST">StemAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@StemEncodeJson:argonaut.EncodeJson[AST.this.StemAST]" title="Permalink" target="_top">
@@ -1041,7 +1041,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$StemRangeAST$.html"><span class="name">StemRangeAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$StemRangeAST$.html"><span class="name">StemRangeAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@StemRangeAST" title="Permalink" target="_top">
@@ -1058,7 +1058,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">StemRangeDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#StemRangeASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.StemRangeAST">StemRangeAST</a>]</span>
+        <span class="name">StemRangeDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#StemRangeASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.StemRangeAST">StemRangeAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@StemRangeDecodeJson:argonaut.DecodeJson[AST.this.StemRangeAST]" title="Permalink" target="_top">
@@ -1075,7 +1075,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">StemRangeEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#StemRangeASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.StemRangeAST">StemRangeAST</a>]</span>
+        <span class="name">StemRangeEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#StemRangeASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.StemRangeAST">StemRangeAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@StemRangeEncodeJson:argonaut.EncodeJson[AST.this.StemRangeAST]" title="Permalink" target="_top">
@@ -1092,7 +1092,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Validation$$ValAST$.html"><span class="name">ValAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Validation$$ValAST$.html"><span class="name">ValAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValAST" title="Permalink" target="_top">
@@ -1109,7 +1109,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ValASTDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="Validation$$ValAST.html" class="extype" name="es.weso.shacl.validation.Validation.ValAST">ValAST</a>]</span>
+        <span class="name">ValASTDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="Validation$$ValAST.html" class="extype" name="es.weso.shacl.validation.Validation.ValAST">ValAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValASTDecodeJson:argonaut.DecodeJson[es.weso.shacl.validation.Validation.ValAST]" title="Permalink" target="_top">
@@ -1126,7 +1126,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ValASTEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="Validation$$ValAST.html" class="extype" name="es.weso.shacl.validation.Validation.ValAST">ValAST</a>]</span>
+        <span class="name">ValASTEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="Validation$$ValAST.html" class="extype" name="es.weso.shacl.validation.Validation.ValAST">ValAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValASTEncodeJson:argonaut.EncodeJson[es.weso.shacl.validation.Validation.ValAST]" title="Permalink" target="_top">
@@ -1143,7 +1143,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ValidationDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="Validation$$Validation.html" class="extype" name="es.weso.shacl.validation.Validation.Validation">Validation</a>]</span>
+        <span class="name">ValidationDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="Validation$$Validation.html" class="extype" name="es.weso.shacl.validation.Validation.Validation">Validation</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValidationDecodeJson:argonaut.DecodeJson[es.weso.shacl.validation.Validation.Validation]" title="Permalink" target="_top">
@@ -1160,7 +1160,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ValidationEncode</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="Validation$$Validation.html" class="extype" name="es.weso.shacl.validation.Validation.Validation">Validation</a>]</span>
+        <span class="name">ValidationEncode</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="Validation$$Validation.html" class="extype" name="es.weso.shacl.validation.Validation.Validation">Validation</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValidationEncode:argonaut.EncodeJson[es.weso.shacl.validation.Validation.Validation]" title="Permalink" target="_top">
@@ -1177,7 +1177,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$ValueClassAST$.html"><span class="name">ValueClassAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$ValueClassAST$.html"><span class="name">ValueClassAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@ValueClassAST" title="Permalink" target="_top">
@@ -1194,7 +1194,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ValueClassDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#ValueClassASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]</span>
+        <span class="name">ValueClassDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#ValueClassASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValueClassDecodeJson:argonaut.DecodeJson[AST.this.ValueClassAST]" title="Permalink" target="_top">
@@ -1211,7 +1211,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ValueClassEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#ValueClassASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]</span>
+        <span class="name">ValueClassEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#ValueClassASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ValueClassAST">ValueClassAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValueClassEncodeJson:argonaut.EncodeJson[AST.this.ValueClassAST]" title="Permalink" target="_top">
@@ -1228,7 +1228,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ValueDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#ValueASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ValueAST">ValueAST</a>]</span>
+        <span class="name">ValueDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#ValueASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ValueAST">ValueAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValueDecodeJson:argonaut.DecodeJson[AST.this.ValueAST]" title="Permalink" target="_top">
@@ -1245,7 +1245,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ValueEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#ValueASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ValueAST">ValueAST</a>]</span>
+        <span class="name">ValueEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#ValueASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.ValueAST">ValueAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ValueEncodeJson:argonaut.EncodeJson[AST.this.ValueAST]" title="Permalink" target="_top">
@@ -1262,7 +1262,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="../jast/AST$WildCardAST$.html"><span class="name">WildCardAST</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="../jast/AST$WildCardAST$.html"><span class="name">WildCardAST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.AST@WildCardAST" title="Permalink" target="_top">
@@ -1279,7 +1279,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">WildCardDecodeJson</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<a href="#WildCardASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.WildCardAST">WildCardAST</a>]</span>
+        <span class="name">WildCardDecodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="#WildCardASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.WildCardAST">WildCardAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@WildCardDecodeJson:argonaut.DecodeJson[AST.this.WildCardAST]" title="Permalink" target="_top">
@@ -1296,7 +1296,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">WildCardEncodeJson</span><span class="result">: <span class="extype" name="argonaut.EncodeJson">EncodeJson</span>[<a href="#WildCardASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.WildCardAST">WildCardAST</a>]</span>
+        <span class="name">WildCardEncodeJson</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.EncodeJson" class="extype" target="_top">EncodeJson</a>[<a href="#WildCardASTextendsProductwithSerializable" class="extmbr" name="es.weso.shacl.jast.AST.WildCardAST">WildCardAST</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@WildCardEncodeJson:argonaut.EncodeJson[AST.this.WildCardAST]" title="Permalink" target="_top">
@@ -1330,7 +1330,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@clone():Object" title="Permalink" target="_top">
@@ -1353,7 +1353,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">decodeStrictInt</span><span class="result">: <span class="extype" name="argonaut.DecodeJson">DecodeJson</span>[<span class="extype" name="scala.Int">Int</span>]</span>
+        <span class="name">decodeStrictInt</span><span class="result">: <a href="http://argonaut.io/scaladocs/index.html#argonaut.DecodeJson" class="extype" target="_top">DecodeJson</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@decodeStrictInt:argonaut.DecodeJson[Int]" title="Permalink" target="_top">
@@ -1370,7 +1370,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -1387,7 +1387,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -1404,7 +1404,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@finalize():Unit" title="Permalink" target="_top">
@@ -1444,7 +1444,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@hashCode():Int" title="Permalink" target="_top">
@@ -1461,7 +1461,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
@@ -1478,7 +1478,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -1495,7 +1495,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@notify():Unit" title="Permalink" target="_top">
@@ -1512,7 +1512,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@notifyAll():Unit" title="Permalink" target="_top">
@@ -1563,7 +1563,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@wait():Unit" title="Permalink" target="_top">
@@ -1586,7 +1586,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
@@ -1609,7 +1609,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.validation.Validation$@wait(x$1:Long):Unit" title="Permalink" target="_top">
@@ -1635,9 +1635,9 @@
         <div class="parent" name="es.weso.shacl.jast.AST">
               <h3>Inherited from <a href="../jast/AST.html" class="extype" name="es.weso.shacl.jast.AST">AST</a></h3>
             </div><div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
-              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></h3>
             </div>
         
         </div>

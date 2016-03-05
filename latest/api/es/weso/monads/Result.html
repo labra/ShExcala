@@ -12,7 +12,7 @@
       <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -47,7 +47,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">Result</span><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">Result</span><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4>
       
@@ -55,9 +55,9 @@
 The result can be:
 - <code>Passed</code> with a list of values
 - <code>Failure</code> with a string message
-</p></div><div class="toggleContainer block">
+</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/labra/ShExcala/tree/master/src/main/scala/es/weso/monads/Result.scala" target="_blank">Result.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
             <div class="subClasses hiddenContent"><a href="Failure.html" class="extype" name="es.weso.monads.Failure">Failure</a>, <a href="Passed.html" class="extype" name="es.weso.monads.Passed">Passed</a></div>
@@ -127,7 +127,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isFailure</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isFailure</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@isFailure:Boolean" title="Permalink" target="_top">
@@ -149,7 +149,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@!=(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -166,7 +166,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@##():Int" title="Permalink" target="_top">
@@ -183,7 +183,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@==(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -234,7 +234,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@clone():Object" title="Permalink" target="_top">
@@ -274,7 +274,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -291,7 +291,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@equals(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -308,7 +308,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@finalize():Unit" title="Permalink" target="_top">
@@ -365,7 +365,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@hashCode():Int" title="Permalink" target="_top">
@@ -382,7 +382,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
@@ -399,7 +399,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isValid</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isValid</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@isValid:Boolean" title="Permalink" target="_top">
@@ -433,7 +433,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -467,7 +467,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">not</span><span class="result">: <a href="" class="extype" name="es.weso.monads.Result">Result</a>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>
+        <span class="name">not</span><span class="result">: <a href="" class="extype" name="es.weso.monads.Result">Result</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@not:es.weso.monads.Result[Boolean]" title="Permalink" target="_top">
@@ -484,7 +484,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@notify():Unit" title="Permalink" target="_top">
@@ -501,7 +501,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@notifyAll():Unit" title="Permalink" target="_top">
@@ -535,7 +535,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">run</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="scala.Stream">Stream</span>[<span class="extype" name="es.weso.monads.Result.A">A</span>]]</span>
+        <span class="name">run</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[<span class="extype" name="scala.Stream">Stream</span>[<span class="extype" name="es.weso.monads.Result.A">A</span>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@run():scala.util.Try[Stream[A]]" title="Permalink" target="_top">
@@ -569,7 +569,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toList</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.monads.Result.A">A</span>]</span>
+        <span class="name">toList</span><span class="params">(<span name="n">n: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.monads.Result.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@toList(n:Int):List[A]" title="Permalink" target="_top">
@@ -603,7 +603,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toSingle</span><span class="result">: <span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="es.weso.monads.Result.A">A</span>]</span>
+        <span class="name">toSingle</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[<span class="extype" name="es.weso.monads.Result.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@toSingle:scala.util.Try[A]" title="Permalink" target="_top">
@@ -637,7 +637,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@wait():Unit" title="Permalink" target="_top">
@@ -660,7 +660,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
@@ -683,7 +683,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@wait(x$1:Long):Unit" title="Permalink" target="_top">
@@ -706,7 +706,7 @@ The result can be:
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">withFilter</span><span class="params">(<span name="p">p: (<span class="extype" name="es.weso.monads.Result.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="es.weso.monads.Result">Result</a>[<span class="extype" name="es.weso.monads.Result.A">A</span>]</span>
+        <span class="name">withFilter</span><span class="params">(<span name="p">p: (<span class="extype" name="es.weso.monads.Result.A">A</span>) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="" class="extype" name="es.weso.monads.Result">Result</a>[<span class="extype" name="es.weso.monads.Result.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.monads.Result@withFilter(p:A=&gt;Boolean):es.weso.monads.Result[A]" title="Permalink" target="_top">
@@ -741,9 +741,9 @@ The result can be:
 
         <div id="inheritedMembers">
         <div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
-              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></h3>
             </div>
         
         </div>

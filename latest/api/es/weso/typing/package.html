@@ -12,7 +12,7 @@
       <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -47,7 +47,11 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"></div>
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block diagram-container" id="content-diagram-container">
+                <span class="toggle diagram-link">Content Hierarchy</span>
+                <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#diagrams" target="_blank" class="diagram-help">Learn more about scaladoc diagrams</a>
+                <div class="diagram" id="content-diagram"><svg class="package-diagram" id="graph1" viewBox="-1 -1 530 161" height="162pt" width="531pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="font-family:Times-Roman;font-size:14.00;" class="graph" id="graph0"><g class="node" id="node1"><a xlink:title="es.weso.typing.ReasonTypingAsMap" xlink:href="ReasonTypingAsMap.html#inheritance-diagram"><polygon points="321,66 7,66 7,92 321,92 321,66" style="fill:#0a955b;stroke:#115f3b;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/class_diagram.pngnode0"><polygon points="32,71 17,71 17,87 32,87 32,71 "></polygon></clipPath><image xlink:href="../../../lib/class_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/class_diagram.pngnode0)" y="71" x="17" preserveAspectRatio="xMidYMid meet" height="26px" width="314px"></image><text y="82" x="175" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">ReasonTypingAsMap[Node, Label, ReasonPos, ReasonNeg]</text></a></g><g class="node" id="node2"><a xlink:title="es.weso.typing.ReasonPosNegTyping" xlink:href="ReasonPosNegTyping.html#inheritance-diagram"><polygon points="323,4 5,4 5,30 323,30 323,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode1"><polygon points="30,9 15,9 15,25 30,25 30,9 "></polygon></clipPath><image xlink:href="../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode1)" y="9" x="15" preserveAspectRatio="xMidYMid meet" height="26px" width="318px"></image><text y="20" x="175" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">ReasonPosNegTyping[Node, Label, ReasonPos, ReasonNeg]</text></a></g><g class="edge" id="edge6"><path d="M164,35C164,45 164,57 164,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="162,35 164,30 166,35 162,35" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node3"><a xlink:title="es.weso.typing.PosTyping" xlink:href="PosTyping.html#inheritance-diagram"><polygon points="500,4 348,4 348,30 500,30 500,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode2"><polygon points="374,9 358,9 358,25 374,25 374,9 "></polygon></clipPath><image xlink:href="../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode2)" y="9" x="358" preserveAspectRatio="xMidYMid meet" height="26px" width="152px"></image><text y="20" x="435" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">PosTyping[Node, Label]</text></a></g><g class="node" id="node5"><a xlink:title="es.weso.typing.PosNegTyping" xlink:href="PosNegTyping.html#inheritance-diagram"><polygon points="509,66 339,66 339,92 509,92 509,66" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode4"><polygon points="365,71 349,71 349,87 365,87 365,71 "></polygon></clipPath><image xlink:href="../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode4)" y="71" x="349" preserveAspectRatio="xMidYMid meet" height="26px" width="170px"></image><text y="82" x="435" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">PosNegTyping[Node, Label]</text></a></g><g class="edge" id="edge2"><path d="M424,35C424,45 424,57 424,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="422,35 424,30 426,35 422,35" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node4"><a xlink:title="es.weso.typing.PosNegTypingAsMap" xlink:href="PosNegTypingAsMap.html#inheritance-diagram"><polygon points="524,128 324,128 324,154 524,154 524,128" style="fill:#0a955b;stroke:#115f3b;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/class_diagram.pngnode3"><polygon points="349,133 334,133 334,149 349,149 349,133 "></polygon></clipPath><image xlink:href="../../../lib/class_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/class_diagram.pngnode3)" y="133" x="334" preserveAspectRatio="xMidYMid meet" height="26px" width="200px"></image><text y="144" x="435" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">PosNegTypingAsMap[Node, Label]</text></a></g><g class="edge" id="edge4"><path d="M424,97C424,107 424,119 424,128" style="fill:none;stroke:#d4d4d4;"></path><polygon points="422,97 424,92 426,97 422,97" style="fill:none;stroke:#d4d4d4;"></polygon></g></g></svg></div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -92,7 +96,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="PosNegTypingAsMap.html"><span class="name">PosNegTypingAsMap</span></a><span class="tparams">[<span name="Node">Node</span>, <span name="Label">Label</span>]</span><span class="params">(<span name="m">m: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="es.weso.typing.PosNegTypingAsMap.Node">Node</span>, <a href="TypeRow.html" class="extype" name="es.weso.typing.TypeRow">TypeRow</a>[<span class="extype" name="es.weso.typing.PosNegTypingAsMap.Label">Label</span>]]</span>)</span><span class="result"> extends <a href="PosNegTyping.html" class="extype" name="es.weso.typing.PosNegTyping">PosNegTyping</a>[<span class="extype" name="es.weso.typing.PosNegTypingAsMap.Node">Node</span>, <span class="extype" name="es.weso.typing.PosNegTypingAsMap.Label">Label</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="PosNegTypingAsMap.html"><span class="name">PosNegTypingAsMap</span></a><span class="tparams">[<span name="Node">Node</span>, <span name="Label">Label</span>]</span><span class="params">(<span name="m">m: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="es.weso.typing.PosNegTypingAsMap.Node">Node</span>, <a href="TypeRow.html" class="extype" name="es.weso.typing.TypeRow">TypeRow</a>[<span class="extype" name="es.weso.typing.PosNegTypingAsMap.Label">Label</span>]]</span>)</span><span class="result"> extends <a href="PosNegTyping.html" class="extype" name="es.weso.typing.PosNegTyping">PosNegTyping</a>[<span class="extype" name="es.weso.typing.PosNegTypingAsMap.Node">Node</span>, <span class="extype" name="es.weso.typing.PosNegTypingAsMap.Label">Label</span>] with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@PosNegTypingAsMap[Node,Label]extendsPosNegTyping[Node,Label]withProductwithSerializable" title="Permalink" target="_top">
@@ -109,7 +113,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="PosTyping.html"><span class="name">PosTyping</span></a><span class="tparams">[<span name="Node">Node</span>, <span name="Label">Label</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="PosTyping.html"><span class="name">PosTyping</span></a><span class="tparams">[<span name="Node">Node</span>, <span name="Label">Label</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@PosTyping[Node,Label]extendsAnyRef" title="Permalink" target="_top">
@@ -126,7 +130,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="ReasonPosNegTyping.html"><span class="name">ReasonPosNegTyping</span></a><span class="tparams">[<span name="Node">Node</span>, <span name="Label">Label</span>, <span name="ReasonPos">ReasonPos</span>, <span name="ReasonNeg">ReasonNeg</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="ReasonPosNegTyping.html"><span class="name">ReasonPosNegTyping</span></a><span class="tparams">[<span name="Node">Node</span>, <span name="Label">Label</span>, <span name="ReasonPos">ReasonPos</span>, <span name="ReasonNeg">ReasonNeg</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@ReasonPosNegTyping[Node,Label,ReasonPos,ReasonNeg]extendsAnyRef" title="Permalink" target="_top">
@@ -143,7 +147,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="ReasonTypeRow.html"><span class="name">ReasonTypeRow</span></a><span class="tparams">[<span name="Label">Label</span>, <span name="ReasonPos">ReasonPos</span>, <span name="ReasonNeg">ReasonNeg</span>]</span><span class="params">(<span name="pos">pos: <span class="extype" name="scala.Predef.Set">Set</span>[(<span class="extype" name="es.weso.typing.ReasonTypeRow.Label">Label</span>, <span class="extype" name="es.weso.typing.ReasonTypeRow.ReasonPos">ReasonPos</span>)]</span>, <span name="neg">neg: <span class="extype" name="scala.Predef.Set">Set</span>[(<span class="extype" name="es.weso.typing.ReasonTypeRow.Label">Label</span>, <span class="extype" name="es.weso.typing.ReasonTypeRow.ReasonNeg">ReasonNeg</span>)]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="ReasonTypeRow.html"><span class="name">ReasonTypeRow</span></a><span class="tparams">[<span name="Label">Label</span>, <span name="ReasonPos">ReasonPos</span>, <span name="ReasonNeg">ReasonNeg</span>]</span><span class="params">(<span name="pos">pos: <span class="extype" name="scala.Predef.Set">Set</span>[(<span class="extype" name="es.weso.typing.ReasonTypeRow.Label">Label</span>, <span class="extype" name="es.weso.typing.ReasonTypeRow.ReasonPos">ReasonPos</span>)]</span>, <span name="neg">neg: <span class="extype" name="scala.Predef.Set">Set</span>[(<span class="extype" name="es.weso.typing.ReasonTypeRow.Label">Label</span>, <span class="extype" name="es.weso.typing.ReasonTypeRow.ReasonNeg">ReasonNeg</span>)]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@ReasonTypeRow[Label,ReasonPos,ReasonNeg]extendsProductwithSerializable" title="Permalink" target="_top">
@@ -160,7 +164,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="ReasonTypingAsMap.html"><span class="name">ReasonTypingAsMap</span></a><span class="tparams">[<span name="Node">Node</span>, <span name="Label">Label</span>, <span name="ReasonPos">ReasonPos</span>, <span name="ReasonNeg">ReasonNeg</span>]</span><span class="params">(<span name="m">m: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="es.weso.typing.ReasonTypingAsMap.Node">Node</span>, <a href="ReasonTypeRow.html" class="extype" name="es.weso.typing.ReasonTypeRow">ReasonTypeRow</a>[<span class="extype" name="es.weso.typing.ReasonTypingAsMap.Label">Label</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.ReasonPos">ReasonPos</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.ReasonNeg">ReasonNeg</span>]]</span>)</span><span class="result"> extends <a href="ReasonPosNegTyping.html" class="extype" name="es.weso.typing.ReasonPosNegTyping">ReasonPosNegTyping</a>[<span class="extype" name="es.weso.typing.ReasonTypingAsMap.Node">Node</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.Label">Label</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.ReasonPos">ReasonPos</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.ReasonNeg">ReasonNeg</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="ReasonTypingAsMap.html"><span class="name">ReasonTypingAsMap</span></a><span class="tparams">[<span name="Node">Node</span>, <span name="Label">Label</span>, <span name="ReasonPos">ReasonPos</span>, <span name="ReasonNeg">ReasonNeg</span>]</span><span class="params">(<span name="m">m: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="es.weso.typing.ReasonTypingAsMap.Node">Node</span>, <a href="ReasonTypeRow.html" class="extype" name="es.weso.typing.ReasonTypeRow">ReasonTypeRow</a>[<span class="extype" name="es.weso.typing.ReasonTypingAsMap.Label">Label</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.ReasonPos">ReasonPos</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.ReasonNeg">ReasonNeg</span>]]</span>)</span><span class="result"> extends <a href="ReasonPosNegTyping.html" class="extype" name="es.weso.typing.ReasonPosNegTyping">ReasonPosNegTyping</a>[<span class="extype" name="es.weso.typing.ReasonTypingAsMap.Node">Node</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.Label">Label</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.ReasonPos">ReasonPos</span>, <span class="extype" name="es.weso.typing.ReasonTypingAsMap.ReasonNeg">ReasonNeg</span>] with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@ReasonTypingAsMap[Node,Label,ReasonPos,ReasonNeg]extendsReasonPosNegTyping[Node,Label,ReasonPos,ReasonNeg]withProductwithSerializable" title="Permalink" target="_top">
@@ -177,7 +181,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="TypeFail.html"><span class="name">TypeFail</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="TypeFail.html"><span class="name">TypeFail</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@TypeFailextendsExceptionwithProductwithSerializable" title="Permalink" target="_top">
@@ -194,7 +198,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="TypeRow.html"><span class="name">TypeRow</span></a><span class="tparams">[<span name="Label">Label</span>]</span><span class="params">(<span name="pos">pos: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="es.weso.typing.TypeRow.Label">Label</span>]</span>, <span name="neg">neg: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="es.weso.typing.TypeRow.Label">Label</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="TypeRow.html"><span class="name">TypeRow</span></a><span class="tparams">[<span name="Label">Label</span>]</span><span class="params">(<span name="pos">pos: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="es.weso.typing.TypeRow.Label">Label</span>]</span>, <span name="neg">neg: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="es.weso.typing.TypeRow.Label">Label</span>]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@TypeRow[Label]extendsProductwithSerializable" title="Permalink" target="_top">
@@ -235,7 +239,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="PosNegTypingAsMap$.html"><span class="name">PosNegTypingAsMap</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="PosNegTypingAsMap$.html"><span class="name">PosNegTypingAsMap</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@PosNegTypingAsMap" title="Permalink" target="_top">
@@ -269,7 +273,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="ReasonTypeRow$.html"><span class="name">ReasonTypeRow</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="ReasonTypeRow$.html"><span class="name">ReasonTypeRow</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@ReasonTypeRow" title="Permalink" target="_top">
@@ -286,7 +290,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="TypeRow$.html"><span class="name">TypeRow</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="TypeRow$.html"><span class="name">TypeRow</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.typing.package@TypeRow" title="Permalink" target="_top">

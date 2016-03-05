@@ -12,7 +12,7 @@
       <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -75,7 +75,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="And.html"><span class="name">And</span></a><span class="tparams">[<span name="A">A</span>, <span name="Error">Error</span>]</span><span class="params">(<span name="branches">branches: <span class="extype" name="scala.List">List</span>[<a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.And.A">A</span>, <span class="extype" name="es.weso.utils.And.Error">Error</span>]]</span>)</span><span class="result"> extends <a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.And.A">A</span>, <span class="extype" name="es.weso.utils.And.Error">Error</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="And.html"><span class="name">And</span></a><span class="tparams">[<span name="A">A</span>, <span name="Error">Error</span>]</span><span class="params">(<span name="branches">branches: <span class="extype" name="scala.List">List</span>[<a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.And.A">A</span>, <span class="extype" name="es.weso.utils.And.Error">Error</span>]]</span>)</span><span class="result"> extends <a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.And.A">A</span>, <span class="extype" name="es.weso.utils.And.Error">Error</span>] with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.utils.package@And[A,Error]extendsProofTree[A,Error]withProductwithSerializable" title="Permalink" target="_top">
@@ -92,7 +92,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Checker.html"><span class="name">Checker</span></a><span class="tparams">[<span name="A">+A</span>, <span name="E">+E</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="org.scalactic.Or">org.scalactic.Or</span>[<span class="extype" name="es.weso.utils.Checker.A">A</span>, <span class="extype" name="org.scalactic.Every">Every</span>[<span class="extype" name="es.weso.utils.Checker.E">E</span>]]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Checker.html"><span class="name">Checker</span></a><span class="tparams">[<span name="A">+A</span>, <span name="E">+E</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="org.scalactic.Or">org.scalactic.Or</span>[<span class="extype" name="es.weso.utils.Checker.A">A</span>, <span class="extype" name="org.scalactic.Every">Every</span>[<span class="extype" name="es.weso.utils.Checker.E">E</span>]]</span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.utils.package@Checker[+A,+E]extendsProductwithSerializable" title="Permalink" target="_top">
@@ -112,7 +112,7 @@ This is a facade to abstract on alternative implementations using:
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Fail.html"><span class="name">Fail</span></a><span class="tparams">[<span name="Error">Error</span>]</span><span class="params">(<span name="error">error: <span class="extype" name="es.weso.utils.Fail.Error">Error</span></span>)</span><span class="result"> extends <a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="scala.Nothing">Nothing</span>, <span class="extype" name="es.weso.utils.Fail.Error">Error</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Fail.html"><span class="name">Fail</span></a><span class="tparams">[<span name="Error">Error</span>]</span><span class="params">(<span name="error">error: <span class="extype" name="es.weso.utils.Fail.Error">Error</span></span>)</span><span class="result"> extends <a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>, <span class="extype" name="es.weso.utils.Fail.Error">Error</span>] with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.utils.package@Fail[Error]extendsProofTree[Nothing,Error]withProductwithSerializable" title="Permalink" target="_top">
@@ -129,7 +129,7 @@ This is a facade to abstract on alternative implementations using:
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Logging.html"><span class="name">Logging</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="Logging.html"><span class="name">Logging</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.utils.package@LoggingextendsAnyRef" title="Permalink" target="_top">
@@ -146,7 +146,7 @@ This is a facade to abstract on alternative implementations using:
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Or.html"><span class="name">Or</span></a><span class="tparams">[<span name="A">A</span>, <span name="Error">Error</span>]</span><span class="params">(<span name="branches">branches: <span class="extype" name="scala.List">List</span>[<a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.Or.A">A</span>, <span class="extype" name="es.weso.utils.Or.Error">Error</span>]]</span>)</span><span class="result"> extends <a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.Or.A">A</span>, <span class="extype" name="es.weso.utils.Or.Error">Error</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Or.html"><span class="name">Or</span></a><span class="tparams">[<span name="A">A</span>, <span name="Error">Error</span>]</span><span class="params">(<span name="branches">branches: <span class="extype" name="scala.List">List</span>[<a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.Or.A">A</span>, <span class="extype" name="es.weso.utils.Or.Error">Error</span>]]</span>)</span><span class="result"> extends <a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.Or.A">A</span>, <span class="extype" name="es.weso.utils.Or.Error">Error</span>] with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.utils.package@Or[A,Error]extendsProofTree[A,Error]withProductwithSerializable" title="Permalink" target="_top">
@@ -163,7 +163,7 @@ This is a facade to abstract on alternative implementations using:
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="ProofTree.html"><span class="name">ProofTree</span></a><span class="tparams">[<span name="A">+A</span>, <span name="Error">+Error</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="ProofTree.html"><span class="name">ProofTree</span></a><span class="tparams">[<span name="A">+A</span>, <span name="Error">+Error</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.utils.package@ProofTree[+A,+Error]extendsAnyRef" title="Permalink" target="_top">
@@ -180,7 +180,7 @@ This is a facade to abstract on alternative implementations using:
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Success.html"><span class="name">Success</span></a><span class="tparams">[<span name="A">A</span>, <span name="Error">Error</span>]</span><span class="params">(<span name="info">info: <span class="extype" name="es.weso.utils.Success.A">A</span></span>)</span><span class="result"> extends <a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.Success.A">A</span>, <span class="extype" name="scala.Nothing">Nothing</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Success.html"><span class="name">Success</span></a><span class="tparams">[<span name="A">A</span>, <span name="Error">Error</span>]</span><span class="params">(<span name="info">info: <span class="extype" name="es.weso.utils.Success.A">A</span></span>)</span><span class="result"> extends <a href="ProofTree.html" class="extype" name="es.weso.utils.ProofTree">ProofTree</a>[<span class="extype" name="es.weso.utils.Success.A">A</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>] with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.utils.package@Success[A,Error]extendsProofTree[A,Nothing]withProductwithSerializable" title="Permalink" target="_top">
@@ -238,7 +238,7 @@ This is a facade to abstract on alternative implementations using:
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Checker$.html"><span class="name">Checker</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Checker$.html"><span class="name">Checker</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.utils.package@Checker" title="Permalink" target="_top">

@@ -12,7 +12,7 @@
       <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -51,13 +51,17 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/labra/ShExcala/tree/master/src/main/scala/es/weso/shacl/XSFacet.scala" target="_blank">XSFacet.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a>, <span class="extype" name="scala.util.parsing.input.Positional">Positional</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a>, <span class="extype" name="scala.util.parsing.input.Positional">Positional</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
             <div class="subClasses hiddenContent"><a href="FractionDigits.html" class="extype" name="es.weso.shacl.FractionDigits">FractionDigits</a>, <a href="Length.html" class="extype" name="es.weso.shacl.Length">Length</a>, <a href="MaxExclusive.html" class="extype" name="es.weso.shacl.MaxExclusive">MaxExclusive</a>, <a href="MaxInclusive.html" class="extype" name="es.weso.shacl.MaxInclusive">MaxInclusive</a>, <a href="MaxLength.html" class="extype" name="es.weso.shacl.MaxLength">MaxLength</a>, <a href="MinExclusive.html" class="extype" name="es.weso.shacl.MinExclusive">MinExclusive</a>, <a href="MinInclusive.html" class="extype" name="es.weso.shacl.MinInclusive">MinInclusive</a>, <a href="MinLength.html" class="extype" name="es.weso.shacl.MinLength">MinLength</a>, <a href="NumericFacet.html" class="extype" name="es.weso.shacl.NumericFacet">NumericFacet</a>, <a href="Pattern.html" class="extype" name="es.weso.shacl.Pattern">Pattern</a>, <a href="StringFacet.html" class="extype" name="es.weso.shacl.StringFacet">StringFacet</a>, <a href="TotalDigits.html" class="extype" name="es.weso.shacl.TotalDigits">TotalDigits</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">Type Hierarchy</span>
+                <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#diagrams" target="_blank" class="diagram-help">Learn more about scaladoc diagrams</a>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="-1 -1 233 161" height="162pt" width="234pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="font-family:Times-Roman;font-size:14.00;" class="graph" id="graph0"><g class="cluster" id="graph2"></g><g class="cluster" id="graph3"></g><g class="node" id="node3"><a xlink:title="es.weso.shacl.XSFacet (this trait)" xlink:href="#inheritance-diagram"><polygon points="161,66 77,66 77,92 161,92 161,66" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode0"><polygon points="102,71 87,71 87,87 102,87 102,71 "></polygon></clipPath><image xlink:href="../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode0)" y="71" x="87" preserveAspectRatio="xMidYMid meet" height="26px" width="84px"></image><text y="82" x="130" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">XSFacet</text></a></g><g class="node" id="node4"><a xlink:title="es.weso.shacl.NumericFacet" xlink:href="NumericFacet.html#inheritance-diagram"><polygon points="113,128 5,128 5,154 113,154 113,128" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode1"><polygon points="31,133 15,133 15,149 31,149 31,133 "></polygon></clipPath><image xlink:href="../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode1)" y="133" x="15" preserveAspectRatio="xMidYMid meet" height="26px" width="108px"></image><text y="144" x="70" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">NumericFacet</text></a></g><g class="edge" id="edge8"><path d="M102,96C93,105 81,118 72,128" style="fill:none;stroke:#d4d4d4;"></path><polygon points="101,94 106,92 104,97 101,94" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node5"><a xlink:title="es.weso.shacl.StringFacet" xlink:href="StringFacet.html#inheritance-diagram"><polygon points="227,128 131,128 131,154 227,154 227,128" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode2"><polygon points="156,133 141,133 141,149 156,149 156,133 "></polygon></clipPath><image xlink:href="../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode2)" y="133" x="141" preserveAspectRatio="xMidYMid meet" height="26px" width="96px"></image><text y="144" x="190" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">StringFacet</text></a></g><g class="edge" id="edge10"><path d="M136,96C145,105 157,118 166,128" style="fill:none;stroke:#d4d4d4;"></path><polygon points="134,97 132,92 137,94 134,97" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node6"><polygon points="112,4 24,4 24,30 112,30 112,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode3"><polygon points="49,9 34,9 34,25 49,25 49,9 "></polygon></clipPath><image xlink:href="../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode3)" y="9" x="34" preserveAspectRatio="xMidYMid meet" height="26px" width="88px"></image><text y="20" x="79" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">Positional</text></g><g class="edge" id="edge4"><path d="M83,34C91,44 101,56 108,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="81,35 79,30 84,32 81,35" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node7"><a xlink:title="es.weso.utils.Logging" xlink:href="../utils/Logging.html#inheritance-diagram"><polygon points="210,4 130,4 130,30 210,30 210,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode4"><polygon points="155,9 140,9 140,25 155,25 155,9 "></polygon></clipPath><image xlink:href="../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode4)" y="9" x="140" preserveAspectRatio="xMidYMid meet" height="26px" width="80px"></image><text y="20" x="181" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">Logging</text></a></g><g class="edge" id="edge6"><path d="M155,34C147,44 137,56 130,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="154,32 159,30 157,35 154,32" style="fill:none;stroke:#d4d4d4;"></polygon></g></g></svg></div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -128,7 +132,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@!=(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -145,7 +149,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@##():Int" title="Permalink" target="_top">
@@ -162,7 +166,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@==(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -196,7 +200,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">appenders</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="scala.Any">Any</span>]</span>
+        <span class="name">appenders</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.immutable.List" class="extype" target="_top">List</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@appenders:List[Any]" title="Permalink" target="_top">
@@ -230,7 +234,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@clone():Object" title="Permalink" target="_top">
@@ -253,7 +257,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">debug</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">debug</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@debug(msg:String):Unit" title="Permalink" target="_top">
@@ -270,7 +274,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -287,7 +291,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@equals(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -304,7 +308,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@finalize():Unit" title="Permalink" target="_top">
@@ -344,7 +348,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@hashCode():Int" title="Permalink" target="_top">
@@ -361,7 +365,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">info</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">info</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@info(msg:String):Unit" title="Permalink" target="_top">
@@ -378,7 +382,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
@@ -412,7 +416,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -429,7 +433,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@notify():Unit" title="Permalink" target="_top">
@@ -446,7 +450,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@notifyAll():Unit" title="Permalink" target="_top">
@@ -480,7 +484,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">setDebug</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">setDebug</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@setDebug():Unit" title="Permalink" target="_top">
@@ -497,7 +501,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">setError</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">setError</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@setError():Unit" title="Permalink" target="_top">
@@ -514,7 +518,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">setInfo</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">setInfo</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@setInfo():Unit" title="Permalink" target="_top">
@@ -582,7 +586,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@wait():Unit" title="Permalink" target="_top">
@@ -605,7 +609,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
@@ -628,7 +632,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.XSFacet@wait(x$1:Long):Unit" title="Permalink" target="_top">
@@ -656,9 +660,9 @@
             </div><div class="parent" name="scala.util.parsing.input.Positional">
               <h3>Inherited from <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></h3>
             </div><div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
-              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></h3>
             </div>
         
         </div>

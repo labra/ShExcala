@@ -12,7 +12,7 @@
       <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -53,13 +53,17 @@
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Shacl parser. This parser tries to follow
 https://github.com/shexSpec/shex.js/blob/master/doc/bnf
-</p></div><div class="toggleContainer block">
+</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/labra/ShExcala/tree/master/src/main/scala/es/weso/shacl/parser/ShaclParser.scala" target="_blank">ShaclParser.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="es.weso.parser.W3cTokens">W3cTokens</span>, <span class="extype" name="es.weso.parser.StateParser">parser.StateParser</span>, <span class="extype" name="scala.util.parsing.combinator.RegexParsers">RegexParsers</span>, <span class="extype" name="scala.util.parsing.combinator.Parsers">Parsers</span>, <span class="extype" name="scala.util.parsing.input.Positional">Positional</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="es.weso.parser.W3cTokens">W3cTokens</span>, <span class="extype" name="es.weso.parser.StateParser">parser.StateParser</span>, <span class="extype" name="scala.util.parsing.combinator.RegexParsers">RegexParsers</span>, <span class="extype" name="scala.util.parsing.combinator.Parsers">Parsers</span>, <span class="extype" name="scala.util.parsing.input.Positional">Positional</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
             <div class="subClasses hiddenContent"><a href="ShaclParser$.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></div>
-          </div></div>
+          </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">Type Hierarchy</span>
+                <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#diagrams" target="_blank" class="diagram-help">Learn more about scaladoc diagrams</a>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="-1 -1 457 161" height="162pt" width="458pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="font-family:Times-Roman;font-size:14.00;" class="graph" id="graph0"><g class="cluster" id="graph2"></g><g class="cluster" id="graph3"></g><g class="node" id="node3"><a xlink:title="es.weso.shacl.parser.ShaclParser (this trait)" xlink:href="#inheritance-diagram"><polygon points="275,66 175,66 175,92 275,92 275,66" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode0"><polygon points="201,71 185,71 185,87 201,87 201,71 "></polygon></clipPath><image xlink:href="../../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode0)" y="71" x="185" preserveAspectRatio="xMidYMid meet" height="26px" width="100px"></image><text y="82" x="236" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">ShaclParser</text></a></g><g class="node" id="node4"><a xlink:title="es.weso.shacl.parser.ShaclParser" xlink:href="ShaclParser$.html#inheritance-diagram"><polygon points="275,128 175,128 175,154 275,154 275,128" style="fill:#3556a7;stroke:#102966;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/object_diagram.pngnode1"><polygon points="201,133 185,133 185,149 201,149 201,133 "></polygon></clipPath><image xlink:href="../../../../lib/object_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/object_diagram.pngnode1)" y="133" x="185" preserveAspectRatio="xMidYMid meet" height="26px" width="100px"></image><text y="144" x="236" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">ShaclParser</text></a></g><g class="edge" id="edge12"><path d="M225,97C225,107 225,119 225,128" style="fill:none;stroke:#d4d4d4;"></path><polygon points="223,97 225,92 227,97 223,97" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node5"><polygon points="93,4 5,4 5,30 93,30 93,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode2"><polygon points="30,9 15,9 15,25 30,25 30,9 "></polygon></clipPath><image xlink:href="../../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode2)" y="9" x="15" preserveAspectRatio="xMidYMid meet" height="26px" width="88px"></image><text y="20" x="60" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">Positional</text></g><g class="edge" id="edge4"><path d="M91,32C121,42 160,56 188,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="90,33 86,30 91,30 90,33" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node6"><polygon points="219,4 111,4 111,30 219,30 219,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode3"><polygon points="136,9 121,9 121,25 136,25 136,9 "></polygon></clipPath><image xlink:href="../../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode3)" y="9" x="121" preserveAspectRatio="xMidYMid meet" height="26px" width="108px"></image><text y="20" x="176" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">RegexParsers</text></g><g class="edge" id="edge6"><path d="M182,34C191,43 203,56 212,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="180,35 178,30 183,32 180,35" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node7"><polygon points="335,4 237,4 237,30 335,30 335,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode4"><polygon points="263,9 247,9 247,25 263,25 263,9 "></polygon></clipPath><image xlink:href="../../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode4)" y="9" x="247" preserveAspectRatio="xMidYMid meet" height="26px" width="98px"></image><text y="20" x="297" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">StateParser</text></g><g class="edge" id="edge8"><path d="M269,34C260,43 247,56 238,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="268,32 273,30 271,35 268,32" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node8"><polygon points="451,4 353,4 353,30 451,30 451,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode5"><polygon points="379,9 363,9 363,25 379,25 379,9 "></polygon></clipPath><image xlink:href="../../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode5)" y="9" x="363" preserveAspectRatio="xMidYMid meet" height="26px" width="98px"></image><text y="20" x="413" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">W3cTokens</text></g><g class="edge" id="edge10"><path d="M359,32C329,42 290,56 262,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="359,30 364,30 360,33 359,30" style="fill:none;stroke:#d4d4d4;"></polygon></g></g></svg></div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -106,7 +110,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Elem</span><span class="result"> = <span class="extype" name="scala.Char">Char</span></span>
+        <span class="name">Elem</span><span class="result"> = <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@Elem=Char" title="Permalink" target="_top">
@@ -123,7 +127,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Error</span><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.Parsers.NoSuccess">NoSuccess</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Error</span><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.Parsers.NoSuccess">NoSuccess</span> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@ErrorextendsParsers.this.NoSuccesswithProductwithSerializable" title="Permalink" target="_top">
@@ -140,7 +144,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Failure</span><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.Parsers.NoSuccess">NoSuccess</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Failure</span><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.Parsers.NoSuccess">NoSuccess</span> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@FailureextendsParsers.this.NoSuccesswithProductwithSerializable" title="Permalink" target="_top">
@@ -174,7 +178,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">NoSuccess</span><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
+        <span class="name">NoSuccess</span><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@NoSuccessextendsParsers.this.ParseResult[Nothing]" title="Permalink" target="_top">
@@ -208,7 +212,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">ParseResult</span><span class="tparams">[<span name="T">+T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">ParseResult</span><span class="tparams">[<span name="T">+T</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@ParseResult[+T]extendsAnyRef" title="Permalink" target="_top">
@@ -242,7 +246,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="ShaclParser$Sense.html"><span class="name">Sense</span></a><span class="params">(<span name="inverse">inverse: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="negated">negated: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="ShaclParser$Sense.html"><span class="name">Sense</span></a><span class="params">(<span name="inverse">inverse: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="negated">negated: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@SenseextendsProductwithSerializable" title="Permalink" target="_top">
@@ -276,7 +280,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="ShaclParser$ShapeRule.html"><span class="name">ShapeRule</span></a><span class="params">(<span name="label">label: <a href="../Label.html" class="extype" name="es.weso.shacl.Label">Label</a></span>, <span name="shape">shape: <a href="../Shape.html" class="extype" name="es.weso.shacl.Shape">Shape</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="ShaclParser$ShapeRule.html"><span class="name">ShapeRule</span></a><span class="params">(<span name="label">label: <a href="../Label.html" class="extype" name="es.weso.shacl.Label">Label</a></span>, <span name="shape">shape: <a href="../Shape.html" class="extype" name="es.weso.shacl.Shape">Shape</a></span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@ShapeRuleextendsProductwithSerializable" title="Permalink" target="_top">
@@ -310,7 +314,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Success</span><span class="tparams">[<span name="T">+T</span>]</span><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.Success.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Success</span><span class="tparams">[<span name="T">+T</span>]</span><span class="result"> extends <span class="extype" name="scala.util.parsing.combinator.Parsers.ParseResult">ParseResult</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.Success.T">T</span>] with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@Success[+T]extendsParsers.this.ParseResult[T]withProductwithSerializable" title="Permalink" target="_top">
@@ -327,7 +331,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $tilde" class="name">~</span><span class="tparams">[<span name="a">+a</span>, <span name="b">+b</span>]</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span title="gt4s: $tilde" class="name">~</span><span class="tparams">[<span name="a">+a</span>, <span name="b">+b</span>]</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@~[+a,+b]extendsProductwithSerializable" title="Permalink" target="_top">
@@ -351,7 +355,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@!=(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -368,7 +372,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@##():Int" title="Permalink" target="_top">
@@ -385,7 +389,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@==(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -555,7 +559,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ECHAR2char</span><span class="params">(<span name="echar">echar: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Char">Char</span></span>
+        <span class="name">ECHAR2char</span><span class="params">(<span name="echar">echar: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@ECHAR2char(echar:String):Char" title="Permalink" target="_top">
@@ -572,7 +576,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">ECHAR_Parser</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Char">Char</span>]</span>
+        <span class="name">ECHAR_Parser</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@ECHAR_Parser:W3cTokens.this.Parser[Char]" title="Permalink" target="_top">
@@ -895,7 +899,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">PN_CHARS_BASE_Parser</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Char">Char</span>]</span>
+        <span class="name">PN_CHARS_BASE_Parser</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@PN_CHARS_BASE_Parser:W3cTokens.this.Parser[Char]" title="Permalink" target="_top">
@@ -1048,7 +1052,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">RDFLiteral</span><span class="params">(<span name="prefixMap">prefixMap: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span>]</span>
+        <span class="name">RDFLiteral</span><span class="params">(<span name="prefixMap">prefixMap: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@RDFLiteral(prefixMap:es.weso.rdf.PrefixMap):ShaclParser.this.Parser[es.weso.rdf.nodes.LiteralwithProductwithSerializable]" title="Permalink" target="_top">
@@ -1201,7 +1205,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">UCHAR2char</span><span class="params">(<span name="uchar">uchar: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Char">Char</span></span>
+        <span class="name">UCHAR2char</span><span class="params">(<span name="uchar">uchar: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@UCHAR2char(uchar:String):Char" title="Permalink" target="_top">
@@ -1218,7 +1222,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">UCHAR_Parser</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Char">Char</span>]</span>
+        <span class="name">UCHAR_Parser</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@UCHAR_Parser:W3cTokens.this.Parser[Char]" title="Permalink" target="_top">
@@ -1286,7 +1290,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">accept</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="expected">expected: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="f">f: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>, <span class="extype" name="scala.util.parsing.combinator.Parsers.accept.U">U</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.accept.U">U</span>]</span>
+        <span class="name">accept</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="expected">expected: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="f">f: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.PartialFunction" class="extype" target="_top">PartialFunction</a>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>, <span class="extype" name="scala.util.parsing.combinator.Parsers.accept.U">U</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.accept.U">U</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@accept[U](expected:String,f:PartialFunction[Parsers.this.Elem,U]):Parsers.this.Parser[U]" title="Permalink" target="_top">
@@ -1337,7 +1341,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">acceptIf</span><span class="params">(<span name="p">p: (<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span name="err">err: (<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>) ⇒ <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>]</span>
+        <span class="name">acceptIf</span><span class="params">(<span name="p">p: (<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="params">(<span name="err">err: (<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>) ⇒ <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@acceptIf(p:Parsers.this.Elem=&gt;Boolean)(err:Parsers.this.Elem=&gt;String):Parsers.this.Parser[Parsers.this.Elem]" title="Permalink" target="_top">
@@ -1354,7 +1358,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">acceptMatch</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="expected">expected: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="f">f: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>, <span class="extype" name="scala.util.parsing.combinator.Parsers.acceptMatch.U">U</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.acceptMatch.U">U</span>]</span>
+        <span class="name">acceptMatch</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="expected">expected: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="f">f: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.PartialFunction" class="extype" target="_top">PartialFunction</a>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>, <span class="extype" name="scala.util.parsing.combinator.Parsers.acceptMatch.U">U</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.acceptMatch.U">U</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@acceptMatch[U](expected:String,f:PartialFunction[Parsers.this.Elem,U]):Parsers.this.Parser[U]" title="Permalink" target="_top">
@@ -1371,7 +1375,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">acceptRegex</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="r">r: <span class="extype" name="scala.util.matching.Regex">Regex</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+        <span class="name">acceptRegex</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="r">r: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.matching.Regex" class="extype" target="_top">Regex</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@acceptRegex(name:String,r:scala.util.matching.Regex):W3cTokens.this.Parser[String]" title="Permalink" target="_top">
@@ -1456,7 +1460,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">arrowLeftState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowLeftState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowLeftState.T">T</span>]</span>, <span name="any">any: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowLeftState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowLeftState.T">T</span>]</span>
+        <span class="name">arrowLeftState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowLeftState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowLeftState.T">T</span>]</span>, <span name="any">any: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowLeftState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowLeftState.T">T</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@arrowLeftState[T,S](p:StateParser.this.StateParser[S,T],any:StateParser.this.Parser[Any]):StateParser.this.StateParser[S,T]" title="Permalink" target="_top">
@@ -1473,7 +1477,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">arrowOptState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowOptState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowOptState.T">T</span>]</span>, <span name="q">q: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowOptState.S">S</span>, <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="es.weso.parser.StateParser.arrowOptState.T">T</span>]]</span>
+        <span class="name">arrowOptState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowOptState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowOptState.T">T</span>]</span>, <span name="q">q: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowOptState.S">S</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="es.weso.parser.StateParser.arrowOptState.T">T</span>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@arrowOptState[T,S](p:StateParser.this.StateParser[S,T],q:StateParser.this.Parser[Any]):StateParser.this.StateParser[S,Option[T]]" title="Permalink" target="_top">
@@ -1490,7 +1494,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">arrowRightState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowRightState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowRightState.T">T</span>]</span>, <span name="any">any: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowRightState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowRightState.T">T</span>]</span>
+        <span class="name">arrowRightState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowRightState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowRightState.T">T</span>]</span>, <span name="any">any: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowRightState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowRightState.T">T</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@arrowRightState[T,S](p:StateParser.this.StateParser[S,T],any:StateParser.this.Parser[Any]):StateParser.this.StateParser[S,T]" title="Permalink" target="_top">
@@ -1507,7 +1511,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">arrowState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowState.T">T</span>]</span>, <span name="any">any: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowState.T">T</span>]</span>
+        <span class="name">arrowState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowState.T">T</span>]</span>, <span name="any">any: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.arrowState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.arrowState.T">T</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@arrowState[T,S](p:StateParser.this.StateParser[S,T],any:StateParser.this.Parser[Any]):StateParser.this.StateParser[S,T]" title="Permalink" target="_top">
@@ -1592,7 +1596,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">beginGroup</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, (<a href="../Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a>, <span class="extype" name="scala.Option">Option</span>[<a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a>])]</span>
+        <span class="name">beginGroup</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, (<a href="../Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a>])]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@beginGroup:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,(es.weso.shacl.Actions,Option[ShaclParser.this.ShapeRule])]" title="Permalink" target="_top">
@@ -1711,7 +1715,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">chrExcept</span><span class="params">(<span name="cs">cs: <span class="extype" name="scala.Char">Char</span>*</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>]</span>
+        <span class="name">chrExcept</span><span class="params">(<span name="cs">cs: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a>*</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@chrExcept(cs:Char*):W3cTokens.this.Parser[W3cTokens.this.Elem]" title="Permalink" target="_top">
@@ -1728,7 +1732,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@clone():Object" title="Permalink" target="_top">
@@ -1819,7 +1823,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">collectClosed</span><span class="params">(<span name="sd">sd: <a href="#ShapeDef=(List[es.weso.shacl.parser.Inclusion],es.weso.shacl.ShapeExpr)" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ShapeDef">ShapeDef</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">collectClosed</span><span class="params">(<span name="sd">sd: <a href="#ShapeDef=(List[es.weso.shacl.parser.Inclusion],es.weso.shacl.ShapeExpr)" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ShapeDef">ShapeDef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@collectClosed(sd:ShaclParser.this.ShapeDef):Boolean" title="Permalink" target="_top">
@@ -1955,7 +1959,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">directive</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <span class="extype" name="scala.Unit">Unit</span>]</span>
+        <span class="name">directive</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@directive:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,Unit]" title="Permalink" target="_top">
@@ -2006,7 +2010,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">elem</span><span class="params">(<span name="kind">kind: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="p">p: (<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>]</span>
+        <span class="name">elem</span><span class="params">(<span name="kind">kind: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="p">p: (<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="#Elem=Char" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Elem">Elem</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@elem(kind:String,p:Parsers.this.Elem=&gt;Boolean):Parsers.this.Parser[Parsers.this.Elem]" title="Permalink" target="_top">
@@ -2023,7 +2027,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -2040,7 +2044,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@equals(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -2057,7 +2061,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">err</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
+        <span class="name">err</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@err(msg:String):Parsers.this.Parser[Nothing]" title="Permalink" target="_top">
@@ -2091,7 +2095,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">failure</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
+        <span class="name">failure</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@failure(msg:String):Parsers.this.Parser[Nothing]" title="Permalink" target="_top">
@@ -2108,7 +2112,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@finalize():Unit" title="Permalink" target="_top">
@@ -2182,7 +2186,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">handleWhiteSpace</span><span class="params">(<span name="source">source: <span class="extype" name="java.lang.CharSequence">CharSequence</span></span>, <span name="offset">offset: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">handleWhiteSpace</span><span class="params">(<span name="source">source: <span class="extype" name="java.lang.CharSequence">CharSequence</span></span>, <span name="offset">offset: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@handleWhiteSpace(source:CharSequence,offset:Int):Int" title="Permalink" target="_top">
@@ -2199,7 +2203,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@hashCode():Int" title="Permalink" target="_top">
@@ -2216,7 +2220,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hex2String</span><span class="params">(<span name="s">s: <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">hex2String</span><span class="params">(<span name="s">s: <span class="extype" name="scala.List">List</span>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a>]</span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@hex2String(s:List[Char]):String" title="Permalink" target="_top">
@@ -2369,7 +2373,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">integer</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Int">Int</span>]</span>
+        <span class="name">integer</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@integer:ShaclParser.this.Parser[Int]" title="Permalink" target="_top">
@@ -2505,7 +2509,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
@@ -2641,7 +2645,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">mkList</span><span class="tparams">[<span name="T">T</span>]</span><span class="result">: (<a href="#~[+a,+b]extendsProductwithSerializable" class="extmbr" name="es.weso.shacl.parser.ShaclParser.~">~</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.mkList.T">T</span>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.mkList.T">T</span>]]) ⇒ <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.mkList.T">T</span>]</span>
+        <span class="name">mkList</span><span class="tparams">[<span name="T">T</span>]</span><span class="result">: (<a href="#~[+a,+b]extendsProductwithSerializable" class="extmbr" name="es.weso.shacl.parser.ShaclParser.~">~</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.mkList.T">T</span>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.mkList.T">T</span>]]) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.immutable.List" class="extype" target="_top">List</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.mkList.T">T</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@mkList[T]:Parsers.this.~[T,List[T]]=&gt;List[T]" title="Permalink" target="_top">
@@ -2675,7 +2679,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">mkShapeRule</span><span class="params">(<span name="label">label: <a href="../Label.html" class="extype" name="es.weso.shacl.Label">Label</a></span>, <span name="isVirtual">isVirtual: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="shapeDef">shapeDef: <a href="#ShapeDef=(List[es.weso.shacl.parser.Inclusion],es.weso.shacl.ShapeExpr)" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ShapeDef">ShapeDef</a></span>, <span name="as">as: <a href="../Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a></span>)</span><span class="result">: <a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a></span>
+        <span class="name">mkShapeRule</span><span class="params">(<span name="label">label: <a href="../Label.html" class="extype" name="es.weso.shacl.Label">Label</a></span>, <span name="isVirtual">isVirtual: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="shapeDef">shapeDef: <a href="#ShapeDef=(List[es.weso.shacl.parser.Inclusion],es.weso.shacl.ShapeExpr)" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ShapeDef">ShapeDef</a></span>, <span name="as">as: <a href="../Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a></span>)</span><span class="result">: <a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@mkShapeRule(label:es.weso.shacl.Label,isVirtual:Boolean,shapeDef:ShaclParser.this.ShapeDef,as:es.weso.shacl.Actions):ShaclParser.this.ShapeRule" title="Permalink" target="_top">
@@ -2692,7 +2696,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -2709,7 +2713,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">not</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.not.T">T</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+        <span class="name">not</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.not.T">T</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@not[T](p:=&gt;Parsers.this.Parser[T]):Parsers.this.Parser[Unit]" title="Permalink" target="_top">
@@ -2726,7 +2730,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notStartAction</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <span class="extype" name="scala.Option">Option</span>[<a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a>]]</span>
+        <span class="name">notStartAction</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@notStartAction:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,Option[ShaclParser.this.ShapeRule]]" title="Permalink" target="_top">
@@ -2743,7 +2747,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@notify():Unit" title="Permalink" target="_top">
@@ -2760,7 +2764,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@notifyAll():Unit" title="Permalink" target="_top">
@@ -2828,7 +2832,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">okFacets</span><span class="params">(<span name="pair">pair: (<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>, <span class="extype" name="scala.List">List</span>[<a href="../XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a>])</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">okFacets</span><span class="params">(<span name="pair">pair: (<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>, <span class="extype" name="scala.List">List</span>[<a href="../XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a>])</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@okFacets(pair:(es.weso.rdf.nodes.IRI,List[es.weso.shacl.XSFacet])):Boolean" title="Permalink" target="_top">
@@ -2879,7 +2883,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">opt</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.opt.T">T</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.opt.T">T</span>]]</span>
+        <span class="name">opt</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.opt.T">T</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.opt.T">T</span>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@opt[T](p:=&gt;Parsers.this.Parser[T]):Parsers.this.Parser[Option[T]]" title="Permalink" target="_top">
@@ -2896,7 +2900,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">optState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.optState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.optState.T">T</span>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.optState.S">S</span>, <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="es.weso.parser.StateParser.optState.T">T</span>]]</span>
+        <span class="name">optState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.optState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.optState.T">T</span>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.optState.S">S</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="es.weso.parser.StateParser.optState.T">T</span>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@optState[T,S](p:StateParser.this.StateParser[S,T]):StateParser.this.StateParser[S,Option[T]]" title="Permalink" target="_top">
@@ -2947,7 +2951,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">parse</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.RegexParsers.parse.T">T</span>]</span>, <span name="in">in: <span class="extype" name="scala.util.parsing.input.Reader">Reader</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <a href="#ParseResult[+T]extendsAnyRef" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ParseResult">ParseResult</a>[<span class="extype" name="scala.util.parsing.combinator.RegexParsers.parse.T">T</span>]</span>
+        <span class="name">parse</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.RegexParsers.parse.T">T</span>]</span>, <span name="in">in: <span class="extype" name="scala.util.parsing.input.Reader">Reader</span>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a>]</span>)</span><span class="result">: <a href="#ParseResult[+T]extendsAnyRef" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ParseResult">ParseResult</a>[<span class="extype" name="scala.util.parsing.combinator.RegexParsers.parse.T">T</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@parse[T](p:RegexParsers.this.Parser[T],in:scala.util.parsing.input.Reader[Char]):RegexParsers.this.ParseResult[T]" title="Permalink" target="_top">
@@ -2998,7 +3002,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">parseAll</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.RegexParsers.parseAll.T">T</span>]</span>, <span name="in">in: <span class="extype" name="scala.util.parsing.input.Reader">Reader</span>[<span class="extype" name="scala.Char">Char</span>]</span>)</span><span class="result">: <a href="#ParseResult[+T]extendsAnyRef" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ParseResult">ParseResult</a>[<span class="extype" name="scala.util.parsing.combinator.RegexParsers.parseAll.T">T</span>]</span>
+        <span class="name">parseAll</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.RegexParsers.parseAll.T">T</span>]</span>, <span name="in">in: <span class="extype" name="scala.util.parsing.input.Reader">Reader</span>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a>]</span>)</span><span class="result">: <a href="#ParseResult[+T]extendsAnyRef" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ParseResult">ParseResult</a>[<span class="extype" name="scala.util.parsing.combinator.RegexParsers.parseAll.T">T</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@parseAll[T](p:RegexParsers.this.Parser[T],in:scala.util.parsing.input.Reader[Char]):RegexParsers.this.ParseResult[T]" title="Permalink" target="_top">
@@ -3015,7 +3019,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">parseCond</span><span class="tparams">[<span name="A">A</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.S">S</span>, <span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.A">A</span>]</span>, <span name="cond">cond: (<span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.S">S</span>, <span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.A">A</span>]</span>
+        <span class="name">parseCond</span><span class="tparams">[<span name="A">A</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.S">S</span>, <span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.A">A</span>]</span>, <span name="cond">cond: (<span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.A">A</span>) ⇒ <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.S">S</span>, <span class="extype" name="es.weso.shacl.parser.ShaclParser.parseCond.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@parseCond[A,S](p:ShaclParser.this.StateParser[S,A],cond:A=&gt;Boolean,msg:String):ShaclParser.this.StateParser[S,A]" title="Permalink" target="_top">
@@ -3151,7 +3155,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">regex</span><span class="params">(<span name="r">r: <span class="extype" name="scala.util.matching.Regex">Regex</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+        <span class="name">regex</span><span class="params">(<span name="r">r: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.matching.Regex" class="extype" target="_top">Regex</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@regex(r:scala.util.matching.Regex):RegexParsers.this.Parser[String]" title="Permalink" target="_top">
@@ -3202,7 +3206,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">removeQuotes</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="quote">quote: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="number">number: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">removeQuotes</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="quote">quote: <span class="extype" name="scala.Predef.String">String</span></span>, <span name="number">number: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@removeQuotes(s:String,quote:String,number:Int):String" title="Permalink" target="_top">
@@ -3324,7 +3328,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">rep1sep</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.rep1sep.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.rep1sep.T">T</span>]]</span>
+        <span class="name">rep1sep</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.rep1sep.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.rep1sep.T">T</span>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@rep1sep[T](p:=&gt;Parsers.this.Parser[T],q:=&gt;Parsers.this.Parser[Any]):Parsers.this.Parser[List[T]]" title="Permalink" target="_top">
@@ -3341,7 +3345,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">rep1sepOptState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.S">S</span></span>, <span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.T">T</span>], <span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.S">S</span>)]</span>
+        <span class="name">rep1sepOptState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.S">S</span></span>, <span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.T">T</span>], <span class="extype" name="es.weso.parser.StateParser.rep1sepOptState.S">S</span>)]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@rep1sepOptState[T,S](s:S,p:StateParser.this.StateParser[S,T],q:=&gt;StateParser.this.Parser[Any]):StateParser.this.Parser[(List[T],S)]" title="Permalink" target="_top">
@@ -3358,7 +3362,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">rep1sepState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span></span>, <span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.rep1sepState.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.T">T</span>], <span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span>)]</span>
+        <span class="name">rep1sepState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span></span>, <span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.rep1sepState.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.T">T</span>], <span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span>)]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@rep1sepState[T,S](s:S,p:StateParser.this.StateParser[S,T],q:=&gt;StateParser.this.Parser[Any]):StateParser.this.Parser[(List[T],S)]" title="Permalink" target="_top">
@@ -3375,7 +3379,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">rep1sepState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.rep1sepState.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.T">T</span>]]</span>
+        <span class="name">rep1sepState</span><span class="tparams">[<span name="T">T</span>, <span name="S">S</span>]</span><span class="params">(<span name="p">p: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span>, <span class="extype" name="es.weso.parser.StateParser.rep1sepState.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>)</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.S">S</span>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.parser.StateParser.rep1sepState.T">T</span>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@rep1sepState[T,S](p:StateParser.this.StateParser[S,T],q:=&gt;StateParser.this.Parser[Any]):StateParser.this.StateParser[S,List[T]]" title="Permalink" target="_top">
@@ -3392,7 +3396,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">repN</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="num">num: <span class="extype" name="scala.Int">Int</span></span>, <span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.repN.T">T</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.repN.T">T</span>]]</span>
+        <span class="name">repN</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="num">num: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>, <span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.repN.T">T</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.repN.T">T</span>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@repN[T](num:Int,p:=&gt;Parsers.this.Parser[T]):Parsers.this.Parser[List[T]]" title="Permalink" target="_top">
@@ -3460,7 +3464,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">repsep</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.repsep.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Any">Any</span>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.repsep.T">T</span>]]</span>
+        <span class="name">repsep</span><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="p">p: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.util.parsing.combinator.Parsers.repsep.T">T</span>]</span>, <span name="q">q: ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.util.parsing.combinator.Parsers.repsep.T">T</span>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@repsep[T](p:=&gt;Parsers.this.Parser[T],q:=&gt;Parsers.this.Parser[Any]):Parsers.this.Parser[List[T]]" title="Permalink" target="_top">
@@ -3750,7 +3754,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">skipWhitespace</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">skipWhitespace</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@skipWhitespace:Boolean" title="Permalink" target="_top">
@@ -3852,7 +3856,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">startStatements</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, (<a href="../Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a>, <span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Option">Option</span>[<a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a>]])]</span>
+        <span class="name">startStatements</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, (<a href="../Actions.html" class="extype" name="es.weso.shacl.Actions">Actions</a>, <span class="extype" name="scala.List">List</span>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a>]])]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@startStatements:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,(es.weso.shacl.Actions,List[Option[ShaclParser.this.ShapeRule]])]" title="Permalink" target="_top">
@@ -3869,7 +3873,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">statement</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <span class="extype" name="scala.Option">Option</span>[<a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a>]]</span>
+        <span class="name">statement</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="ShaclParser$ShapeRule.html" class="extype" name="es.weso.shacl.parser.ShaclParser.ShapeRule">ShapeRule</a>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@statement:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,Option[ShaclParser.this.ShapeRule]]" title="Permalink" target="_top">
@@ -3886,7 +3890,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">str2Char</span><span class="params">(<span name="str">str: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Char">Char</span></span>
+        <span class="name">str2Char</span><span class="params">(<span name="str">str: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Char" class="extype" target="_top">Char</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@str2Char(str:String):Char" title="Permalink" target="_top">
@@ -3920,7 +3924,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">str2Double</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">str2Double</span><span class="params">(<span name="s">s: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Double" class="extype" target="_top">Double</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@str2Double(s:String):Double" title="Permalink" target="_top">
@@ -4294,7 +4298,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">upperBound</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]]]</span>
+        <span class="name">upperBound</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a>]]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@upperBound:ShaclParser.this.Parser[Option[Option[Int]]]" title="Permalink" target="_top">
@@ -4379,7 +4383,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">valueClassJuncts</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <span class="extype" name="scala.Option">Option</span>[<a href="../ValueClass.html" class="extype" name="es.weso.shacl.ValueClass">ValueClass</a>]]</span>
+        <span class="name">valueClassJuncts</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="../ValueClass.html" class="extype" name="es.weso.shacl.ValueClass">ValueClass</a>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@valueClassJuncts:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,Option[es.weso.shacl.ValueClass]]" title="Permalink" target="_top">
@@ -4464,7 +4468,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@wait():Unit" title="Permalink" target="_top">
@@ -4487,7 +4491,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
@@ -4510,7 +4514,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@wait(x$1:Long):Unit" title="Permalink" target="_top">
@@ -4533,7 +4537,7 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">whiteSpace</span><span class="result">: <span class="extype" name="scala.util.matching.Regex">Regex</span></span>
+        <span class="name">whiteSpace</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.matching.Regex" class="extype" target="_top">Regex</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser@whiteSpace:scala.util.matching.Regex" title="Permalink" target="_top">
@@ -4612,9 +4616,9 @@ https://github.com/shexSpec/shex.js/blob/master/doc/bnf
             </div><div class="parent" name="scala.util.parsing.input.Positional">
               <h3>Inherited from <span class="extype" name="scala.util.parsing.input.Positional">Positional</span></h3>
             </div><div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
-              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></h3>
             </div>
         
         </div>

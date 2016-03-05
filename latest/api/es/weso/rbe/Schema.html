@@ -12,7 +12,7 @@
       <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
@@ -47,13 +47,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Schema</span><span class="tparams">[<span name="Edge">Edge</span>, <span name="Node">Node</span>, <span name="Label">Label</span>, <span name="Err">Err</span>]</span><span class="params">(<span name="m">m: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="es.weso.rbe.Schema.Label">Label</span>, <a href="Shape.html" class="extype" name="es.weso.rbe.Shape">Shape</a>[<a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>], <span class="extype" name="es.weso.rbe.Schema.Node">Node</span>, <span class="extype" name="es.weso.rbe.Schema.Label">Label</span>, <span class="extype" name="es.weso.rbe.Schema.Err">Err</span>]]</span>, <span name="ignored">ignored: <span class="extype" name="scala.Seq">Seq</span>[<a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>]]</span>)</span><span class="result"> extends <a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Schema</span><span class="tparams">[<span name="Edge">Edge</span>, <span name="Node">Node</span>, <span name="Label">Label</span>, <span name="Err">Err</span>]</span><span class="params">(<span name="m">m: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="es.weso.rbe.Schema.Label">Label</span>, <a href="Shape.html" class="extype" name="es.weso.rbe.Shape">Shape</a>[<a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>], <span class="extype" name="es.weso.rbe.Schema.Node">Node</span>, <span class="extype" name="es.weso.rbe.Schema.Label">Label</span>, <span class="extype" name="es.weso.rbe.Schema.Err">Err</span>]]</span>, <span name="ignored">ignored: <span class="extype" name="scala.Seq">Seq</span>[<a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>]]</span>)</span><span class="result"> extends <a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/labra/ShExcala/tree/master/src/main/scala/es/weso/rbe/Schema.scala" target="_blank">Schema.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a>, <span class="extype" name="java.io.Serializable">Serializable</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Equals" class="extype" target="_top">Equals</a>, <a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></div>
         </div></div>
         
 
@@ -155,7 +155,7 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Candidates_</span><span class="result"> = <span class="extype" name="scala.collection.Seq">Seq</span>[<a href="#Candidate_=es.weso.rbe.Candidate[Edge,Node,Label,Err]" class="extmbr" name="es.weso.rbe.Schema.Candidate_">Candidate_</a>]</span>
+        <span class="name">Candidates_</span><span class="result"> = <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.Seq" class="extype" target="_top">Seq</a>[<a href="#Candidate_=es.weso.rbe.Candidate[Edge,Node,Label,Err]" class="extmbr" name="es.weso.rbe.Schema.Candidate_">Candidate_</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@Candidates_=Seq[Schema.this.Candidate_]" title="Permalink" target="_top">
@@ -240,7 +240,7 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Neighs_</span><span class="result"> = <span class="extype" name="scala.collection.Seq">Seq</span>[<a href="#Neigh_=es.weso.rbe.Neigh[Edge,Node]" class="extmbr" name="es.weso.rbe.Schema.Neigh_">Neigh_</a>]</span>
+        <span class="name">Neighs_</span><span class="result"> = <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.Seq" class="extype" target="_top">Seq</a>[<a href="#Neigh_=es.weso.rbe.Neigh[Edge,Node]" class="extmbr" name="es.weso.rbe.Schema.Neigh_">Neigh_</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@Neighs_=Seq[Schema.this.Neigh_]" title="Permalink" target="_top">
@@ -274,7 +274,7 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">ReasonNeg</span><span class="result"> = <span class="extype" name="scala.Nothing">Nothing</span></span>
+        <span class="name">ReasonNeg</span><span class="result"> = <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Nothing" class="extype" target="_top">Nothing</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@ReasonNeg=Nothing" title="Permalink" target="_top">
@@ -291,7 +291,7 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">ReasonPos</span><span class="result"> = <span class="extype" name="scala.Nothing">Nothing</span></span>
+        <span class="name">ReasonPos</span><span class="result"> = <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Nothing" class="extype" target="_top">Nothing</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@ReasonPos=Nothing" title="Permalink" target="_top">
@@ -308,7 +308,7 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Result_</span><span class="result"> = <span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="scala.Seq">Seq</span>[<a href="#SingleResult_=(Schema.this.Typing_,Set[(Node,Edge,Node)])" class="extmbr" name="es.weso.rbe.Schema.SingleResult_">SingleResult_</a>]]</span>
+        <span class="name">Result_</span><span class="result"> = <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[<span class="extype" name="scala.Seq">Seq</span>[<a href="#SingleResult_=(Schema.this.Typing_,Set[(Node,Edge,Node)])" class="extmbr" name="es.weso.rbe.Schema.SingleResult_">SingleResult_</a>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@Result_=scala.util.Try[Seq[Schema.this.SingleResult_]]" title="Permalink" target="_top">
@@ -400,7 +400,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@!=(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -417,7 +417,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@##():Int" title="Permalink" target="_top">
@@ -434,7 +434,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@==(x$1:Any):Boolean" title="Permalink" target="_top">
@@ -468,7 +468,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">appenders</span><span class="result">: <span class="extype" name="scala.collection.immutable.List">List</span>[<span class="extype" name="scala.Any">Any</span>]</span>
+        <span class="name">appenders</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.immutable.List" class="extype" target="_top">List</a>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@appenders:List[Any]" title="Permalink" target="_top">
@@ -519,7 +519,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@clone():Object" title="Permalink" target="_top">
@@ -542,7 +542,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">containsAllTriples</span><span class="params">(<span name="node">node: <span class="extype" name="es.weso.rbe.Schema.Node">Node</span></span>, <span name="extras">extras: <span class="extype" name="scala.Seq">Seq</span>[<a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>]]</span>, <span name="out">out: <a href="#Neighs_=Seq[Schema.this.Neigh_]" class="extmbr" name="es.weso.rbe.Schema.Neighs_">Neighs_</a></span>, <span name="triples">triples: <span class="extype" name="scala.Predef.Set">Set</span>[(<span class="extype" name="es.weso.rbe.Schema.Node">Node</span>, <span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.Schema.Node">Node</span>)]</span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">containsAllTriples</span><span class="params">(<span name="node">node: <span class="extype" name="es.weso.rbe.Schema.Node">Node</span></span>, <span name="extras">extras: <span class="extype" name="scala.Seq">Seq</span>[<a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>]]</span>, <span name="out">out: <a href="#Neighs_=Seq[Schema.this.Neigh_]" class="extmbr" name="es.weso.rbe.Schema.Neighs_">Neighs_</a></span>, <span name="triples">triples: <span class="extype" name="scala.Predef.Set">Set</span>[(<span class="extype" name="es.weso.rbe.Schema.Node">Node</span>, <span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.Schema.Node">Node</span>)]</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@containsAllTriples(node:Node,extras:Seq[es.weso.rbe.DirectedEdge[Edge]],out:Schema.this.Neighs_,triples:Set[(Node,Edge,Node)]):Boolean" title="Permalink" target="_top">
@@ -559,7 +559,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">debug</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">debug</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@debug(msg:String):Unit" title="Permalink" target="_top">
@@ -576,7 +576,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -593,7 +593,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">filterCandidates</span><span class="params">(<span name="table">table: <a href="#Table_=es.weso.rbe.Table[Edge,Node,Label,Err]" class="extmbr" name="es.weso.rbe.Schema.Table_">Table_</a></span>, <span name="out">out: <a href="#Neighs_=Seq[Schema.this.Neigh_]" class="extmbr" name="es.weso.rbe.Schema.Neighs_">Neighs_</a></span>, <span name="node">node: <span class="extype" name="es.weso.rbe.Schema.Node">Node</span></span>, <span name="Rbe">Rbe: <a href="Rbe.html" class="extype" name="es.weso.rbe.Rbe">Rbe</a>[<a href="ConstraintRef.html" class="extype" name="es.weso.rbe.ConstraintRef">ConstraintRef</a>]</span>, <span name="open">open: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="extras">extras: <span class="extype" name="scala.Seq">Seq</span>[<a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="#Candidates_=Seq[Schema.this.Candidate_]" class="extmbr" name="es.weso.rbe.Schema.Candidates_">Candidates_</a>]</span>
+        <span class="name">filterCandidates</span><span class="params">(<span name="table">table: <a href="#Table_=es.weso.rbe.Table[Edge,Node,Label,Err]" class="extmbr" name="es.weso.rbe.Schema.Table_">Table_</a></span>, <span name="out">out: <a href="#Neighs_=Seq[Schema.this.Neigh_]" class="extmbr" name="es.weso.rbe.Schema.Neighs_">Neighs_</a></span>, <span name="node">node: <span class="extype" name="es.weso.rbe.Schema.Node">Node</span></span>, <span name="Rbe">Rbe: <a href="Rbe.html" class="extype" name="es.weso.rbe.Rbe">Rbe</a>[<a href="ConstraintRef.html" class="extype" name="es.weso.rbe.ConstraintRef">ConstraintRef</a>]</span>, <span name="open">open: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="extras">extras: <span class="extype" name="scala.Seq">Seq</span>[<a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Schema.Edge">Edge</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="#Candidates_=Seq[Schema.this.Candidate_]" class="extmbr" name="es.weso.rbe.Schema.Candidates_">Candidates_</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@filterCandidates(table:Schema.this.Table_,out:Schema.this.Neighs_,node:Node,Rbe:es.weso.rbe.Rbe[es.weso.rbe.ConstraintRef],open:Boolean,extras:Seq[es.weso.rbe.DirectedEdge[Edge]]):Seq[Schema.this.Candidates_]" title="Permalink" target="_top">
@@ -610,7 +610,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">filterSuccessSeq</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="ts">ts: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Schema.filterSuccessSeq.A">A</span>]]]</span>)</span><span class="result">: <span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Schema.filterSuccessSeq.A">A</span>]]]</span>
+        <span class="name">filterSuccessSeq</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="ts">ts: <span class="extype" name="scala.Seq">Seq</span>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Schema.filterSuccessSeq.A">A</span>]]]</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Schema.filterSuccessSeq.A">A</span>]]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@filterSuccessSeq[A](ts:Seq[scala.util.Try[Seq[A]]]):scala.util.Try[Seq[Seq[A]]]" title="Permalink" target="_top">
@@ -627,7 +627,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">filterSuccessSeqFlatten</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="ts">ts: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Schema.filterSuccessSeqFlatten.A">A</span>]]]</span>)</span><span class="result">: <span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Schema.filterSuccessSeqFlatten.A">A</span>]]</span>
+        <span class="name">filterSuccessSeqFlatten</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="ts">ts: <span class="extype" name="scala.Seq">Seq</span>[<a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Schema.filterSuccessSeqFlatten.A">A</span>]]]</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[<span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Schema.filterSuccessSeqFlatten.A">A</span>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@filterSuccessSeqFlatten[A](ts:Seq[scala.util.Try[Seq[A]]]):scala.util.Try[Seq[A]]" title="Permalink" target="_top">
@@ -644,7 +644,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@finalize():Unit" title="Permalink" target="_top">
@@ -701,7 +701,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">info</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">info</span><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@info(msg:String):Unit" title="Permalink" target="_top">
@@ -718,7 +718,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
@@ -803,7 +803,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">mkTable</span><span class="params">(<span name="label">label: <span class="extype" name="es.weso.rbe.Schema.Label">Label</span></span>)</span><span class="result">: <span class="extype" name="scala.util.Try">Try</span>[(<a href="#Table_=es.weso.rbe.Table[Edge,Node,Label,Err]" class="extmbr" name="es.weso.rbe.Schema.Table_">Table_</a>, <a href="Rbe.html" class="extype" name="es.weso.rbe.Rbe">Rbe</a>[<a href="ConstraintRef.html" class="extype" name="es.weso.rbe.ConstraintRef">ConstraintRef</a>])]</span>
+        <span class="name">mkTable</span><span class="params">(<span name="label">label: <span class="extype" name="es.weso.rbe.Schema.Label">Label</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[(<a href="#Table_=es.weso.rbe.Table[Edge,Node,Label,Err]" class="extmbr" name="es.weso.rbe.Schema.Table_">Table_</a>, <a href="Rbe.html" class="extype" name="es.weso.rbe.Rbe">Rbe</a>[<a href="ConstraintRef.html" class="extype" name="es.weso.rbe.ConstraintRef">ConstraintRef</a>])]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@mkTable(label:Label):scala.util.Try[(Schema.this.Table_,es.weso.rbe.Rbe[es.weso.rbe.ConstraintRef])]" title="Permalink" target="_top">
@@ -820,7 +820,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
@@ -854,7 +854,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@notify():Unit" title="Permalink" target="_top">
@@ -871,7 +871,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@notifyAll():Unit" title="Permalink" target="_top">
@@ -905,7 +905,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">setDebug</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">setDebug</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@setDebug():Unit" title="Permalink" target="_top">
@@ -922,7 +922,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">setError</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">setError</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@setError():Unit" title="Permalink" target="_top">
@@ -939,7 +939,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">setInfo</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">setInfo</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@setInfo():Unit" title="Permalink" target="_top">
@@ -973,7 +973,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@wait():Unit" title="Permalink" target="_top">
@@ -996,7 +996,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
@@ -1019,7 +1019,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.Schema@wait(x$1:Long):Unit" title="Permalink" target="_top">
@@ -1060,19 +1060,19 @@
 
         <div id="inheritedMembers">
         <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></h3>
             </div><div class="parent" name="java.io.Serializable">
               <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
             </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a></h3>
             </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Equals" class="extype" target="_top">Equals</a></h3>
             </div><div class="parent" name="es.weso.utils.Logging">
               <h3>Inherited from <a href="../utils/Logging.html" class="extype" name="es.weso.utils.Logging">Logging</a></h3>
             </div><div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
-              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></h3>
             </div>
         
         </div>

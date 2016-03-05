@@ -12,7 +12,7 @@
       <script type="text/javascript" src="../../../../lib/jquery-ui.js"></script>
       <script type="text/javascript" src="../../../../lib/template.js"></script>
       <script type="text/javascript" src="../../../../lib/tools.tooltip.js"></script>
-      
+      <script type="text/javascript" src="../../../../lib/modernizr.custom.js"></script><script type="text/javascript" src="../../../../lib/diagrams.js" id="diagrams-js"></script>
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
@@ -47,7 +47,11 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"></div>
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block diagram-container" id="content-diagram-container">
+                <span class="toggle diagram-link">Content Hierarchy</span>
+                <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#diagrams" target="_blank" class="diagram-help">Learn more about scaladoc diagrams</a>
+                <div class="diagram" id="content-diagram"><svg class="package-diagram" id="graph1" viewBox="-1 -1 77 99" height="100pt" width="78pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="font-family:Times-Roman;font-size:14.00;" class="graph" id="graph0"><g class="node" id="node1"><a xlink:title="es.weso.shacl.jast.AST" xlink:href="AST$.html#inheritance-diagram"><polygon points="71,66 5,66 5,92 71,92 71,66" style="fill:#3556a7;stroke:#102966;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/object_diagram.pngnode0"><polygon points="31,71 15,71 15,87 31,87 31,71 "></polygon></clipPath><image xlink:href="../../../../lib/object_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/object_diagram.pngnode0)" y="71" x="15" preserveAspectRatio="xMidYMid meet" height="26px" width="66px"></image><text y="82" x="49" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">AST</text></a></g><g class="node" id="node2"><a xlink:title="es.weso.shacl.jast.AST" xlink:href="AST.html#inheritance-diagram"><polygon points="71,4 5,4 5,30 71,30 71,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode1"><polygon points="31,9 15,9 15,25 31,25 31,9 "></polygon></clipPath><image xlink:href="../../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode1)" y="9" x="15" preserveAspectRatio="xMidYMid meet" height="26px" width="66px"></image><text y="20" x="49" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">AST</text></a></g><g class="edge" id="edge2"><path d="M38,35C38,45 38,57 38,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="36,35 38,30 40,35 36,35" style="fill:none;stroke:#d4d4d4;"></polygon></g></g></svg></div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -75,7 +79,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="AST.html"><span class="name">AST</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="AST.html"><span class="name">AST</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.package@ASTextendsAnyRef" title="Permalink" target="_top">
@@ -92,7 +96,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="AST2SchemaException.html"><span class="name">AST2SchemaException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="AST2SchemaException.html"><span class="name">AST2SchemaException</span></a><span class="params">(<span name="msg">msg: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.jast.package@AST2SchemaExceptionextendsExceptionwithProductwithSerializable" title="Permalink" target="_top">
