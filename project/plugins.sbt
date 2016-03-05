@@ -24,6 +24,8 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-ghpages" % "0.5.4")
 
 resolvers += Classpaths.sbtPluginReleases
 
+resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/"
+
 resolvers +=  Resolver.url(
   "scala-js-releases", url("http://dl.bintray.com/content/scala-js/scala-js-releases"))(Resolver.ivyStylePatterns)
   
