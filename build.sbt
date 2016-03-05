@@ -6,6 +6,7 @@ lazy val CompatTest = config("compat") extend (Test)
 
 lazy val root = (project in file(".")).
   configs(CompatTest).
+  settings(publishSettings:_*).
   settings(inConfig(CompatTest)(Defaults.testSettings): _*).
   enablePlugins(BuildInfoPlugin).
   settings(
@@ -133,3 +134,29 @@ resolvers += Resolver.bintrayRepo("labra", "maven")
 
 // to enable formatting, use: 
 // scalariformSettings
+
+git.remoteRepo := "git@github.com:labra/ShExcala.git"
+
+lazy val publishSettings = Seq(
+  homepage := Some(url("https://github.com/labra/ShExcala")),
+  licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
+  scmInfo := Some(ScmInfo(url("https://github.com/labra/ShExcala"), "scm:git:git@github.com:labra/ShExcala.git")),
+  autoAPIMappings := true,
+  apiURL := Some(url("http://labra.github.io/ShExcala/latest/api/")),
+  pomExtra := (
+    <developers>
+      <developer>
+        <id>labra</id>
+        <name>Jose Emilio Labra Gayo</name>
+        <url>https://github.com/labra/</url>
+      </developer>
+    </developers>
+  ),
+  scalacOptions in (Compile,doc) ++= Seq(
+//    "-Xfatal-warnings",
+    "-diagrams-debug",
+    "-doc-source-url", scmInfo.value.get.browseUrl + "/tree/master€{FILE_PATH}.scala",
+    "-sourcepath", baseDirectory.in(LocalRootProject).value.getAbsolutePath,
+    "-diagrams"
+  )
+)

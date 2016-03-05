@@ -25,10 +25,6 @@ object XSFacet {
       case _             => false
     }
   }
-  // Does this function already exist?
-  /*def all[A](ls: List[A], check: A => Boolean): Boolean = {
-    ls.foldLeft(true) { case (rest, a) => check(a) && rest }
-  } */
 
   def checkFacets(
       node: RDFNode,
