@@ -68,14 +68,14 @@ case class Context(
 }
 
 object Context {
-  def emptyContext: Context =
+/*  def emptyContext: Context =
     Context(RDFTriples.noTriples, 
         SHACLSchema.empty, 
         PosNegTyping.empty, 
         pm = PrefixMaps.commonShacl, 
         pending = List(),
         validateIncoming = false
-  )
+  ) */
     
 
 }

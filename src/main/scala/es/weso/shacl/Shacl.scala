@@ -1,24 +1,15 @@
 package es.weso.shacl
 
-import es.weso.rdf.nodes._
-import es.weso.rdf._
-import es.weso.rdf._
-import scala.util.parsing.input.Positional
-import scala.util.matching.Regex
-import es.weso.shacl.PREFIXES._
-import util._
-import es.weso.utils.PrefixMapUtils._
-import org.slf4j._
-import es.weso.utils.{
-  Success => UtilsSuccess, //TODO: Check why utils exports Success and remove it 
-  _
-}
-import Checker._
-import NumericFacetTypeClass._
-import es.weso.rdf.validator._
+import scala.util.Try
+
+import org.slf4j.LoggerFactory
+
 import converter.RDF2Schema
+import es.weso.rdf.RDFReader
+import es.weso.rdf.nodes.IRI
+import es.weso.rdf.nodes.RDFNode
 import es.weso.rdf.parser.RDFParser
-import es.weso.shacl.Label._
+import es.weso.rdf.validator.ValidationAttempt
 
 object Shacl extends RDFParser {
 

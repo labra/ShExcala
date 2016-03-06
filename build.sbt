@@ -18,11 +18,10 @@ name := "shexcala"
 
 organization := "es.weso"
 
-version := "0.7.5"
+version := "0.7.6"
 
 scalaVersion := "2.11.7"
 
-lazy val wesinVersion = "0.4.8"
 
 lazy val shexTestsFolder = settingKey[String]("Folder where shex tests are downloaded") 
 
@@ -47,7 +46,8 @@ libraryDependencies ++= Seq(
   , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
   , "org.scalatest" % "scalatest_2.11" % "2.2.4" % CompatTest
   
-  , "es.weso" % "wesin_2.11" % wesinVersion excludeAll(ExclusionRule(organization = "org.slf4j"))
+  , "es.weso" % "srdf-jena_2.11" % "0.0.1" 
+  , "es.weso" % "weso_utils_2.11" % "0.0.3" 
 
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
   
@@ -61,7 +61,7 @@ enablePlugins(SbtNativePackager)
 enablePlugins(JavaAppPackaging)
 enablePlugins(WindowsPlugin)
 
-// general package information (can be scoped to Windows)
+// general package information 
 maintainer := "Jose Emilio Labra Gayo <labra@uniovi.es>"
 packageSummary := "shexcala"
 packageDescription := """Shape Expressions Library in Scala"""

@@ -3,10 +3,10 @@ package es.weso.shacl
 import scala.util.parsing.input.Positional
 import es.weso.rdf.nodes._
 import es.weso.utils.Checker._
-import es.weso.utils.{ Success => _, _}
 import XSFacet._
 import PREFIXES._
 import util._
+import es.weso.utils.Checker
 
 /**
  * ValueClass ::= ValueConstr | ShapeConstr | ValueClassRef

@@ -19,7 +19,7 @@ import scala.collection.immutable.LinearSeq
 import Inclusion._
 
 /**
- * Shacl parser. This parser tries to follow
+ * Shacl parser. It follows
  * https://github.com/shexSpec/shex.js/blob/master/doc/bnf
  */
 trait ShaclParser

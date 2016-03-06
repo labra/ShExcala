@@ -8,7 +8,6 @@ import es.weso.shacl.Schema
 import es.weso.shacl.PREFIXES._
 import es.weso.rdf.triples.RDFTriple
 import es.weso.rdf.PrefixMap
-import es.weso.utils.{Success => TrySuccess}
 
 case class RDFParserException(msg: String)
   extends Exception(s"RDFParserException: " + msg)
