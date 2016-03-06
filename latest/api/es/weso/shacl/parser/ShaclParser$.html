@@ -53,7 +53,7 @@
       
           <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/labra/ShExcala/tree/master/src/main/scala/es/weso/shacl/parser/ShaclParser.scala" target="_blank">ShaclParser.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a>, <span class="extype" name="es.weso.parser.W3cTokens">W3cTokens</span>, <span class="extype" name="es.weso.parser.StateParser">parser.StateParser</span>, <span class="extype" name="scala.util.parsing.combinator.RegexParsers">RegexParsers</span>, <span class="extype" name="scala.util.parsing.combinator.Parsers">Parsers</span>, <span class="extype" name="scala.util.parsing.input.Positional">Positional</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></div>
+          <div class="superTypes hiddenContent"><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a>, <a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a>, <span class="extype" name="es.weso.parser.StateParser">parser.StateParser</span>, <span class="extype" name="scala.util.parsing.combinator.RegexParsers">RegexParsers</span>, <span class="extype" name="scala.util.parsing.combinator.Parsers">Parsers</span>, <span class="extype" name="scala.util.parsing.input.Positional">Positional</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></div>
         </div></div>
         
 
@@ -71,7 +71,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="es.weso.shacl.parser.ShaclParser"><span>ShaclParser</span></li><li class="in" name="es.weso.shacl.parser.ShaclParser"><span>ShaclParser</span></li><li class="in" name="es.weso.parser.W3cTokens"><span>W3cTokens</span></li><li class="in" name="es.weso.parser.StateParser"><span>StateParser</span></li><li class="in" name="scala.util.parsing.combinator.RegexParsers"><span>RegexParsers</span></li><li class="in" name="scala.util.parsing.combinator.Parsers"><span>Parsers</span></li><li class="in" name="scala.util.parsing.input.Positional"><span>Positional</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="es.weso.shacl.parser.ShaclParser"><span>ShaclParser</span></li><li class="in" name="es.weso.shacl.parser.ShaclParser"><span>ShaclParser</span></li><li class="in" name="es.weso.shacl.parser.W3cTokens"><span>W3cTokens</span></li><li class="in" name="es.weso.parser.StateParser"><span>StateParser</span></li><li class="in" name="scala.util.parsing.combinator.RegexParsers"><span>RegexParsers</span></li><li class="in" name="scala.util.parsing.combinator.Parsers"><span>Parsers</span></li><li class="in" name="scala.util.parsing.input.Positional"><span>Positional</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -388,8 +388,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#ANON" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ANON(bNodeTable:es.weso.parser.BNodeTable):W3cTokens.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.parser.BNodeTable)]"></a>
+    </li><li name="es.weso.shacl.parser.W3cTokens#ANON" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ANON(bNodeTable:es.weso.shacl.parser.BNodeTable):W3cTokens.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)]"></a>
       <a id="ANON(BNodeTable):Parser[(BNodeId,BNodeTable)]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -397,15 +397,15 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ANON</span><span class="params">(<span name="bNodeTable">bNodeTable: <span class="extype" name="es.weso.parser.BNodeTable">BNodeTable</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<span class="extype" name="es.weso.rdf.nodes.BNodeId">BNodeId</span>, <span class="extype" name="es.weso.parser.BNodeTable">BNodeTable</span>)]</span>
+        <span class="name">ANON</span><span class="params">(<span name="bNodeTable">bNodeTable: <a href="BNodeTable.html" class="extype" name="es.weso.shacl.parser.BNodeTable">BNodeTable</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>, <a href="BNodeTable.html" class="extype" name="es.weso.shacl.parser.BNodeTable">BNodeTable</a>)]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@ANON(bNodeTable:es.weso.parser.BNodeTable):W3cTokens.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.parser.BNodeTable)]" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@ANON(bNodeTable:es.weso.shacl.parser.BNodeTable):W3cTokens.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#ANON_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#ANON_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ANON_STR:String"></a>
       <a id="ANON_STR:String"></a>
       <h4 class="signature">
@@ -421,9 +421,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#BLANK_NODE_LABEL" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="BLANK_NODE_LABEL(bNodeTable:es.weso.parser.BNodeTable):W3cTokens.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.parser.BNodeTable)]"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#BLANK_NODE_LABEL" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="BLANK_NODE_LABEL(bNodeTable:es.weso.shacl.parser.BNodeTable):W3cTokens.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)]"></a>
       <a id="BLANK_NODE_LABEL(BNodeTable):Parser[(BNodeId,BNodeTable)]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -431,15 +431,15 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">BLANK_NODE_LABEL</span><span class="params">(<span name="bNodeTable">bNodeTable: <span class="extype" name="es.weso.parser.BNodeTable">BNodeTable</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<span class="extype" name="es.weso.rdf.nodes.BNodeId">BNodeId</span>, <span class="extype" name="es.weso.parser.BNodeTable">BNodeTable</span>)]</span>
+        <span class="name">BLANK_NODE_LABEL</span><span class="params">(<span name="bNodeTable">bNodeTable: <a href="BNodeTable.html" class="extype" name="es.weso.shacl.parser.BNodeTable">BNodeTable</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>, <a href="BNodeTable.html" class="extype" name="es.weso.shacl.parser.BNodeTable">BNodeTable</a>)]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@BLANK_NODE_LABEL(bNodeTable:es.weso.parser.BNodeTable):W3cTokens.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.parser.BNodeTable)]" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@BLANK_NODE_LABEL(bNodeTable:es.weso.shacl.parser.BNodeTable):W3cTokens.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#BLANK_NODE_LABEL_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#BLANK_NODE_LABEL_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="BLANK_NODE_LABEL_STR:String"></a>
       <a id="BLANK_NODE_LABEL_STR:String"></a>
       <h4 class="signature">
@@ -455,9 +455,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#BlankNode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="BlankNode(bNodeTable:es.weso.parser.BNodeTable):ShaclParser.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.parser.BNodeTable)]"></a>
+      <a id="BlankNode(bNodeTable:es.weso.shacl.parser.BNodeTable):ShaclParser.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)]"></a>
       <a id="BlankNode(BNodeTable):Parser[(BNodeId,BNodeTable)]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -465,10 +465,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">BlankNode</span><span class="params">(<span name="bNodeTable">bNodeTable: <span class="extype" name="es.weso.parser.BNodeTable">BNodeTable</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<span class="extype" name="es.weso.rdf.nodes.BNodeId">BNodeId</span>, <span class="extype" name="es.weso.parser.BNodeTable">BNodeTable</span>)]</span>
+        <span class="name">BlankNode</span><span class="params">(<span name="bNodeTable">bNodeTable: <a href="BNodeTable.html" class="extype" name="es.weso.shacl.parser.BNodeTable">BNodeTable</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>, <a href="BNodeTable.html" class="extype" name="es.weso.shacl.parser.BNodeTable">BNodeTable</a>)]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@BlankNode(bNodeTable:es.weso.parser.BNodeTable):ShaclParser.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.parser.BNodeTable)]" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@BlankNode(bNodeTable:es.weso.shacl.parser.BNodeTable):ShaclParser.this.Parser[(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -482,7 +482,7 @@
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">BooleanLiteral</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span>]</span>
+        <span class="name">BooleanLiteral</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.Literal" class="extype" target="_top">Literal</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@BooleanLiteral:ShaclParser.this.Parser[es.weso.rdf.nodes.Literal]" title="Permalink" target="_top">
@@ -507,7 +507,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#DECIMAL" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="es.weso.shacl.parser.W3cTokens#DECIMAL" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="DECIMAL:W3cTokens.this.Parser[es.weso.rdf.nodes.Literal]"></a>
       <a id="DECIMAL:Parser[Literal]"></a>
       <h4 class="signature">
@@ -516,15 +516,15 @@
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">DECIMAL</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span>]</span>
+        <span class="name">DECIMAL</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.Literal" class="extype" target="_top">Literal</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@DECIMAL:W3cTokens.this.Parser[es.weso.rdf.nodes.Literal]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#DOUBLE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#DOUBLE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="DOUBLE:W3cTokens.this.Parser[es.weso.rdf.nodes.Literal]"></a>
       <a id="DOUBLE:Parser[Literal]"></a>
       <h4 class="signature">
@@ -533,16 +533,16 @@
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">DOUBLE</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span>]</span>
+        <span class="name">DOUBLE</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.Literal" class="extype" target="_top">Literal</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@DOUBLE:W3cTokens.this.Parser[es.weso.rdf.nodes.Literal]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#ECHAR2char" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ECHAR2char(echar:&lt;?&gt;):Char"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#ECHAR2char" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ECHAR2char(echar:String):Char"></a>
       <a id="ECHAR2char(String):Char"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -557,8 +557,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#ECHAR_Parser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#ECHAR_Parser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ECHAR_Parser:W3cTokens.this.Parser[Char]"></a>
       <a id="ECHAR_Parser:Parser[Char]"></a>
       <h4 class="signature">
@@ -574,8 +574,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#ECHAR_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#ECHAR_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ECHAR_STR:String"></a>
       <a id="ECHAR_STR:String"></a>
       <h4 class="signature">
@@ -591,8 +591,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#EXPONENT" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#EXPONENT" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="EXPONENT:String"></a>
       <a id="EXPONENT:String"></a>
       <h4 class="signature">
@@ -608,8 +608,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#HEX" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#HEX" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="HEX:String"></a>
       <a id="HEX:String"></a>
       <h4 class="signature">
@@ -625,8 +625,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#INTEGER" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#INTEGER" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="INTEGER:W3cTokens.this.Parser[es.weso.rdf.nodes.Literal]"></a>
       <a id="INTEGER:Parser[Literal]"></a>
       <h4 class="signature">
@@ -635,15 +635,15 @@
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">INTEGER</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span>]</span>
+        <span class="name">INTEGER</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.Literal" class="extype" target="_top">Literal</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@INTEGER:W3cTokens.this.Parser[es.weso.rdf.nodes.Literal]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#IRIREF" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#IRIREF" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="IRIREF:W3cTokens.this.Parser[es.weso.rdf.nodes.IRI]"></a>
       <a id="IRIREF:Parser[IRI]"></a>
       <h4 class="signature">
@@ -652,15 +652,15 @@
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">IRIREF</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">IRIREF</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@IRIREF:W3cTokens.this.Parser[es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#IRIREF_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#IRIREF_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="IRIREF_STR:String"></a>
       <a id="IRIREF_STR:String"></a>
       <h4 class="signature">
@@ -676,8 +676,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#IRI_INITIAL_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#IRI_INITIAL_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="IRI_INITIAL_STR:String"></a>
       <a id="IRI_INITIAL_STR:String"></a>
       <h4 class="signature">
@@ -693,8 +693,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#LANGTAG" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#LANGTAG" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="LANGTAG:W3cTokens.this.Parser[es.weso.rdf.nodes.Lang]"></a>
       <a id="LANGTAG:Parser[Lang]"></a>
       <h4 class="signature">
@@ -703,15 +703,15 @@
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">LANGTAG</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Lang">Lang</span>]</span>
+        <span class="name">LANGTAG</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.Lang" class="extype" target="_top">Lang</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@LANGTAG:W3cTokens.this.Parser[es.weso.rdf.nodes.Lang]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#NO_TRIPLE_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#NO_TRIPLE_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="NO_TRIPLE_QUOTE:String"></a>
       <a id="NO_TRIPLE_QUOTE:String"></a>
       <h4 class="signature">
@@ -727,7 +727,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#NumericLiteral" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="NumericLiteral:ShaclParser.this.Parser[es.weso.rdf.nodes.Literal]"></a>
       <a id="NumericLiteral:Parser[Literal]"></a>
@@ -737,7 +737,7 @@
         <span class="kind">lazy val</span>
       </span>
       <span class="symbol">
-        <span class="name">NumericLiteral</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span>]</span>
+        <span class="name">NumericLiteral</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.Literal" class="extype" target="_top">Literal</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@NumericLiteral:ShaclParser.this.Parser[es.weso.rdf.nodes.Literal]" title="Permalink" target="_top">
@@ -746,7 +746,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#OnceParser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="OnceParser[T&lt;:&lt;?&gt;](f:&lt;?&gt;):Parsers.this.Parser[T]withParsers.this.OnceParser[T]"></a>
+      <a id="OnceParser[T](f:Parsers.this.Input=&gt;Parsers.this.ParseResult[T]):Parsers.this.Parser[T]withParsers.this.OnceParser[T]"></a>
       <a id="OnceParser[T]((Input)⇒ParseResult[T]):Parser[T]withOnceParser[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -762,7 +762,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PERCENT" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="es.weso.shacl.parser.W3cTokens#PERCENT" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PERCENT:String"></a>
       <a id="PERCENT:String"></a>
       <h4 class="signature">
@@ -778,8 +778,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PLX" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PLX" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PLX:String"></a>
       <a id="PLX:String"></a>
       <h4 class="signature">
@@ -795,8 +795,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PNAME_LN" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PNAME_LN" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PNAME_LN(prefixMap:es.weso.rdf.PrefixMap):W3cTokens.this.Parser[es.weso.rdf.nodes.IRI]"></a>
       <a id="PNAME_LN(PrefixMap):Parser[IRI]"></a>
       <h4 class="signature">
@@ -805,15 +805,15 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">PNAME_LN</span><span class="params">(<span name="prefixMap">prefixMap: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">PNAME_LN</span><span class="params">(<span name="prefixMap">prefixMap: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@PNAME_LN(prefixMap:es.weso.rdf.PrefixMap):W3cTokens.this.Parser[es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PNAME_NS" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PNAME_NS" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PNAME_NS(prefixMap:es.weso.rdf.PrefixMap):W3cTokens.this.Parser[es.weso.rdf.nodes.IRI]"></a>
       <a id="PNAME_NS(PrefixMap):Parser[IRI]"></a>
       <h4 class="signature">
@@ -822,15 +822,15 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">PNAME_NS</span><span class="params">(<span name="prefixMap">prefixMap: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">PNAME_NS</span><span class="params">(<span name="prefixMap">prefixMap: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@PNAME_NS(prefixMap:es.weso.rdf.PrefixMap):W3cTokens.this.Parser[es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PNAME_NS_Parser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PNAME_NS_Parser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PNAME_NS_Parser:W3cTokens.this.Parser[String]"></a>
       <a id="PNAME_NS_Parser:Parser[String]"></a>
       <h4 class="signature">
@@ -846,8 +846,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PN_CHARS" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PN_CHARS" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PN_CHARS:W3cTokens.this.Parser[String]"></a>
       <a id="PN_CHARS:Parser[String]"></a>
       <h4 class="signature">
@@ -863,8 +863,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PN_CHARS_BASE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PN_CHARS_BASE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PN_CHARS_BASE:String"></a>
       <a id="PN_CHARS_BASE:String"></a>
       <h4 class="signature">
@@ -880,8 +880,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PN_CHARS_BASE_Parser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PN_CHARS_BASE_Parser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PN_CHARS_BASE_Parser:W3cTokens.this.Parser[Char]"></a>
       <a id="PN_CHARS_BASE_Parser:Parser[Char]"></a>
       <h4 class="signature">
@@ -897,8 +897,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PN_CHARS_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PN_CHARS_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PN_CHARS_STR:String"></a>
       <a id="PN_CHARS_STR:String"></a>
       <h4 class="signature">
@@ -914,8 +914,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PN_CHARS_U" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PN_CHARS_U" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PN_CHARS_U:String"></a>
       <a id="PN_CHARS_U:String"></a>
       <h4 class="signature">
@@ -931,8 +931,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PN_LOCAL" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PN_LOCAL" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PN_LOCAL:String"></a>
       <a id="PN_LOCAL:String"></a>
       <h4 class="signature">
@@ -948,8 +948,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PN_LOCAL_ESC" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PN_LOCAL_ESC" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PN_LOCAL_ESC:String"></a>
       <a id="PN_LOCAL_ESC:String"></a>
       <h4 class="signature">
@@ -965,8 +965,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PN_PREFIX" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PN_PREFIX" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PN_PREFIX:W3cTokens.this.Parser[String]"></a>
       <a id="PN_PREFIX:Parser[String]"></a>
       <h4 class="signature">
@@ -982,8 +982,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#PN_PREFIX_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#PN_PREFIX_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="PN_PREFIX_STR:String"></a>
       <a id="PN_PREFIX_STR:String"></a>
       <h4 class="signature">
@@ -999,9 +999,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#Parser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Parser[T&lt;:&lt;?&gt;](f:&lt;?&gt;):Parsers.this.Parser[T]"></a>
+      <a id="Parser[T](f:Parsers.this.Input=&gt;Parsers.this.ParseResult[T]):Parsers.this.Parser[T]"></a>
       <a id="Parser[T]((Input)⇒ParseResult[T]):Parser[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1026,7 +1026,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">PrefixedName</span><span class="params">(<span name="prefixMap">prefixMap: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">PrefixedName</span><span class="params">(<span name="prefixMap">prefixMap: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@PrefixedName(prefixMap:es.weso.rdf.PrefixMap):ShaclParser.this.Parser[es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
@@ -1043,7 +1043,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">RDFLiteral</span><span class="params">(<span name="prefixMap">prefixMap: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a>]</span>
+        <span class="name">RDFLiteral</span><span class="params">(<span name="prefixMap">prefixMap: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.Literal" class="extype" target="_top">Literal</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@RDFLiteral(prefixMap:es.weso.rdf.PrefixMap):ShaclParser.this.Parser[es.weso.rdf.nodes.LiteralwithProductwithSerializable]" title="Permalink" target="_top">
@@ -1051,7 +1051,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#STRING_LITERAL_LONG_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="es.weso.shacl.parser.W3cTokens#STRING_LITERAL_LONG_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="STRING_LITERAL_LONG_QUOTE:W3cTokens.this.Parser[String]"></a>
       <a id="STRING_LITERAL_LONG_QUOTE:Parser[String]"></a>
       <h4 class="signature">
@@ -1067,8 +1067,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#STRING_LITERAL_LONG_QUOTE_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#STRING_LITERAL_LONG_QUOTE_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="STRING_LITERAL_LONG_QUOTE_STR:String"></a>
       <a id="STRING_LITERAL_LONG_QUOTE_STR:String"></a>
       <h4 class="signature">
@@ -1084,8 +1084,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#STRING_LITERAL_LONG_SINGLE_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#STRING_LITERAL_LONG_SINGLE_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="STRING_LITERAL_LONG_SINGLE_QUOTE:W3cTokens.this.Parser[String]"></a>
       <a id="STRING_LITERAL_LONG_SINGLE_QUOTE:Parser[String]"></a>
       <h4 class="signature">
@@ -1101,8 +1101,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#STRING_LITERAL_LONG_SINGLE_QUOTE_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#STRING_LITERAL_LONG_SINGLE_QUOTE_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="STRING_LITERAL_LONG_SINGLE_QUOTE_STR:String"></a>
       <a id="STRING_LITERAL_LONG_SINGLE_QUOTE_STR:String"></a>
       <h4 class="signature">
@@ -1118,8 +1118,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#STRING_LITERAL_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#STRING_LITERAL_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="STRING_LITERAL_QUOTE:W3cTokens.this.Parser[String]"></a>
       <a id="STRING_LITERAL_QUOTE:Parser[String]"></a>
       <h4 class="signature">
@@ -1135,8 +1135,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#STRING_LITERAL_QUOTE_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#STRING_LITERAL_QUOTE_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="STRING_LITERAL_QUOTE_STR:String"></a>
       <a id="STRING_LITERAL_QUOTE_STR:String"></a>
       <h4 class="signature">
@@ -1152,8 +1152,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#STRING_LITERAL_SINGLE_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#STRING_LITERAL_SINGLE_QUOTE" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="STRING_LITERAL_SINGLE_QUOTE:W3cTokens.this.Parser[String]"></a>
       <a id="STRING_LITERAL_SINGLE_QUOTE:Parser[String]"></a>
       <h4 class="signature">
@@ -1169,8 +1169,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#STRING_LITERAL_SINGLE_QUOTE_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#STRING_LITERAL_SINGLE_QUOTE_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="STRING_LITERAL_SINGLE_QUOTE_STR:String"></a>
       <a id="STRING_LITERAL_SINGLE_QUOTE_STR:String"></a>
       <h4 class="signature">
@@ -1186,9 +1186,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#UCHAR2char" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="UCHAR2char(uchar:&lt;?&gt;):Char"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#UCHAR2char" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="UCHAR2char(uchar:String):Char"></a>
       <a id="UCHAR2char(String):Char"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1203,8 +1203,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#UCHAR_Parser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#UCHAR_Parser" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="UCHAR_Parser:W3cTokens.this.Parser[Char]"></a>
       <a id="UCHAR_Parser:Parser[Char]"></a>
       <h4 class="signature">
@@ -1220,8 +1220,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#UCHAR_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#UCHAR_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="UCHAR_STR:String"></a>
       <a id="UCHAR_STR:String"></a>
       <h4 class="signature">
@@ -1237,8 +1237,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#WS" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#WS" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="WS:W3cTokens.this.Parser[List[java.io.Serializable]]"></a>
       <a id="WS:Parser[List[Serializable]]"></a>
       <h4 class="signature">
@@ -1254,8 +1254,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#WS_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#WS_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="WS_STR:String"></a>
       <a id="WS_STR:String"></a>
       <h4 class="signature">
@@ -1271,9 +1271,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#accept" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="accept[U&lt;:&lt;?&gt;](expected:&lt;?&gt;,f:&lt;?&gt;):Parsers.this.Parser[U]"></a>
+      <a id="accept[U](expected:String,f:PartialFunction[Parsers.this.Elem,U]):Parsers.this.Parser[U]"></a>
       <a id="accept[U](String,PartialFunction[Elem,U]):Parser[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1290,7 +1290,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#accept" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="accept[ES&lt;:&lt;?&gt;](es:&lt;?&gt;)(implicitevidence$1:&lt;?&gt;):Parsers.this.Parser[List[Parsers.this.Elem]]"></a>
+      <a id="accept[ES](es:ES)(implicitevidence$1:ES=&gt;List[Parsers.this.Elem]):Parsers.this.Parser[List[Parsers.this.Elem]]"></a>
       <a id="accept[ES](ES)((ES)⇒List[Elem]):Parser[List[Elem]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1324,7 +1324,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#acceptIf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="acceptIf(p:&lt;?&gt;)(err:&lt;?&gt;):Parsers.this.Parser[Parsers.this.Elem]"></a>
+      <a id="acceptIf(p:Parsers.this.Elem=&gt;Boolean)(err:Parsers.this.Elem=&gt;String):Parsers.this.Parser[Parsers.this.Elem]"></a>
       <a id="acceptIf((Elem)⇒Boolean)((Elem)⇒String):Parser[Elem]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1341,7 +1341,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#acceptMatch" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="acceptMatch[U&lt;:&lt;?&gt;](expected:&lt;?&gt;,f:&lt;?&gt;):Parsers.this.Parser[U]"></a>
+      <a id="acceptMatch[U](expected:String,f:PartialFunction[Parsers.this.Elem,U]):Parsers.this.Parser[U]"></a>
       <a id="acceptMatch[U](String,PartialFunction[Elem,U]):Parser[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1357,7 +1357,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#acceptRegex" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="es.weso.shacl.parser.W3cTokens#acceptRegex" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="acceptRegex(name:String,r:scala.util.matching.Regex):W3cTokens.this.Parser[String]"></a>
       <a id="acceptRegex(String,Regex):Parser[String]"></a>
       <h4 class="signature">
@@ -1373,9 +1373,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#acceptSeq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="acceptSeq[ES&lt;:&lt;?&gt;](es:&lt;?&gt;)(implicitevidence$2:&lt;?&gt;):Parsers.this.Parser[List[Parsers.this.Elem]]"></a>
+      <a id="acceptSeq[ES](es:ES)(implicitevidence$2:ES=&gt;Iterable[Parsers.this.Elem]):Parsers.this.Parser[List[Parsers.this.Elem]]"></a>
       <a id="acceptSeq[ES](ES)((ES)⇒Iterable[Elem]):Parser[List[Elem]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1400,7 +1400,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">annotation</span><span class="params">(<span name="pm">pm: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>, <span name="base">base: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../Annotation.html" class="extype" name="es.weso.shacl.Annotation">Annotation</a>]</span>
+        <span class="name">annotation</span><span class="params">(<span name="pm">pm: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>, <span name="base">base: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../Annotation.html" class="extype" name="es.weso.shacl.Annotation">Annotation</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@annotation(pm:es.weso.rdf.PrefixMap,base:es.weso.rdf.nodes.IRI):ShaclParser.this.Parser[es.weso.shacl.Annotation]" title="Permalink" target="_top">
@@ -1536,7 +1536,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">base</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">base</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@base:ShaclParser.this.Parser[es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
@@ -1613,7 +1613,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#chainl1" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="chainl1[T&lt;:&lt;?&gt;,U&lt;:&lt;?&gt;](first:&lt;?&gt;,p:&lt;?&gt;,q:&lt;?&gt;):Parsers.this.Parser[T]"></a>
+      <a id="chainl1[T,U](first:=&gt;Parsers.this.Parser[T],p:=&gt;Parsers.this.Parser[U],q:=&gt;Parsers.this.Parser[(T,U)=&gt;T]):Parsers.this.Parser[T]"></a>
       <a id="chainl1[T,U](⇒Parser[T],⇒Parser[U],⇒Parser[(T,U)⇒T]):Parser[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1630,7 +1630,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#chainl1" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="chainl1[T&lt;:&lt;?&gt;](p:&lt;?&gt;,q:&lt;?&gt;):Parsers.this.Parser[T]"></a>
+      <a id="chainl1[T](p:=&gt;Parsers.this.Parser[T],q:=&gt;Parsers.this.Parser[(T,T)=&gt;T]):Parsers.this.Parser[T]"></a>
       <a id="chainl1[T](⇒Parser[T],⇒Parser[(T,T)⇒T]):Parser[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1681,7 +1681,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>StateParser</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#chainr1" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="chainr1[T&lt;:&lt;?&gt;,U&lt;:&lt;?&gt;](p:&lt;?&gt;,q:&lt;?&gt;,combine:&lt;?&gt;,first:&lt;?&gt;):Parsers.this.Parser[U]"></a>
+      <a id="chainr1[T,U](p:=&gt;Parsers.this.Parser[T],q:=&gt;Parsers.this.Parser[(T,U)=&gt;U],combine:(T,U)=&gt;U,first:U):Parsers.this.Parser[U]"></a>
       <a id="chainr1[T,U](⇒Parser[T],⇒Parser[(T,U)⇒U],(T,U)⇒U,U):Parser[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1697,8 +1697,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#chrExcept" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="chrExcept(cs:&lt;?&gt;):W3cTokens.this.Parser[W3cTokens.this.Elem]"></a>
+    </li><li name="es.weso.shacl.parser.W3cTokens#chrExcept" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="chrExcept(cs:Char*):W3cTokens.this.Parser[W3cTokens.this.Elem]"></a>
       <a id="chrExcept(Char*):Parser[Elem]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1713,7 +1713,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -1797,7 +1797,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">codeDecl</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, (<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>, <span class="extype" name="scala.Predef.String">String</span>)]</span>
+        <span class="name">codeDecl</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, (<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>, <span class="extype" name="scala.Predef.String">String</span>)]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@codeDecl:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,(es.weso.rdf.nodes.IRI,String)]" title="Permalink" target="_top">
@@ -1831,7 +1831,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">collectExtras</span><span class="params">(<span name="sd">sd: <a href="#ShapeDef=(List[es.weso.shacl.parser.Inclusion],es.weso.shacl.ShapeExpr)" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ShapeDef">ShapeDef</a></span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">collectExtras</span><span class="params">(<span name="sd">sd: <a href="#ShapeDef=(List[es.weso.shacl.parser.Inclusion],es.weso.shacl.ShapeExpr)" class="extmbr" name="es.weso.shacl.parser.ShaclParser.ShapeDef">ShapeDef</a></span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@collectExtras(sd:ShaclParser.this.ShapeDef):List[es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
@@ -1908,7 +1908,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#commit" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="commit[T&lt;:&lt;?&gt;](p:&lt;?&gt;):Parsers.this.Parser[T]"></a>
+      <a id="commit[T](p:=&gt;Parsers.this.Parser[T]):Parsers.this.Parser[T]"></a>
       <a id="commit[T](⇒Parser[T]):Parser[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1924,8 +1924,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#ctrl2str" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ctrl2str(s:&lt;?&gt;):String"></a>
+    </li><li name="es.weso.shacl.parser.W3cTokens#ctrl2str" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ctrl2str(s:String):String"></a>
       <a id="ctrl2str(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1940,7 +1940,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#directive" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="directive:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,Unit]"></a>
       <a id="directive:StateParser[ShapeParserState,Unit]"></a>
@@ -1976,7 +1976,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#elem" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="elem(e:&lt;?&gt;):Parsers.this.Parser[Parsers.this.Elem]"></a>
+      <a id="elem(e:Parsers.this.Elem):Parsers.this.Parser[Parsers.this.Elem]"></a>
       <a id="elem(Elem):Parser[Elem]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -1993,7 +1993,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#elem" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="elem(kind:&lt;?&gt;,p:&lt;?&gt;):Parsers.this.Parser[Parsers.this.Elem]"></a>
+      <a id="elem(kind:String,p:Parsers.this.Elem=&gt;Boolean):Parsers.this.Parser[Parsers.this.Elem]"></a>
       <a id="elem(String,(Elem)⇒Boolean):Parser[Elem]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -2044,7 +2044,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#err" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="err(msg:&lt;?&gt;):Parsers.this.Parser[Nothing]"></a>
+      <a id="err(msg:String):Parsers.this.Parser[Nothing]"></a>
       <a id="err(String):Parser[Nothing]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -2069,7 +2069,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">exclusion</span><span class="params">(<span name="pm">pm: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>, <span name="base">base: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../Exclusion.html" class="extype" name="es.weso.shacl.Exclusion">Exclusion</a>]</span>
+        <span class="name">exclusion</span><span class="params">(<span name="pm">pm: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>, <span name="base">base: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../Exclusion.html" class="extype" name="es.weso.shacl.Exclusion">Exclusion</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@exclusion(pm:es.weso.rdf.PrefixMap,base:es.weso.rdf.nodes.IRI):ShaclParser.this.Parser[es.weso.shacl.Exclusion]" title="Permalink" target="_top">
@@ -2152,7 +2152,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#guard" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="guard[T&lt;:&lt;?&gt;](p:&lt;?&gt;):Parsers.this.Parser[T]"></a>
+      <a id="guard[T](p:=&gt;Parsers.this.Parser[T]):Parsers.this.Parser[T]"></a>
       <a id="guard[T](⇒Parser[T]):Parser[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -2169,7 +2169,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Parsers</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.RegexParsers#handleWhiteSpace" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="handleWhiteSpace(source:&lt;?&gt;,offset:&lt;?&gt;):Int"></a>
+      <a id="handleWhiteSpace(source:CharSequence,offset:Int):Int"></a>
       <a id="handleWhiteSpace(CharSequence,Int):Int"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -2202,8 +2202,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#hex2String" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hex2String(s:&lt;?&gt;):String"></a>
+    </li><li name="es.weso.shacl.parser.W3cTokens#hex2String" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hex2String(s:List[Char]):String"></a>
       <a id="hex2String(List[Char]):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -2218,9 +2218,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#hex2str" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hex2str(s:&lt;?&gt;):String"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#hex2str" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hex2str(s:String):String"></a>
       <a id="hex2str(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -2235,7 +2235,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#id" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="id:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,es.weso.shacl.Label]"></a>
       <a id="id:StateParser[ShapeParserState,Label]"></a>
@@ -2381,7 +2381,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">iri</span><span class="params">(<span name="prefixMap">prefixMap: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">iri</span><span class="params">(<span name="prefixMap">prefixMap: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@iri(prefixMap:es.weso.rdf.PrefixMap):ShaclParser.this.Parser[es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
@@ -2398,7 +2398,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">iriBase</span><span class="params">(<span name="pm">pm: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>, <span name="base">base: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">iriBase</span><span class="params">(<span name="pm">pm: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>, <span name="base">base: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@iriBase(pm:es.weso.rdf.PrefixMap,base:es.weso.rdf.nodes.IRI):ShaclParser.this.Parser[es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
@@ -2415,7 +2415,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">iriFacets</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, (<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>, <span class="extype" name="scala.List">List</span>[<a href="../XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a>])]</span>
+        <span class="name">iriFacets</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, (<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>, <span class="extype" name="scala.List">List</span>[<a href="../XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a>])]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@iriFacets:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,(es.weso.rdf.nodes.IRI,List[es.weso.shacl.XSFacet])]" title="Permalink" target="_top">
@@ -2449,7 +2449,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">iriOrLiteral</span><span class="params">(<span name="pm">pm: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>, <span name="base">base: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Either">Either</span>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>, <span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span>]]</span>
+        <span class="name">iriOrLiteral</span><span class="params">(<span name="pm">pm: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>, <span name="base">base: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="scala.Either">Either</span>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>, <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.Literal" class="extype" target="_top">Literal</a>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@iriOrLiteral(pm:es.weso.rdf.PrefixMap,base:es.weso.rdf.nodes.IRI):ShaclParser.this.Parser[Either[es.weso.rdf.nodes.IRI,es.weso.rdf.nodes.Literal]]" title="Permalink" target="_top">
@@ -2466,7 +2466,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">iriOrStem</span><span class="params">(<span name="pm">pm: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>, <span name="base">base: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a>]</span>
+        <span class="name">iriOrStem</span><span class="params">(<span name="pm">pm: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>, <span name="base">base: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@iriOrStem(pm:es.weso.rdf.PrefixMap,base:es.weso.rdf.nodes.IRI):ShaclParser.this.Parser[es.weso.shacl.ValueObject]" title="Permalink" target="_top">
@@ -2483,7 +2483,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">iriRange</span><span class="params">(<span name="pm">pm: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>, <span name="base">base: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a>]</span>
+        <span class="name">iriRange</span><span class="params">(<span name="pm">pm: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>, <span name="base">base: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@iriRange(pm:es.weso.rdf.PrefixMap,base:es.weso.rdf.nodes.IRI):ShaclParser.this.Parser[es.weso.shacl.ValueObject]" title="Permalink" target="_top">
@@ -2534,7 +2534,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">literal</span><span class="params">(<span name="prefixMap">prefixMap: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.Literal">Literal</span>]</span>
+        <span class="name">literal</span><span class="params">(<span name="prefixMap">prefixMap: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.Literal" class="extype" target="_top">Literal</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@literal(prefixMap:es.weso.rdf.PrefixMap):ShaclParser.this.Parser[es.weso.rdf.nodes.Literal]" title="Permalink" target="_top">
@@ -2628,7 +2628,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#mkList" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="mkList[T&lt;:&lt;?&gt;]:Parsers.this.~[T,List[T]]=&gt;List[T]"></a>
+      <a id="mkList[T]:Parsers.this.~[T,List[T]]=&gt;List[T]"></a>
       <a id="mkList[T]:(~[T,List[T]])⇒List[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -2696,7 +2696,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#not" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="not[T&lt;:&lt;?&gt;](p:&lt;?&gt;):Parsers.this.Parser[Unit]"></a>
+      <a id="not[T](p:=&gt;Parsers.this.Parser[T]):Parsers.this.Parser[Unit]"></a>
       <a id="not[T](⇒Parser[T]):Parser[Unit]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -2823,7 +2823,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">okFacets</span><span class="params">(<span name="pair">pair: (<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>, <span class="extype" name="scala.List">List</span>[<a href="../XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a>])</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
+        <span class="name">okFacets</span><span class="params">(<span name="pair">pair: (<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>, <span class="extype" name="scala.List">List</span>[<a href="../XSFacet.html" class="extype" name="es.weso.shacl.XSFacet">XSFacet</a>])</span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@okFacets(pair:(es.weso.rdf.nodes.IRI,List[es.weso.shacl.XSFacet])):Boolean" title="Permalink" target="_top">
@@ -2908,7 +2908,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">parse</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.CharSequence">CharSequence</span></span>, <span name="baseIRI">baseIRI: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span> = <span class="symbol"><span class="name"><a href="../../../package.html">IRI(&quot;&quot;)</a></span></span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[(<a href="../Schema.html" class="extype" name="es.weso.shacl.Schema">Schema</a>, <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span>)]</span>
+        <span class="name">parse</span><span class="params">(<span name="s">s: <span class="extype" name="java.lang.CharSequence">CharSequence</span></span>, <span name="baseIRI">baseIRI: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a> = <span class="symbol"><span class="name"><a href="../../../package.html">IRI(&quot;&quot;)</a></span></span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.util.Try" class="extype" target="_top">Try</a>[(<a href="../Schema.html" class="extype" name="es.weso.shacl.Schema">Schema</a>, <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a>)]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@parse(s:CharSequence,baseIRI:es.weso.rdf.nodes.IRI):scala.util.Try[(es.weso.shacl.Schema,es.weso.rdf.PrefixMap)]" title="Permalink" target="_top">
@@ -3096,7 +3096,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">pred</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">pred</span><span class="result">: <a href="#StateParser[S,A]=S=&gt;StateParser.this.Parser[(A,S)]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.StateParser">StateParser</a>[<a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a>, <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@pred:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
@@ -3113,7 +3113,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">predicate</span><span class="params">(<span name="s">s: <a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>]</span>
+        <span class="name">predicate</span><span class="params">(<span name="s">s: <a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@predicate(s:es.weso.shacl.parser.ShapeParserState):ShaclParser.this.Parser[es.weso.rdf.nodes.IRI]" title="Permalink" target="_top">
@@ -3130,7 +3130,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">prefix</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span>)]</span>
+        <span class="name">prefix</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[(<span class="extype" name="scala.Predef.String">String</span>, <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>)]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@prefix:ShaclParser.this.Parser[(String,es.weso.rdf.nodes.IRI)]" title="Permalink" target="_top">
@@ -3189,8 +3189,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#removeBNodePrefix" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="removeBNodePrefix(s:&lt;?&gt;):String"></a>
+    </li><li name="es.weso.shacl.parser.W3cTokens#removeBNodePrefix" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="removeBNodePrefix(s:String):String"></a>
       <a id="removeBNodePrefix(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3205,9 +3205,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#removeQuotes" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="removeQuotes(s:&lt;?&gt;,quote:&lt;?&gt;,number:&lt;?&gt;):String"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#removeQuotes" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="removeQuotes(s:String,quote:String,number:Int):String"></a>
       <a id="removeQuotes(String,String,Int):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3222,7 +3222,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <p class="shortcomment cmt">remove quotes from a quoted string
+</p><div class="fullcomment"><div class="comment cmt"><p>remove quotes from a quoted string
+</p></div><dl class="paramcmts block"><dt class="param">s</dt><dd class="cmt"><p>input string</p></dd><dt class="param">quote</dt><dd class="cmt"><p>Type of quotes, may be simple or double</p></dd><dt>returns</dt><dd class="cmt"><p>the new string</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#rep" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="rep[T](p:=&gt;Parsers.this.Parser[T]):Parsers.this.Parser[List[T]]"></a>
       <a id="rep[T](⇒Parser[T]):Parser[List[T]]"></a>
@@ -3329,7 +3331,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>StateParser</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#rep1sep" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="rep1sep[T&lt;:&lt;?&gt;](p:&lt;?&gt;,q:&lt;?&gt;):Parsers.this.Parser[List[T]]"></a>
+      <a id="rep1sep[T](p:=&gt;Parsers.this.Parser[T],q:=&gt;Parsers.this.Parser[Any]):Parsers.this.Parser[List[T]]"></a>
       <a id="rep1sep[T](⇒Parser[T],⇒Parser[Any]):Parser[List[T]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3397,7 +3399,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>StateParser</dd></dl></div>
     </li><li name="scala.util.parsing.combinator.Parsers#repN" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="repN[T&lt;:&lt;?&gt;](num:&lt;?&gt;,p:&lt;?&gt;):Parsers.this.Parser[List[T]]"></a>
+      <a id="repN[T](num:Int,p:=&gt;Parsers.this.Parser[T]):Parsers.this.Parser[List[T]]"></a>
       <a id="repN[T](Int,⇒Parser[T]):Parser[List[T]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3584,7 +3586,7 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
     </li><li name="scala.util.parsing.input.Positional#setPos" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="setPos(newpos:&lt;?&gt;):Positional.this.type"></a>
+      <a id="setPos(newpos:scala.util.parsing.input.Position):Positional.this.type"></a>
       <a id="setPos(Position):ShaclParser.this.type"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3755,7 +3757,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#skipWhitespace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="es.weso.shacl.parser.W3cTokens#skipWhitespace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="skipWhitespace:Boolean"></a>
       <a id="skipWhitespace:Boolean"></a>
       <h4 class="signature">
@@ -3771,7 +3773,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens → RegexParsers</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a> → RegexParsers</dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#someOfShape" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="someOfShape:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,es.weso.shacl.ShapeExpr]"></a>
       <a id="someOfShape:StateParser[ShapeParserState,ShapeExpr]"></a>
@@ -3823,8 +3825,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#startMiddleAltRep" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="startMiddleAltRep(start:&lt;?&gt;,middleAlt:&lt;?&gt;,repEnd:&lt;?&gt;):W3cTokens.this.Parser[String]"></a>
+    </li><li name="es.weso.shacl.parser.W3cTokens#startMiddleAltRep" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="startMiddleAltRep(start:String,middleAlt:String,repEnd:String):W3cTokens.this.Parser[String]"></a>
       <a id="startMiddleAltRep(String,String,String):Parser[String]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3839,9 +3841,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#startMiddleAltRep_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="startMiddleAltRep_STR(start:&lt;?&gt;,middleAlt:&lt;?&gt;,repEnd:&lt;?&gt;):String"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#startMiddleAltRep_STR" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="startMiddleAltRep_STR(start:String,middleAlt:String,repEnd:String):String"></a>
       <a id="startMiddleAltRep_STR(String,String,String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3856,7 +3858,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#startStatements" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="startStatements:ShaclParser.this.StateParser[es.weso.shacl.parser.ShapeParserState,(es.weso.shacl.Actions,List[Option[ShaclParser.this.ShapeRule]])]"></a>
       <a id="startStatements:StateParser[ShapeParserState,(Actions,List[Option[ShapeRule]])]"></a>
@@ -3891,8 +3893,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#str2Char" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="str2Char(str:&lt;?&gt;):Char"></a>
+    </li><li name="es.weso.shacl.parser.W3cTokens#str2Char" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="str2Char(str:String):Char"></a>
       <a id="str2Char(String):Char"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3907,9 +3909,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#str2Decimal" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="str2Decimal(s:&lt;?&gt;):BigDecimal"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#str2Decimal" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="str2Decimal(s:String):BigDecimal"></a>
       <a id="str2Decimal(String):BigDecimal"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3924,9 +3926,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#str2Double" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="str2Double(s:&lt;?&gt;):Double"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#str2Double" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="str2Double(s:String):Double"></a>
       <a id="str2Double(String):Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3941,9 +3943,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#str2Int" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="str2Int(s:&lt;?&gt;):Integer"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#str2Int" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="str2Int(s:String):Integer"></a>
       <a id="str2Int(String):Integer"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -3958,7 +3960,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#string" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="string:ShaclParser.this.Parser[String]"></a>
       <a id="string:Parser[String]"></a>
@@ -4163,8 +4165,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#unscape" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="unscape(s:&lt;?&gt;):String"></a>
+    </li><li name="es.weso.shacl.parser.W3cTokens#unscape" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unscape(s:String):String"></a>
       <a id="unscape(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -4179,9 +4181,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#unscape2" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="unscape2(x:&lt;?&gt;):String"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#unscape2" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unscape2(x:String):String"></a>
       <a id="unscape2(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -4196,9 +4198,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#unscapeCtrl" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="unscapeCtrl(s:&lt;?&gt;):String"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#unscapeCtrl" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unscapeCtrl(s:String):String"></a>
       <a id="unscapeCtrl(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -4213,7 +4215,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#unscapePercent" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="unscapePercent(s:String):String"></a>
       <a id="unscapePercent(String):String"></a>
@@ -4231,8 +4233,8 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#unscapeReservedChars" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="unscapeReservedChars(s:&lt;?&gt;):String"></a>
+    </li><li name="es.weso.shacl.parser.W3cTokens#unscapeReservedChars" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unscapeReservedChars(s:String):String"></a>
       <a id="unscapeReservedChars(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -4247,8 +4249,8 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#unscapeUchars" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#unscapeUchars" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="unscapeUchars(s:String):String"></a>
       <a id="unscapeUchars(String):String"></a>
       <h4 class="signature">
@@ -4264,9 +4266,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#unscapeUnicode4" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="unscapeUnicode4(s:&lt;?&gt;):String"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#unscapeUnicode4" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unscapeUnicode4(s:String):String"></a>
       <a id="unscapeUnicode4(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -4281,9 +4283,9 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#unscapeUnicode8" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="unscapeUnicode8(s:&lt;?&gt;):String"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
+    </li><li name="es.weso.shacl.parser.W3cTokens#unscapeUnicode8" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="unscapeUnicode8(s:String):String"></a>
       <a id="unscapeUnicode8(String):String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -4298,7 +4300,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#upperBound" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="upperBound:ShaclParser.this.Parser[Option[Option[Int]]]"></a>
       <a id="upperBound:Parser[Option[Option[Int]]]"></a>
@@ -4342,7 +4344,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">valueAny</span><span class="params">(<span name="pm">pm: <span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span></span>, <span name="base">base: <span class="extype" name="es.weso.rdf.nodes.IRI">IRI</span></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a>]</span>
+        <span class="name">valueAny</span><span class="params">(<span name="pm">pm: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a></span>, <span name="base">base: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a></span>)</span><span class="result">: <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../ValueObject.html" class="extype" name="es.weso.shacl.ValueObject">ValueObject</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@valueAny(pm:es.weso.rdf.PrefixMap,base:es.weso.rdf.nodes.IRI):ShaclParser.this.Parser[es.weso.shacl.ValueObject]" title="Permalink" target="_top">
@@ -4444,7 +4446,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">valueExprLabel</span><span class="result">: (<span class="extype" name="es.weso.rdf.PrefixMap">PrefixMap</span>) ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>
+        <span class="name">valueExprLabel</span><span class="result">: (<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.PrefixMap" class="extype" target="_top">PrefixMap</a>) ⇒ <a href="#Parser[+T]extendsParsers.this.Input=&gt;Parsers.this.ParseResult[T]" class="extmbr" name="es.weso.shacl.parser.ShaclParser.Parser">Parser</a>[<a href="../Label.html" class="extype" name="es.weso.shacl.Label">Label</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../../index.html#es.weso.shacl.parser.ShaclParser$@valueExprLabel:es.weso.rdf.PrefixMap=&gt;ShaclParser.this.Parser[es.weso.shacl.Label]" title="Permalink" target="_top">
@@ -4538,7 +4540,7 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="es.weso.parser.W3cTokens#whiteSpace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="es.weso.shacl.parser.W3cTokens#whiteSpace" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="whiteSpace:scala.util.matching.Regex"></a>
       <a id="whiteSpace:Regex"></a>
       <h4 class="signature">
@@ -4554,7 +4556,7 @@
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>W3cTokens → RegexParsers</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a> → RegexParsers</dd></dl></div>
     </li><li name="es.weso.shacl.parser.ShaclParser#xsFacet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="xsFacet(s:es.weso.shacl.parser.ShapeParserState):ShaclParser.this.Parser[es.weso.shacl.XSFacet]"></a>
       <a id="xsFacet(ShapeParserState):Parser[XSFacet]"></a>
@@ -4617,8 +4619,8 @@
         <div id="inheritedMembers">
         <div class="parent" name="es.weso.shacl.parser.ShaclParser">
               <h3>Inherited from <a href="ShaclParser.html" class="extype" name="es.weso.shacl.parser.ShaclParser">ShaclParser</a></h3>
-            </div><div class="parent" name="es.weso.parser.W3cTokens">
-              <h3>Inherited from <span class="extype" name="es.weso.parser.W3cTokens">W3cTokens</span></h3>
+            </div><div class="parent" name="es.weso.shacl.parser.W3cTokens">
+              <h3>Inherited from <a href="W3cTokens.html" class="extype" name="es.weso.shacl.parser.W3cTokens">W3cTokens</a></h3>
             </div><div class="parent" name="es.weso.parser.StateParser">
               <h3>Inherited from <span class="extype" name="es.weso.parser.StateParser">parser.StateParser</span></h3>
             </div><div class="parent" name="scala.util.parsing.combinator.RegexParsers">

@@ -47,7 +47,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ShaclMatcher</span><span class="params">(<span name="schema">schema: <a href="Schema.html" class="extype" name="es.weso.shacl.Schema">shacl.Schema</a></span>, <span name="rdf">rdf: <span class="extype" name="es.weso.rdf.RDFReader">RDFReader</span></span>)</span><span class="result"> extends <a href="../rdf/validator/RDFValidator.html" class="extype" name="es.weso.rdf.validator.RDFValidator">RDFValidator</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+        <span class="name">ShaclMatcher</span><span class="params">(<span name="schema">schema: <a href="Schema.html" class="extype" name="es.weso.shacl.Schema">shacl.Schema</a></span>, <span name="rdf">rdf: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.RDFReader" class="extype" target="_top">RDFReader</a></span>)</span><span class="result"> extends <a href="../rdf/validator/RDFValidator.html" class="extype" name="es.weso.rdf.validator.RDFValidator">RDFValidator</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4>
       
@@ -99,7 +99,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ShaclMatcher</span><span class="params">(<span name="schema">schema: <a href="Schema.html" class="extype" name="es.weso.shacl.Schema">shacl.Schema</a></span>, <span name="rdf">rdf: <span class="extype" name="es.weso.rdf.RDFReader">RDFReader</span></span>)</span>
+        <span class="name">ShaclMatcher</span><span class="params">(<span name="schema">schema: <a href="Schema.html" class="extype" name="es.weso.shacl.Schema">shacl.Schema</a></span>, <span name="rdf">rdf: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.RDFReader" class="extype" target="_top">RDFReader</a></span>)</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.ShaclMatcher@&lt;init&gt;(schema:es.weso.shacl.Schema,rdf:es.weso.rdf.RDFReader):es.weso.shacl.ShaclMatcher" title="Permalink" target="_top">
@@ -138,7 +138,7 @@
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Node</span><span class="result"> = <span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span></span>
+        <span class="name">Node</span><span class="result"> = <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.RDFNode" class="extype" target="_top">RDFNode</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.ShaclMatcher@Node=es.weso.rdf.nodes.RDFNode" title="Permalink" target="_top">
@@ -531,7 +531,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">match_node_label</span><span class="params">(<span name="node">node: <span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span></span>)</span><span class="params">(<span name="label">label: <a href="#Label=es.weso.shacl.Label" class="extmbr" name="es.weso.shacl.ShaclMatcher.Label">Label</a></span>)</span><span class="result">: <a href="#Result_=es.weso.shacl.ShaclResult" class="extmbr" name="es.weso.shacl.ShaclMatcher.Result_">Result_</a></span>
+        <span class="name">match_node_label</span><span class="params">(<span name="node">node: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.RDFNode" class="extype" target="_top">RDFNode</a></span>)</span><span class="params">(<span name="label">label: <a href="#Label=es.weso.shacl.Label" class="extmbr" name="es.weso.shacl.ShaclMatcher.Label">Label</a></span>)</span><span class="result">: <a href="#Result_=es.weso.shacl.ShaclResult" class="extmbr" name="es.weso.shacl.ShaclMatcher.Result_">Result_</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.ShaclMatcher@match_node_label(node:es.weso.rdf.nodes.RDFNode)(label:ShaclMatcher.this.Label):ShaclMatcher.this.Result_" title="Permalink" target="_top">
@@ -548,7 +548,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">match_nodesLabels</span><span class="params">(<span name="decls">decls: <span class="extype" name="scala.Seq">Seq</span>[(<span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span>, <a href="#Label=es.weso.shacl.Label" class="extmbr" name="es.weso.shacl.ShaclMatcher.Label">Label</a>)]</span>)</span><span class="result">: <a href="#Result_=es.weso.shacl.ShaclResult" class="extmbr" name="es.weso.shacl.ShaclMatcher.Result_">Result_</a></span>
+        <span class="name">match_nodesLabels</span><span class="params">(<span name="decls">decls: <span class="extype" name="scala.Seq">Seq</span>[(<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.RDFNode" class="extype" target="_top">RDFNode</a>, <a href="#Label=es.weso.shacl.Label" class="extmbr" name="es.weso.shacl.ShaclMatcher.Label">Label</a>)]</span>)</span><span class="result">: <a href="#Result_=es.weso.shacl.ShaclResult" class="extmbr" name="es.weso.shacl.ShaclMatcher.Result_">Result_</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.ShaclMatcher@match_nodesLabels(decls:Seq[(es.weso.rdf.nodes.RDFNode,ShaclMatcher.this.Label)]):ShaclMatcher.this.Result_" title="Permalink" target="_top">
@@ -616,7 +616,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">rdf</span><span class="result">: <span class="extype" name="es.weso.rdf.RDFReader">RDFReader</span></span>
+        <span class="name">rdf</span><span class="result">: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.RDFReader" class="extype" target="_top">RDFReader</a></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.ShaclMatcher@rdf:es.weso.rdf.RDFReader" title="Permalink" target="_top">
@@ -650,7 +650,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">subjects</span><span class="result">: <span class="extype" name="scala.List">List</span>[<span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span>]</span>
+        <span class="name">subjects</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.RDFNode" class="extype" target="_top">RDFNode</a>]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.ShaclMatcher@subjects:List[es.weso.rdf.nodes.RDFNode]" title="Permalink" target="_top">
@@ -701,7 +701,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">validateAttempts</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="../rdf/validator/ValidationAttempt.html" class="extype" name="es.weso.rdf.validator.ValidationAttempt">ValidationAttempt</a>[<span class="extype" name="es.weso.rdf.nodes.RDFNode">RDFNode</span>, <a href="#Label=es.weso.shacl.Label" class="extmbr" name="es.weso.shacl.ShaclMatcher.Label">Label</a>]]</span>
+        <span class="name">validateAttempts</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="../rdf/validator/ValidationAttempt.html" class="extype" name="es.weso.rdf.validator.ValidationAttempt">ValidationAttempt</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.RDFNode" class="extype" target="_top">RDFNode</a>, <a href="#Label=es.weso.shacl.Label" class="extmbr" name="es.weso.shacl.ShaclMatcher.Label">Label</a>]]</span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shacl.ShaclMatcher@validateAttempts:Seq[es.weso.rdf.validator.ValidationAttempt[es.weso.rdf.nodes.RDFNode,ShaclMatcher.this.Label]]" title="Permalink" target="_top">

@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>ShapeParserState - es.weso.shacl.parser.ShapeParserState</title>
-          <meta name="description" content="ShapeParserState - es.weso.shacl.parser.ShapeParserState" />
-          <meta name="keywords" content="ShapeParserState es.weso.shacl.parser.ShapeParserState" />
+          <title>BNodeTable - es.weso.shacl.parser.BNodeTable</title>
+          <meta name="description" content="BNodeTable - es.weso.shacl.parser.BNodeTable" />
+          <meta name="keywords" content="BNodeTable es.weso.shacl.parser.BNodeTable" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../../index.html';
-            var hash = 'es.weso.shacl.parser.ShapeParserState$';
+            var hash = 'es.weso.shacl.parser.BNodeTable';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -26,16 +26,16 @@
    	  </script>
     
         </head>
-        <body class="value">
+        <body class="type">
       <div id="definition">
-        <a href="ShapeParserState.html" title="See companion class"><img alt="Object/Class" src="../../../../lib/object_to_class_big.png" /></a>
+        <a href="BNodeTable$.html" title="See companion object"><img alt="Class/Object" src="../../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../../package.html" class="extype" name="es">es</a>.<a href="../../package.html" class="extype" name="es.weso">weso</a>.<a href="../package.html" class="extype" name="es.weso.shacl">shacl</a>.<a href="package.html" class="extype" name="es.weso.shacl.parser">parser</a></p>
-        <h1><a href="ShapeParserState.html" title="See companion class">ShapeParserState</a></h1><h3><span class="morelinks"><div>
+        <h1><a href="BNodeTable$.html" title="See companion object">BNodeTable</a></h1><h3><span class="morelinks"><div>
             Related Docs:
-            <a href="ShapeParserState.html" title="See companion class">class ShapeParserState</a>
+            <a href="BNodeTable$.html" title="See companion object">object BNodeTable</a>
             | <a href="package.html" class="extype" name="es.weso.shacl.parser">package parser</a>
           </div></span></h3><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -44,17 +44,21 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">object</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ShapeParserState</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+        <span class="name">BNodeTable</span><span class="params">(<span name="bNodeName">bNodeName: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.immutable.Map" class="extype" target="_top">Map</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]]</span>, <span name="nameBNode">nameBNode: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.immutable.Map" class="extype" target="_top">Map</a>[<span class="extype" name="scala.Predef.String">String</span>, <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>]</span>, <span name="nodes">nodes: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a> = <span class="symbol">0</span></span>)</span><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/labra/ShExcala/tree/master/src/main/scala/es/weso/shacl/parser/ShaclParserState.scala" target="_blank">ShaclParserState.scala</a></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/labra/ShExcala/tree/master/src/main/scala/es/weso/shacl/parser/BNodeTable.scala" target="_blank">BNodeTable.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a>, <span class="extype" name="java.io.Serializable">Serializable</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></div>
-        </div></div>
+          <div class="superTypes hiddenContent"><a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a>, <span class="extype" name="java.io.Serializable">Serializable</span>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Equals" class="extype" target="_top">Equals</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></div>
+        </div><div class="toggleContainer block diagram-container" id="inheritance-diagram-container">
+                <span class="toggle diagram-link">Type Hierarchy</span>
+                <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#diagrams" target="_blank" class="diagram-help">Learn more about scaladoc diagrams</a>
+                <div class="diagram" id="inheritance-diagram"><svg class="class-diagram" id="graph1" viewBox="-1 -1 207 123" height="124pt" width="208pt" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g style="font-family:Times-Roman;font-size:14.00;" class="graph" id="graph0"><g class="cluster" id="graph2"></g><g class="cluster" id="graph3"></g><g class="node" id="node3"><a xlink:title="es.weso.shacl.parser.BNodeTable (this class)" xlink:href="#inheritance-diagram"><polygon points="148,66 48,66 48,92 148,92 148,66" style="fill:#0a955b;stroke:#115f3b;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/class_diagram.pngnode0"><polygon points="74,71 58,71 58,87 74,87 74,71 "></polygon></clipPath><image xlink:href="../../../../lib/class_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/class_diagram.pngnode0)" y="71" x="58" preserveAspectRatio="xMidYMid meet" height="26px" width="100px"></image><text y="82" x="109" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">BNodeTable</text></a></g><g class="node" id="node4"><polygon points="85,4 5,4 5,30 85,30 85,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode1"><polygon points="31,9 15,9 15,25 31,25 31,9 "></polygon></clipPath><image xlink:href="../../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode1)" y="9" x="15" preserveAspectRatio="xMidYMid meet" height="26px" width="80px"></image><text y="20" x="56" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">Product</text></g><g class="edge" id="edge4"><path d="M60,34C68,44 79,56 87,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="58,35 56,30 61,32 58,35" style="fill:none;stroke:#d4d4d4;"></polygon></g><g class="node" id="node5"><polygon points="201,4 103,4 103,30 201,30 201,4" style="fill:#498aad;stroke:#37657d;"></polygon><clipPath id="mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode2"><polygon points="129,9 113,9 113,25 129,25 129,9 "></polygon></clipPath><image xlink:href="../../../../lib/trait_diagram.png" clip-path="url(#mypathC:\src\shapes\ShExcala\target\scala-2.11\api/lib/trait_diagram.pngnode2)" y="9" x="113" preserveAspectRatio="xMidYMid meet" height="26px" width="98px"></image><text y="20" x="163" style="font-family:Arial;font-size:10.00;fill:#ffffff;" text-anchor="middle">Serializable</text></g><g class="edge" id="edge6"><path d="M137,34C129,44 118,56 110,66" style="fill:none;stroke:#d4d4d4;"></path><polygon points="136,32 141,30 139,35 136,32" style="fill:none;stroke:#d4d4d4;"></polygon></g></g></svg></div>
+              </div></div>
         
 
       <div id="mbrsel">
@@ -71,7 +75,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="es.weso.shacl.parser.ShapeParserState"><span>ShapeParserState</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="es.weso.shacl.parser.BNodeTable"><span>BNodeTable</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -88,7 +92,27 @@
 
       <div id="template">
         <div id="allMembers">
-        
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="es.weso.shacl.parser.BNodeTable#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(bNodeName:scala.collection.immutable.Map[es.weso.rdf.nodes.BNodeId,Option[String]],nameBNode:scala.collection.immutable.Map[String,es.weso.rdf.nodes.BNodeId],nodes:Int):es.weso.shacl.parser.BNodeTable"></a>
+      <a id="&lt;init&gt;:BNodeTable"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">BNodeTable</span><span class="params">(<span name="bNodeName">bNodeName: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.immutable.Map" class="extype" target="_top">Map</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]]</span>, <span name="nameBNode">nameBNode: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.immutable.Map" class="extype" target="_top">Map</a>[<span class="extype" name="scala.Predef.String">String</span>, <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>]</span>, <span name="nodes">nodes: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a> = <span class="symbol">0</span></span>)</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@&lt;init&gt;(bNodeName:scala.collection.immutable.Map[es.weso.rdf.nodes.BNodeId,Option[String]],nameBNode:scala.collection.immutable.Map[String,es.weso.rdf.nodes.BNodeId],nodes:Int):es.weso.shacl.parser.BNodeTable" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
 
         
 
@@ -108,7 +132,7 @@
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -125,7 +149,7 @@
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@##():Int" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@##():Int" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -142,7 +166,7 @@
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -159,11 +183,28 @@
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="es.weso.shacl.parser.BNodeTable#bNodeName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="bNodeName:scala.collection.immutable.Map[es.weso.rdf.nodes.BNodeId,Option[String]]"></a>
+      <a id="bNodeName:Map[BNodeId,Option[String]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">bNodeName</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.immutable.Map" class="extype" target="_top">Map</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>, <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@bNodeName:scala.collection.immutable.Map[es.weso.rdf.nodes.BNodeId,Option[String]]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -176,7 +217,7 @@
         <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@clone():Object" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@clone():Object" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -199,28 +240,11 @@
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a>
-      <a id="equals(Any):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Any" class="extype" target="_top">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@equals(x$1:Any):Boolean" title="Permalink" target="_top">
-        <img src="../../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -233,7 +257,7 @@
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@finalize():Unit" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@finalize():Unit" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -244,6 +268,40 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="es.weso.shacl.parser.BNodeTable#getBNodeId" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getBNodeId(name:String):Option[es.weso.rdf.nodes.BNodeId]"></a>
+      <a id="getBNodeId(String):Option[BNodeId]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getBNodeId</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@getBNodeId(name:String):Option[es.weso.rdf.nodes.BNodeId]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.parser.BNodeTable#getBNodeName" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getBNodeName(id:es.weso.rdf.nodes.BNodeId):Option[String]"></a>
+      <a id="getBNodeName(BNodeId):Option[String]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getBNodeName</span><span class="params">(<span name="id">id: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Option" class="extype" target="_top">Option</a>[<span class="extype" name="scala.Predef.String">String</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@getBNodeName(id:es.weso.rdf.nodes.BNodeId):Option[String]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -256,58 +314,24 @@
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hashCode():Int"></a>
-      <a id="hashCode():Int"></a>
+    </li><li name="es.weso.shacl.parser.BNodeTable#getOrAddBNode" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="getOrAddBNode(idName:String):(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)"></a>
+      <a id="getOrAddBNode(String):(BNodeId,BNodeTable)"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
+        <span class="name">getOrAddBNode</span><span class="params">(<span name="idName">idName: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: (<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>, <a href="" class="extype" name="es.weso.shacl.parser.BNodeTable">BNodeTable</a>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@hashCode():Int" title="Permalink" target="_top">
-        <img src="../../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="es.weso.shacl.parser.ShapeParserState#initial" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="initial(baseIRI:es.weso.rdf.nodes.IRI):es.weso.shacl.parser.ShapeParserState"></a>
-      <a id="initial(IRI):ShapeParserState"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">initial</span><span class="params">(<span name="baseIRI">baseIRI: <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a></span>)</span><span class="result">: <a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@initial(baseIRI:es.weso.rdf.nodes.IRI):es.weso.shacl.parser.ShapeParserState" title="Permalink" target="_top">
-        <img src="../../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="es.weso.shacl.parser.ShapeParserState#initial" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="initial:es.weso.shacl.parser.ShapeParserState"></a>
-      <a id="initial:ShapeParserState"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">initial</span><span class="result">: <a href="ShapeParserState.html" class="extype" name="es.weso.shacl.parser.ShapeParserState">ShapeParserState</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@initial:es.weso.shacl.parser.ShapeParserState" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@getOrAddBNode(idName:String):(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -324,11 +348,28 @@
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="es.weso.shacl.parser.BNodeTable#nameBNode" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="nameBNode:scala.collection.immutable.Map[String,es.weso.rdf.nodes.BNodeId]"></a>
+      <a id="nameBNode:Map[String,BNodeId]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nameBNode</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.collection.immutable.Map" class="extype" target="_top">Map</a>[<span class="extype" name="scala.Predef.String">String</span>, <a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@nameBNode:scala.collection.immutable.Map[String,es.weso.rdf.nodes.BNodeId]" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -341,11 +382,45 @@
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="es.weso.shacl.parser.BNodeTable#newBNode" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="newBNode:(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)"></a>
+      <a id="newBNode:(BNodeId,BNodeTable)"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newBNode</span><span class="result">: (<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.BNodeId" class="extype" target="_top">BNodeId</a>, <a href="" class="extype" name="es.weso.shacl.parser.BNodeTable">BNodeTable</a>)</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@newBNode:(es.weso.rdf.nodes.BNodeId,es.weso.shacl.parser.BNodeTable)" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.shacl.parser.BNodeTable#nodes" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="nodes:Int"></a>
+      <a id="nodes:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nodes</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@nodes:Int" title="Permalink" target="_top">
+        <img src="../../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#notify" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <a id="notify():Unit"></a>
@@ -358,7 +433,7 @@
         <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@notify():Unit" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@notify():Unit" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -375,7 +450,7 @@
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -392,12 +467,12 @@
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="es.weso.shacl.parser.BNodeTable#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
       <h4 class="signature">
@@ -406,14 +481,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@toString():String" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@toString():String" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="es.weso.shacl.parser.BNodeTable">BNodeTable</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -426,7 +501,7 @@
         <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@wait():Unit" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@wait():Unit" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -449,7 +524,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Int" class="extype" target="_top">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -472,7 +547,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Unit" class="extype" target="_top">Unit</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../../index.html#es.weso.shacl.parser.ShapeParserState$@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../../index.html#es.weso.shacl.parser.BNodeTable@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -496,6 +571,10 @@
               <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></h3>
             </div><div class="parent" name="java.io.Serializable">
               <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Product" class="extype" target="_top">Product</a></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.Equals" class="extype" target="_top">Equals</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
