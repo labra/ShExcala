@@ -216,7 +216,7 @@ case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
   }
 
   def valueSetDoc(vs: ValueSet): Document = {
-    "(" :: nest(3, seqDocWithSep(vs.s, " ", valueObjectDoc)) :: text(")")
+    "[" :: nest(3, seqDocWithSep(vs.s, " ", valueObjectDoc)) :: text("]")
   }
   
   def facetsDoc(facets: Seq[XSFacet]): Document = {

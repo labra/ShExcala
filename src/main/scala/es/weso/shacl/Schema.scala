@@ -22,6 +22,12 @@ import java.net.URI
 import io._
 import es.weso.utils.Logging
 
+/**
+ * A Schema
+ * 
+ * @param pm prefix map
+ * @param shaclSchema ShaclSchema
+ */
 case class Schema(
     pm: PrefixMap,
     shaclSchema: SHACLSchema) 
