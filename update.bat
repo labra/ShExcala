@@ -1,5 +1,5 @@
 set oldversion=0.2.2
-set version=0.7.5
+set version=0.7.6
 
 set source=\src\shapes\ShExcala\target\universal
 set dest=\gh-pages\ShExcala\binaries
