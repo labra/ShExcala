@@ -51,7 +51,7 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>This trait defines Single Occurrence Regular Bag Expressions (Rbe)</p><p>The algorithm to check that a Rbe contains a bag is PTIME
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>This trait defines Single Occurrence Regular Bag Expressions (Rbe)</p><h4> Further info </h4><p>The algorithm to check that a Rbe contains a bag is PTIME
 The algorithm has been described in [1] and is based on intervals</p><p>[1] Complexity and Expressiveness of ShEx for RDF,
     S. Staworko, I. Boneva, J. Labra, S. Hym, E. Prud'hommeaux, H. Solbrig</p></div><dl class="attributes block"> <dt>Source</dt><dd><a href="https://github.com/labra/ShExcala/tree/master/src/main/scala/es/weso/rbe/Rbe.scala" target="_blank">Rbe.scala</a></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
@@ -327,8 +327,9 @@ The algorithm has been described in [1] and is based on intervals</p><p>[1] Comp
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
-    </li><li name="es.weso.rbe.Rbe#derivBag" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">derivative of this RBE
+</p>
+    </li><li name="es.weso.rbe.Rbe#derivBag" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="derivBag[U&gt;:A](bag:es.weso.collection.Bag[U],open:Boolean,controlled:Seq[U]):es.weso.rbe.Rbe[U]"></a>
       <a id="derivBag[U&gt;:A](Bag[U],Boolean,Seq[U]):Rbe[U]"></a>
       <h4 class="signature">
@@ -344,7 +345,7 @@ The algorithm has been described in [1] and is based on intervals</p><p>[1] Comp
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Derivative over a bag of symbols</p><div class="fullcomment"><div class="comment cmt"><p>Derivative over a bag of symbols</p></div><dl class="paramcmts block"><dt class="param">open</dt><dd class="cmt"><p>allows extra symbols</p></dd><dt class="param">controlled</dt><dd class="cmt"><p>limits the extra symbols to those that don't appear in controlled</p></dd></dl></div>
     </li><li name="es.weso.rbe.Rbe#derivSymbol" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="derivSymbol[U&gt;:A](x:U,s:es.weso.rbe.Symbol[U],open:Boolean,controlled:Seq[U]):es.weso.rbe.Rbe[U]"></a>
       <a id="derivSymbol[U&gt;:A](U,Symbol[U],Boolean,Seq[U]):Rbe[U]"></a>
@@ -709,7 +710,8 @@ open: allows extra symbols to match
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Checks if a rbe is nullable
+</p>
     </li><li name="es.weso.rbe.Rbe#repeatInterval" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="repeatInterval[U&gt;:A](n:Int,m:es.weso.rbe.IntOrUnbounded,bag:es.weso.collection.Bag[U]):es.weso.rbe.Interval"></a>
       <a id="repeatInterval[U&gt;:A](Int,IntOrUnbounded,Bag[U]):Interval"></a>
