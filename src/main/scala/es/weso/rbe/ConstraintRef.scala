@@ -1,5 +1,8 @@
 package es.weso.rbe
 
+/**
+ * @param value reference value of this constraint 
+ */
 case class ConstraintRef(value: Int) 
    extends AnyVal
    with Ordered[ConstraintRef] {

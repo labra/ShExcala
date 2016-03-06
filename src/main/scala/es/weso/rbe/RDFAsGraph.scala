@@ -7,7 +7,6 @@ import es.weso.utils.Logging
 /**
  *  RDF as graphs 
  */
-
 case class RDFAsGraph(rdf: RDFReader) 
    extends Graph[IRI,RDFNode] with Logging {
   

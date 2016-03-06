@@ -1,16 +1,35 @@
 package es.weso.rbe
 
+/**
+ * Generic representation of graphs
+ */
 trait Graph[Edge,Node] {
+  
+  /**
+   * List of nodes
+   */
   def nodes: Seq[Node] 
   
+  /**
+   * output edges and referenced nodes from a node
+   */
   def out: Node => Seq[(Edge,Node)]
   
+  /**
+   * input edges and referenced nodes from a node
+   */
   def in: Node => Seq[(Edge,Node)]
   
+  /**
+   * sequence of triples in a graph
+   */
   def triples: Seq[(Node,Edge,Node)]
   
 }
 
+/**
+ * Implementation of graph as a map
+ */
 case class GraphMap[Edge,Node](
     m: Map[Node,Seq[(Edge,Node)]]) extends Graph[Edge,Node] {
   def nodes = m.keys.toSeq

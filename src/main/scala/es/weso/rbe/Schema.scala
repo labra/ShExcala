@@ -9,6 +9,9 @@ import es.weso.utils.TryUtils._
 import es.weso.typing.PosNegTyping
 import es.weso.utils.Logging
 
+/**
+ * Defines a Schema which is a map from Labels to Shapes
+ */
 case class Schema[Edge,Node,Label,Err](
     m: Map[Label,Shape[DirectedEdge[Edge],Node,Label,Err]],
     ignored: Seq[DirectedEdge[Edge]]  // Edges that are ignored in the definition of closed schemas

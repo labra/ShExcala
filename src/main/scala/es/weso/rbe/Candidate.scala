@@ -1,5 +1,8 @@
 package es.weso.rbe
 
+/**
+ * A candidate to match
+ */
 trait Candidate[Edge,+Node,+Label,+Err] {
   def sign : Int
   def value: ConstraintRef
@@ -7,6 +10,9 @@ trait Candidate[Edge,+Node,+Label,+Err] {
   def edge: DirectedEdge[Edge]
 }
 
+/**
+ * A positive candidate
+ */
 case class Pos[Edge,Node](
     ref : ConstraintRef, 
     arc: (Node,Edge,Node),
@@ -16,6 +22,9 @@ case class Pos[Edge,Node](
   def isPending = false
 }
 
+/**
+ * A candidates that is pending 
+ */
 case class Pending[Edge,Node,Label](
     n : ConstraintRef, 
     node: Node, 
@@ -50,6 +59,9 @@ case class PendingSeq[Edge,Node,Label](
 }
 
 
+/**
+ * A negative candidate
+ */
 case class Neg[Edge,Node,Err](
     n : ConstraintRef,
     arc:(Node,Edge,Node),
@@ -60,6 +72,9 @@ case class Neg[Edge,Node,Err](
   def isPending = false
 }
 
+/**
+ * A missing candidate
+ */
 case class Missing[Edge,Node,Err](
    n: ConstraintRef, 
    arc: (Node,Edge,Node),

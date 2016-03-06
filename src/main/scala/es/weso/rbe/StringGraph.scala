@@ -4,9 +4,9 @@ import es.weso.utils._
 import Checker._
 
 /**
- *  String graphs are mainly used for testing purposes
+ *  Simple graphs whose nodes and edges are strings
+ *  They are used for testing purposes only
  */
-
 trait StringGraph extends Graph[String,String] {
 }
 

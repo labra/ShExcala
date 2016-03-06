@@ -9,6 +9,8 @@ import es.weso.utils.Logging
 /**
  * This trait defines Single Occurrence Regular Bag Expressions (Rbe)
  * 
+ * == Further info == 
+ * 
  * The algorithm to check that a Rbe contains a bag is PTIME
  * The algorithm has been described in [1] and is based on intervals
  * 
@@ -127,10 +129,10 @@ sealed trait Rbe[+A] extends Logging {
     else false
   }
   
-  /*
+  /**
    * Derivative over a bag of symbols
-   * open: allows extra symbols
-   * controlled: limits the extra symbols to those that don't appear in controlled
+   * @param open allows extra symbols
+   * @param controlled limits the extra symbols to those that don't appear in controlled
    */
   def derivBag[U >: A](bag: Bag[U], open: Boolean, controlled: Seq[U]): Rbe[U] = {
     val e: Rbe[U] = this
@@ -143,7 +145,9 @@ sealed trait Rbe[+A] extends Logging {
     bag.toSeq.foldRight(e)(f)
   } 
   
-  
+  /**
+   * Checks if a rbe is nullable
+   */
   def nullable: Boolean = {
     this match {
       case Fail(_) => false
@@ -225,6 +229,12 @@ sealed trait Rbe[+A] extends Logging {
     }
   }
 
+  /**
+   * derivative of this RBE with regards to a symbol
+   * @param x symbol
+   * @param open allows extra symbols
+   * @param controlled limits the extra symbols to those that don't appear in controlled
+   */
   def deriv[U >: A](x: U, open: Boolean, controlled: Seq[U]) : Rbe[U] = {
     this match {
       case f@Fail(_) => f 
@@ -262,6 +272,7 @@ sealed trait Rbe[+A] extends Logging {
   }
 } 
 
+
 case class Fail(msg:String) extends Rbe[Nothing]
 case object Empty extends Rbe[Nothing]
 case class Symbol[+A](a: A, n: Int, m: IntOrUnbounded) extends Rbe[A]
@@ -271,6 +282,3 @@ case class Star[A](v: Rbe[A]) extends Rbe[A]
 case class Plus[A](v: Rbe[A]) extends Rbe[A]
 case class Repeat[A](v: Rbe[A], n: Int, m: IntOrUnbounded) extends Rbe[A]
 
-object Rbe {
-
-}

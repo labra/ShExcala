@@ -15,7 +15,8 @@ case class IntOrUnboundedException(msg:String)
 
 
 /**
- * A Limit can be either an Int or an Unbounded value
+ * Represents a limit of an [[Interval interval]].
+ * It can be either an Int or an Unbounded value
  */
 trait IntOrUnbounded {
   def isUnbounded : Boolean
