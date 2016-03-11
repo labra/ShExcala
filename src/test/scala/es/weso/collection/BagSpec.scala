@@ -32,6 +32,13 @@ class BagSpec extends FunSpec with Matchers with Checkers {
       emptyBag.insert('a').insert('a').elems.size should be(1)
     }
 
+    it("should calculate delta") {
+      val bag = Bag.toBag(List(1,1,2,2,3))
+      val delta = Bag.delta(Seq(1,2),bag)
+      val expected = Bag.toBag(List(1,1,2,2))
+      delta should be(expected) 
+    }
+    
     it("converting a bag from a list of chars has the same size as the list") {
       check((ls: List[Char]) => {
         val bag = Bag.toBag(ls)
@@ -56,6 +63,7 @@ class BagSpec extends FunSpec with Matchers with Checkers {
       }
       )
     }
+    
 
   }
 

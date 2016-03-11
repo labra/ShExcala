@@ -17,6 +17,12 @@ import es.weso.utils.PrefixMapUtils._
 case class ShapeDocException(msg:String) 
   extends Exception(s"ShapeDocException: $msg")
 
+/**
+ * Convert a SHACL Schema to a String
+ * 
+ * It uses the pretty-printing library which generated [[scala.text.Document]]
+ *  
+ */
 case class ShaclDoc(prefixMap: PrefixMap) extends Logging {
 
   def shaclSchemaDoc(s: SHACLSchema): Document = {

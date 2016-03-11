@@ -257,13 +257,13 @@ class RbeTest extends FunSpec with Matchers with GeneratorDrivenPropertyChecks {
 
   def containsBag[A](rbe: Rbe[A], bag: Bag[A], open: Boolean = true) = {
     it(s"${rbe} should contain ${bag}. Open: $open") {
-      rbe.contains(bag, open) should be(true)
+      rbe.containsWithRepeats(bag, open) should be(true)
     }
   }
 
   def notContainsBag[A](rbe: Rbe[A], bag: Bag[A], open: Boolean = true) = {
     it(s"${rbe} should not contain ${bag}, Open: $open") {
-      rbe.contains(bag, open) should be(false)
+      rbe.containsWithRepeats(bag, open) should be(false)
     }
   }
 

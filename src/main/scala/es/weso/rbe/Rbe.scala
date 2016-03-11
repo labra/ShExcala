@@ -20,14 +20,24 @@ import es.weso.utils.Logging
  */
 sealed trait Rbe[+A] extends Logging {
   
+  /**
+   * Calculates the interval of a bag from a RBE
+   * 
+   * The following code follows page 11 of
+   * [http://labra.github.io/ShExcala/papers/staworko-icdt15a.pdf]
+   */
   def interval[U >: A](bag: Bag[U]): Interval = {
     this match {
+      
       case Fail(_) => Interval(1,0)
+      
       case Empty => Interval(0,Unbounded)
+      
       case Symbol(a,n,m) => {
         val wa = bag.multiplicity(a)
         Interval(divIntLimitUp(wa, m),divIntLimitDown(wa,n))
       }
+      
       case And(v1,v2) => v1.interval(bag) & v2.interval(bag)
       
       case Or(v1,v2) => v1.interval(bag) + v2.interval(bag)
@@ -94,11 +104,18 @@ sealed trait Rbe[+A] extends Logging {
     bag.elems.exists{ case (s,_) => !this.symbols.contains(s) }
   }
 
-  def contains[U >: A](bag: Bag[U], open: Boolean): Boolean = {
+  
+  private def contains[U >: A](bag: Bag[U], open: Boolean): Boolean = {
     if (!open && bagHasExtraSymbols(bag)) false 
     else this.interval(bag).contains(1) 
   }
   
+  /**
+   * Checks if a bag is matched by this RBE
+   * 
+   * @param bag bag to check if matches with current RBE
+   * @param open allows extra symbols
+   */
   def containsWithRepeats[U >: A](bag: Bag[U], open: Boolean): Boolean = {
     if (containsRepeats) 
       matchDeriv(bag,open)
@@ -106,7 +123,10 @@ sealed trait Rbe[+A] extends Logging {
       contains(bag,open)
   }
   
-  def containsRepeats: Boolean = {
+  /**
+   * Checks if a RBE contains repetitions 
+   */
+  private def containsRepeats: Boolean = {
     this match {
       case Fail(_) => false
       case Empty => false
@@ -148,7 +168,7 @@ sealed trait Rbe[+A] extends Logging {
   /**
    * Checks if a rbe is nullable
    */
-  def nullable: Boolean = {
+  private def nullable: Boolean = {
     this match {
       case Fail(_) => false
       case Empty => true
@@ -163,7 +183,7 @@ sealed trait Rbe[+A] extends Logging {
   }
   
   
-   def mkAnd[A](r1: => Rbe[A], r2: => Rbe[A]): Rbe[A]= {
+   private def mkAnd[A](r1: => Rbe[A], r2: => Rbe[A]): Rbe[A]= {
     val r = (r1, r2) match {
       case (Empty, e2) => e2
       case (e1, Empty) => e1
@@ -174,7 +194,7 @@ sealed trait Rbe[+A] extends Logging {
     r
   }
    
-  def mkRange[A](e: Rbe[A], m: Int, n: IntOrUnbounded): Rbe[A] = {
+  private def mkRange[A](e: Rbe[A], m: Int, n: IntOrUnbounded): Rbe[A] = {
     if (m < 0) Fail("Range with negative lower bound = " + m)
     else if (m > n) Fail("Range with lower bound " + m + " bigger than upper bound " + n)
     else {
@@ -188,7 +208,7 @@ sealed trait Rbe[+A] extends Logging {
     }
   }
    
-  def mkRangeSymbol[A](x: A, m: Int, n: IntOrUnbounded): Rbe[A] = {
+  private def mkRangeSymbol[A](x: A, m: Int, n: IntOrUnbounded): Rbe[A] = {
     if (m < 0) Fail("Range with negative lower bound = " + m)
     else if (m > n) Fail("Range with lower bound " + m + " bigger than upper bound " + n)
     else {
@@ -200,7 +220,7 @@ sealed trait Rbe[+A] extends Logging {
     }
   }
 
-  def mkOr[A](r1: => Rbe[A], r2: => Rbe[A]): Rbe[A]= {
+  private def mkOr[A](r1: => Rbe[A], r2: => Rbe[A]): Rbe[A]= {
     val r = (r1, r2) match {
       case (f @ Fail(_), e2) => e2
       case (e1, f @ Fail(_)) => e1
@@ -273,12 +293,43 @@ sealed trait Rbe[+A] extends Logging {
 } 
 
 
+/**
+ * Fail RBE doesn't match
+ */
 case class Fail(msg:String) extends Rbe[Nothing]
+
+/**
+ * Empty RBE
+ */
 case object Empty extends Rbe[Nothing]
+
+/**
+ * Represents a symbol that is repeated between n and m times (m can be unbounded)
+ */
 case class Symbol[+A](a: A, n: Int, m: IntOrUnbounded) extends Rbe[A]
+
+/**
+ * And(v1,v2) represents both v1 and v2 
+ */
 case class And[A](v1: Rbe[A], v2: Rbe[A]) extends Rbe[A]
+
+/**
+ * Or(v1,v2) represents either v1 or v2
+ */
 case class Or[A](v1: Rbe[A], v2: Rbe[A]) extends Rbe[A]
+
+/**
+ * Star(v) represents 0 or more v
+ */
 case class Star[A](v: Rbe[A]) extends Rbe[A]
+
+/**
+ * Plus(v) represents 1 or more appearances of v
+ */
 case class Plus[A](v: Rbe[A]) extends Rbe[A]
+
+/**
+ * Repeat(v,n,m) represents between n and m apperances of v
+ */
 case class Repeat[A](v: Rbe[A], n: Int, m: IntOrUnbounded) extends Rbe[A]
 

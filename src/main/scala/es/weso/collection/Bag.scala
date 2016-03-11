@@ -43,10 +43,13 @@ trait Bag[A] {
   def union(other: Bag[A]): Bag[A] =
     other.elems.toList.foldLeft(this)((s, p) => s.add(p._1, p._2))
 
-  /**
-   * Intersection of two bags
-   */
-  def intersection(other: Bag[A]): Bag[A] = ???
+  /*
+   * TODO: Add intersection of two bags
+   *
+  def intersection(other: Bag[A]): Bag[A] = {
+    val zero : Bag[A] = Bag.empty // type error implicit Ordering not found...
+    zero
+  } */
 
   /**
    * Size returns the total number of elements.
