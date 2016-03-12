@@ -3,6 +3,15 @@ import argonaut._
 import Argonaut.{IntDecodeJson => _, _ }
 import argonaut.DecodeJsons
 
+
+/**
+ * Abstract Syntax Tree used to represent ShEx in JSON
+ * 
+ * It should be compatible with: [http://shexspec.github.io/primer/ShExJ]
+ * 
+ * Using Argonaut to automatically convert to/from Json
+ * 
+ */
 trait AST {
 
   case class SchemaAST(
@@ -539,5 +548,6 @@ trait AST {
   }
 
 }
+
 
 object AST extends AST

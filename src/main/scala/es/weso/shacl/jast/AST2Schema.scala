@@ -10,10 +10,16 @@ import es.weso.rdf.PrefixMap
 import es.weso.rdf.nodes._
 import AST._
 
+/**
+ * Represents conversion exceptions between AST and Schema 
+ */
 case class AST2SchemaException(msg: String) extends Exception(s"ASTSchemaException: $msg")
 
 object AST2Schema {
 
+  /**
+   * Tries to converts a [[es.weso.shacl.jast.SchemaAST]] to a [[es.weso.shacl.Schema]]
+   */
   def cnvAST(ast: SchemaAST): Try[Schema] = {
     Try {
       val start = ast.start.map(str => toLabel(str))
@@ -27,24 +33,24 @@ object AST2Schema {
     }
   }
 
-  def cnvValueClasses(maybe_vcs: Option[Map[String, ValueClassAST]]): Map[Label, ValueClassDefinition] = {
+  private def cnvValueClasses(maybe_vcs: Option[Map[String, ValueClassAST]]): Map[Label, ValueClassDefinition] = {
     maybe_vcs.getOrElse(Map()).map { case (str, vc) => (toLabel(str), cnvValueClassDef(vc)) }
   }
 
-  def cnvActions(actions: Option[Seq[SemActAST]]): Actions = {
+  private def cnvActions(actions: Option[Seq[SemActAST]]): Actions = {
     val as = actions.getOrElse(Seq())
     Actions.fromList(as.toList.map(cnvAction))
   }
 
-  def cnvAction(a: SemActAST): (IRI, String) = {
+  private def cnvAction(a: SemActAST): (IRI, String) = {
     (IRI(a.name.getOrElse("")), a.code.getOrElse(""))
   }
 
-  def shapes2rules(shapes: Map[String, ShapeAST]): Map[Label, Shape] = {
+  private def shapes2rules(shapes: Map[String, ShapeAST]): Map[Label, Shape] = {
     shapes.map { case (str, shapeAST) => (toLabel(str), cnvShape(shapeAST)) }
   }
 
-  def cnvShape(shape: ShapeAST): Shape = {
+  private def cnvShape(shape: ShapeAST): Shape = {
     val shapeExpr = cnvExpr(shape.expression.getOrElse(ExpressionAST.empty))
     val isClosed = shape.closed.getOrElse(false)
     val isVirtual = shape.virtual.getOrElse(false)
@@ -59,19 +65,19 @@ object AST2Schema {
       actions = actions)
   }
 
-  def cnvInherit(inh: Seq[String]): Seq[Label] = {
+  private def cnvInherit(inh: Seq[String]): Seq[Label] = {
     inh.map { case str => toLabel(str) }
   }
 
-  def cnvExtras(extra: Seq[String]): Seq[IRI] = {
+  private def cnvExtras(extra: Seq[String]): Seq[IRI] = {
     extra.map { case str => IRI(str) }
   }
 
-  def cnvActions(as: Map[String, String]): Map[IRI, String] = {
+  private def cnvActions(as: Map[String, String]): Map[IRI, String] = {
     as.map { case (s1, s2) => (IRI(s1), s2) }
   }
 
-  def cnvExpr(expr: ExpressionAST): ShapeExpr = {
+  private def cnvExpr(expr: ExpressionAST): ShapeExpr = {
     if (!expr._type.isDefined) EmptyShape()
     else
     expr._type.get match {
@@ -138,37 +144,37 @@ object AST2Schema {
     }
   }
 
-  def cnvExpressions(expressions: Option[List[ExpressionAST]]): List[ShapeExpr] = {
+  private def cnvExpressions(expressions: Option[List[ExpressionAST]]): List[ShapeExpr] = {
     expressions.getOrElse(List()).map(cnvExpr)
   }
 
-  def cnvNegated(negated: Option[Boolean]): Boolean = {
+  private def cnvNegated(negated: Option[Boolean]): Boolean = {
     negated.getOrElse(false)
   }
 
-  def cnvInverse(i: Option[Boolean]): Boolean = {
+  private def cnvInverse(i: Option[Boolean]): Boolean = {
     i.getOrElse(false)
   }
 
-  def cnvAnnotations(annotations: Option[List[AnnotationAST]]): List[Annotation] = {
+  private def cnvAnnotations(annotations: Option[List[AnnotationAST]]): List[Annotation] = {
     annotations.getOrElse(List()).map(a => cnvAnnotation(a))
   }
 
-  def cnvAnnotation(annotation: AnnotationAST): Annotation = {
+  private def cnvAnnotation(annotation: AnnotationAST): Annotation = {
     val iri = cnvIRI(annotation.predicate.getOrElse(""))
     val value = cnvValue(annotation._object.getOrElse(""))
     Annotation(iri, value)
   }
 
-  def cnvIRI(str: String): IRI = {
+  private def cnvIRI(str: String): IRI = {
     IRI(str)
   }
 
-  def cnvValueClassRef(vcr: String): ValueClass = {
+  private def cnvValueClassRef(vcr: String): ValueClass = {
     ValueClassRef(labelStr(vcr))
   }
 
-  def cnvValue(str: String): Either[IRI, Literal] = {
+  private def cnvValue(str: String): Either[IRI, Literal] = {
     if (str.startsWith("\"")) {
       Right(cnvLiteral(str))
     } else {
@@ -176,7 +182,7 @@ object AST2Schema {
     }
   }
 
-  def cnvCard(expr: ExpressionAST): Cardinality = {
+  private def cnvCard(expr: ExpressionAST): Cardinality = {
     (expr.min, expr.max) match {
       case (None, None)           => defaultCardinality
       case (Some(min), None)      => UnboundedCardinalityFrom(min)
@@ -185,17 +191,18 @@ object AST2Schema {
     }
   }
 
-  def cnvMax(min: Int, max: MaxAST): Cardinality = {
+  private def cnvMax(min: Int, max: MaxAST): Cardinality = {
     max.v match {
       case None      => UnboundedCardinalityFrom(min)
       case Some(num) => RangeCardinality(min, num)
     }
   }
-  def cnvValueClassDef(vc: ValueClassAST): ValueClassDefinition = {
+  
+  private def cnvValueClassDef(vc: ValueClassAST): ValueClassDefinition = {
     ValueClassDefinition.fromValueClass(cnvValueClass(vc))
   }
 
-  def cnvValueClass(vc: ValueClassAST): ValueClass = {
+  private def cnvValueClass(vc: ValueClassAST): ValueClass = {
     if (vc.values.isDefined) {
       val valueSet = cnvValues(vc.values.get)
       ValueSet(valueSet)
@@ -234,80 +241,80 @@ object AST2Schema {
     }
   }
 
-  def collectStringFacets(vc: ValueClassAST): List[StringFacet] = {
+  private def collectStringFacets(vc: ValueClassAST): List[StringFacet] = {
     List(collectPattern(vc), collectLength(vc), collectMinLength(vc), collectMaxLength(vc)).flatten
   }
 
-  def collectNumericFacets(vc: ValueClassAST): List[NumericFacet] = {
+  private def collectNumericFacets(vc: ValueClassAST): List[NumericFacet] = {
     List(collectMinInclusive(vc), collectMaxInclusive(vc), collectMinExclusive(vc), collectMaxExclusive(vc), collectTotalDigits(vc), collectFractionDigits(vc)).flatten
   }
 
-  def collectFacets(vc: ValueClassAST): List[XSFacet] = {
+  private def collectFacets(vc: ValueClassAST): List[XSFacet] = {
     collectNumericFacets(vc) ++ collectStringFacets(vc)
   }
 
   // TODO: The following code is quite repetitive...
   // Look for better ways to DRY!!!
 
-  def collectLength(vc: ValueClassAST): List[StringFacet] = {
+  private def collectLength(vc: ValueClassAST): List[StringFacet] = {
     if (vc.length.isDefined) List(Length(vc.length.get))
     else List()
   }
 
-  def collectMinInclusive(vc: ValueClassAST): List[NumericFacet] = {
+  private def collectMinInclusive(vc: ValueClassAST): List[NumericFacet] = {
     if (vc.minInclusive.isDefined) List(MinInclusive(cnvNumber(vc.minInclusive.get)))
     else List()
   }
 
-  def cnvNumber(n: NumberAST): Integer = {
+  private def cnvNumber(n: NumberAST): Integer = {
     n.v match {
       case Left(n)  => n
       case Right(n) => throw new Exception("cnvNumber: Unsupported conversion from double to Number")
     }
   }
 
-  def collectMaxInclusive(vc: ValueClassAST): List[NumericFacet] = {
+  private def collectMaxInclusive(vc: ValueClassAST): List[NumericFacet] = {
     if (vc.maxInclusive.isDefined) List(MaxInclusive(cnvNumber(vc.maxInclusive.get)))
     else List()
   }
 
-  def collectMinExclusive(vc: ValueClassAST): List[NumericFacet] = {
+  private def collectMinExclusive(vc: ValueClassAST): List[NumericFacet] = {
     if (vc.minExclusive.isDefined) List(MinExclusive(cnvNumber(vc.minExclusive.get)))
     else List()
   }
 
-  def collectMaxExclusive(vc: ValueClassAST): List[NumericFacet] = {
+  private def collectMaxExclusive(vc: ValueClassAST): List[NumericFacet] = {
     if (vc.maxExclusive.isDefined) List(MaxExclusive(cnvNumber(vc.maxExclusive.get)))
     else List()
   }
 
-  def collectPattern(vc: ValueClassAST): List[StringFacet] = {
+  private def collectPattern(vc: ValueClassAST): List[StringFacet] = {
     if (vc.pattern.isDefined) {
       List(Pattern(vc.pattern.get))
     } else List()
   }
 
-  def collectMinLength(vc: ValueClassAST): List[StringFacet] = {
+  private def collectMinLength(vc: ValueClassAST): List[StringFacet] = {
     if (vc.minLength.isDefined) List(MinLength(vc.minLength.get))
     else List()
   }
 
-  def collectMaxLength(vc: ValueClassAST): List[StringFacet] = {
+  private def collectMaxLength(vc: ValueClassAST): List[StringFacet] = {
     if (vc.maxLength.isDefined) List(MaxLength(vc.maxLength.get))
     else List()
   }
 
-  def collectTotalDigits(vc: ValueClassAST): List[NumericFacet] = {
+  private def collectTotalDigits(vc: ValueClassAST): List[NumericFacet] = {
     if (vc.totalDigits.isDefined) List(TotalDigits(vc.totalDigits.get))
     else List()
   }
 
-  def collectFractionDigits(vc: ValueClassAST): List[NumericFacet] = {
+  private def collectFractionDigits(vc: ValueClassAST): List[NumericFacet] = {
     if (vc.fractionDigits.isDefined) List(FractionDigits(vc.fractionDigits.get))
     else List()
   }
 
-  def cnvShapeConstr(ref: Option[ReferenceAST]): Option[ShapeConstr] = {
+  private def cnvShapeConstr(ref: Option[ReferenceAST]): Option[ShapeConstr] = {
     ref.map(ref =>
       ref.value match {
         case Left(str) => SingleShape(toLabel(str))
@@ -318,15 +325,15 @@ object AST2Schema {
       })
   }
 
-  def cnvValues(values: List[ValueAST]): Seq[ValueObject] = {
+  private def cnvValues(values: List[ValueAST]): Seq[ValueObject] = {
     values.map { case value => cnvValue(value) }.toSeq
   }
 
-  def cnvValue(v: ValueAST): ValueObject = {
+  private def cnvValue(v: ValueAST): ValueObject = {
     v.value.fold(cnvString, cnvStemRange)
   }
 
-  def cnvStemRange(s: StemRangeAST): ValueObject = {
+  private def cnvStemRange(s: StemRangeAST): ValueObject = {
     // TODO: Review if we really need all the following checks
     val exclusions = cnvExclusions(s.exclusions)
     s.stem match {
@@ -341,11 +348,11 @@ object AST2Schema {
     }
   }
 
-  def cnvExclusions(excl: Option[List[ExclusionAST]]): List[Exclusion] = {
+  private def cnvExclusions(excl: Option[List[ExclusionAST]]): List[Exclusion] = {
     excl.getOrElse(List()).map(cnvExcl)
   }
 
-  def cnvExcl(excl: ExclusionAST): Exclusion = {
+  private def cnvExcl(excl: ExclusionAST): Exclusion = {
     excl.value.fold(
       str => Exclusion(IRI(str), false),
       s => s.value.fold(
@@ -353,7 +360,7 @@ object AST2Schema {
         wc => cnvStemExclusion(wc)))
   }
 
-  def cnvStem(s: StemAST): Option[IRI] = {
+  private def cnvStem(s: StemAST): Option[IRI] = {
     //   if (s.isEmpty) None
     //   else {
     s.value match {
@@ -363,14 +370,14 @@ object AST2Schema {
     //  }
   }
 
-  def cnvStemExclusion(s: WildCardAST): Exclusion = {
+  private def cnvStemExclusion(s: WildCardAST): Exclusion = {
     s.stem match {
      case Some(StemAST(Left(str))) => Exclusion(IRI(str),true)
      case _ => throw AST2SchemaException("cnvStemExclusion: Unsupported conversion..." + s)
    } 
   } 
 
-  def cnvString(s: String): ValueObject = {
+  private def cnvString(s: String): ValueObject = {
     if (s.startsWith("\"")) {
       cnvValueLiteral(s)
     } else {
@@ -378,21 +385,21 @@ object AST2Schema {
     }
   }
 
-  lazy val literal = """\"(.*)\"""".r
-  lazy val literalDatatype = """\"(.*)\"\^\^(.*)""".r
-  lazy val literalLang = """"(.*)"@(.*)""".r
+  private lazy val literal = """\"(.*)\"""".r
+  private lazy val literalDatatype = """\"(.*)\"\^\^(.*)""".r
+  private lazy val literalLang = """"(.*)"@(.*)""".r
 
-  lazy val xsd = "http://www.w3.org/2001/XMLSchema#"
-  lazy val xsd_boolean = xsd + "boolean"
-  lazy val xsd_integer = xsd + "integer"
-  lazy val xsd_decimal = xsd + "decimal"
-  lazy val xsd_double = xsd + "double"
+  private lazy val xsd = "http://www.w3.org/2001/XMLSchema#"
+  private lazy val xsd_boolean = xsd + "boolean"
+  private lazy val xsd_integer = xsd + "integer"
+  private lazy val xsd_decimal = xsd + "decimal"
+  private lazy val xsd_double = xsd + "double"
 
-  def cnvValueLiteral(l: String): ValueObject = {
+  private def cnvValueLiteral(l: String): ValueObject = {
     ValueLiteral(cnvLiteral(l))
   }
 
-  def cnvLiteral(l: String): Literal = {
+  private def cnvLiteral(l: String): Literal = {
     l match {
       case literalDatatype(lex, datatype) => {
         datatype match {
@@ -415,19 +422,19 @@ object AST2Schema {
     }
   }
 
-  def cnvInteger(str: String): Literal = {
+  private def cnvInteger(str: String): Literal = {
     IntegerLiteral(Integer.parseInt(str))
   }
 
-  def cnvDouble(str: String): Literal = {
+  private def cnvDouble(str: String): Literal = {
     DoubleLiteral(str.toDouble)
   }
 
-  def cnvDecimal(str: String): Literal = {
+  private def cnvDecimal(str: String): Literal = {
     DecimalLiteral(BigDecimal(str))
   }
 
-  def cnvBoolean(str: String): Literal = {
+  private def cnvBoolean(str: String): Literal = {
     str match {
       case "false" => BooleanLiteral(false)
       case "true"  => BooleanLiteral(true)
@@ -435,14 +442,14 @@ object AST2Schema {
     }
   }
 
-  def prefixes2prefixMap(prefixes: Map[String, String]): PrefixMap = {
+  private def prefixes2prefixMap(prefixes: Map[String, String]): PrefixMap = {
     PrefixMap(prefixes.mapValues { x => IRI(x) })
   }
 
   lazy val bNodeStart = "_:"
   lazy val bNodeStartLength = bNodeStart.length
 
-  def toLabel(str: String): Label = {
+  private def toLabel(str: String): Label = {
     if (str.startsWith(bNodeStart)) {
       BNodeLabel(BNodeId(str.drop(bNodeStartLength)))
     } else

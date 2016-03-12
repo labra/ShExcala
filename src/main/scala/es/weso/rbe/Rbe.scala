@@ -25,6 +25,7 @@ sealed trait Rbe[+A] extends Logging {
    * 
    * The following code follows page 11 of
    * [http://labra.github.io/ShExcala/papers/staworko-icdt15a.pdf]
+   * 
    */
   def interval[U >: A](bag: Bag[U]): Interval = {
     this match {
@@ -61,9 +62,10 @@ sealed trait Rbe[+A] extends Logging {
       } 
       
       // Adding Repetitions on expressions breaks the single-occurrence bag expression
-      case Repeat(v,n,m) => {
-        v.repeatInterval(n,m,bag)
-      } 
+      // This case is handled by detecting repetitions and invoking the derivatives algorithm
+      case Repeat(v,n,m) =>
+         throw RbeException("Intervals algorithm doesn't work with repetitions. RBE expr: " + this)  
+      // We tried:        v.repeatInterval(n,m,bag) */
       
       case _ => throw RbeException("interval: unsupported expr " + this)  
     }
@@ -71,7 +73,7 @@ sealed trait Rbe[+A] extends Logging {
   
   // TODO: The following recursive code is not optimized. 
   // It could be done tailrec although it may be better to find a mathematical formula
-  def repeatInterval[U >: A](n: Int, m: IntOrUnbounded, bag: Bag[U]): Interval = {
+  /*def repeatInterval[U >: A](n: Int, m: IntOrUnbounded, bag: Bag[U]): Interval = {
     (n,m) match {
       case (0, IntLimit(0)) => Interval(0,Unbounded)
       case (0, IntLimit(m)) => (Or(this,Empty)).interval(bag) & this.repeatInterval(0,IntLimit(m-1),bag)
@@ -80,9 +82,9 @@ sealed trait Rbe[+A] extends Logging {
       case (n, Unbounded) if n > 0 => this.interval(bag) & this.repeatInterval(n-1,Unbounded,bag)
       case _ => throw RbeException(s"repeatInterval. Unsupported cardinality: ($n,$m)")
     }
-  }
+  } */
 
-    lazy val symbols: Seq[A] = {
+  private lazy val symbols: Seq[A] = {
     this match {
       case Fail(_) => List()
       case Empty => List()
@@ -96,11 +98,11 @@ sealed trait Rbe[+A] extends Logging {
     }
   }
   
-  def noSymbolsInBag[U >: A](bag: Bag[U]): Boolean = {
+  private def noSymbolsInBag[U >: A](bag: Bag[U]): Boolean = {
     this.symbols.forall(x => bag.multiplicity(x) == 0)
   }
   
-  def bagHasExtraSymbols[U >: A](bag: Bag[U]): Boolean = {
+  private def bagHasExtraSymbols[U >: A](bag: Bag[U]): Boolean = {
     bag.elems.exists{ case (s,_) => !this.symbols.contains(s) }
   }
 
@@ -231,11 +233,11 @@ sealed trait Rbe[+A] extends Logging {
     r
   }
   
-  def mkRepeat[A](r: => Rbe[A], m: Int, n: IntOrUnbounded): Rbe[A]= {
+  private def mkRepeat[A](r: => Rbe[A], m: Int, n: IntOrUnbounded): Rbe[A]= {
     Repeat(r,m,n)
   }
   
-  def derivSymbol[U >: A](x: U, s: Symbol[U], open: Boolean, controlled: Seq[U]): Rbe[U] = {
+  private def derivSymbol[U >: A](x: U, s: Symbol[U], open: Boolean, controlled: Seq[U]): Rbe[U] = {
     if (x == s.a) {
       if (s.m == IntLimit(0)) 
         Fail(s"Symbol $x doesn't match $s")

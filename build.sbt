@@ -35,14 +35,12 @@ shaclTestsFolder := "shaclTests"
 libraryDependencies ++= Seq(
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
   , "commons-configuration" % "commons-configuration" % "1.7"
-  , "org.rogach" %% "scallop" % "0.9.5" 
+  , "org.rogach" %% "scallop" % "1.0.0"
   , "com.typesafe" % "config" % "1.0.1"
   , "jline" % "jline" % "2.12.1"
   , "org.scala-lang" % "scala-compiler" % scalaVersion.value  
   , "io.argonaut" %% "argonaut" % "6.1"
-  , "com.casualmiracles" %% "treelog" % "1.2.4"
   , "org.scalactic" % "scalactic_2.11" % "2.2.4"
-  , "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
   , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
   , "org.scalatest" % "scalatest_2.11" % "2.2.4" % CompatTest
   , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"  

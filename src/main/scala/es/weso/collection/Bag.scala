@@ -90,8 +90,6 @@ object Bag {
     empty.from(t)
   }
   
-  
-  
    /**
    * Calculates the bag obtained by taking into account only a set of symbols
    */
@@ -99,5 +97,7 @@ object Bag {
     val e : Bag[A] = empty
     symbols.foldLeft(e)((rest,x) => rest.add(x,bag.multiplicity(x)))
   }
+   
+   
     
 }

@@ -7,6 +7,11 @@ import util._
 import es.weso.rdf.PrefixMap
 import es.weso.shacl.PREFIXES._
 
+/**
+ * Represents a generic RDF Validator
+ * 
+ *  
+ */
 trait RDFValidator {
   type Label
   type Schema 

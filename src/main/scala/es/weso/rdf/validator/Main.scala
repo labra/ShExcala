@@ -20,8 +20,6 @@ import es.weso.utils.PerformanceUtils._
 
 object Main extends App with Verbosity {
 
-  // val logger = Logger(LoggerFactory getLogger "name")
-
   override def main(args: Array[String]): Unit = {
 
     val conf = ConfigFactory.load()
