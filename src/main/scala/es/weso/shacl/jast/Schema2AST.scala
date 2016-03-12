@@ -11,6 +11,9 @@ import es.weso.rdf.PrefixMap
 import es.weso.rdf.nodes._
 import es.weso.utils.PrefixMapUtils._
 
+/**
+ * Converts the internal representation of Schemas defined in [[es.weso.shacl.Schema]] to the abstract syntax tree intended for JSON serialization [[es.weso.shacl.jast.SchemaAST]] 
+ */
 object Schema2AST {
 
   def cnvSchema(schema: Schema): Try[SchemaAST] = {
@@ -30,7 +33,7 @@ object Schema2AST {
     }
   }
 
-  def cnvShapes(shapes: Map[Label, Shape]): Option[Map[String, ShapeAST]] = {
+  private def cnvShapes(shapes: Map[Label, Shape]): Option[Map[String, ShapeAST]] = {
     if (shapes.isEmpty) None
     else {
       Some(shapes.map {
@@ -39,7 +42,7 @@ object Schema2AST {
     }
   }
 
-  def cnvShape(shape: Shape): ShapeAST = {
+  private def cnvShape(shape: Shape): ShapeAST = {
     ShapeAST.empty.copy(
       expression = cnvOptShapeExpr(shape.shapeExpr), 
       virtual = cnvBoolean(shape.isVirtual), 
@@ -49,28 +52,28 @@ object Schema2AST {
       semAct = cnvActions(shape.actions))
   }
   
-  def cnvValueClasses(vcs: Map[Label,ValueClassDefinition]): Option[Map[String,ValueClassAST]] = {
+  private def cnvValueClasses(vcs: Map[Label,ValueClassDefinition]): Option[Map[String,ValueClassAST]] = {
     if (vcs.isEmpty) None
     else Some(vcs.map { case (lbl,vc) => (cnvLabel(lbl), cnvValueClassDef(vc)) })
   }
   
-  def cnvValueClassDef(vcd: ValueClassDefinition): ValueClassAST = ???
+  private def cnvValueClassDef(vcd: ValueClassDefinition): ValueClassAST = ???
 
-  def cnvIRIs(iris: Seq[IRI]): Option[Seq[String]] = {
+  private def cnvIRIs(iris: Seq[IRI]): Option[Seq[String]] = {
     if (iris.isEmpty) None
     else Some(iris map cnvIRI)
   }
 
-  def cnvLabels(labels: Seq[Label]): Option[Seq[String]] = {
+  private def cnvLabels(labels: Seq[Label]): Option[Seq[String]] = {
     if (labels isEmpty) None
     else Some(labels map cnvLabel)
   }
   
-  def cnvLabel(label: Label): String = {
+  private def cnvLabel(label: Label): String = {
     cnvNode(label.getNode)
   }
   
-  def cnvNode(node: RDFNode): String = {
+  private def cnvNode(node: RDFNode): String = {
     node match {
       case i: IRI => cnvIRI(i)
       case b: BNodeId => cnvBNode(b)
@@ -78,18 +81,18 @@ object Schema2AST {
     }
   }
   
-  def cnvBNode(b:BNodeId): String = {
+  private def cnvBNode(b:BNodeId): String = {
     b.toString
   } 
 
-  def cnvOptShapeExpr(e: ShapeExpr): Option[ExpressionAST] = {
+  private def cnvOptShapeExpr(e: ShapeExpr): Option[ExpressionAST] = {
     e match {
       case e: EmptyShape => None
       case _             => Some(cnvShapeExpr(e))
     }
   }
 
-  def cnvShapeExpr(e: ShapeExpr): ExpressionAST = {
+  private def cnvShapeExpr(e: ShapeExpr): ExpressionAST = {
     val base = ExpressionAST.empty
     e match {
       case e: EmptyShape => base
@@ -139,7 +142,7 @@ object Schema2AST {
     }
   }
 
-  def cnvTripleConstraint(tc: TripleConstraint): ExpressionAST = {
+  private def cnvTripleConstraint(tc: TripleConstraint): ExpressionAST = {
     ExpressionAST.empty.copy(
       _type = Some("TripleConstraint"), 
       predicate = Some(cnvIRI(tc.iri)),
@@ -152,47 +155,47 @@ object Schema2AST {
       semActs = cnvActions(tc.actions))
   }
 
-  def cnvAnnotations(annotations: List[Annotation]): Option[List[AnnotationAST]] = {
+  private def cnvAnnotations(annotations: List[Annotation]): Option[List[AnnotationAST]] = {
     if (annotations.isEmpty) None
     else {
       Some(annotations.map(a => cnvAnnotation(a)))
     }
   }
 
-  def cnvAnnotation(annotation: Annotation): AnnotationAST = {
+  private def cnvAnnotation(annotation: Annotation): AnnotationAST = {
     AnnotationAST(_type=Some("Annotation"),
         predicate = Some(cnvIRI(annotation.iri)),
         _object = Some(annotation.value.fold(cnvIRI,cnvAnnotationLiteral)))
   }
   
-  def cnvIRI(i:IRI): String = i.str
+  private def cnvIRI(i:IRI): String = i.str
 
-  def cnvAnnotationLiteral(l: Literal): String = {
+  private def cnvAnnotationLiteral(l: Literal): String = {
     "\"" + cnvLiteral(l) + "\""
   }
   
-  def cnvLiteral(l: Literal): String = {
+  private def cnvLiteral(l: Literal): String = {
     l.toString
   }
 
   
-  def cnvBoolean(b: Boolean): Option[Boolean] = {
+  private def cnvBoolean(b: Boolean): Option[Boolean] = {
     if (b) Some(true)
     else None
   }
 
-  def cnvMinCard(card: Cardinality): Option[Int] =
+  private def cnvMinCard(card: Cardinality): Option[Int] =
     if (card == defaultCardinality) None
     else Some(card.getMin)
 
-  def cnvMaxCard(card: Cardinality): Option[MaxAST] =
+  private def cnvMaxCard(card: Cardinality): Option[MaxAST] =
     if (card == defaultCardinality) None
     else card.getMax match {
       case None => Some(MaxAST(None))
       case Some(n) => Some(MaxAST(Some(n)))
     }
 
-  def cnvValueClass(vc: ValueClass): ValueClassAST = {
+  private def cnvValueClass(vc: ValueClass): ValueClassAST = {
     val base = ValueClassAST.empty.copy(_type = Some("ValueClass"))
     if (vc == any) base
     else
@@ -223,7 +226,7 @@ object Schema2AST {
     }
   }
 
-  def cnvShapeConstr(sc: ShapeConstr): ReferenceAST = {
+  private def cnvShapeConstr(sc: ShapeConstr): ReferenceAST = {
     sc match {
       case SingleShape(label) =>
         ReferenceAST(Left(cnvLabel(label)))
@@ -237,14 +240,14 @@ object Schema2AST {
     }
   }
 
-  def cnvDatatype(dt: Datatype): ValueClassAST = {
+  private def cnvDatatype(dt: Datatype): ValueClassAST = {
     addFacets(
       dt.facets,
       ValueClassAST.empty.copy(
         datatype = Some(cnvIRI(dt.v))))
   }
   
-  def addFacets(
+  private def addFacets(
     facets: List[XSFacet],
     vc: ValueClassAST): ValueClassAST = {
     facets.foldRight(vc) {
@@ -252,7 +255,7 @@ object Schema2AST {
     }
   }
 
-  def addFacet(
+  private def addFacet(
     f: XSFacet,
     vc: ValueClassAST): ValueClassAST = {
     f match {
@@ -274,14 +277,14 @@ object Schema2AST {
     }
   }
 
-  def cnvValueSet(vs: ValueSet): ValueClassAST = {
+  private def cnvValueSet(vs: ValueSet): ValueClassAST = {
     ValueClassAST.empty.copy(
       values =
         if (vs.s.isEmpty) None
         else Some(vs.s.map(v => cnvValue(v)).toList))
   }
 
-  def cnvValue(v: ValueObject): ValueAST = {
+  private def cnvValue(v: ValueObject): ValueAST = {
     v match {
       case ValueIRI(iri)   => ValueAST(Left(cnvIRI(iri)))
       case ValueLiteral(l) => ValueAST(Left(cnvLiteral(l)))
@@ -291,14 +294,14 @@ object Schema2AST {
     }
   }
 
-  def cnvValueStem(v: StemRange): StemRangeAST = {
+  private def cnvValueStem(v: StemRange): StemRangeAST = {
     StemRangeAST(
       _type= Some("StemRange"),
       stem = Some(StemAST(Left(cnvIRI(v.stem)))), 
       exclusions = cnvExclusions(v.exclusions))
   }
 
-  def cnvValueAny(v: ValueAny): StemRangeAST = {
+  private def cnvValueAny(v: ValueAny): StemRangeAST = {
     val wildCard = WildCardAST.empty
     StemRangeAST(
       _type = Some("StemRange"),
@@ -307,13 +310,13 @@ object Schema2AST {
     )
   }
 
-  def cnvExclusions(es: List[Exclusion]): Option[List[ExclusionAST]] = {
+  private def cnvExclusions(es: List[Exclusion]): Option[List[ExclusionAST]] = {
    if (es.isEmpty) None
    else Some(es map cnvExclusion)
   }
     
     
-  def cnvExclusion(ex: Exclusion): ExclusionAST = {
+  private def cnvExclusion(ex: Exclusion): ExclusionAST = {
     if (ex.isStem) {
       ExclusionAST(Right(StemAST(Left(cnvIRI(ex.iri)))))
     }
@@ -321,11 +324,11 @@ object Schema2AST {
       ExclusionAST(Left(cnvIRI(ex.iri)))
   }  
 
-  def cnvID(id: Option[Label]): Option[String] = {
+  private def cnvID(id: Option[Label]): Option[String] = {
     id.map(cnvLabel)
   }
   
-  def cnvActions(actions: Actions): Option[List[SemActAST]] = {
+  private def cnvActions(actions: Actions): Option[List[SemActAST]] = {
     if (actions.isEmpty) None
     else {
       Some(actions.toList.map {
@@ -338,7 +341,7 @@ object Schema2AST {
     }
   }
 
-  def cnvPrefix(pm: PrefixMap): Option[Map[String, String]] = {
+  private def cnvPrefix(pm: PrefixMap): Option[Map[String, String]] = {
     val prefixmap = pm.pm
     if (prefixmap.isEmpty) None
     else {
