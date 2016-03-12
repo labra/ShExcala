@@ -45,12 +45,12 @@ libraryDependencies ++= Seq(
   , "org.scalatest" % "scalatest_2.11" % "2.2.4" % "test"
   , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
   , "org.scalatest" % "scalatest_2.11" % "2.2.4" % CompatTest
+  , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"  
   
   , "es.weso" % "srdf-jena_2.11" % "0.0.1" 
   , "es.weso" % "weso_utils_2.11" % "0.0.3" 
 
   , "org.slf4j" % "slf4j-simple" % "1.6.4"
-  
 )
 
 autoCompilerPlugins := true
