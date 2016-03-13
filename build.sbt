@@ -31,6 +31,7 @@ shexTestsFolder := "shexTests"
 
 shaclTestsFolder := "shaclTests" 
 
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
 
 libraryDependencies ++= Seq(
     "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
