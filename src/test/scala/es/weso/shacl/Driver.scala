@@ -8,11 +8,12 @@ import argonaut._, Argonaut._
 
 import scala.util.{ Try, Success => TrySuccess, Failure => TryFailure }
 
-import org.scalatest.FunSpec
 import org.scalatest._
 
-import es.weso.shacl.jast._
-import AST._
+import es.weso.shacl.jast.AST._
+import es.weso.shacl.jast.AST2Schema
+import es.weso.shacl.jast.Schema2AST
+
 import es.weso.shacl.validation.Validation.Validation
 import es.weso.utils.testUtils._
 
