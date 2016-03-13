@@ -4,7 +4,7 @@ jdk:
   - openjdk7
   - oraclejdk8
 scala:
-   - 2.11.7
+   - 2.11.8
 script:
    - sbt ++$TRAVIS_SCALA_VERSION clean coverage test coverageReport
 after_success:

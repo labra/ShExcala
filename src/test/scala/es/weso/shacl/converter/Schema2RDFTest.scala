@@ -10,7 +10,7 @@ import org.apache.jena.riot.RDFLanguages
 import es.weso.shacl.Schema
 import es.weso.rdf.jena.RDFAsJenaModel
 
-class Schema2RDFShaclTest extends FunSpecLike
+class Schema2RDFTest extends FunSpecLike
     with Matchers
     with Checkers {
 

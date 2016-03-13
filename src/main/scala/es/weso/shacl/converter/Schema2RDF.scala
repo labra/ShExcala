@@ -22,8 +22,18 @@ case object Settings {
 
 case class Schema2RDFException(msg:String) extends Exception(msg)
 
+/**
+ * Transforms a Schema to RDF
+ */
 object Schema2RDF extends Logging {
 
+  /**
+   * Transforms a ShEx schema to a RDF
+   * 
+   * @param schema source schema
+   * @param rdf initial RDF builder 
+   * @return an RDF builder populated with the shapes from the schema
+   */
   def schema2RDF(schema: Schema, rdf: RDFBuilder): RDFBuilder = {
     rdf.addPrefixMap(schema.pm)
     rdf.addPrefix("sh", sh.str)
@@ -32,7 +42,7 @@ object Schema2RDF extends Logging {
     rdf
   }
 
-  def shaclSchema2RDF(shaclSchema: SHACLSchema, rdf: RDFBuilder): RDFBuilder = {
+  private def shaclSchema2RDF(shaclSchema: SHACLSchema, rdf: RDFBuilder): RDFBuilder = {
     val (schemaNode, _) = rdf.createBNode
     // TODO: Maybe, we could include this using a different namespace
     // rdf.addTriple(RDFTriple(schemaNode, rdf_type, sh_Schema))
@@ -40,7 +50,7 @@ object Schema2RDF extends Logging {
     start2RDF(shaclSchema.start, schemaNode, rdf)
   }
 
-  def rules2RDF(
+  private def rules2RDF(
     rules: Map[Label,Shape],
     schemaNode: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
@@ -50,7 +60,7 @@ object Schema2RDF extends Logging {
     rdf
   }
   
-  def start2RDF(
+  private def start2RDF(
       start: Option[Label],
       schemaNode: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
@@ -62,7 +72,7 @@ object Schema2RDF extends Logging {
     }
   }
 
-  def rule2RDF(
+  private def rule2RDF(
     rule: (Label,Shape),
     schemaNode: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
@@ -74,14 +84,14 @@ object Schema2RDF extends Logging {
 //    extensionConditions2RDF(rule.extensionCondition, ruleNode, rdf)
   }
 
-  def shapeDefn2RDF(
+  private def shapeDefn2RDF(
       shape: Shape, 
       shapeNode: RDFNode, 
       rdf: RDFBuilder): RDFBuilder = {
     shape2RDF(shape.shapeExpr, shapeNode,rdf)
   } 
       
-  def shape2RDF(
+  private def shape2RDF(
       shape: ShapeExpr,
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
@@ -158,7 +168,7 @@ object Schema2RDF extends Logging {
     rdf
   }
   
-  def value2RDF(
+  private def value2RDF(
       value: ValueClass,
       node: RDFNode,
       rdf: RDFBuilder
@@ -191,14 +201,14 @@ object Schema2RDF extends Logging {
     rdf
   }
 
-  def valueClass2RDF(r: Label,
+  private def valueClass2RDF(r: Label,
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
     // TODO: add valueClass reference
     rdf
   }
 
-  def valueShape2RDF(
+  private def valueShape2RDF(
       valueShape: ShapeConstr,
       node: RDFNode,
       rdf: RDFBuilder
@@ -208,7 +218,7 @@ object Schema2RDF extends Logging {
     rdf
   } 
   
-  def valueSet2RDF(
+  private def valueSet2RDF(
       values: Seq[ValueObject],
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
@@ -223,7 +233,7 @@ object Schema2RDF extends Logging {
     }
   }
   
-  def nodeList2RDF(
+  private def nodeList2RDF(
       nodes: Seq[RDFNode],
       rdf:RDFBuilder): (RDFNode,RDFBuilder) = {
     nodes match {
@@ -246,7 +256,7 @@ object Schema2RDF extends Logging {
     }
   }
 
-  def nodeKind2RDF(
+  private def nodeKind2RDF(
       nodeKind: NodeKind,
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
@@ -263,7 +273,7 @@ object Schema2RDF extends Logging {
       }
   }
   
-  def valueObject2Node(v: ValueObject): RDFNode = {
+  private def valueObject2Node(v: ValueObject): RDFNode = {
     v match {
       case ValueIRI(iri) => iri
       case ValueLiteral(literal) => literal
@@ -274,7 +284,7 @@ object Schema2RDF extends Logging {
     
     
   // TODO: Review this code...should add sh_in for a list?
-  def valueObject2RDF(
+  private def valueObject2RDF(
     value: ValueObject,
     node: RDFNode,
     rdf: RDFBuilder): RDFBuilder = {
@@ -282,7 +292,7 @@ object Schema2RDF extends Logging {
     rdf
   }
   
-  def facets2RDF(
+  private def facets2RDF(
       facets: Seq[XSFacet],
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
@@ -290,7 +300,7 @@ object Schema2RDF extends Logging {
     rdf
   }
   
-  def cardinality2RDF(
+  private def cardinality2RDF(
       card: Cardinality,
       node: RDFNode,
       rdf: RDFBuilder
@@ -307,7 +317,7 @@ object Schema2RDF extends Logging {
     rdf
   }
   
-  def inclPropSet2RDF(
+  private def inclPropSet2RDF(
       incl: Set[IRI],
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
@@ -316,7 +326,7 @@ object Schema2RDF extends Logging {
     rdf
   }
   
-  def extensionConditions2RDF(
+  private def extensionConditions2RDF(
         ec: Map[Label,String], 
         node: RDFNode, 
         rdf: RDFBuilder): RDFBuilder = {
@@ -325,7 +335,9 @@ object Schema2RDF extends Logging {
     rdf 
   }
 
- def nodeFromOptionalLabel(optionalLabel: Option[Label], rdf:RDFBuilder): RDFNode = {
+ private def nodeFromOptionalLabel(
+     optionalLabel: Option[Label], 
+     rdf:RDFBuilder): RDFNode = {
    optionalLabel match {
      case Some(l) => l.getNode
      case None => rdf.createBNode._1
@@ -335,18 +347,18 @@ object Schema2RDF extends Logging {
  /**
   * addTriple 
   */
- def addTriple(rdf: RDFBuilder, triple:(RDFNode, IRI, RDFNode)): RDFBuilder = {
+ private def addTriple(rdf: RDFBuilder, triple:(RDFNode, IRI, RDFNode)): RDFBuilder = {
   rdf.addTriple(RDFTriple(triple._1,triple._2,triple._3))
  }
 
  /**
   * addTriple with an integer literal 
   */
- def addTripleInteger(rdf: RDFBuilder, triple:(RDFNode, IRI, Integer)): RDFBuilder = {
+ private def addTripleInteger(rdf: RDFBuilder, triple:(RDFNode, IRI, Integer)): RDFBuilder = {
   rdf.addTriple(RDFTriple(triple._1,triple._2,IntegerLiteral(triple._3)))
  }
 
-   def rdflist(ls:List[RDFNode],rdf: RDFBuilder):RDFNode = {
+ private def rdflist(ls:List[RDFNode],rdf: RDFBuilder): RDFNode = {
     
  def next(x:RDFNode,rest:RDFNode):RDFNode = {
       val (link,_) = rdf.createBNode
