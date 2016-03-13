@@ -9,7 +9,6 @@ import es.weso.shacl.PREFIXES._
 
 /**
  * Represents a generic RDF Validator
- * 
  *  
  */
 trait RDFValidator {

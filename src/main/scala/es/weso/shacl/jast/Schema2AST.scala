@@ -12,7 +12,10 @@ import es.weso.rdf.nodes._
 import es.weso.utils.PrefixMapUtils._
 
 /**
- * Converts the internal representation of Schemas defined in [[es.weso.shacl.Schema]] to the abstract syntax tree intended for JSON serialization [[es.weso.shacl.jast.SchemaAST]] 
+ * Converts the internal representation of Schemas defined 
+ * in [[es.weso.shacl.Schema]] to the abstract syntax tree 
+ * intended for JSON serialization:
+ * [[es.weso.shacl.jast.SchemaAST]] 
  */
 object Schema2AST {
 
