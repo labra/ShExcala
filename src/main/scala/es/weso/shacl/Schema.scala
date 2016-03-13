@@ -3,7 +3,6 @@ package es.weso.shacl
 import es.weso.rdf.nodes._
 import es.weso.rdf._
 import es.weso.rdf._
-import es.weso.shacl.Shacl._
 import es.weso.shacl.parser._
 import es.weso.shacl.converter._
 import es.weso.shacl.PREFIXES._
@@ -20,7 +19,7 @@ import Argonaut._
 import es.weso.rbe._
 import java.net.URI
 import io._
-import es.weso.utils.Logging
+import org.slf4s._
 
 /**
  * A Schema
@@ -81,7 +80,7 @@ case class Schema(
 
 }
 
-object Schema {
+object Schema extends Logging {
 
   def empty = Schema(
     pm = PrefixMap.empty,

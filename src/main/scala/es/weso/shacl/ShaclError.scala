@@ -1,11 +1,9 @@
 package es.weso.shacl
 
-import es.weso.rdf.triples.RDFTriple
-import es.weso.rdf.nodes._
-import es.weso.shacl.Shacl._
 import es.weso.rdf.PrefixMap
-import es.weso.utils.PrefixMapUtils._
-import es.weso.shacl.ShaclDoc._
+import es.weso.rdf.nodes.{ Literal, RDFNode }
+import es.weso.shacl.ShaclDoc.{ datatype2String, label2String, nodeKind2String, valueSet2String }
+import es.weso.utils.PrefixMapUtils.showRDFNode
 
 sealed abstract class ValidationError {
   def show(implicit pm:PrefixMap): String 

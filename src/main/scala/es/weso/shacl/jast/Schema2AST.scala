@@ -1,7 +1,6 @@
 package es.weso.shacl.jast
 
 import scala.util._
-import es.weso.shacl.Shacl._
 import es.weso.shacl._
 import AST._
 import es.weso.shacl.PREFIXES._

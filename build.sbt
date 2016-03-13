@@ -20,7 +20,7 @@ organization := "es.weso"
 
 version := "0.7.6"
 
-scalaVersion := "2.11.7"
+scalaVersion := "2.11.8"
 
 
 lazy val shexTestsFolder = settingKey[String]("Folder where shex tests are downloaded") 
@@ -45,11 +45,12 @@ libraryDependencies ++= Seq(
   , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
   , "org.scalatest" % "scalatest_2.11" % "2.2.4" % CompatTest
   , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"  
+  , "org.slf4s" %% "slf4s-api" % "1.7.12"
+  , "ch.qos.logback" % "logback-classic" % "1.1.2"
   
   , "es.weso" % "srdf-jena_2.11" % "0.0.2" 
   , "es.weso" % "weso_utils_2.11" % "0.0.3" 
 
-  , "org.slf4j" % "slf4j-simple" % "1.6.4"
 )
 
 autoCompilerPlugins := true

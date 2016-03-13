@@ -4,7 +4,6 @@ import util._
 import es.weso.typing._
 import es.weso.rdf.nodes._
 import es.weso.rdf.validator._
-import es.weso.shacl.Shacl._
 import es.weso.rdf.PrefixMap
 import es.weso.utils.TryUtils._
 import es.weso.utils.SeqUtils._

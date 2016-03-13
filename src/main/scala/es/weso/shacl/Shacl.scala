@@ -11,13 +11,19 @@ import es.weso.rdf.nodes.RDFNode
 import es.weso.rdf.parser.RDFParser
 import es.weso.rdf.validator.ValidationAttempt
 
-object Shacl extends RDFParser {
-
-  val log = LoggerFactory.getLogger("Shacl")
+/**
+ *  
+ */
+object Shacl {
 
   // TODO: move elsewhere...
-  lazy val emptyInclPropSet: List[IRI] = List()
+  // lazy val emptyInclPropSet: List[IRI] = List()
   
+  /**
+   * validates a single RDF without a Schema
+   * 
+   * It retrieves the Schema directly from the RDF 
+   */
   def validateRDF(rdf: RDFReader): Try[Seq[ValidationAttempt[RDFNode,Label]]] = {
     for {
       (schema,pm) <- RDF2Schema.rdf2Schema(rdf)
