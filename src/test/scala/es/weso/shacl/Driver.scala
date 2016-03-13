@@ -1,19 +1,17 @@
 package es.weso.shacl
 
-import com.typesafe.config._
-
 import java.io.File
 
-import argonaut._, Argonaut._
-
-import scala.util.{ Try, Success => TrySuccess, Failure => TryFailure }
+import scala.util.{ Failure => TryFailure, Success => TrySuccess, Try }
 
 import org.scalatest._
 
-import es.weso.shacl.jast.AST._
-import es.weso.shacl.jast.AST2Schema
-import es.weso.shacl.jast.Schema2AST
+import com.typesafe.config._
 
+import argonaut._
+import argonaut.Argonaut._
+import es.weso.shacl.jast.{ AST2Schema, Schema2AST }
+import es.weso.shacl.jast.AST._
 import es.weso.shacl.validation.Validation.Validation
 import es.weso.utils.testUtils._
 

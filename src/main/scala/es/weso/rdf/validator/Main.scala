@@ -120,7 +120,8 @@ object Main extends App with Verbosity {
     } yield { log.debug("After reading " + triples); triples }
   }
 
-  private def errorDriver(e: Throwable, scallop: Scallop) = e match {
+  private def errorDriver(e: Throwable, scallop: Scallop): Nothing = { 
+    e match {
     case Help(s) =>
       println("Help: " + s)
       scallop.printHelp
@@ -129,6 +130,7 @@ object Main extends App with Verbosity {
       println("Error: %s".format(e.getMessage))
       scallop.printHelp
       sys.exit(1)
+   }
   }
 
   def convertSchema(opts: Opts): Unit = { // Try[(Result[Typing], PrefixMap)] = {
