@@ -8,6 +8,8 @@ import org.scalatest._
 import org.scalatest.prop._
 import es.weso.rdf._
 import util._
+import io._
+import argonaut._, Argonaut._
 
 
 class ASTSchema 
@@ -58,5 +60,6 @@ class ASTSchema
        }
 
     }
+  
 
 }

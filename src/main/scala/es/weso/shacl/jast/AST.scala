@@ -2,6 +2,14 @@ package es.weso.shacl.jast
 import argonaut._
 import Argonaut.{IntDecodeJson => _, _ }
 import argonaut.DecodeJsons
+import scalaz._, Scalaz._
+import scala.util.{ Try, Success => TrySuccess, Failure => TryFailure }
+
+
+/**
+ * Exceptions related to JSON AST
+ */
+case class ASTException(msg: String) extends Exception(s"ASTException: $msg")
 
 
 /**
@@ -550,4 +558,24 @@ trait AST {
 }
 
 
-object AST extends AST
+object AST extends AST {
+  
+  /**
+   * Parses a String and returns a SchemaAST
+   */
+  def parseAST(str: String): Try[SchemaAST] = {
+   parseGeneric[SchemaAST](str) 
+  }
+ 
+  /**
+   * For testing purposes
+   */
+  def parseGeneric[A: DecodeJson](str: String): Try[A] = {
+    val parsed = str.decodeValidation[A]
+    parsed match {
+      case Success(v) => TrySuccess(v)
+      case Failure(e) => TryFailure(throw ASTException(e)) 
+    }
+  }
+  
+}
