@@ -34,12 +34,13 @@ shaclTestsFolder := "shaclTests"
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
 
 libraryDependencies ++= Seq(
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
+    "org.scala-lang" % "scala-compiler" % scalaVersion.value  
+//  , "com.typesafe" %% "abide-core" % "0.1-SNAPSHOT" % "abide"
+  , "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
   , "commons-configuration" % "commons-configuration" % "1.7"
   , "org.rogach" %% "scallop" % "1.0.0"
   , "com.typesafe" % "config" % "1.0.1"
   , "jline" % "jline" % "2.12.1"
-  , "org.scala-lang" % "scala-compiler" % scalaVersion.value  
   , "io.argonaut" %% "argonaut" % "6.1"
   , "org.scalactic" % "scalactic_2.11" % "2.2.4"
   , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
@@ -48,7 +49,7 @@ libraryDependencies ++= Seq(
   , "org.slf4s" %% "slf4s-api" % "1.7.12"
   , "ch.qos.logback" % "logback-classic" % "1.1.2"
   
-  , "es.weso" % "srdf-jena_2.11" % "0.0.2" 
+  , "es.weso" % "srdf-jena_2.11" % "0.0.3" 
   , "es.weso" % "weso_utils_2.11" % "0.0.3" 
 
 )
