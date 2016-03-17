@@ -19,13 +19,23 @@ case class IntOrUnboundedException(msg:String)
  * It can be either an Int or an Unbounded value
  */
 trait IntOrUnbounded {
+  
+  /**
+   * `true` if this value is Unbounded
+   */
   def isUnbounded : Boolean
   
+
+  /**
+   * Add another IntOrUnbounded to this value
+   * 
+   */
   def +(other: => IntOrUnbounded):IntOrUnbounded
   
   def minusOne: IntOrUnbounded
   
   def hasLimit = !isUnbounded
+  
   def getLimit: Int
   
   def max(other: => IntOrUnbounded): IntOrUnbounded = {
