@@ -1,8 +1,6 @@
 package es.weso.rdf.validator
 import util._
 import es.weso.rdf.PrefixMap
-import es.weso.rdf.nodes._
-import es.weso.shacl.Label
 
 trait ValidationAttempt[Node,Label] {
   def isValid : Boolean

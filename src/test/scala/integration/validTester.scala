@@ -1,11 +1,11 @@
 package integration
 
-import es.weso.shacl.Schema
-import es.weso.shacl.ShaclMatcher
+import es.weso.shex.Schema
+import es.weso.shex.ShExMatcher
 import es.weso.rdf.jena.RDFAsJenaModel
 import util._
 import es.weso.rdf.nodes._
-import es.weso.shacl.Label._
+import es.weso.shex.Label._
 import es.weso.rdf.validator._
 import org.scalatest._
 
@@ -14,7 +14,7 @@ trait ValidTester extends FunSpec with Matchers {
     val result = for {
       (schema, pm) <- Schema.fromString(strSchema)
       data <- RDFAsJenaModel.fromChars(strData, "TURTLE")
-      val validator : RDFValidator = ShaclMatcher(schema, data)
+      val validator : RDFValidator = ShExMatcher(schema, data)
       val ts = validator.matchAllNodes_AllLabels
     } yield ts
 

@@ -1,12 +1,12 @@
 package integration
 
 import org.scalatest._
-import es.weso.shacl.Schema
-import es.weso.shacl.ShaclMatcher
+import es.weso.shex.Schema
+import es.weso.shex.ShaclMatcher
 import es.weso.rdf.jena.RDFAsJenaModel
 import util._
 import es.weso.rdf.nodes._
-import es.weso.shacl.Shacl._
+import es.weso.shex.ShEx._
 import es.weso.rdf.validator._
 import es.weso.utils.Logging
 import org.slf4j._

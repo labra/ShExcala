@@ -5,7 +5,7 @@ import util._
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.rdf.nodes.RDFNode
 import es.weso.rdf.nodes.IRI
-import es.weso.shacl.Label
+import es.weso.shex.Label
 import es.weso.rdf.parser._
 import es.weso.utils.JenaUtils
 import es.weso.utils.Parsed

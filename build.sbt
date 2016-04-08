@@ -18,7 +18,7 @@ name := "shexcala"
 
 organization := "es.weso"
 
-version := "0.7.6"
+version := "0.7.7"
 
 scalaVersion := "2.11.8"
 
@@ -44,7 +44,7 @@ libraryDependencies ++= Seq(
   , "org.scalactic" % "scalactic_2.11" % "2.2.4"
   , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
   , "org.scalatest" % "scalatest_2.11" % "2.2.4" % CompatTest
-  , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"  
+//  , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"  
   , "org.slf4s" %% "slf4s-api" % "1.7.12"
   , "ch.qos.logback" % "logback-classic" % "1.1.2"
   
@@ -89,9 +89,9 @@ site.settings
 
 site.includeScaladoc()
 
-coverageEnabled := true
-coverageMinimum := 50
-coverageFailOnMinimum := false
+// coverageEnabled := true
+// coverageMinimum := 50
+// coverageFailOnMinimum := false
 
 // Testing 
 

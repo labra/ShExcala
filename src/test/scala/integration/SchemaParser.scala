@@ -2,8 +2,8 @@ package integration
 
 import org.scalatest._
 import org.scalatest.prop._
-import es.weso.shacl._
-import SHACLSchema._
+import es.weso.shex._
+import ShExSchema._
 import Label._
 import es.weso.rdf.nodes._
 import util._
@@ -41,8 +41,8 @@ class SchemaParser
                 )
             )
         val expected = 
-          Schema.empty.copy(shaclSchema = 
-            SHACLSchema.empty.copy(
+          Schema.empty.copy(shexSchema = 
+            ShExSchema.empty.copy(
                 shapes = Map(labelStr("S1") -> shape)))
             
         result.success should be(Success((expected,PrefixMap.empty)))

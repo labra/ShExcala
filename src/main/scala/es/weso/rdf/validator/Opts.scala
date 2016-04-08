@@ -4,8 +4,8 @@ import org.rogach.scallop._
 import org.rogach.scallop.exceptions._
 import buildinfo._
 import com.typesafe.config._
-import es.weso.shacl.SchemaFormat
-import es.weso.shacl.DataFormat
+import es.weso.shex.SchemaFormat
+import es.weso.shex.DataFormat
 
 class Opts(
     arguments: Array[String],

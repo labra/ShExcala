@@ -5,7 +5,6 @@ import es.weso.rdf.nodes._
 import es.weso.monads.Result
 import util._
 import es.weso.rdf.PrefixMap
-import es.weso.shacl.PREFIXES._
 
 /**
  * Represents a generic RDF Validator

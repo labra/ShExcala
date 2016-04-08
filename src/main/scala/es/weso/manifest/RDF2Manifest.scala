@@ -4,8 +4,8 @@ import es.weso.rdf.nodes._
 import es.weso.rdf._
 import scala.util._
 import es.weso.rdf._
-import es.weso.shacl.Schema
-import es.weso.shacl.PREFIXES
+import es.weso.shex.Schema
+import es.weso.shex.PREFIXES
 import ManifestPrefixes._
 import es.weso.rdf.triples.RDFTriple
 import es.weso.rdf.PrefixMap

@@ -1,22 +1,21 @@
 package es.weso.rdf.validator
 
-import scala.util._
-import org.slf4j._
-import es.weso.utils.Logging
-import org.rogach.scallop._
-import org.rogach.scallop.exceptions._
-import buildinfo._
-import com.typesafe.config._
-import es.weso.rdf._
-import es.weso.rdf.jena._
-import es.weso.rdf.jena.RDFAsJenaModel
-import es.weso.utils.IO._
-import es.weso.shacl._
-import es.weso.rdf.nodes._
-import es.weso.utils.Verbosity
-import es.weso.shacl.Shacl._
+import scala.util.{ Failure, Success, Try }
+
+import org.rogach.scallop.Scallop
+import org.rogach.scallop.exceptions.Help
+
+import com.typesafe.config.ConfigFactory
+
+import buildinfo.BuildInfo
+import es.weso.rdf.{ PrefixMap, RDFReader }
+import es.weso.rdf.jena.{ Endpoint, RDFAsJenaModel }
+import es.weso.rdf.nodes.{ IRI, RDFNode }
+import es.weso.shex.{ Label, PrefixMaps, Schema, ShEx, ShExMatcher }
 import es.weso.utils.FileUtils
-import es.weso.utils.PerformanceUtils._
+import es.weso.utils.IO.getContents
+import es.weso.utils.PerformanceUtils.{ getTimeFrom, getTimeNow, showRuntimeMemory, showTime }
+import es.weso.utils.Verbosity
 
 object Main extends App with Verbosity {
 
@@ -24,6 +23,7 @@ object Main extends App with Verbosity {
 
     val conf = ConfigFactory.load()
     val opts = new Opts(args, errorDriver)
+    opts.verify()
 
     if (args.length == 0) {
       opts.printHelp()
@@ -77,7 +77,7 @@ object Main extends App with Verbosity {
     } else { // If no schema...check to validate nodeShape declarations in RDF
       if (maybe_rdf.isDefined) {
         println("Validating only rdf...")
-        val attempts = Shacl.validateRDF(maybe_rdf.get)
+        val attempts = ShEx.validateRDF(maybe_rdf.get)
         showAttempts(attempts, isVerbose, cut, PrefixMaps.commonShacl)
       }
 
@@ -174,7 +174,7 @@ object Main extends App with Verbosity {
         val validator: RDFValidator =
           opts.validator() match {
             case "SHEX3" => {
-              ShaclMatcher(schema, rdf)
+              ShExMatcher(schema, rdf)
             }
             /*          case "DERIV" => {
             ShExMatcher(schema, rdf, opts.withIncoming(), opts.withAny(), ShapeValidatorWithDeriv)
