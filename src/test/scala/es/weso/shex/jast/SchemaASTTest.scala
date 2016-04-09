@@ -3,8 +3,6 @@ package es.weso.shex.jast
 import es.weso.shex._
 import Label._
 import es.weso.shex.jast.AST._
-import es.weso.shex.jast.Schema2AST;
-
 import org.scalatest._
 import org.scalatest.prop._
 
@@ -12,7 +10,7 @@ import es.weso.rdf._
 import util._
 
 
-class SchemaAST 
+class SchemaAST_Test 
  extends Driver 
    with FunSpecLike
    with Matchers

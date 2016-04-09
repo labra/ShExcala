@@ -2,11 +2,6 @@ package es.weso.shex
 
 import org.scalatest._
 
-import es.weso.shex.DataFormat;
-import es.weso.shex.SchemaFormat;
-import es.weso.shex.SchemaLanguage;
-import es.weso.shex.SchemaVocabulary;
-
 class SchemaLanguageTest extends FunSpec with Matchers with TryValues {
   
   describe("SchemaLanguage") {

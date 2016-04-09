@@ -12,8 +12,6 @@ import es.weso.shex.Cardinality._
 import scala.Either._
 import es.weso.shex.PREFIXES._
 import es.weso.shex.Cardinality._
-import es.weso.shex.parser.ShExParser;
-import es.weso.shex.parser.ShapeParserState;
 
 import es.weso.rdf.PrefixMap
 

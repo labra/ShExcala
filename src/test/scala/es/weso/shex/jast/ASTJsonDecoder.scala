@@ -18,10 +18,8 @@ import org.scalatest._
 
 import es.weso.shex.jast.AST._
 import es.weso.shex._
-import es.weso.shex.jast.AST;
-import es.weso.shex.jast.AST._;
 
-class ASTJsonDecoder extends FunSpec with Matchers with TryValues {
+class ASTJsonDecoderTest extends FunSpec with Matchers with TryValues {
   
   describe("AST<->JSON") {
 

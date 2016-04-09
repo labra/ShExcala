@@ -2,8 +2,6 @@ package es.weso.shex
 
 import org.scalatest._
 
-import es.weso.shex.DataFormat;
-
 class DataFormatTest extends FunSpec with Matchers with TryValues {
   
   describe("Get SchemaFormats") {

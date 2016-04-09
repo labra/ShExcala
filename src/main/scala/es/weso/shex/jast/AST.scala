@@ -27,7 +27,18 @@ trait AST {
     valueClasses: Option[Map[String, ValueClassAST]],
     shapes: Option[Map[String, ShapeAST]],
     start: Option[String],
-    startActions: Option[Seq[SemActAST]])
+    startActions: Option[Seq[SemActAST]]) {
+    
+    
+    def toJson: Json = {
+      this.asJson
+    }
+    
+    def toJsonString: String = {
+      toJson.spaces2
+    }
+    
+  }
 
   case class ShapeAST(
     expression: Option[ExpressionAST],
@@ -566,7 +577,7 @@ object AST extends AST {
   def parseAST(str: String): Try[SchemaAST] = {
    parseGeneric[SchemaAST](str) 
   }
- 
+  
   /**
    * For testing purposes
    */

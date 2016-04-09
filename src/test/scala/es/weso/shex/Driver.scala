@@ -3,18 +3,14 @@ package es.weso.shex
 import java.io.File
 
 import scala.util.{ Failure => TryFailure, Success => TrySuccess, Try }
-
-
 import org.scalatest._
-
 import com.typesafe.config._
 
-import argonaut._
-import argonaut.Argonaut._
-import es.weso.shex.jast.{ AST2Schema, Schema2AST }
+import es.weso.shex.jast._
 import es.weso.shex.jast.AST._
 import es.weso.shex.validation.Validation.Validation
 import es.weso.utils.testUtils._
+import argonaut.Json
 
 class Driver extends FunSpec
     with Matchers with TryValues with TestUtils {
@@ -25,22 +21,12 @@ class Driver extends FunSpec
   val validationFolder       = conf.getString("validationFolder")
 
   def str2AST(str: String): Try[SchemaAST] = {
-    Try {
-      val parsed = Parse.decodeValidation[SchemaAST](str)
-      parsed.fold(_ =>
-        throw new Exception(s"Error parsing : $str"),
-        x => x)
-    }
+    parseAST(str)
   }
 
   def file2AST(file: File): Try[SchemaAST] = {
-    Try {
-      val contents = io.Source.fromFile(file)("UTF-8").mkString
-      val parsed = Parse.decodeValidation[SchemaAST](contents)
-      parsed.fold(_ =>
-        throw new Exception(s"Error parsing ${file.getName()}: $parsed"),
-        x => x)
-    }
+    val contents = io.Source.fromFile(file)("UTF-8").mkString
+    str2AST(contents)
   }
 
   def getParsedSchemas(jsonSchemasDir: String): List[(File, Json)] = {
@@ -76,7 +62,7 @@ class Driver extends FunSpec
     val tryConversion = for {
       schemaAST <- getASTFromFile(file)
       schema <- {
-        if (verbose) info("schemaAST: " + schemaAST.asJson.spaces2) 
+        if (verbose) info("schemaAST: " + schemaAST.toJsonString) 
         astSchema(schemaAST)
       }
       shaclFile <- {
@@ -111,25 +97,25 @@ class Driver extends FunSpec
     } yield (json, ast)
     tryConversion match {
       case TrySuccess((json, ast)) => {
-        jsonsEqual(json, ast.asJson, verbose)
+        jsonsEqual(json, ast.toJson, verbose)
       }
       case TryFailure(e) => fail("Failure: " + e)
     }
   }
   
-  def getValidations(validationsDir: String): List[(File, Json)] = {
+/*  def getValidations(validationsDir: String): List[(File, Json)] = {
     parseFolderFilesWithExt(validationsDir, file2json,"val")
   } 
   
   def getValidationFromFile(file: File): Try[Validation] = {
     trying("Reading Validation...", file2Validation(file))
-  }
+  } */
   
   def getASTFromFile(file: File): Try[SchemaAST] = {
     trying("Reading Validation...", file2AST(file))
   }
   
-  def file2Validation(file: File): Try[Validation] = {
+/*  def file2Validation(file: File): Try[Validation] = {
     Try {
       val contents = io.Source.fromFile(file)("UTF-8").mkString
       val parsed = Parse.decodeValidation[Validation](contents)
@@ -137,7 +123,7 @@ class Driver extends FunSpec
         throw new Exception(s"Error parsing ${file.getName()}: $parsed"),
         x => x)
     }
-  }
+  } */
 
  
 }

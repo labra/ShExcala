@@ -13,7 +13,7 @@ import io._
 import argonaut._, Argonaut._
 
 
-class ASTSchema 
+class AST_SchemaTest 
  extends Driver 
    with FunSpecLike
    with Matchers

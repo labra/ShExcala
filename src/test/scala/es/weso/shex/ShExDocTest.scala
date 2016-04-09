@@ -1,11 +1,9 @@
 package es.weso.shex
 
 import org.scalatest._
-
-import es.weso.shex.Schema;
 import util._
 
-class ShaclDocTest extends FunSpec with Matchers with TryValues {
+class ShExDocTest extends FunSpec with Matchers with TryValues {
   
   describe("ShaclDoc") {
 
