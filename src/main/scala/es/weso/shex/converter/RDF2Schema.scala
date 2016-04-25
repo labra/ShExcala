@@ -31,7 +31,7 @@ object RDF2Schema
     with RDFParser {
 
   /**
-   * Tries the content of an RDF and obtains a Schema and a PrefixMap 
+   * Parses the content of an RDF and obtains a Schema and a PrefixMap 
    */
   def rdf2Schema(rdf: RDFReader): Try[(Schema, PrefixMap)] = {
     val pm = rdf.getPrefixMap // .addPrefix("sh",IRI("http://www.w3.org/ns/shacl#")) 
