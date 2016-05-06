@@ -111,6 +111,9 @@ case class Schema[Edge,Node,Label,Err](
       case RefNot(label) => 
         PendingNot(c,nodeToCheck,label,mkArc(edge, node, nodeToCheck),edge)  // Possible optimization if Ref has already been checked
         
+      case DisjRef(labels) => 
+        PendingAlt(c,nodeToCheck,labels,mkArc(edge, node, nodeToCheck),edge) // Possible optimization if Ref has already been checked
+        
       case ConjRef(labels) => 
         PendingSeq(c,nodeToCheck,labels,mkArc(edge, node, nodeToCheck),edge) // Possible optimization if Ref has already been checked
         
@@ -229,7 +232,13 @@ case class Schema[Edge,Node,Label,Err](
   private def combineTypings(t1: Typing_, t2: Typing_): Try[Typing_] = {
     t1.combine(t2)
   }
-  
+  /**
+   * Resolve candidate
+   * @param n node to resolve
+   * @param g graph
+   * @param c Candidate
+   * @rest current result
+   */
   private def resolveCandidate(
       n: Node, 
       g: Graph_)(
@@ -263,7 +272,17 @@ case class Schema[Edge,Node,Label,Err](
       case PendingSeq(c,obj,labels,arc,_) => rest match {
         case Failure(e) => Failure(e)
         case Success(results) => {
-          val rs = results.map(result => matchNodeInLabelsTyping(obj,labels,g,result))
+          val rs = results.map(result => matchNodeInAllLabelsTyping(obj,labels,g,result))
+          val f = filterSuccess(rs)
+          val r = f.map(t => t.flatten)
+          addArcResult(arc,r)
+        } 
+      }
+      
+      case PendingAlt(c,obj,labels,arc,_) => rest match {
+        case Failure(e) => Failure(e)
+        case Success(results) => {
+          val rs = results.map(result => matchNodeInSomeLabelsTyping(obj,labels,g,result))
           val f = filterSuccess(rs)
           val r = f.map(t => t.flatten)
           addArcResult(arc,r)
@@ -326,8 +345,9 @@ case class Schema[Edge,Node,Label,Err](
   /**
    * Matches a node with several labels in a graph 
    * Takes into account the current result typing and triples
+   * Succeeds if the node matches with all the labels
    */
-  private def matchNodeInLabelsTyping(
+  private def matchNodeInAllLabelsTyping(
       node: Node, 
       labels: Seq[Label], 
       graph: Graph_,
@@ -338,6 +358,28 @@ case class Schema[Edge,Node,Label,Err](
     combineAll(labels,current,comb _)
   }
   
+  
+  def passSome[A,B](ls:Seq[A],eval: A => Try[B]): Try[Seq[B]] = {
+    val maybes = ls.map(x => eval(x)).filter(_.isSuccess).map(_.get)
+    if (maybes.isEmpty) Failure(throw new Exception("None of the alternatives pass"))
+    else Success(maybes)
+  }
+  
+  /**
+   * Matches a node with several labels in a graph 
+   * Takes into account the current result typing and triples
+   * Succeeds if the node matches with some of the labels
+   */
+  private def matchNodeInSomeLabelsTyping(
+      node: Node, 
+      labels: Seq[Label], 
+      graph: Graph_,
+      current: SingleResult_): Result_ = {
+    def eval(x:Label): Result_ = matchNodeInTyping(node,x,graph,current)
+    val rs = passSome(labels,eval _)
+    throw new Exception("Unimplemented matchNodeInSameLabels...")
+    // combineSome(labels,current,comb _)
+  }
   /**
    * Matches a node with a label in a graph 
    * Takes into account the current result typing and visited triples

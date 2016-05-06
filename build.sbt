@@ -18,7 +18,7 @@ name := "shexcala"
 
 organization := "es.weso"
 
-version := "0.7.9"
+version := "0.7.10"
 
 scalaVersion := "2.11.8"
 
@@ -49,7 +49,7 @@ libraryDependencies ++= Seq(
   , "ch.qos.logback" % "logback-classic" % "1.1.2"
   
   , "es.weso" % "srdf-jena_2.11" % "0.0.3" 
-  , "es.weso" % "weso_utils_2.11" % "0.0.5" 
+  , "es.weso" % "weso_utils_2.11" % "0.0.6" 
 
 )
 

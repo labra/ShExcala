@@ -122,17 +122,21 @@ trait ShExParser
   
   // [3a]    valueClassExpr        ::= valueClass valueClassJuncts?
   def valueClassExpr : StateParser[ShapeParserState, ValueClass] = { s =>  
-    seqState(valueClass,optState(valueClassJuncts))(s) ^^ {
+    seqState(valueClass,valueClassJuncts)(s) ^^ {
       case (vc ~ None,s1) => (vc,s1)
-      case (vc ~ Some(juncts),s1) => ???
+      case (vc ~ Some(OrValueClass(vs)),s1) => (OrValueClass(vc +: vs),s1)
+      // TODO: Check other possibilities...
     }
   }
   
   // [3a]    valueClassJuncts      ::= ( "OR" valueClass )+ | ( "AND" valueClass )+
   def valueClassJuncts : StateParser[ShapeParserState, Option[ValueClass]] = { s =>
-    val vcn : Option[ValueClass] = None
-    val p : Parser[(Option[ValueClass],ShapeParserState)] = success((vcn,s))
-    p
+    repS(arrowRightState(valueClass, symbol("OR")))(s) ^^ {
+      case (vs,s1) => if (vs.isEmpty) (None,s1) 
+                     else (Some(OrValueClass(vs.toSeq)),s1)
+      }
+    
+    // TODO: add "AND"
   }
 
   // [3a]    valueExprLabel       ::= '$' iri
@@ -397,14 +401,14 @@ trait ShExParser
   }
 
 
-  // [15]    tripleConstraint      ::= senseFlags? predicate valueClassOrRef cardinality? annotation* semanticActions
+  // [15]    tripleConstraint      ::= senseFlags? predicate valueClassExpr cardinality? annotation* semanticActions
   def arc: StateParser[ShapeParserState, ShapeExpr] = { s =>
     val senseFlagsLifted: StateParser[ShapeParserState,Sense] = lift(senseFlags)
     val cardinalityLifted: StateParser[ShapeParserState,Cardinality] = lift(cardinality)
     combine6(
         senseFlagsLifted, 
         pred, 
-        valueClassOrRef, 
+        valueClassExpr, 
         cardinalityLifted, 
         annotations, 
         semanticActions)(s) ^^ {
@@ -439,11 +443,11 @@ trait ShExParser
 
   case class Sense(inverse: Boolean, negated: Boolean)
   
-  def valueClassOrRef: StateParser[ShapeParserState,ValueClass] = { s =>
+/*  def valueClassOrRef: StateParser[ShapeParserState,ValueClass] = { s =>
     ( valueClass(s) 
     | valueExprLabel(s.namespaces) ^^ { case lbl => (ValueClassRef(lbl),s)}
     )
-  }
+  } */
 
   def annotations: StateParser[ShapeParserState, List[Annotation]] = { s => 
     rep(annotation(s.namespaces,s.baseIRI)) ^^ {
@@ -548,7 +552,7 @@ trait ShExParser
    } 
   }*/
   
-  def mkDisjShape(shapes: Seq[ShapeConstr]): ShapeConstr = {
+/*  def mkDisjShape(shapes: Seq[ShapeConstr]): ShapeConstr = {
     def getLabel(s: ShapeConstr): Label = {
       s match {
         case SingleShape(l) => l
@@ -556,9 +560,9 @@ trait ShExParser
       }
     }
     DisjShapeConstr(shapes.map(getLabel(_)))
-  }
+  } */
   
-  def mkConjShape(shapes: Seq[ShapeConstr]): ShapeConstr = {
+/*  def mkConjShape(shapes: Seq[ShapeConstr]): ShapeConstr = {
     def getLabel(s: ShapeConstr): Label = {
       s match {
         case SingleShape(l) => l
@@ -566,7 +570,7 @@ trait ShExParser
       }
     }
     ConjShapeConstr(shapes.map(getLabel(_)))
-  }
+  } */
   
   def singleShapeConstr: StateParser[ShapeParserState,ShapeConstr] = { s =>
   ( token("@") ~> shapeLabel(s) ^^ { case (label,s1) => (SingleShape(label), s1) }

@@ -20,19 +20,19 @@ import es.weso.rbe.{
 /**
  * ShEx Abstract Syntax to SESchema 
  */
-object SEShacl {
+object SEShEx {
   type SEShExSchema = SESchema[IRI,RDFNode,Label,ValidationError]
   type Val = (DirectedEdge[IRI],NodeShape[Label,RDFNode,ValidationError])
   type NodeShape_ = NodeShape[Label,RDFNode,ValidationError]
 
-  def shacl2SE(s: ShExSchema): SEShExSchema = {
+  def shex2SE(s: ShExSchema): SEShExSchema = {
     SESchema(
-        m = s.shapes.mapValues(sh => shape2SEShape(sh)),
+        m = s.shapes.mapValues(sh => shex2SEShape(sh)),
         ignored = Seq(InverseEdge(sh_scopeNode), InverseEdge(sh_scopeClass)) 
     )
   }
   
-  def shape2SEShape(sh: Shape): SEShape[DirectedEdge[IRI],RDFNode,Label,ValidationError] = {
+  def shex2SEShape(sh: Shape): SEShape[DirectedEdge[IRI],RDFNode,Label,ValidationError] = {
     SEShape(
         rbe = shapeExpr2rbe(sh.shapeExpr),
         // TODO: Consider inverse extras
@@ -78,11 +78,22 @@ object SEShacl {
     }
   }
   
+  def valueClass2Label(vc: ValueClass):Label = {
+    vc match {
+      case SingleShape(label) => label
+      case _ => throw SEShaclException(s"valueClass2Label: $vc should be a single label. Complex valueClass expressions are not yet implemented")
+    }
+  }
+  
   def shapeConstr2NodeShape(sc: ShapeConstr): NodeShape[Label,RDFNode,ValidationError] = {
     sc match {
       case SingleShape(label) => Ref(label) 
       case NotShape(label) => RefNot(label) 
-      case ConjShapeConstr(labels) => ConjRef(labels) 
+      case ConjShapeConstr(labels) => ConjRef(labels)
+      case OrValueClass(vs) => {
+        val labels = vs.map(valueClass2Label)
+        DisjRef(labels)
+      }
       case _ => throw SEShaclException(s"shapeConstrNodeShape: Unsupported value class " + sc)
     }
   }

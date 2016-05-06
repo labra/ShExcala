@@ -86,7 +86,7 @@ case class ShExMatcher(
   }
 } 
 
-object ShaclMatcher {
+object ShExMatcher {
   
   def isValid(result: Try[Seq[PosNegTyping[RDFNode,Label]]]): Boolean = {
     result match {

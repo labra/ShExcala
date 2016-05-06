@@ -53,6 +53,27 @@ class ShExParserSuite extends ShExParser
         result.get._1 should be(Datatype(IRI(prefix + localName), List()))
       }
 
+     it("Should parse a value Class made by reference") {
+        val str = "@<a>"
+
+        val state: ShapeParserState = ShapeParserState.initial
+        val result = ShExParser.parse(ShExParser.valueClass(state), str)
+        val (r,s) = result.get
+        
+        r should be(SingleShape(IRILabel(IRI("a"))))
+      }
+
+     it("Should parse a value Class made by ORs") {
+        val str = "@<a> OR @<b>"
+
+        val state: ShapeParserState = ShapeParserState.initial
+        val result = ShExParser.parse(ShExParser.valueClassExpr(state), str)
+        val (r,s) = result.get
+        val a = SingleShape(IRILabel(IRI("a")))
+        val b = SingleShape(IRILabel(IRI("b")))
+        r should be(OrValueClass(Seq(a,b)))
+      }
+      
     }
 
    it("Should parse a value Object made by an IRI") {

@@ -25,7 +25,7 @@ import org.slf4s._
  * A Schema
  * 
  * @param pm prefix map
- * @param shaclSchema ShaclSchema
+ * @param shexSchema ShExSchema
  */
 case class Schema(
     pm: PrefixMap,
@@ -35,13 +35,13 @@ case class Schema(
  def matchNodesLabels( 
       decls: Seq[(RDFNode,Label)], 
       rdf: RDFReader) = {
-    val seSchema = SEShacl.shacl2SE(shexSchema)
+    val seSchema = SEShEx.shex2SE(shexSchema)
     seSchema.matchNodesLabels(decls, RDFAsGraph(rdf))
   } 
  
   def matchNode_Label(node: RDFNode, label: Label, rdf: RDFReader) = {
     log.info(s"Trying to match $node with $label") 
-    val seSchema = SEShacl.shacl2SE(shexSchema)
+    val seSchema = SEShEx.shex2SE(shexSchema)
     log.info(s"SESchema: $seSchema") 
     seSchema.matchNode(node, label, RDFAsGraph(rdf))
   }

@@ -2,7 +2,7 @@ package integration
 
 import org.scalatest._
 import es.weso.shex.Schema
-import es.weso.shex.ShaclMatcher
+import es.weso.shex.ShExMatcher
 import es.weso.rdf.jena.RDFAsJenaModel
 import util._
 import es.weso.rdf.nodes._

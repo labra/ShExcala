@@ -58,6 +58,16 @@ case class PendingSeq[Edge,Node,Label](
   def isPending = true
 }
 
+case class PendingAlt[Edge,Node,Label](
+    n : ConstraintRef, 
+    node: Node, 
+    ref: Seq[Label],
+    arc:(Node,Edge,Node),
+    edge: DirectedEdge[Edge]) extends Candidate[Edge,Node,Label,Nothing] {
+  def sign = 1
+  def value = n
+  def isPending = true
+}
 
 /**
  * A negative candidate

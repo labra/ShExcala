@@ -22,6 +22,11 @@ case class RefNot[Label](label:Label) extends NodeShape[Label,Nothing,Nothing]
 case class ConjRef[Label](labels:Seq[Label]) extends NodeShape[Label,Nothing,Nothing]
 
 /**
+ *  Reference to an sequence of labels which are disjunctive
+ */
+case class DisjRef[Label](labels:Seq[Label]) extends NodeShape[Label,Nothing,Nothing]
+
+/**
  *  Boolean Constraint on nodes (it has a name and a predicate).
  *  
  *  Note: pred is defined in the 2nd parameter section to avoid equality and hashing of functions

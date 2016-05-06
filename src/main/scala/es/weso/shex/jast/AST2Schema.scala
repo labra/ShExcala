@@ -319,7 +319,7 @@ object AST2Schema {
       ref.value match {
         case Left(str) => SingleShape(toLabel(str))
         case Right(Left(OrAST(disjuncts))) =>
-          DisjShapeConstr(disjuncts.map(x => toLabel(x)))
+          OrValueClass(disjuncts.map(x => SingleShape(toLabel(x))))
         case Right(Right(AndAST(conjuncts))) =>
           ConjShapeConstr(conjuncts.map(x => toLabel(x)))
       })
