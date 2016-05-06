@@ -48,7 +48,7 @@ ShExcala can be used as a command line tool or as a library. Given that it has b
  it can be used as a Jar library from any JVM compatible language, like Java, Scala, Clojure, etc.
  
 * See [this link](https://github.com/labra/ShExcala/wiki) on how to use ShExcala from the command line.
-* In this link we explain how to use ShExcala from Java
+* [This link](https://github.com/labra/shexjava) contains a project developed that uses the ShExcala from a Java project. The project is built using Maven.
 * In the near future, we are planning to use [ScalaJs](http://www.scala-js.org/) to compile 
   ShExcala to Javascript. 
 
