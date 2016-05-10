@@ -121,15 +121,23 @@ trait ShExParser
   }
   
   // [3a]    valueClassExpr        ::= valueClass valueClassJuncts?
-  def valueClassExpr : StateParser[ShapeParserState, ValueClass] = { s =>  
+  def valueClassExpr : StateParser[ShapeParserState, ValueClass] = { s =>
+    ( valueClassNoParen(s) 
+    | symbol("(") ~> valueClassNoParen(s) <~ symbol(")")
+    )
+  }
+    
+  def valueClassNoParen : StateParser[ShapeParserState, ValueClass] = { s =>
     seqState(valueClass,valueClassJuncts)(s) ^^ {
       case (vc ~ None,s1) => (vc,s1)
       case (vc ~ Some(OrValueClass(vs)),s1) => (OrValueClass(vc +: vs),s1)
       // TODO: Check other possibilities...
-    }
+    } 
   }
   
+  
   // [3a]    valueClassJuncts      ::= ( "OR" valueClass )+ | ( "AND" valueClass )+
+  // TODO: This is ignored by now
   def valueClassJuncts : StateParser[ShapeParserState, Option[ValueClass]] = { s =>
     repS(arrowRightState(valueClass, symbol("OR")))(s) ^^ {
       case (vs,s1) => if (vs.isEmpty) (None,s1) 
@@ -541,7 +549,7 @@ trait ShExParser
   
   def groupShapeConstr: StateParser[ShapeParserState,ShapeConstr] = 
    singleShapeConstr
-  /*{ s =>
+/*  { s =>
    rep1sepState(singleShapeConstr,symbol("OR"))(s) ^^ {
      case (shapes,s1) => 
        if (shapes.length == 1) (shapes.head,s1)
@@ -549,10 +557,10 @@ trait ShExParser
          val disj = mkDisjShape(shapes)
          (disj,s1)
        }
-   } 
-  }*/
+   }  
+  } */
   
-/*  def mkDisjShape(shapes: Seq[ShapeConstr]): ShapeConstr = {
+  def mkDisjShape(shapes: Seq[ShapeConstr]): ShapeConstr = {
     def getLabel(s: ShapeConstr): Label = {
       s match {
         case SingleShape(l) => l
@@ -560,7 +568,7 @@ trait ShExParser
       }
     }
     DisjShapeConstr(shapes.map(getLabel(_)))
-  } */
+  } 
   
 /*  def mkConjShape(shapes: Seq[ShapeConstr]): ShapeConstr = {
     def getLabel(s: ShapeConstr): Label = {

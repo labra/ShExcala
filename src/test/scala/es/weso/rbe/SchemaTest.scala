@@ -6,42 +6,49 @@ import util._
 import es.weso.rbe._
 import StringGraph._
 
-class SESchemaTest extends FunSpec with Matchers with TryValues {
+class SchemaTest extends FunSpec with Matchers with TryValues {
   
-/* TODO: Restore this...
   def any: NodeShape[String,String,Err] = NodeShape.any
   
   def ref(n: Int) = ConstraintRef(value = n)
 
   
-    describe("Candidates of :a int") {
+  describe("Candidates of :a int") {
 
-      // S { :a int, (:b any + | :a any) }
+      // S { :a int }
       val schema: Schema[String, String, String, Err] =
-        Schema(Map("S" -> Shape.empty.copy(rbe = Symbol((("a", integer)), 1, 1))))
+        Schema(
+            m = Map("S" -> Shape.empty.copy(
+                rbe = Symbol((DirectEdge("a"),integer),1,1))) 
+              ,
+            ignored = Seq()
+            )
 
       val sorbe = Symbol(ref(1), 1, 1)
 
       val table: Table[String, String, String, Err] = Table(
         constraints = Map(ref(1) -> integer),
-        edges = Map("a" -> Set(ref(1))),
+        edges = Map(DirectEdge("a") -> Set(ref(1))),
         elems = 1)
 
       it("Compares table with expected table") {
         compareResults(schema.mkTable("S"), Success((table, sorbe)))
       }
 
-      it("Candidates of (:a 1)") {
-        assertResult(Seq(Seq(Pos(ref(1))))) {
-          schema.candidates(table, Seq(("a", "2")))
-        }
-        assertResult(Seq(Seq(Neg(ref(1))))) {
-          schema.candidates(table, Seq(("a", "x")))
-        }
+      it("Candidates of (:a 1) should be ok") {
+        val expected = Seq(Seq(Pos(ConstraintRef(1),("x","a","1"),DirectEdge("a"))))
+        val cs = schema.candidates(table, "x", Seq(Direct("a","1")))
+        cs should be(expected)
       }
+      
+      it("Candidates of (:a foo) should be negative") {
+        val cs = schema.candidates(table, "x", Seq(Direct("a","foo")))
+        val c = cs.head.head
+        c.sign should be(-1)
+      } 
     }
 
-    describe("Calculate table") {
+ /*   describe("Calculate table") {
     it("Creates a table with an And") {
       val schema: Schema[String, String, String, Err] =
         Schema(
@@ -376,11 +383,10 @@ class SESchemaTest extends FunSpec with Matchers with TryValues {
         elems = 3)
       compareResults(schema.mkTable("S"), Success((table, sorbe)))
     }
-  }
+  } */
   def compareResults[A](s1: A, s2: A) = {
     if (s1 !== s2) {
       fail(s"Values are different\n$s1\n$s2")
     }
   }
-*/
 }

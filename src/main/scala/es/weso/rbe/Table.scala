@@ -14,6 +14,8 @@ case class Table[Edge,Node,Label,Err](
     edges.updated(e, 
         edges.get(e).getOrElse(Set()) + n)
   }
+  
+  
 }
 
 object Table {

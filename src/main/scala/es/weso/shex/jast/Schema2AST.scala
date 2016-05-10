@@ -237,9 +237,8 @@ object Schema2AST {
         ReferenceAST(Left(cnvLabel(label)))
       case ConjShapeConstr(shapes) =>
         ReferenceAST(Right(Right(AndAST(shapes.map(cnvLabel).toList))))
-      case OrValueClass(shapes) => {
-        throw new Exception("Schema2AST: unimplemented OrValueClass") 
-        // ReferenceAST(Right(Left(OrAST(shapes.map(cnvValueClass).toList))))
+      case DisjShapeConstr(shapes) => {
+        ReferenceAST(Right(Left(OrAST(shapes.map(cnvLabel).toList))))
       }
     }
   }

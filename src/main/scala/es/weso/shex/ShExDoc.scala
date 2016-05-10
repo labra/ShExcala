@@ -247,7 +247,7 @@ case class ShExDoc(prefixMap: PrefixMap) extends Logging {
   def shapeDoc(s: ShapeConstr): Document = {
     s match {
       case ConjShapeConstr(shapes) => seqDocWithSep(shapes, "AND", labelDoc)
-      case OrValueClass(vcs) => seqDocWithSep(vcs, "OR", valueClassDoc)
+      case DisjShapeConstr(shapes) => seqDocWithSep(shapes, "OR", labelDoc)
       case NotShape(shape) => text("NOT") :: labelDoc(shape)
       case SingleShape(shape) => labelDoc(shape)
     }

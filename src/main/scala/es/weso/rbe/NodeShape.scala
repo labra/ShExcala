@@ -4,15 +4,17 @@ import es.weso.utils.Checker
 /**
  * A node shape
  */
-sealed trait NodeShape[+Label,+Node,+Err]
+sealed trait NodeShape[+Label,+Node,+Err] {
+}
 
 /**
  *  Reference to another label
  */
-case class Ref[Label](label:Label) extends NodeShape[Label,Nothing,Nothing]
+case class Ref[Label](label:Label) extends NodeShape[Label,Nothing,Nothing] {
+}
 
 /**
- * Reference to another label
+ * Negation of a expression
  */
 case class RefNot[Label](label:Label) extends NodeShape[Label,Nothing,Nothing]
 
@@ -26,6 +28,8 @@ case class ConjRef[Label](labels:Seq[Label]) extends NodeShape[Label,Nothing,Not
  */
 case class DisjRef[Label](labels:Seq[Label]) extends NodeShape[Label,Nothing,Nothing]
 
+case class OrShape[+Label,+Node,+Err](ns:Seq[NodeShape[Label,Node,Err]]) extends NodeShape[Label,Node,Err]
+
 /**
  *  Boolean Constraint on nodes (it has a name and a predicate).
  *  
@@ -35,10 +39,6 @@ case class DisjRef[Label](labels:Seq[Label]) extends NodeShape[Label,Nothing,Not
 case class Pred[Node,Err](name: String)
     (val pred:Node => Checker[Node,Err]) extends NodeShape[Nothing,Node,Err] {
   
-  /* Overrides equals to be able to compare avoiding function comparison
-  override def equals(other: Any) = {
-    name == other.name
-  } */
 }
 
 /**

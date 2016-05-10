@@ -18,7 +18,7 @@ name := "shexcala"
 
 organization := "es.weso"
 
-version := "0.7.10"
+version := "0.7.11"
 
 scalaVersion := "2.11.8"
 
@@ -41,16 +41,16 @@ libraryDependencies ++= Seq(
   , "org.rogach" %% "scallop" % "1.0.0"
   , "com.typesafe" % "config" % "1.0.1"
   , "io.argonaut" %% "argonaut" % "6.1"
-  , "org.scalactic" % "scalactic_2.11" % "2.2.4"
-  , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
-  , "org.scalatest" % "scalatest_2.11" % "2.2.4" % CompatTest
+//  , "org.scalactic" % "scalactic_2.11" % "2.2.4"
+//  , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
+  , "org.scalatest" %%% "scalatest" % "3.0.0-M15" 
 //  , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"  
   , "org.slf4s" %% "slf4s-api" % "1.7.12"
   , "ch.qos.logback" % "logback-classic" % "1.1.2"
   
   , "es.weso" % "srdf-jena_2.11" % "0.0.3" 
   , "es.weso" % "weso_utils_2.11" % "0.0.6" 
-
+  , "es.weso" % "validating_2.11" % "0.0.6"   
 )
 
 autoCompilerPlugins := true

@@ -72,6 +72,7 @@ object SEShEx {
   
   def valueClass2NodeShape(v: ValueClass): NodeShape[Label,RDFNode,ValidationError] = {
     v match {
+      case OrValueClass(vs) => OrShape(vs.map(valueClass2NodeShape(_)))
       case vc: ValueConstr => valueConstr2NodeShape(vc)
       case sc: ShapeConstr => shapeConstr2NodeShape(sc)
       case _ => throw SEShaclException(s"valueClass2NodeShape: Unsupported value class " + v)
@@ -90,10 +91,7 @@ object SEShEx {
       case SingleShape(label) => Ref(label) 
       case NotShape(label) => RefNot(label) 
       case ConjShapeConstr(labels) => ConjRef(labels)
-      case OrValueClass(vs) => {
-        val labels = vs.map(valueClass2Label)
-        DisjRef(labels)
-      }
+      case DisjShapeConstr(labels) => DisjRef(labels)
       case _ => throw SEShaclException(s"shapeConstrNodeShape: Unsupported value class " + sc)
     }
   }

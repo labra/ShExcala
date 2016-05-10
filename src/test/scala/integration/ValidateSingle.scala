@@ -22,40 +22,22 @@ class ValidateSingle
   BasicConfigurator.configure()
   
   describe("Single Test") {
-    it("Should be valid single") {
+     it("Should validate with an OR second") {
       val strData =
-        """|PREFIX : <http://a.example/>
-           |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-           |
-           |:x :a :x1 . # C1
-           |:x :a :x2 . # C2
-           |:x :a :x3 . # C1
-           |:x :b :x4 . # C3
-           |# <x> :b 1 .
-           |:x1 :b :y1 .
-           |:x2 :b :y2 .
-           |:x3 :b :y3 .
-           |:y1 :c 1 .
-           |:y2 :d 2 .
-           |:y3 :c 3 .
-           |:z :b :x4 .""".stripMargin
-
-      val strSchema =
-        """|PREFIX : <http://a.example/>
-           |PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-           |
-           |<S1> { :a @<T1>*, (:a @<T2>+ | :b xsd:integer), :b IRI }
-           |<S> { :b IRI ~ "x4$" }
-           |<T1> { :b @<T3> }
-           |<T2> { :b @<T4> }
-           |<T3> { :c . }
-           |<T4> { :d . }
+        """|@prefix : <http://example.org/> .
+           |:x :p :x2; :q 1 .
+           |:x2 :t2 1 .
            |""".stripMargin
 
-      println(s"Log level = $log")
-      setInfo()
-      shouldBeValid(strSchema, strData,"http://a.example/z","S")
-    } 
+      val strSchema =
+        """|prefix : <http://example.org/>
+           |<S> { :p (@<T1> OR @<T2>)?, :q . }
+           |<T1> { :t1 . }
+           |<T2> { :t2 . }
+           |""".stripMargin
+
+      shouldBeValid(strSchema, strData, "http://example.org/x", "S")
+    }
     
   }
 }

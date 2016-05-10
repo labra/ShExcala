@@ -35,6 +35,9 @@ case class Schema[Edge,Node,Label,Err](
   type Schema_ = Schema[Edge,Node,Label,Err]
   type Check_ = Checker[Err,Node]
     
+  /**
+   * Given a label create a table of candidates
+   */
   def mkTable(label: Label): Try[(Table_, Rbe[ConstraintRef])] = {
     if (m contains label) {
      val shape = m(label)
@@ -106,16 +109,20 @@ case class Schema[Edge,Node,Label,Err](
     log.info(s"Check candidate $c with shape $shape. Edge: $edge, node: $node")
     shape match {
       case Ref(label) => 
-        Pending(c,nodeToCheck,label,mkArc(edge, node, nodeToCheck),edge)  // Possible optimization if Ref has already been checked
+        Pending(c,nodeToCheck,label,mkArc(edge, node, nodeToCheck),edge)  
         
       case RefNot(label) => 
-        PendingNot(c,nodeToCheck,label,mkArc(edge, node, nodeToCheck),edge)  // Possible optimization if Ref has already been checked
+        PendingNot(c,nodeToCheck,label,mkArc(edge, node, nodeToCheck),edge)  
         
       case DisjRef(labels) => 
-        PendingAlt(c,nodeToCheck,labels,mkArc(edge, node, nodeToCheck),edge) // Possible optimization if Ref has already been checked
+        PendingAlt(c,nodeToCheck,labels,mkArc(edge, node, nodeToCheck),edge) 
+        
+      case OrShape(vs) => {
+        PendingOr(c,nodeToCheck,vs,mkArc(edge, node, nodeToCheck),edge)
+      }
         
       case ConjRef(labels) => 
-        PendingSeq(c,nodeToCheck,labels,mkArc(edge, node, nodeToCheck),edge) // Possible optimization if Ref has already been checked
+        PendingSeq(c,nodeToCheck,labels,mkArc(edge, node, nodeToCheck),edge) 
         
       case p: Pred[Node,Err] => {
         log.info(s"Checking condition with node $nodeToCheck and predicate ${p.name}")
@@ -153,6 +160,12 @@ case class Schema[Edge,Node,Label,Err](
     )
   }
   
+  /**
+   * Calculates the candidates of a node
+   * @param table Shape table
+   * @param node node to calculate candidates
+   * @param neighs neighbours of a node
+   */
   def candidates(table: Table_, node: Node, neighs: Neighs_): Seq[Seq[Candidate_]] = {
     neighs.map(possibleCandidates(table,node,_))
   }
@@ -282,12 +295,27 @@ case class Schema[Edge,Node,Label,Err](
       case PendingAlt(c,obj,labels,arc,_) => rest match {
         case Failure(e) => Failure(e)
         case Success(results) => {
+          log.info(s"Pending alternatives $c, labels=$labels, results=$results")
           val rs = results.map(result => matchNodeInSomeLabelsTyping(obj,labels,g,result))
+          log.info(s"rs: $rs") 
           val f = filterSuccess(rs)
           val r = f.map(t => t.flatten)
           addArcResult(arc,r)
         } 
       }
+      
+      case PendingOr(c,obj,vs,arc,_) => rest match {
+        case Failure(e) => Failure(e)
+        case Success(results) => {
+          log.info(s"Pending alternatives $c, vs=$vs, results=$results")
+          val rs = results.map(result => matchNodeInSomeTyping(obj,vs,g,result))
+          log.info(s"rs: $rs") 
+          val f = filterSuccess(rs)
+          val r = f.map(t => t.flatten)
+          addArcResult(arc,r)
+        } 
+      } 
+      
       case Pos(ref,arc,_) => { 
         // Basic matching with no pending
         // TODO: Accumulate triples checked?
@@ -358,28 +386,62 @@ case class Schema[Edge,Node,Label,Err](
     combineAll(labels,current,comb _)
   }
   
-  
-  def passSome[A,B](ls:Seq[A],eval: A => Try[B]): Try[Seq[B]] = {
-    val maybes = ls.map(x => eval(x)).filter(_.isSuccess).map(_.get)
-    if (maybes.isEmpty) Failure(throw new Exception("None of the alternatives pass"))
-    else Success(maybes)
+  // TODO: Check if it doesn't evaluate the whole seq 
+  def passSome[A,B](ls:Seq[A],eval: A => Try[Seq[B]]): Try[Seq[B]] = {
+    val maybes = ls.map(x => eval(x)).filter(x => x.isSuccess && !x.get.isEmpty).map(_.get)
+    log.info(s"passSome: $maybes")
+    if (maybes.isEmpty) 
+      Failure(throw new Exception("None of the alternatives pass"))
+    else 
+      Success(maybes.head)
   }
   
   /**
    * Matches a node with several labels in a graph 
    * Takes into account the current result typing and triples
-   * Succeeds if the node matches with some of the labels
+   * Succeeds if the node matches with at least one of the labels
    */
   private def matchNodeInSomeLabelsTyping(
       node: Node, 
       labels: Seq[Label], 
       graph: Graph_,
       current: SingleResult_): Result_ = {
+    log.info(s"matchNodeInSomeLabels. Labels: $labels, current: $current")
     def eval(x:Label): Result_ = matchNodeInTyping(node,x,graph,current)
-    val rs = passSome(labels,eval _)
-    throw new Exception("Unimplemented matchNodeInSameLabels...")
-    // combineSome(labels,current,comb _)
+    val r = passSome(labels,eval _)
+    log.info(s"after passSome -> $r")
+    r
   }
+  
+ /**
+   * Matches a node with several labels in a graph 
+   * Takes into account the current result typing and triples
+   * Succeeds if the node matches with at least one of the labels
+   */
+  private def matchNodeInSomeTyping(
+      node: Node, 
+      vs: Seq[NodeShape[Label,Node,Err]], 
+      graph: Graph_,
+      current: SingleResult_): Result_ = {
+    log.info(s"matchNodeInSome. vs: $vs, current: $current")
+    def eval(x:NodeShape[Label,Node,Err]): Result_ = { 
+      x match {
+        case Ref(label) => matchNodeInTyping(node,label,graph,current)
+        case p: Pred[Node,Err] => { 
+          val r = p.pred(node)
+          if (r.isOK) Success(Seq(current))
+          else 
+            Success(Seq()) //Failure(throw new Exception(s"Failed predicate $p with errors ${r.errors}"))
+        }
+        case _ => throw new Exception(s"matchNodeInSomeTyping: Unsupported $x")
+      }
+    }
+    val r = passSome(vs,eval _)
+    log.info(s"after passSome -> $r")
+    r
+  }
+
+
   /**
    * Matches a node with a label in a graph 
    * Takes into account the current result typing and visited triples
