@@ -1,6 +1,5 @@
 import sbt._
 import sbt.Keys._
-import AssemblyKeys._
 
 lazy val CompatTest = config("compat") extend (Test)
 
@@ -41,10 +40,7 @@ libraryDependencies ++= Seq(
   , "org.rogach" %% "scallop" % "1.0.0"
   , "com.typesafe" % "config" % "1.0.1"
   , "io.argonaut" %% "argonaut" % "6.1"
-//  , "org.scalactic" % "scalactic_2.11" % "2.2.4"
-//  , "org.scalacheck" %% "scalacheck" % "1.12.4" % "test"
   , "org.scalatest" %%% "scalatest" % "3.0.0-M15" 
-//  , "org.scoverage" %% "scalac-scoverage-runtime" % "1.0.4"  
   , "org.slf4s" %% "slf4s-api" % "1.7.12"
   , "ch.qos.logback" % "logback-classic" % "1.1.2"
   

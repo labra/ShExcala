@@ -26,8 +26,6 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-ghpages" % "0.5.4")
 
 // addSbtPlugin("com.typesafe" % "sbt-abide" % "0.1-SNAPSHOT")
 
-
-
 resolvers += Classpaths.sbtPluginReleases
 
 resolvers += "Typesafe Repository" at "https://repo.typesafe.com/typesafe/releases/"

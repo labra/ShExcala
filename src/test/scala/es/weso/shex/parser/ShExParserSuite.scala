@@ -69,9 +69,9 @@ class ShExParserSuite extends ShExParser
         val state: ShapeParserState = ShapeParserState.initial
         val result = ShExParser.parse(ShExParser.valueClassExpr(state), str)
         val (r,s) = result.get
-        val a = IRILabel(IRI("a"))
-        val b = IRILabel(IRI("b"))
-        r should be(DisjShapeConstr(Seq(a,b)))
+        val a = SingleShape(IRILabel(IRI("a")))
+        val b = SingleShape(IRILabel(IRI("b")))
+        r should be(OrValueClass(Seq(a,b)))
       }
       
     }
