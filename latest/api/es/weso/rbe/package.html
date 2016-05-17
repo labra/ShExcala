@@ -214,6 +214,24 @@ A <a href="Shape.html" class="extype" name="es.weso.rbe.Shape">Shape</a> contain
     </span>
       <p class="shortcomment cmt">Represents directed edges</p><div class="fullcomment"><div class="comment cmt"><p>Represents directed edges</p><p>It can be <a href="DirectEdge.html" class="extype" name="es.weso.rbe.DirectEdge">direct</a> or <a href="InverseEdge.html" class="extype" name="es.weso.rbe.InverseEdge">inverse</a>
 </p></div></div>
+    </li><li name="es.weso.rbe.DisjRef" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DisjRef[Label]extendsNodeShape[Label,Nothing,Nothing]withProductwithSerializable"></a>
+      <a id="DisjRef[Label]:DisjRef[Label]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="DisjRef.html"><span class="name">DisjRef</span></a><span class="tparams">[<span name="Label">Label</span>]</span><span class="params">(<span name="labels">labels: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.DisjRef.Label">Label</span>]</span>)</span><span class="result"> extends <a href="NodeShape.html" class="extype" name="es.weso.rbe.NodeShape">NodeShape</a>[<span class="extype" name="es.weso.rbe.DisjRef.Label">Label</span>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>] with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.rbe.package@DisjRef[Label]extendsNodeShape[Label,Nothing,Nothing]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"> Reference to an sequence of labels which are disjunctive
+</p>
     </li><li name="es.weso.rbe.Err" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ErrextendsProductwithSerializable"></a>
       <a id="Err:Err"></a>
@@ -428,18 +446,18 @@ It can be either an Int or an Unbounded value
       <p class="shortcomment cmt">A missing candidate
 </p>
     </li><li name="es.weso.rbe.Neg" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Neg[Edge,Node,Err]extendsCandidate[Edge,Node,Nothing,Err]withProductwithSerializable"></a>
-      <a id="Neg[Edge,Node,Err]:Neg[Edge,Node,Err]"></a>
+      <a id="Neg[Edge,Node,E]extendsCandidate[Edge,Node,Nothing,E]withProductwithSerializable"></a>
+      <a id="Neg[Edge,Node,E]:Neg[Edge,Node,E]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Neg.html"><span class="name">Neg</span></a><span class="tparams">[<span name="Edge">Edge</span>, <span name="Node">Node</span>, <span name="Err">Err</span>]</span><span class="params">(<span name="n">n: <a href="ConstraintRef.html" class="extype" name="es.weso.rbe.ConstraintRef">ConstraintRef</a></span>, <span name="arc">arc: (<span class="extype" name="es.weso.rbe.Neg.Node">Node</span>, <span class="extype" name="es.weso.rbe.Neg.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.Neg.Node">Node</span>)</span>, <span name="edge">edge: <a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Neg.Edge">Edge</span>]</span>, <span name="errors">errors: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Neg.Err">Err</span>]</span>)</span><span class="result"> extends <a href="Candidate.html" class="extype" name="es.weso.rbe.Candidate">Candidate</a>[<span class="extype" name="es.weso.rbe.Neg.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.Neg.Node">Node</span>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>, <span class="extype" name="es.weso.rbe.Neg.Err">Err</span>] with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+        <a href="Neg.html"><span class="name">Neg</span></a><span class="tparams">[<span name="Edge">Edge</span>, <span name="Node">Node</span>, <span name="E">E</span>]</span><span class="params">(<span name="n">n: <a href="ConstraintRef.html" class="extype" name="es.weso.rbe.ConstraintRef">ConstraintRef</a></span>, <span name="arc">arc: (<span class="extype" name="es.weso.rbe.Neg.Node">Node</span>, <span class="extype" name="es.weso.rbe.Neg.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.Neg.Node">Node</span>)</span>, <span name="edge">edge: <a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.Neg.Edge">Edge</span>]</span>, <span name="errors">errors: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.Neg.E">E</span>]</span>)</span><span class="result"> extends <a href="Candidate.html" class="extype" name="es.weso.rbe.Candidate">Candidate</a>[<span class="extype" name="es.weso.rbe.Neg.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.Neg.Node">Node</span>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>, <span class="extype" name="es.weso.rbe.Neg.E">E</span>] with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#es.weso.rbe.package@Neg[Edge,Node,Err]extendsCandidate[Edge,Node,Nothing,Err]withProductwithSerializable" title="Permalink" target="_top">
+      <a href="../../../index.html#es.weso.rbe.package@Neg[Edge,Node,E]extendsCandidate[Edge,Node,Nothing,E]withProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -500,6 +518,23 @@ It can be a direct arc or an inverse arc
     </span>
       <p class="shortcomment cmt">Or(v1,v2) represents either v1 or v2
 </p>
+    </li><li name="es.weso.rbe.OrShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="OrShape[+Label,+Node,+Err]extendsNodeShape[Label,Node,Err]withProductwithSerializable"></a>
+      <a id="OrShape[+Label,+Node,+Err]:OrShape[Label,Node,Err]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="OrShape.html"><span class="name">OrShape</span></a><span class="tparams">[<span name="Label">+Label</span>, <span name="Node">+Node</span>, <span name="Err">+Err</span>]</span><span class="params">(<span name="ns">ns: <span class="extype" name="scala.Seq">Seq</span>[<a href="NodeShape.html" class="extype" name="es.weso.rbe.NodeShape">NodeShape</a>[<span class="extype" name="es.weso.rbe.OrShape.Label">Label</span>, <span class="extype" name="es.weso.rbe.OrShape.Node">Node</span>, <span class="extype" name="es.weso.rbe.OrShape.Err">Err</span>]]</span>)</span><span class="result"> extends <a href="NodeShape.html" class="extype" name="es.weso.rbe.NodeShape">NodeShape</a>[<span class="extype" name="es.weso.rbe.OrShape.Label">Label</span>, <span class="extype" name="es.weso.rbe.OrShape.Node">Node</span>, <span class="extype" name="es.weso.rbe.OrShape.Err">Err</span>] with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.rbe.package@OrShape[+Label,+Node,+Err]extendsNodeShape[Label,Node,Err]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="es.weso.rbe.Pending" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Pending[Edge,Node,Label]extendsCandidate[Edge,Node,Label,Nothing]withProductwithSerializable"></a>
       <a id="Pending[Edge,Node,Label]:Pending[Edge,Node,Label]"></a>
@@ -516,8 +551,25 @@ It can be a direct arc or an inverse arc
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">A candidates that is pending
+      <p class="shortcomment cmt">A candidate that is pending
 </p>
+    </li><li name="es.weso.rbe.PendingAlt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PendingAlt[Edge,Node,Label]extendsCandidate[Edge,Node,Label,Nothing]withProductwithSerializable"></a>
+      <a id="PendingAlt[Edge,Node,Label]:PendingAlt[Edge,Node,Label]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="PendingAlt.html"><span class="name">PendingAlt</span></a><span class="tparams">[<span name="Edge">Edge</span>, <span name="Node">Node</span>, <span name="Label">Label</span>]</span><span class="params">(<span name="n">n: <a href="ConstraintRef.html" class="extype" name="es.weso.rbe.ConstraintRef">ConstraintRef</a></span>, <span name="node">node: <span class="extype" name="es.weso.rbe.PendingAlt.Node">Node</span></span>, <span name="ref">ref: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="es.weso.rbe.PendingAlt.Label">Label</span>]</span>, <span name="arc">arc: (<span class="extype" name="es.weso.rbe.PendingAlt.Node">Node</span>, <span class="extype" name="es.weso.rbe.PendingAlt.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.PendingAlt.Node">Node</span>)</span>, <span name="edge">edge: <a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.PendingAlt.Edge">Edge</span>]</span>)</span><span class="result"> extends <a href="Candidate.html" class="extype" name="es.weso.rbe.Candidate">Candidate</a>[<span class="extype" name="es.weso.rbe.PendingAlt.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.PendingAlt.Node">Node</span>, <span class="extype" name="es.weso.rbe.PendingAlt.Label">Label</span>, <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Nothing" class="extype" target="_top">Nothing</a>] with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.rbe.package@PendingAlt[Edge,Node,Label]extendsCandidate[Edge,Node,Label,Nothing]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="es.weso.rbe.PendingNot" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="PendingNot[Edge,Node,Label]extendsCandidate[Edge,Node,Label,Nothing]withProductwithSerializable"></a>
       <a id="PendingNot[Edge,Node,Label]:PendingNot[Edge,Node,Label]"></a>
@@ -531,6 +583,23 @@ It can be a direct arc or an inverse arc
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.rbe.package@PendingNot[Edge,Node,Label]extendsCandidate[Edge,Node,Label,Nothing]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="es.weso.rbe.PendingOr" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PendingOr[Edge,Node,Label,E]extendsCandidate[Edge,Node,Label,E]withProductwithSerializable"></a>
+      <a id="PendingOr[Edge,Node,Label,E]:PendingOr[Edge,Node,Label,E]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="PendingOr.html"><span class="name">PendingOr</span></a><span class="tparams">[<span name="Edge">Edge</span>, <span name="Node">Node</span>, <span name="Label">Label</span>, <span name="E">E</span>]</span><span class="params">(<span name="n">n: <a href="ConstraintRef.html" class="extype" name="es.weso.rbe.ConstraintRef">ConstraintRef</a></span>, <span name="node">node: <span class="extype" name="es.weso.rbe.PendingOr.Node">Node</span></span>, <span name="es">es: <span class="extype" name="scala.Seq">Seq</span>[<a href="NodeShape.html" class="extype" name="es.weso.rbe.NodeShape">NodeShape</a>[<span class="extype" name="es.weso.rbe.PendingOr.Label">Label</span>, <span class="extype" name="es.weso.rbe.PendingOr.Node">Node</span>, <span class="extype" name="es.weso.rbe.PendingOr.E">E</span>]]</span>, <span name="arc">arc: (<span class="extype" name="es.weso.rbe.PendingOr.Node">Node</span>, <span class="extype" name="es.weso.rbe.PendingOr.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.PendingOr.Node">Node</span>)</span>, <span name="edge">edge: <a href="DirectedEdge.html" class="extype" name="es.weso.rbe.DirectedEdge">DirectedEdge</a>[<span class="extype" name="es.weso.rbe.PendingOr.Edge">Edge</span>]</span>)</span><span class="result"> extends <a href="Candidate.html" class="extype" name="es.weso.rbe.Candidate">Candidate</a>[<span class="extype" name="es.weso.rbe.PendingOr.Edge">Edge</span>, <span class="extype" name="es.weso.rbe.PendingOr.Node">Node</span>, <span class="extype" name="es.weso.rbe.PendingOr.Label">Label</span>, <span class="extype" name="es.weso.rbe.PendingOr.E">E</span>] with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.rbe.package@PendingOr[Edge,Node,Label,E]extendsCandidate[Edge,Node,Label,E]withProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -694,7 +763,7 @@ The algorithm has been described in [1] and is based on intervals</p><p>[1] Comp
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Reference to another label
+      <p class="shortcomment cmt">Negation of a expression
 </p>
     </li><li name="es.weso.rbe.Repeat" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Repeat[A]extendsRbe[A]withProductwithSerializable"></a>
