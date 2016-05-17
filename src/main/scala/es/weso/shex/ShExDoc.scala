@@ -6,7 +6,6 @@ import scala.collection.immutable.StringOps
 import scala.text._
 import Document._
 import es.weso.rdf._
-import arq.iri
 import org.slf4j.LoggerFactory
 import PREFIXES._
 import ValueClass.any

@@ -5,7 +5,7 @@ import scala.util.{ Failure, Success }
 import org.scalatest.{ FunSpecLike, Matchers }
 import org.scalatest.prop.Checkers
 
-import com.hp.hpl.jena.rdf.model.ModelFactory
+import org.apache.jena.rdf.model.ModelFactory
 
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.shex.Schema

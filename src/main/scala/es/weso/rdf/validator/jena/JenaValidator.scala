@@ -1,6 +1,6 @@
 package es.weso.rdf.validator.jena
 
-import com.hp.hpl.jena.rdf.model.Model
+import org.apache.jena.rdf.model.Model
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.shex._
 import es.weso.rdf.validator._

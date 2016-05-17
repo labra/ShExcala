@@ -4,7 +4,7 @@ package es.weso.shex.converter
 import org.scalatest._
 import org.scalatest.prop._
 
-import com.hp.hpl.jena.rdf.model._
+import org.apache.jena.rdf.model._
 
 import org.apache.jena.riot.RDFDataMgr
 
