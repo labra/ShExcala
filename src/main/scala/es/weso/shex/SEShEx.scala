@@ -32,13 +32,20 @@ object SEShEx {
     )
   }
   
-  def shex2SEShape(sh: Shape): SEShape[DirectedEdge[IRI],RDFNode,Label,ValidationError] = {
-    SEShape(
-        rbe = shapeExpr2rbe(sh.shapeExpr),
-        // TODO: Consider inverse extras
-        extras = sh.extras.map(e => DirectEdge(e)).toSeq,
-        closed = sh.isClosed
-    )
+  def shex2SEShape(shape: Shape): SEShape[DirectedEdge[IRI],RDFNode,Label,ValidationError] = {
+    shape match {
+      case sh: BasicShape => {
+        SEShape(
+          rbe = shapeExpr2rbe(sh.shapeExpr),
+          // TODO: Consider inverse extras
+          extras = sh.extras.map(e => DirectEdge(e)).toSeq,
+          closed = sh.isClosed
+        )
+      }
+      case _ => {
+        throw new Exception(s"Unsupported extended shapes: $shape") 
+      }
+    }
   }
   
   def shapeExpr2rbe(se: ShapeExpr): Rbe[Val] = {

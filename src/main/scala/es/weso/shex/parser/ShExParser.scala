@@ -186,7 +186,7 @@ trait ShExParser
       }) 
       |(seqState(shapeDefinition, semanticActions)(s) ^^ {
         case (shapeDef ~ as, s1) => {
-         val shape = mkShape(shapeDef).copy(actions = as)
+         val shape = mkShape(shapeDef).addActions(as)
          val (label,s2) = s1.newShape(shape)
          s2.addStart(label) 
         }
@@ -209,7 +209,7 @@ trait ShExParser
     val extras = collectExtras(shapeDef)
     val closed = collectClosed(shapeDef)
     val shape = collectShape(shapeDef)
-    Shape(shapeExpr = shape, 
+    BasicShape(shapeExpr = shape, 
             isClosed = closed, 
             isVirtual = false,
             inherit = inherit,
@@ -226,7 +226,8 @@ trait ShExParser
     val extras = collectExtras(shapeDef)
     val closed = collectClosed(shapeDef)
     val shape = collectShape(shapeDef)
-    ShapeRule(label, Shape(shapeExpr = shape, 
+    ShapeRule(label, 
+        BasicShape(shapeExpr = shape, 
             isClosed = closed, 
             isVirtual = isVirtual,
             inherit = inherit,
@@ -328,16 +329,19 @@ trait ShExParser
 
   }
   
+  
   def sequenceExpr: StateParser[ShapeParserState, ShapeExpr] = { s => 
     seqState(idUnaryExpr,
-      repS(arrowState(sequenceExpr, symbol(",")))
-      )(s) <~ opt(",") ^^
+      repS(arrowState(sequenceExpr, groupSep))
+      )(s) <~ opt(groupSep) ^^
       {
         case (shape ~ List(), s1) => (shape, s1)
         case (shape ~ shapes, s1) => (simplifyGroup(GroupShape(None, shape :: shapes)), s1)
       }
   }
   
+  def groupSep : Parser[String] = 
+    symbol(",") | symbol(";")
   
   def simplifyGroup(s: ShapeExpr): ShapeExpr = {
     val xs = collectGroupShapes(s)
@@ -433,7 +437,7 @@ trait ShExParser
     }
   }
   
-    // [16]    senseFlags            ::= '!' '^'?
+  // [16]    senseFlags            ::= '!' '^'?
   //                              | '^' '!'?  # inverse not
   def senseFlags: Parser[Sense] = {
    opt ( symbol("^") ~ opt(symbol("!")) ^^ {
@@ -450,6 +454,84 @@ trait ShExParser
   }
 
   case class Sense(inverse: Boolean, negated: Boolean)
+
+// [17]    predicate             ::= iri | RDF_TYPE
+  def predicate(s: ShapeParserState): Parser[IRI] =
+    (iri(s.namespaces)
+      | symbol("a") ^^^ rdf_type)
+  
+// [18]    valueClass            ::= '!'? negatableValueClass
+// [18a]   negatableValueClass   ::= "LITERAL" xsFacet*
+//                                | nonLiteralKind shapeOrRef? stringFacet*
+//                                | datatype xsFacet*
+//                                | shapeOrRef stringFacet*
+//                                | valueSet
+//                                | valueExprLabel
+//                                | '.'  # no constraint
+  def valueClass: StateParser[ShapeParserState, ValueClass] = { s =>
+    ( ignorecase("LITERAL") ~> WS ~> xsFacets(s) ^^ {
+        case facets => (LiteralKind(facets), s)
+      }
+    | seq3State(nonLiteralKind, optState(groupShapeConstr), stringFacetsState)(s) ^^ {
+        case ((code,shapeConstr,facets),s1) => 
+        (mkNonLiteral(code,shapeConstr, facets), s1)
+      }
+    | iriFacetsChecked(s)
+    | valueSet(s)
+    | groupShapeConstr(s)
+    | shapeDefinition(s) ^^ {
+        case (shapeDef,s1) => {
+         val shape = mkShape(shapeDef)
+         val (label,s2) = s1.newShape(shape)
+         (SingleShape(label),s2)
+        }
+      }
+    | dot ^^^ (ValueClass.any, s)
+    )
+  }
+  
+// [18b]   nonLiteralKind        ::= "IRI" | "BNODE" | "NONLITERAL"
+def nonLiteralKind : StateParser[ShapeParserState,NonLiteralKindCode] = { s => 
+  ( ignorecase("IRI") <~ WS ^^^ (IRICode,s) 
+  | ignorecase("BNODE") <~ WS ^^^ (BNodeCode,s) 
+  | ignorecase("NonLiteral") <~ WS ^^^ (NonLiteralCode,s)
+  )
+}
+
+sealed abstract class NonLiteralKindCode
+case object IRICode extends NonLiteralKindCode
+case object BNodeCode extends NonLiteralKindCode
+case object NonLiteralCode extends NonLiteralKindCode
+
+def mkNonLiteral(
+    code: NonLiteralKindCode,
+    shapeConstr: Option[ShapeConstr],
+    facets: List[StringFacet]): NodeKind = { 
+  code match {
+    case IRICode => IRIKind(shapeConstr,facets)
+    case BNodeCode => BNodeKind(shapeConstr,facets)
+    case NonLiteralCode => NonLiteralKind(shapeConstr,facets)
+  }
+}
+ 
+ // For datatype
+ def iriFacetsChecked:StateParser[ShapeParserState,Datatype] = { s =>
+    parseCond(iriFacets, okFacets, "Datatype must pass facets")(s) ^^ {
+      case (((iri,facets),s)) => (Datatype(iri,facets),s)
+    }    
+  }
+  
+  def iriFacets: StateParser[ShapeParserState,(IRI,List[XSFacet])] = { s =>
+      opt(WS) ~> iriBase(s.namespaces,s.baseIRI) ~ xsFacets(s) <~ opt(WS) ^^ {
+        case iri ~ facets => {
+         ((iri, facets), s)
+        }
+      }
+    }
+  
+  def okFacets(pair: (IRI, List[XSFacet])): Boolean = {
+   XSFacet.ok_facets(pair._1,pair._2) 
+  }
   
 /*  def valueClassOrRef: StateParser[ShapeParserState,ValueClass] = { s =>
     ( valueClass(s) 
@@ -463,8 +545,9 @@ trait ShExParser
     }
   }
   
+  // [23]    annotation            ::= '//' predicate (iri | literal)
   def annotation(pm: PrefixMap, base: IRI): Parser[Annotation] = {  
-    symbol(";") ~> iriBase(pm,base) ~ iriOrLiteral(pm,base) ^^ {
+    symbol("//") ~> iriBase(pm,base) ~ iriOrLiteral(pm,base) ^^ {
       case iri ~ value => Annotation(iri,value)
     }
   }
@@ -483,68 +566,6 @@ trait ShExParser
       case None    => defaultCardinality
     }
 
-// [17]    predicate             ::= iri | RDF_TYPE
-  def predicate(s: ShapeParserState): Parser[IRI] =
-    (iri(s.namespaces)
-      | symbol("a") ^^^ rdf_type)
-  
-// [18]    valueClass            ::= '!'? negatableValueClass
-// [18a]   negatableValueClass   ::= "LITERAL" xsFacet*
-//                                | ("IRI" | "BNODE" | "NONLITERAL") shapeOrRef? stringFacet*
-//                                | datatype xsFacet*
-//                                | shapeOrRef stringFacet*
-//                                | valueSet
-//                                | valueExprLabel
-//                                | '.'  # no constraint
-// #                                | '[' valueClassExpr ']'
-  def valueClass: StateParser[ShapeParserState, ValueClass] = { s =>
-    (ignorecase("IRI") ~> WS ~> 
-        seqState(optState(groupShapeConstr), stringFacetsState)(s) ^^ {
-      case (shapeConstr ~ facets,s1) => (IRIKind(shapeConstr, facets), s1)
-    }
-    | ignorecase("LITERAL") ~> WS ~> xsFacets(s) ^^ {
-        case facets => (LiteralKind(facets), s)
-    }
-    | ignorecase("BNODE") ~> WS ~> 
-        seqState(optState(groupShapeConstr), stringFacetsState)(s) ^^ {
-        case (shapeConstr ~ facets,s1) => (BNodeKind(shapeConstr, facets), s1)
-      }
-      | ignorecase("NONLITERAL") ~> WS ~> 
-              seqState(optState(groupShapeConstr), stringFacetsState)(s) ^^ {
-        case (shapeConstr ~ facets,s1) => (NonLiteralKind(shapeConstr, facets), s1)        
-      }
-//      | ignorecase("ANY") ^^^ (AnyKind, s)
-      | dot ^^^ (ValueClass.any, s)
-      | iriFacetsChecked(s)
-      | valueSet(s)
-      | groupShapeConstr(s)
-      | shapeDefinition(s) ^^ {
-        case (shapeDef,s1) => {
-         val shape = mkShape(shapeDef)
-         val (label,s2) = s1.newShape(shape)
-         (SingleShape(label),s2)
-        }
-      }
-      )
-  }
-  
-  def iriFacetsChecked:StateParser[ShapeParserState,Datatype] = { s =>
-    parseCond(iriFacets, okFacets, "Datatype must pass facets")(s) ^^ {
-      case (((iri,facets),s)) => (Datatype(iri,facets),s)
-    }    
-  }
-  
-  def iriFacets: StateParser[ShapeParserState,(IRI,List[XSFacet])] = { s =>
-      opt(WS) ~> iriBase(s.namespaces,s.baseIRI) ~ xsFacets(s) <~ opt(WS) ^^ {
-        case iri ~ facets => {
-         ((iri, facets), s)
-        }
-      }
-    }
-  
-  def okFacets(pair: (IRI, List[XSFacet])): Boolean = {
-   XSFacet.ok_facets(pair._1,pair._2) 
-  }
   
   
   def groupShapeConstr: StateParser[ShapeParserState,ShapeConstr] = 
@@ -589,7 +610,7 @@ trait ShExParser
   // [25]    valueSet              ::= '[' value* ']'
   def valueSet: StateParser[ShapeParserState, ValueSet] = { s => 
     (openSquareBracket ~>
-      rep1sepState(s, value, WS)
+      rep1sepState(value, WS)(s)
       <~ closeSquareBracket) ^^ {
         case (ls, s) => (ValueSet(ls), s)
       }
@@ -770,6 +791,8 @@ trait ShExParser
   // @terminals
   
   // [29]    CODE                  ::= '{' ([^%\\] | '\\' [%\\] | UCHAR)* '%' '}'
+  
+  // TODO: Check warning...
   def CODE: Parser[String] = {
     opt(WS) ~> "{" ~> code <~ symbol("%") <~ symbol("}") 
   }

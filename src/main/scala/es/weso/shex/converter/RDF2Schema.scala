@@ -8,7 +8,7 @@ import es.weso.rdf.{ PrefixMap, RDFReader }
 import es.weso.rdf.nodes.{ BNodeId, IRI, Literal, RDFNode }
 import es.weso.rdf.parser.RDFParser
 import es.weso.shex.{ Datatype, EmptyShape, GroupShape, Label }
-import es.weso.shex.{ RangeCardinality, ShExSchema, Schema, Shape, ShapeConstr, ShapeExpr, SingleShape, TripleConstraint, UnboundedCardinalityFrom, ValueClass }
+import es.weso.shex.{ Actions, RangeCardinality, ShExSchema, Schema, Shape, BasicShape, ShapeConstr, ShapeExpr, SingleShape, TripleConstraint, UnboundedCardinalityFrom, ValueClass }
 import es.weso.shex.{ ValueConstr, ValueIRI, ValueLiteral, ValueObject, ValueSet }
 import es.weso.shex.Cardinality
 import es.weso.shex.Cardinality.defaultCardinality
@@ -102,9 +102,13 @@ object RDF2Schema
         shapeExpr(n, rdf)
       }
       incls <- inclPropSet(n, rdf)
-    } yield Shape.empty.copy(
+    } yield BasicShape(
       shapeExpr = shape,
-      inherit = incls)
+      isClosed = false,
+      isVirtual = false,
+      inherit = incls, 
+      extras = List(),
+      actions = Actions.empty)
   }
 
   private def inclPropSet: RDFParser[Seq[Label]] = { (n, rdf) =>

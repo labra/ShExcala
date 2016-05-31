@@ -57,7 +57,7 @@ object AST2Schema {
     val inherit = cnvInherit(shape.inherit.getOrElse(Seq()))
     val extras = cnvExtras(shape.extra.getOrElse(Seq()))
     val actions = cnvActions(shape.semAct)
-    Shape(shapeExpr = shapeExpr,
+    BasicShape(shapeExpr = shapeExpr,
       isVirtual = isVirtual,
       isClosed = isClosed,
       inherit = inherit,

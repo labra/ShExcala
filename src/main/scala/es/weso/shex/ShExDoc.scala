@@ -65,17 +65,24 @@ case class ShExDoc(prefixMap: PrefixMap) extends Logging {
   }
   
   def labelShapeDoc(pair: (Label,Shape)): Document = {
-    virtualDoc(pair._2.isVirtual) :: 
+//    virtualDoc(pair._2.isVirtual) :: 
     labelDoc(pair._1) :: space :: shapeDoc(pair._2)   
   }
 
   def shapeDoc(shape: Shape): Document = {
-    inheritDoc(shape.inherit) ::
-    extrasDoc(shape.extras) ::
-    closedDoc(shape.isClosed) :: 
-    text("{") :: space :: 
-    shapeExprDoc(shape.shapeExpr) :: 
-    text("}") 
+    shape match {
+      case sh: BasicShape => {
+      inheritDoc(sh.inherit) ::
+      extrasDoc(sh.extras) ::
+      closedDoc(sh.isClosed) :: 
+      text("{") :: space :: 
+      shapeExprDoc(sh.shapeExpr) :: 
+      text("}") 
+      }
+      case _ => {
+        throw new Exception(s"Unsupported shapeDoc for $shape") 
+      }
+    }
   }
   
   def inheritDoc(inherit: Seq[Label]): Document = {
@@ -249,6 +256,7 @@ case class ShExDoc(prefixMap: PrefixMap) extends Logging {
       case DisjShapeConstr(shapes) => seqDocWithSep(shapes, "OR", labelDoc)
       case NotShape(shape) => text("NOT") :: labelDoc(shape)
       case SingleShape(shape) => labelDoc(shape)
+      case _ => throw new Exception(s"shapeDoc: Unsupported $s")
     }
   }
 

@@ -7,6 +7,10 @@ case class Actions(as: Seq[Action]) {
   }
   
   def toList: Seq[(IRI,String)] = as.map(_.toTuple)
+  
+  def ++(other: Actions): Actions = {
+    Actions(as ++ other.as)
+  }
 }
 
 object Actions {

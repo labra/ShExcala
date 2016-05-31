@@ -45,13 +45,18 @@ object Schema2AST {
   }
 
   private def cnvShape(shape: Shape): ShapeAST = {
-    ShapeAST.empty.copy(
-      expression = cnvOptShapeExpr(shape.shapeExpr), 
-      virtual = cnvBoolean(shape.isVirtual), 
-      closed = if (shape.isClosed) Some(true) else None, 
-      inherit = cnvLabels(shape.inherit), 
-      extra = cnvIRIs(shape.extras), 
-      semAct = cnvActions(shape.actions))
+    shape match {
+      case sh: BasicShape => {
+       ShapeAST.empty.copy(
+        expression = cnvOptShapeExpr(sh.shapeExpr), 
+        virtual = cnvBoolean(sh.isVirtual), 
+        closed = if (sh.isClosed) Some(true) else None, 
+        inherit = cnvLabels(sh.inherit), 
+        extra = cnvIRIs(sh.extras), 
+        semAct = cnvActions(sh.actions))
+      }
+      case _ => throw new Exception(s"Schema2AST: cnvShape: unsupported $shape")
+    }
   }
   
   private def cnvValueClasses(vcs: Map[Label,ValueClassDefinition]): Option[Map[String,ValueClassAST]] = {

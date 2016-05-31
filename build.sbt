@@ -17,7 +17,7 @@ name := "shexcala"
 
 organization := "es.weso"
 
-version := "0.7.12"
+version := "0.7.14"
 
 scalaVersion := "2.11.8"
 
@@ -44,9 +44,11 @@ libraryDependencies ++= Seq(
   , "org.slf4s" %% "slf4s-api" % "1.7.12"
   , "ch.qos.logback" % "logback-classic" % "1.1.2"
   
-  , "es.weso" % "srdf-jena_2.11" % "0.0.5" 
+  , "es.weso" % "srdf-jena_2.11" % "0.0.6" 
+  , "es.weso" % "rbe_2.11" % "0.0.1"
   , "es.weso" % "weso_utils_2.11" % "0.0.6" 
   , "es.weso" % "validating_2.11" % "0.0.6"   
+  , "es.weso" % "stateparser_2.11" % "0.1.3"   
 )
 
 autoCompilerPlugins := true

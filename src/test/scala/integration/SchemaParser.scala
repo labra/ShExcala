@@ -34,7 +34,7 @@ class SchemaParser
         info(s"str: $str")                     
         val result = Schema.fromString(str)
         
-        val shape = Shape.empty.copy(
+        val shape : Shape = BasicShape.empty.copy(
             shapeExpr = TripleConstraint.empty.copy(
                 iri = IRI("p"),
                 value = LiteralKind(List())

@@ -88,7 +88,10 @@ object Schema2RDF extends Logging {
       shape: Shape, 
       shapeNode: RDFNode, 
       rdf: RDFBuilder): RDFBuilder = {
-    shape2RDF(shape.shapeExpr, shapeNode,rdf)
+    shape match {
+      case sh: BasicShape => shape2RDF(sh.shapeExpr, shapeNode,rdf)
+      case _ => throw new Exception(s"Unsupported shapeDefn2RDF: $sh") 
+    }
   } 
       
   private def shape2RDF(
