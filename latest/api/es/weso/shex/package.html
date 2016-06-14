@@ -151,6 +151,23 @@
       </a>
     </span>
       
+    </li><li name="es.weso.shex.BasicShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BasicShapeextendsShapewithProductwithSerializable"></a>
+      <a id="BasicShape:BasicShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="BasicShape.html"><span class="name">BasicShape</span></a><span class="params">(<span name="shapeExpr">shapeExpr: <a href="ShapeExpr.html" class="extype" name="es.weso.shex.ShapeExpr">ShapeExpr</a></span>, <span name="isClosed">isClosed: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="isVirtual">isVirtual: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="inherit">inherit: <span class="extype" name="scala.Seq">Seq</span>[<a href="Label.html" class="extype" name="es.weso.shex.Label">Label</a>]</span>, <span name="extras">extras: <span class="extype" name="scala.Seq">Seq</span>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>, <span name="actions">actions: <a href="Actions.html" class="extype" name="es.weso.shex.Actions">Actions</a></span>)</span><span class="result"> extends <a href="Shape.html" class="extype" name="es.weso.shex.Shape">Shape</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shex.package@BasicShapeextendsShapewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="es.weso.shex.Cardinality" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="CardinalityextendsPositional"></a>
       <a id="Cardinality:Cardinality"></a>
@@ -679,6 +696,23 @@
       </a>
     </span>
       
+    </li><li name="es.weso.shex.NodeKindShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NodeKindShapeextendsShapewithProductwithSerializable"></a>
+      <a id="NodeKindShape:NodeKindShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="NodeKindShape.html"><span class="name">NodeKindShape</span></a><span class="params">(<span name="nodeKind">nodeKind: <a href="NodeKind.html" class="extype" name="es.weso.shex.NodeKind">NodeKind</a></span>, <span name="shape">shape: <a href="Shape.html" class="extype" name="es.weso.shex.Shape">Shape</a></span>)</span><span class="result"> extends <a href="Shape.html" class="extype" name="es.weso.shex.Shape">Shape</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shex.package@NodeKindShapeextendsShapewithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="es.weso.shex.NonLiteralKind" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="NonLiteralKindextendsNodeKindwithProductwithSerializable"></a>
       <a id="NonLiteralKind:NonLiteralKind"></a>
@@ -987,19 +1021,19 @@
       </a>
     </span>
       
-    </li><li name="es.weso.shex.Shape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ShapeextendsPositionalwithProductwithSerializable"></a>
+    </li><li name="es.weso.shex.Shape" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ShapeextendsAnyRef"></a>
       <a id="Shape:Shape"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="Shape.html"><span class="name">Shape</span></a><span class="params">(<span name="shapeExpr">shapeExpr: <a href="ShapeExpr.html" class="extype" name="es.weso.shex.ShapeExpr">ShapeExpr</a></span>, <span name="isClosed">isClosed: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="isVirtual">isVirtual: <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Boolean" class="extype" target="_top">Boolean</a></span>, <span name="inherit">inherit: <span class="extype" name="scala.Seq">Seq</span>[<a href="Label.html" class="extype" name="es.weso.shex.Label">Label</a>]</span>, <span name="extras">extras: <span class="extype" name="scala.Seq">Seq</span>[<a href="http://labra.github.io/SRDF/latest/api/index.html#es.weso.rdf.nodes.IRI" class="extype" target="_top">IRI</a>]</span>, <span name="actions">actions: <a href="Actions.html" class="extype" name="es.weso.shex.Actions">Actions</a></span>)</span><span class="result"> extends <span class="extype" name="scala.util.parsing.input.Positional">Positional</span> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+        <a href="Shape.html"><span class="name">Shape</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.AnyRef" class="extype" target="_top">AnyRef</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#es.weso.shex.package@ShapeextendsPositionalwithProductwithSerializable" title="Permalink" target="_top">
+      <a href="../../../index.html#es.weso.shex.package@ShapeextendsAnyRef" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -1422,6 +1456,23 @@
       </a>
     </span>
       
+    </li><li name="es.weso.shex.BasicShape" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BasicShape"></a>
+      <a id="BasicShape:BasicShape"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="BasicShape$.html"><span class="name">BasicShape</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#es.weso.shex.package@BasicShape" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="es.weso.shex.Cardinality" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Cardinality"></a>
       <a id="Cardinality:Cardinality"></a>
@@ -1721,7 +1772,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="Shape$.html"><span class="name">Shape</span></a><span class="result"> extends <a href="http://www.scala-lang.org/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+        <a href="Shape$.html"><span class="name">Shape</span></a>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#es.weso.shex.package@Shape" title="Permalink" target="_top">
