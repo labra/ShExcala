@@ -2,7 +2,7 @@ package es.weso.shex
 
 import org.scalatest._
 import es.weso.rdf.nodes._
-import es.weso.utils.Checker
+import es.weso.validating._
 
 
 class CheckerTest 
@@ -22,7 +22,7 @@ class CheckerTest
      checkOK(cond.check(node)) 
    }
    
-   def checkOK[A,E](chk: Checker[A,E]): Unit = {
+   def checkOK[A,E](chk: CheckedRDFNode): Unit = {
      if (!chk.isOK) {
        fail(s"Value is not ok: $chk") 
      } 

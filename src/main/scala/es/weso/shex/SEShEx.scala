@@ -1,29 +1,19 @@
 package es.weso.shex
 
 import es.weso.rdf.nodes._
-import es.weso.rdf._
-import es.weso.rdf._
-import scala.util.parsing.input.Positional
-import scala.util.matching.Regex
 import es.weso.shex.PREFIXES._
-import util._
-import es.weso.utils.PrefixMapUtils._
-import org.slf4j._
-import es.weso.rbe.{ 
-  Schema => SESchema,
-  Shape => SEShape,
-  Or => RBEOr,
-  _
-  }
+import es.weso.rbe.{NotShape => SENotShape, Or => RBEOr, Schema => SESchema, Shape => SEShape, SingleShape => SESingleShape, _}
+import es.weso.validating.ConstraintError
 
 
 /**
  * ShEx Abstract Syntax to SESchema 
  */
 object SEShEx {
-  type SEShExSchema = SESchema[IRI,RDFNode,Label,ValidationError]
-  type Val = (DirectedEdge[IRI],NodeShape[Label,RDFNode,ValidationError])
-  type NodeShape_ = NodeShape[Label,RDFNode,ValidationError]
+  type SEShExSchema = SESchema[IRI,RDFNode,Label,ConstraintError[RDFNode]]
+  type Val = (DirectedEdge[IRI],NodeShape[Label,RDFNode,ConstraintError[RDFNode]])
+  type NodeShape_ = NodeShape[Label,RDFNode,ConstraintError[RDFNode]]
+  type SHShape_ = SEShape[DirectedEdge[IRI],RDFNode,Label,ConstraintError[RDFNode]]
 
   def shex2SE(s: ShExSchema): SEShExSchema = {
     SESchema(
@@ -32,10 +22,11 @@ object SEShEx {
     )
   }
   
-  def shex2SEShape(shape: Shape): SEShape[DirectedEdge[IRI],RDFNode,Label,ValidationError] = {
+  def shex2SEShape(shape: Shape): SHShape_ = {
     shape match {
       case sh: BasicShape => {
-        SEShape(
+        SESingleShape(
+          nodeShape = NodeShape.any,
           rbe = shapeExpr2rbe(sh.shapeExpr),
           // TODO: Consider inverse extras
           extras = sh.extras.map(e => DirectEdge(e)).toSeq,
@@ -77,7 +68,7 @@ object SEShEx {
     )
   }
   
-  def valueClass2NodeShape(v: ValueClass): NodeShape[Label,RDFNode,ValidationError] = {
+  def valueClass2NodeShape(v: ValueClass): NodeShape[Label,RDFNode,ConstraintError[RDFNode]] = {
     v match {
       case OrValueClass(vs) => OrShape(vs.map(valueClass2NodeShape(_)))
       case vc: ValueConstr => valueConstr2NodeShape(vc)
@@ -93,7 +84,7 @@ object SEShEx {
     }
   }
   
-  def shapeConstr2NodeShape(sc: ShapeConstr): NodeShape[Label,RDFNode,ValidationError] = {
+  def shapeConstr2NodeShape(sc: ShapeConstr): NodeShape[Label,RDFNode,ConstraintError[RDFNode]] = {
     sc match {
       case SingleShape(label) => Ref(label) 
       case NotShape(label) => RefNot(label) 

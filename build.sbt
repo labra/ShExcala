@@ -3,7 +3,7 @@ import sbt.Keys._
 
 lazy val CompatTest = config("compat") extend (Test)
 
-lazy val root = (project in file(".")).
+lazy val shExcala = (project in file(".")).
   configs(CompatTest).
   settings(publishSettings:_*).
   settings(inConfig(CompatTest)(Defaults.testSettings): _*).
@@ -45,9 +45,9 @@ libraryDependencies ++= Seq(
   , "ch.qos.logback" % "logback-classic" % "1.1.2"
   
   , "es.weso" % "srdf-jena_2.11" % "0.0.6" 
-  , "es.weso" % "rbe_2.11" % "0.0.1"
+  , "es.weso" % "rbe_2.11" % "0.0.3"
   , "es.weso" % "weso_utils_2.11" % "0.0.6" 
-  , "es.weso" % "validating_2.11" % "0.0.6"   
+  , "es.weso" % "validating_2.11" % "0.0.11"
   , "es.weso" % "stateparser_2.11" % "0.1.3"   
 )
 

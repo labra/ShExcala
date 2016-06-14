@@ -2,12 +2,14 @@ package es.weso.shex
 
 import scala.util.parsing.input.Positional
 import es.weso.rdf.nodes._
-import es.weso.utils.Checker._
 import XSFacet._
 import PREFIXES._
 import util._
-import es.weso.utils.Checker
-
+import es.weso.validating._
+import Checked._
+import ConstraintReason._
+import Constraint._
+import ValueClass._
 /**
  * ValueClass ::= ValueConstr | ShapeConstr | ValueClassRef
  *
@@ -17,7 +19,7 @@ sealed trait ValueClass extends Positional
 object ValueClass {
   lazy val any : ValueClass = ValueSet(Seq(ValueAny(exclusions = List())))
   
-    def nodeKindfromIRI(iri: IRI): Try[NodeKind] = {
+  def nodeKindfromIRI(iri: IRI): Try[NodeKind] = {
     iri match {
       case `sh_IRI`        => Success(IRIKind(None, List()))
       case `sh_BNode`      => Success(BNodeKind(None, List()))
@@ -43,7 +45,7 @@ case class ValueClassRef(label: Label) extends ValueClass
  */
 sealed trait ValueConstr extends ValueClass
     with Positional {
-  def check(node: RDFNode): Checker[RDFNode, ValidationError]
+  def check(node: RDFNode): CheckedRDFNode
 }
 
 
@@ -51,62 +53,65 @@ case class Datatype(
   v: IRI,
   facets: List[XSFacet]) extends ValueConstr
     with Positional {
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] = {
+
+  override def check(node: RDFNode): CheckedRDFNode = {
     if (v == sh_text) {
       node match {
       case l: Literal =>
         if ((l.dataType == xsd_string || l.dataType == rdf_langString) && checkFacets(node, facets).isOK)
-          ok(node)
+          okSingle(node, s"$node matches literal $l")
         else
-          err(MsgError(s"literal $l doesn't match datatype $this"))
-      case _ => err(MsgError(s"node $node doesn't match datatype $this"))
+          errString(s"literal $l doesn't match datatype $this")
+      case _ => errString(s"node $node doesn't match datatype $this")
       }
     } else 
     node match {
       case l: Literal =>
         if (l.dataType == v && checkFacets(node, facets).isOK)
-          ok(node)
+          okSingle(node, s"$node matches literal datatype $l")
         else
-          err(MsgError(s"literal $l with datatype ${l.dataType} doesn't match datatype $v"))
-      case _ => err(MsgError(s"node $node doesn't match datatype $this"))
+          errString(s"literal $l with datatype ${l.dataType} doesn't match datatype $v")
+      case _ => errString(s"node $node doesn't match datatype $this")
     }
   }
 }
 
 case class ValueSet(s: Seq[ValueObject]) extends ValueConstr
     with Positional {
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] =
-    checkSome(node,
-      s.map((vo: ValueObject) => ((n: RDFNode) => vo.check(node))),
-      MsgError(s"valueSet: node $node must be in $s"))
+  override def check(node: RDFNode): CheckedRDFNode = {
+    val cs : Seq[RDFNode => CheckedRDFNode] =
+      s.map((vo: ValueObject) => ((n: RDFNode) => vo.check(node)))
+    checkSome(node,cs)
+  }
 }
 
 sealed trait ValueObject extends Positional {
-  def check(node: RDFNode): Checker[RDFNode, ValidationError]
+  def check(node: RDFNode): CheckedRDFNode
 }
 
 case class ValueIRI(iri: IRI) extends ValueObject {
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] = {
-    if (node.isIRI && node.toIRI == iri) ok(node)
-    else err(MsgError(s"node $node doesn't match IRI $iri"))
+
+  override def check(node: RDFNode): CheckedRDFNode = {
+    if (node.isIRI && node.toIRI == iri) okSingle(node, s"$node is an IRI")
+    else errString(s"node $node doesn't match IRI $iri")
   }
 }
 
 case class ValueLiteral(literal: Literal) extends ValueObject {
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] = {
+  override def check(node: RDFNode): CheckedRDFNode = {
     node match {
-      case l: Literal if (l == literal) => ok(node)
-      case _                            => err(MsgError(s"node $node doesn't match Literal $literal"))
+      case l: Literal if (l == literal) => okSingle(node, s"$node is a Literal")
+      case _                            => errString(s"node $node doesn't match Literal $literal")
     }
   }
 
 }
 
 case class ValueLang(lang: Lang) extends ValueObject {
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] = {
+  override def check(node: RDFNode): CheckedRDFNode = {
     node match {
-      case l: LangLiteral if (l.lang == lang) => ok(node)
-      case _                                  => err(MsgError(s"node $node doesn't match Language literal $lang"))
+      case l: LangLiteral if (l.lang == lang) => okSingle(node, s"$node is a language tagged literal")
+      case _                                  => errString(s"node $node doesn't match Language literal $lang")
     }
   }
 }
@@ -114,15 +119,15 @@ case class ValueLang(lang: Lang) extends ValueObject {
 case class StemRange(
     stem: IRI, 
     exclusions: List[Exclusion]) extends ValueObject {
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] = {
-    err(MsgError(s"Unimplemented value Stem"))
+  override def check(node: RDFNode): CheckedRDFNode = {
+    errString(s"Unimplemented value Stem")
   }
 }
 
 case class ValueAny(exclusions: List[Exclusion]) extends ValueObject {
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] = {
-    if (exclusions.isEmpty) ok(node)
-    else err(MsgError("Not implemented ValueAny with exclusions"))
+  override def check(node: RDFNode): CheckedRDFNode = {
+    if (exclusions.isEmpty) okSingle(node, s"$node matches any")
+    else errString("Not implemented ValueAny with exclusions")
   }
 }
 
@@ -134,8 +139,8 @@ sealed trait NodeKind extends ValueConstr
     with Positional {
   def token: String
 
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] =
-    err(MsgError(s"Not implemented check on $this for node $node"))
+  override def check(node: RDFNode): CheckedRDFNode =
+    errString(s"Not implemented check on $this for node $node")
 
 }
 
@@ -144,14 +149,14 @@ case class IRIKind(
     facets: List[StringFacet]) extends NodeKind {
   override def token = "IRI"
 
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] =
+  override def check(node: RDFNode): CheckedRDFNode =
     if (shapeConstr.isDefined)
-      err(MsgError(s"IRIKind: $this, unimplemented check for shapeConstr. Node: $node"))
+      errString(s"IRIKind: $this, unimplemented check for shapeConstr. Node: $node")
     else {
       if (node.isIRI)
         checkFacets(node, facets)
       else {
-        err(MsgError(s"IRIKind failed: node: $node is not an IRI"))
+        errString(s"IRIKind failed: node: $node is not an IRI")
       }
     }
 }
@@ -161,15 +166,15 @@ case class BNodeKind(
     facets: List[StringFacet]) extends NodeKind {
   override def token = "BNode"
 
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] =
+  override def check(node: RDFNode): CheckedRDFNode =
     if (shapeConstr.isDefined)
-      err(MsgError(s"BNodeKind: $this, unimplemented check for shapeConstr. Node: $node"))
+      errString(s"BNodeKind: $this, unimplemented check for shapeConstr. Node: $node")
     else {
       if (node.isBNode)
         checkFacets(node, facets)
       else {
         // TODO...pass facets to error message
-        err(MsgError(s"BNodeKind failed: node: $node is not an BNode or doesn't pass facets"))
+        errString(s"BNodeKind failed: node: $node is not an BNode or doesn't pass facets")
       }
     }
 
@@ -179,12 +184,12 @@ case class LiteralKind(
     facets: List[XSFacet]) extends NodeKind {
   override def token = "Literal"
 
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] =
+  override def check(node: RDFNode): CheckedRDFNode =
     if (node.isLiteral) {
       checkFacets(node, facets)
     } else {
       // TODO...pass facets to error message
-      err(MsgError(s"LiteralKind failed: node: $node is not a Literal or doesn't pass facets"))
+      errString(s"LiteralKind failed: node: $node is not a Literal or doesn't pass facets")
     }
 }
 
@@ -193,15 +198,15 @@ case class NonLiteralKind(
     facets: List[XSFacet]) extends NodeKind {
   override def token = "NonLiteral"
 
-  override def check(node: RDFNode): Checker[RDFNode, ValidationError] =
+  override def check(node: RDFNode): CheckedRDFNode =
     if (shapeConstr.isDefined)
-      err(MsgError(s"IRIKind: $this, unimplemented check for shapeConstr. Node: $node"))
+      errString(s"IRIKind: $this, unimplemented check for shapeConstr. Node: $node")
     else {
       if (!node.isLiteral)
         checkFacets(node, facets)
       else {
         // TODO...pass facets to error message
-        err(MsgError(s"NonLiteralKind failed: node: $node is a Literal or doesn't pass facets"))
+        errString(s"NonLiteralKind failed: node: $node is a Literal or doesn't pass facets")
       }
     }
 }
