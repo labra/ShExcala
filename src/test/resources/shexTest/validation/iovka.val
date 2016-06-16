@@ -97,8 +97,7 @@
                           }
                         }
                       }
-                    ],
-                    "min": 1, "max": "*"
+                    ]
                   }
                 ]
               }
@@ -106,7 +105,7 @@
           },
           {
             "type": "tripleConstraintSolutions", "predicate": "http://a.example/b",
-            "valueExpr": { "type": "ValueClass", "nodeKind": "iri", "pattern": "x4$" },
+            "valueExpr": { "type": "ValueClass" },
             "solutions": [
               { "type": "testedTriple", "subject": "x", "predicate": "http://a.example/b", "object": "x4" }
             ]

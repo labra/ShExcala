@@ -2,15 +2,14 @@ package es.weso.shex
 
 import java.io.File
 
-import scala.util.{ Failure => TryFailure, Success => TrySuccess, Try }
+import scala.util.{Try, Failure => TryFailure, Success => TrySuccess}
 import org.scalatest._
 import com.typesafe.config._
-
+import es.weso.shex.validation.Validation.Validation
 import es.weso.shex.jast._
 import es.weso.shex.jast.AST._
-import es.weso.shex.validation.Validation.Validation
 import es.weso.utils.testUtils._
-import argonaut.Json
+import argonaut.{Json, Parse}
 
 class Driver extends FunSpec
     with Matchers with TryValues with TestUtils {
@@ -103,19 +102,19 @@ class Driver extends FunSpec
     }
   }
   
-/*  def getValidations(validationsDir: String): List[(File, Json)] = {
+  def getValidations(validationsDir: String): List[(File, Json)] = {
     parseFolderFilesWithExt(validationsDir, file2json,"val")
   } 
-  
+
   def getValidationFromFile(file: File): Try[Validation] = {
     trying("Reading Validation...", file2Validation(file))
-  } */
+  }
   
   def getASTFromFile(file: File): Try[SchemaAST] = {
     trying("Reading Validation...", file2AST(file))
   }
   
-/*  def file2Validation(file: File): Try[Validation] = {
+  def file2Validation(file: File): Try[Validation] = {
     Try {
       val contents = io.Source.fromFile(file)("UTF-8").mkString
       val parsed = Parse.decodeValidation[Validation](contents)
@@ -123,7 +122,8 @@ class Driver extends FunSpec
         throw new Exception(s"Error parsing ${file.getName()}: $parsed"),
         x => x)
     }
-  } */
+  }
 
- 
+
+
 }

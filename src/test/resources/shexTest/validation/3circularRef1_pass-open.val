@@ -25,6 +25,8 @@
           },
           {
             "type": "tripleConstraintSolutions",
+            "min": 0,
+            "max": 1,
             "predicate": "http://a.example/p2",
             "valueExpr": {
               "type": "ValueClass",
@@ -94,6 +96,17 @@
                                                 "object": "\"X\""
                                               }
                                             ]
+                                          },
+                                          {
+                                            "type": "tripleConstraintSolutions",
+                                            "min": 0,
+                                            "max": 1,
+                                            "predicate": "http://a.example/p2",
+                                            "valueExpr": {
+                                              "type": "ValueClass",
+                                              "reference": "http://a.example/S2"
+                                            },
+                                            "solutions": []
                                           }
                                         ]
                                       }

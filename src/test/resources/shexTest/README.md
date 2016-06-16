@@ -33,3 +33,22 @@ A ShEx validator is `result-conformant` (experimental) when it executes as `Vali
   * values of the `node`, `shape`, `subject`, `predicate`, and `object` properties.
 * the two parsed products should be equivalent, with blank node substitution.
 A ShEx validator is `error-conformant` (even more experimental) when it executes a `ValidationFailure` and produces the same result structure as produced by the procedure above.
+
+#### `coverage`
+
+One frequently wants to ask "does the test suite include X".
+One way to test that is to guess by the relatively formulaic filenames and test names in `validation/manifest`.
+Another is to "grep" through the JSON representations of the queries for something with the appropriate structure, e.g. using [jq](https://stedolan.github.io/jq/) to `EachOf`s that include a pattern with a `min` cardinality of 0:
+
+    (for f in schemas/*.json; do
+      jq -e '.[]|..|objects|select(.type=="EachOf").expressions[]|select(.min==0)' $f > /dev/null &&
+      echo $f;
+      done
+    )
+
+which yields the files which include this pattern:
+
+    schemas/1val1IRIREFExtra1Or.json
+    schemas/3circularRef1.json
+    schemas/kitchenSink.json
+

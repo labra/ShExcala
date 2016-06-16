@@ -1,6 +1,6 @@
 {
   "name": "shex-test",
-  "version": "0.5.7",
+  "version": "0.7.0",
   "description": "Shape Expressions library tests.",
   "author": {
     "name": "Eric Prud'hommeaux",

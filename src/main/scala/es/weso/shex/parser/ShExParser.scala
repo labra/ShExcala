@@ -781,7 +781,7 @@ def mkNonLiteral(
   
   // [0]     codeDecl              ::= '%' iri? CODE
   def codeDecl: StateParser[ShapeParserState, (IRI, String)] = { s => 
-    symbol("%") ~> opt(WS) ~> opt(iri(s.namespaces)) ~ CODE ^^ {
+    symbol("%") ~> opt(WS) ~> opt(iri(s.namespaces)) ~ codeFragment ^^ {
       case (None ~ str) => ((IRI(""), str), s)
       case (Some(iri) ~ str) => ((iri, str), s)
     }
@@ -790,14 +790,13 @@ def mkNonLiteral(
 
   // @terminals
   
+
   // [29]    CODE                  ::= '{' ([^%\\] | '\\' [%\\] | UCHAR)* '%' '}'
-  
-  // TODO: Check warning...
-  def CODE: Parser[String] = {
-    opt(WS) ~> "{" ~> code <~ symbol("%") <~ symbol("}") 
+  def codeFragment: Parser[String] = {
+    opt(WS) ~> "{" ~> codeString <~ symbol("%") <~ symbol("}")
   }
   
-  def code: Parser[String] = {
+  def codeString: Parser[String] = {
    acceptRegex("Code Decl", ("""([^%\\]|\\[%\\]|""" + UCHAR_STR + """)*""").r) ^^ {
      case str => unscapeUchars((unscapePercent(str)))
    }

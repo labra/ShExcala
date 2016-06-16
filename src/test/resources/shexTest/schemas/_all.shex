@@ -13,14 +13,14 @@ PREFIX prefix1: <http://all.example/>
 %prefix1:act2{ START2 %}
 
 <http://all.example/S1> EXTRA <http://all.example/p1> <http://all.example/p2> <http://all.example/p3> {
-   <http://all.example/p1> .,
-   <http://all.example/p2> .,
+   <http://all.example/p1> .;
+   <http://all.example/p2> .;
    <http://all.example/p3> .
 }
 
 prefix1:S2 EXTRA prefix1:p1 prefix1:p2 prefix1:p3 {
-   prefix1:p1- .,
-   prefix1:p2 .,
+   prefix1:p1- .;
+   prefix1:p2 .;
    prefix1:p3 .
 }
 
@@ -46,14 +46,20 @@ PREFIX S5: <http://all.example/S5>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX : <http://all.example/>
 
-VIRTUAL prefix1:S3 EXTRA a:a prefix:prefix base:base &a:S1 {
-   a:a .,
-   prefix:prefix prefix:dt LENGTH 2?,
-   (  base:base IRI*,
-      PREFIX:PREFIX IRI ~ "^http://" LENGTH 5 +,
-      BaSe:BaSe @prefix1:S5{2},
-    | virtual:virtual NONLITERAL @ prefix1:S5{2,},
-    | closed:closed  BNODE @S5: OR @<http://all.example/S5> MINLENGTH 2 MAXLENGTH 4 {2,*},
+$:IRI = IRI
+$:vs1 = [<http://a.example/a1> prefix:~ - prefix:a~ - prefix:b] AND $:IRI
+
+#VIRTUAL
+prefix1:S3 EXTRA a:a prefix:prefix base:base # &a:S1
+{
+   &a:S1;
+   a:a .;
+   prefix:prefix prefix:dt LENGTH 2?;
+   (  base:base IRI*;
+      PREFIX:PREFIX IRI ~ "^http://" LENGTH 5 +;
+      BaSe:BaSe @prefix1:S5{2};
+    | virtual:virtual NONLITERAL @ prefix1:S5{2,};
+    | closed:closed  BNODE @S5: OR @<http://all.example/S5> MINLENGTH 2 MAXLENGTH 4 {2,*};
     | (  ^extra:extra { prefix1:p1 [
               "STRING_LITERAL2" "STRING_LITERAL2"@en-UK : prefix1:val1#comment
 	      prefix1:#comment
@@ -66,21 +72,24 @@ VIRTUAL prefix1:S3 EXTRA a:a prefix:prefix base:base &a:S1 {
 	      "\"\\"
 	      "𝟘𝟙𝟚𝟛𝟜𝟝𝟞𝟟𝟠𝟡" # outside of BMP
 	      """STRING_LITERAL_LONG2"""@en-UK
-            ] }{2,3} %prefix1:act1{ code1 %},
-         !iri:iri LITERAL+ ;
-      <http://a.example/annot1> <http://a.example/IRIREF> ;
-      <http://a.example/annot2> "STRING_LITERAL2" ;
-      <http://a.example/annot3> 3 %prefix1:act1{ \%{printf("品川\\n")\u003b\%} %},
-       | ^!bnode:bnode .+ %prefix1:act1{ code1 %},
+            ] }{2,3} %prefix1:act1{ code1 %};
+         !iri:iri LITERAL+ //
+      <http://a.example/annot1> <http://a.example/IRIREF> //
+      <http://a.example/annot2> "STRING_LITERAL2" //
+      <http://a.example/annot3> 3 %prefix1:act1{ \%{printf("品川\\n")\u003b\%} %};
+       | ^!bnode:bnode .+ %prefix1:act1{ code1 %};
          !^literal:literal .+ %prefix1:act1{ code1 %}
-      ),
+      );
       nonliteral:nonliteral xsd:integer MININCLUSIVE 5 MAXINCLUSIVE 5 TOTALDIGITS 1 FRACTIONDIGITS 1
-   ),
-   or:or [<http://a.example/a1> prefix:~ - prefix:a~ - prefix:b],
-   pattern:pattern [. - prefix:a~ - prefix:b] %prefix1:act1{ code1 %} %prefix1:act2{ code2 %},
+   );
+   or:or $:vs1;
+   pattern:pattern [. - prefix:a~ - prefix:b] %prefix1:act1{ code1 %} %prefix1:act2{ code2 %};
 }
 
-_:a·̀ͯ‿.⁀ CLOSED &_:a·̀ͯ‿.⁀ &<http://all.example/S2> {
+_:a·̀ͯ‿.⁀ CLOSED # &_:a·̀ͯ‿.⁀ &<http://all.example/S2>
+{
+   &_:a·̀ͯ‿.⁀;
+   &<http://all.example/S2>
 }
 
 _:AZazÀÖØöø˿ͰͽͿ῿‌‍⁰↏Ⰰ⿯、퟿豈﷏ﷰ�𐀀󯿽 {

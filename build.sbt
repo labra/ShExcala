@@ -9,7 +9,7 @@ lazy val shExcala = (project in file(".")).
   settings(inConfig(CompatTest)(Defaults.testSettings): _*).
   enablePlugins(BuildInfoPlugin).
   settings(
-    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, shexTestsFolder, shaclTestsFolder),
+    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion, shexTestsFolder),
     buildInfoPackage := "buildinfo"
 )
 
@@ -21,14 +21,10 @@ version := "0.7.14"
 
 scalaVersion := "2.11.8"
 
-
+// Folders where shex tests are downloaded
 lazy val shexTestsFolder = settingKey[String]("Folder where shex tests are downloaded") 
 
-lazy val shaclTestsFolder = settingKey[String]("Folder where shacl tests are downloaded")
-
 shexTestsFolder := "shexTests"
-
-shaclTestsFolder := "shaclTests" 
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-Xlint")
 
@@ -47,7 +43,7 @@ libraryDependencies ++= Seq(
   , "es.weso" % "srdf-jena_2.11" % "0.0.6" 
   , "es.weso" % "rbe_2.11" % "0.0.3"
   , "es.weso" % "weso_utils_2.11" % "0.0.6" 
-  , "es.weso" % "validating_2.11" % "0.0.11"
+  , "es.weso" % "validating_2.11" % "0.0.12"
   , "es.weso" % "stateparser_2.11" % "0.1.3"   
 )
 

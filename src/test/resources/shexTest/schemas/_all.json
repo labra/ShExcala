@@ -24,6 +24,44 @@
     { "type": "SemAct", "name": "http://all.example/act1", "code": " START1 "},
     { "type": "SemAct", "name": "http://all.example/act2", "code": " START2 "}
   ],
+  "valueExprDefns": {
+    "http://all.example/IRI": {
+      "type": "ValueExprDefn",
+      "valueExpr": {
+        "type": "ValueClass",
+        "nodeKind": "iri"
+      }
+    },
+    "http://all.example/vs1": {
+      "type": "ValueExprDefn",
+      "valueExpr": {
+        "type": "ValueAnd",
+        "valueExprs": [
+          {
+            "type": "ValueClass",
+            "values": [
+              "http://a.example/a1",
+              {
+                "type": "StemRange",
+                "stem": "http://all.example/",
+                "exclusions": [
+                  {
+                    "type": "Stem",
+                    "stem": "http://all.example/a"
+                  },
+                  "http://all.example/b"
+                ]
+              }
+            ]
+          },
+          {
+            "type": "ValueRef",
+            "valueExprRef": "http://all.example/IRI"
+          }
+        ]
+      }
+    }
+  },
   "start":"http://all.example/S3",
   "shapes":{
     "http://all.example/S1":{
@@ -128,9 +166,13 @@
     },
     "http://all.example/S3":{
       "type":"Shape",
-      "virtual":true,"expression":{
+      "expression":{
 	"type":"EachOf",
 	"expressions":[
+          {
+            "type": "Inclusion",
+            "include": "http://all.example/S1"
+          },
 	  {
 	    "type":"TripleConstraint",
 	    "predicate":"http://all.example/a",
@@ -300,21 +342,8 @@
 	    "type":"TripleConstraint",
 	    "predicate":"http://all.example/or",
 	    "valueExpr":{
-	      "type":"ValueClass",
-	      "values":[
-		"http://a.example/a1",
-		{
-		  "type":"StemRange",
-		  "stem":"http://all.example/",
-		  "exclusions":[
-		    {
-		      "type":"Stem",
-		      "stem":"http://all.example/a"
-		    },
-		    "http://all.example/b"
-		  ]
-		}
-	      ]
+              "type": "ValueRef",
+              "valueExprRef": "http://all.example/vs1"
 	    }
 	  },
 	  {
@@ -348,16 +377,18 @@
 	"http://all.example/a",
 	"http://all.example/prefix",
 	"http://all.example/base"
-      ],"inherit":[
-	"http://all.example/S1"
       ]
     },
     "_:a·̀ͯ‿.⁀":{
       "type":"Shape",
-      "closed":true,"inherit":[
-	"_:a·̀ͯ‿.⁀",
-	"http://all.example/S2"
-      ]
+      "closed":true,
+      "expression": {
+        "type": "EachOf",
+        "expressions": [
+	  { "type": "Inclusion", "include": "_:a·̀ͯ‿.⁀" },
+	  { "type": "Inclusion", "include": "http://all.example/S2" }
+        ]
+      }
     },
     "_:AZazÀÖØöø˿ͰͽͿ῿‌‍⁰↏Ⰰ⿯、퟿豈﷏ﷰ�𐀀󯿽":{
       "type":"Shape",

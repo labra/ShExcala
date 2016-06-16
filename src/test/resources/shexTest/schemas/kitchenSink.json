@@ -9,6 +9,7 @@
     "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
     "rdfs": "http://www.w3.org/2000/01/rdf-schem#"
   },
+  "base": "http://ex.example/",
   "startActs": [
     { "type": "SemAct", "name": "http://ex.example/#foo", "code": " initializer for ignored extension " }
   ],
@@ -214,7 +215,6 @@
     },
     "_:IDshape": {
       "type": "Shape",
-      "virtual": true,
       "expression": {
         "type": "SomeOf",
         "expressions": [
@@ -331,9 +331,10 @@
     "http://ex.example/#FooID": {
       "type": "Shape",
       "closed": true,
-      "inherit": [
-        "_:IDshape"
-      ],
+      "expression": {
+        "type": "Inclusion",
+        "include": "_:IDshape"
+      },
       "extra": [
         "http://ex.example/#code",
         "http://ex.example/#system"

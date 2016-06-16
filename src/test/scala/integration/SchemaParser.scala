@@ -16,7 +16,7 @@ class SchemaParser
     with Checkers 
     with TryValues {
 
-  describe("Shacl Parser") {
+  describe("ShEx Parser") {
 
       it("Should parse a schema") {
 /*        val str = """|$<http://a.example/vc1> = LITERAL pattern "^ab"

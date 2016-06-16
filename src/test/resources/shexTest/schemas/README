@@ -1,32 +1,32 @@
 Exploration of someOf and group:
 
 The following tests cover 2-levels of combinatorics of someOf and group
-constructs. The column on the right includes the same tests with extra commas
-added wherever possible.
+constructs. The column on the right includes the same tests with extra
+semicolons added wherever possible.
 
-1dot				1dotComma
-<S> { :p1 . }			<S> { :p1 ., }
-2dot				2dotCommas
-<S> { :p1 ., :p2 . }		<S> { :p1 ., :p2 ., }
-1dotOr1dot			1dotCommaOr1dotComma
-<S> { :p1 .| :p2 . }		<S> { :p1 .,| :p2 ., }
-2dotOr1dot			2dotCommaOr1dotComma
-<S> { :p1 ., :p2 .| :p3 . }	<S> { :p1 ., :p2 .,| :p3 ., }
-1dotOr2dot			1dotCommaOr2dotCommas
-<S> { :p1 .| :p2 ., :p3 . }	<S> { :p1 .,| :p2 ., :p3 ., }
-open2dotclose			open2dotcommasclose
-<S> { (:p1 ., :p2 .) }		<S> { (:p1 ., :p2 .,), }
-open1dotOr1dotClose		open1dotCommaOr1dotCommacloseComma
-<S> { (:p1 .| :p2 .) }		<S> { (:p1 .,| :p2 .,), }
-openopen1dotOr1dotclose1dotclose	openopen1dotCommaOr1dotCommaclose1dotCommacloseComma
-<S> { ((:p1 .| :p2 .), :p3 .) }	<S> { ((:p1 .,| :p2 .,), :p3 .,), }
-open1dotopen1dotOr1dotcloseclose	open1dotopen1dotCommaOr1dotCommacloseCommacloseComma
-<S> { (:p1 ., (:p2 .| :p3 .)) }	<S> { (:p1 ., (:p2 .,| :p3 .,),), }
-openopen2dotcloseOr1dotclose	openopen2dotCommascloseOr1dotCommaclose
-<S> { ((:p1 ., :p2 .)| :p3 .) }	<S> { ((:p1 ., :p2 .,),| :p3 .,), }
-open1dotOropen2dotcloseclose	open1dotCommaOropen2dotCommascloseclose
-<S> { (:p1 .| (:p2 ., :p3 .)) }	<S> { (:p1 .,| (:p2 ., :p3 .,),), }
-open2dotOr1dotclose		open2dotCommasOr1dotCommaclose
-<S> { (:p1 ., :p2 .| :p3 .) }	<S> { (:p1 ., :p2 .,| :p3 .,), }
-open1dotOr2dotclose		open1dotCommaOr2dotcommasclose
-<S> { (:p1 .| :p2 ., :p3 .) }	<S> { (:p1 .,| :p2 ., :p3 .,), }
+1dot				 1dotSemi
+<S> { :p1 . }			 <S> { :p1 ., }
+2dot				 2dotSemis
+<S> { :p1 ., :p2 . }		 <S> { :p1 ., :p2 ., }
+1dotOr1dot			 1dotSemiOr1dotSemi
+<S> { :p1 .| :p2 . }		 <S> { :p1 .,| :p2 ., }
+2dotOr1dot			 2dotSemiOr1dotSemi
+<S> { :p1 ., :p2 .| :p3 . }	 <S> { :p1 ., :p2 .,| :p3 ., }
+1dotOr2dot			 1dotSemiOr2dotSemis
+<S> { :p1 .| :p2 ., :p3 . }	 <S> { :p1 .,| :p2 ., :p3 ., }
+open2dotclose			 open2dotsemisclose
+<S> { (:p1 ., :p2 .) }		 <S> { (:p1 ., :p2 .,), }
+open1dotOr1dotClose		 open1dotSemiOr1dotSemicloseSemi
+<S> { (:p1 .| :p2 .) }		 <S> { (:p1 .,| :p2 .,), }
+openopen1dotOr1dotclose1dotclose openopen1dotSemiOr1dotSemiclose1dotSemicloseSemi
+<S> { ((:p1 .| :p2 .), :p3 .) }	 <S> { ((:p1 .,| :p2 .,), :p3 .,), }
+open1dotopen1dotOr1dotcloseclose open1dotopen1dotSemiOr1dotSemicloseSemicloseSemi
+<S> { (:p1 ., (:p2 .| :p3 .)) }	 <S> { (:p1 ., (:p2 .,| :p3 .,),), }
+openopen2dotcloseOr1dotclose	 openopen2dotSemiscloseOr1dotSemiclose
+<S> { ((:p1 ., :p2 .)| :p3 .) }	 <S> { ((:p1 ., :p2 .,),| :p3 .,), }
+open1dotOropen2dotcloseclose	 open1dotSemiOropen2dotSemiscloseclose
+<S> { (:p1 .| (:p2 ., :p3 .)) }	 <S> { (:p1 .,| (:p2 ., :p3 .,),), }
+open2dotOr1dotclose		 open2dotSemisOr1dotSemiclose
+<S> { (:p1 ., :p2 .| :p3 .) }	 <S> { (:p1 ., :p2 .,| :p3 .,), }
+open1dotOr2dotclose		 open1dotSemiOr2dotsemisclose
+<S> { (:p1 .| :p2 ., :p3 .) }	 <S> { (:p1 .,| :p2 ., :p3 .,), }

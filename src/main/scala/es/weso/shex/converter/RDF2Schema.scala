@@ -26,7 +26,7 @@ case class RDF2SchemaException(msg: String)
  * Conversion between SHACL RDF to Schema
  *  
  */
-object RDF2Schema
+trait RDF2Schema
     extends Logging
     with RDFParser {
 
@@ -44,7 +44,7 @@ object RDF2Schema
     } yield (Schema(pm, schema), pm)
   }
 
-  private def shexSchema(rdf: RDFReader): Try[ShExSchema] = {
+  protected def shexSchema(rdf: RDFReader): Try[ShExSchema] = {
     // TODO: Check node sh_Graph
 
     val shape_nodes = subjectsWithType(sh_Shape, rdf).toSet
@@ -73,7 +73,7 @@ object RDF2Schema
     }
   }
 
-  private def rule: RDFParser[(Label, Shape)] = { (n, rdf) =>
+  protected def rule: RDFParser[(Label, Shape)] = { (n, rdf) =>
     {
       for {
         shape <- shape(n, rdf)
@@ -94,7 +94,7 @@ object RDF2Schema
   // TODO: extras
   // TODO: inherit
   // TODO: Actions
-  private def shape: RDFParser[Shape] = { (n, rdf) =>
+  protected def shape: RDFParser[Shape] = { (n, rdf) =>
     for {
       //okTypes <- hasNoRDFType(sh_ClosedShape)(n,rdf)
       //if okTypes
@@ -111,7 +111,7 @@ object RDF2Schema
       actions = Actions.empty)
   }
 
-  private def inclPropSet: RDFParser[Seq[Label]] = { (n, rdf) =>
+  protected def inclPropSet: RDFParser[Seq[Label]] = { (n, rdf) =>
     // Todo: 
     Success(Seq())
   }
@@ -124,7 +124,7 @@ object RDF2Schema
     } yield ClosedShape(shape)
   } */
 
-  private def shapeExpr: RDFParser[ShapeExpr] = { (n, rdf) =>
+  protected def shapeExpr: RDFParser[ShapeExpr] = { (n, rdf) =>
     objectsFromPredicate(sh_property)(n, rdf) match {
       case Success(ps) => {
         log.info("shapeExpr...sh_property = " + ps)
@@ -146,7 +146,7 @@ object RDF2Schema
     }
   }
 
-  private def tripleConstraint: RDFParser[ShapeExpr] = { (n, rdf) =>
+  protected def tripleConstraint: RDFParser[ShapeExpr] = { (n, rdf) =>
     for {
       iri <- iriFromPredicate(sh_predicate)(n, rdf)
       valueClass <- valueClass(n, rdf)
@@ -168,26 +168,26 @@ object RDF2Schema
     }
   }
 
-  private def valueClass: RDFParser[ValueClass] = {
+  protected def valueClass: RDFParser[ValueClass] = {
     oneOf(Seq(valueConstr, shapeConstr))
   }
 
-  private def valueConstr: RDFParser[ValueConstr] = {
+  protected def valueConstr: RDFParser[ValueConstr] = {
     oneOf(Seq(literalDatatype, nodeKind, valueSet))
   }
 
-  private def nodeKindFromNode(n: RDFNode): Try[NodeKind] = {
+  protected def nodeKindFromNode(n: RDFNode): Try[NodeKind] = {
     n match {
       case iri: IRI => nodeKindfromIRI(iri)
       case _        => Failure(throw RDF2SchemaException("Nodekind Value must be an IRI"))
     }
   }
 
-  private def shapeConstr: RDFParser[ShapeConstr] = {
+  protected def shapeConstr: RDFParser[ShapeConstr] = {
     oneOf(Seq(singleShape)) //TODO: Add disjShape, conjShape, notShape...
   }
 
-  private def singleShape: RDFParser[SingleShape] = { (n, rdf) =>
+  protected def singleShape: RDFParser[SingleShape] = { (n, rdf) =>
     for {
       labelNode <- {
         // log.info("looking for single Shape: " + n)
@@ -204,7 +204,7 @@ object RDF2Schema
     } yield SingleShape(label)
   }
 
-  private def literalDatatype: RDFParser[Datatype] = { (n, rdf) =>
+  protected def literalDatatype: RDFParser[Datatype] = { (n, rdf) =>
     for {
       dt <- {
         log.info("literalDatatype: looking for valueType: " + n)
@@ -222,7 +222,7 @@ object RDF2Schema
   }
 
   // TODO: fallback to (nodeKind AnyKind) if no valueClass is declared 
-  private def nodeKind: RDFParser[NodeKind] = { (n, rdf) =>
+  protected def nodeKind: RDFParser[NodeKind] = { (n, rdf) =>
     for {
       nk_iri <- objectFromPredicate(sh_nodeKind)(n, rdf)
       nk <- nodeKindFromNode(nk_iri.toIRI)
@@ -232,7 +232,7 @@ object RDF2Schema
     }
   }
 
-  private def valueSet: RDFParser[ValueSet] = { (n, rdf) =>
+  protected def valueSet: RDFParser[ValueSet] = { (n, rdf) =>
     {
       for {
         shapes <- objectsFromPredicate(sh_in)(n, rdf)
@@ -241,7 +241,7 @@ object RDF2Schema
     }
   }
 
-  private def node2valueObject(n: RDFNode): ValueObject = {
+  protected def node2valueObject(n: RDFNode): ValueObject = {
     n match {
       case lit: Literal => ValueLiteral(lit)
       case iri: IRI     => ValueIRI(iri)
@@ -249,7 +249,7 @@ object RDF2Schema
     }
   }
 
-  private def cardinality: RDFParser[Cardinality] = { (n, rdf) =>
+  protected def cardinality: RDFParser[Cardinality] = { (n, rdf) =>
     if (hasPredicateWithSubject(n, sh_maxCount, rdf)) {
       if (hasPredicateWithSubject(n, sh_minCount, rdf)) {
         rangeCardinality(n, rdf)
@@ -265,24 +265,26 @@ object RDF2Schema
     }
   }
 
-  private def rangeCardinalityOnlyMax: RDFParser[RangeCardinality] = { (node, rdf) =>
+  protected def rangeCardinalityOnlyMax: RDFParser[RangeCardinality] = { (node, rdf) =>
     for {
       n <- integerLiteralForPredicate(sh_maxCount)(node, rdf); if (n >= 1)
     } yield RangeCardinality(1, n)
   }
 
-  private def rangeCardinality: RDFParser[RangeCardinality] = { (node, rdf) =>
+  protected def rangeCardinality: RDFParser[RangeCardinality] = { (node, rdf) =>
     for {
       m <- integerLiteralForPredicate(sh_minCount)(node, rdf)
       n <- integerLiteralForPredicate(sh_maxCount)(node, rdf)
     } yield RangeCardinality(m, n)
   }
 
-  private def unboundedCardinalityFrom: RDFParser[UnboundedCardinalityFrom] = { (node, rdf) =>
+  protected def unboundedCardinalityFrom: RDFParser[UnboundedCardinalityFrom] = { (node, rdf) =>
     for {
       m <- integerLiteralForPredicate(sh_minCount)(node, rdf)
     } yield UnboundedCardinalityFrom(m)
   }
 
 }
+
+object RDF2Schema extends RDF2Schema
 

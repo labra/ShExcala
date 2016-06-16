@@ -1,3 +1,3 @@
-manifest.jsonld: ../../test-suite/tests/genJSON.js manifest.ttl
-	../../test-suite/tests/genJSON.js manifest.ttl > manifest.jsonld
+manifest.jsonld: ../bin/genJSON.js manifest.ttl
+	../bin/genJSON.js manifest.ttl > manifest.jsonld
 
