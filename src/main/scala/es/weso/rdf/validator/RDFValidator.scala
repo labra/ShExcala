@@ -48,5 +48,9 @@ trait RDFValidator {
   // Validates declared ScopeNode's only
   def validate: Result // Seq[ValidationAttempt[Node,Label]] 
 
+  def showResult(result: Result, cut: Int, pm: PrefixMap): String = {
+    result.show(cut)(pm)
+  }
+
 }
 

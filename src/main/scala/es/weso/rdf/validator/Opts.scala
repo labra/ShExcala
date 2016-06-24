@@ -42,7 +42,7 @@ class Opts(
     required = true,
     default = Some(Modes.default),
     descr = s"Validation mode. Available modes: ${Modes.show}",
-    validate = (x => Modes.available(x)),
+    validate = x => Modes.lookup(x).isDefined,
     noshort = true)
 
   val endpoint = opt[String]("endpoint",
@@ -156,6 +156,13 @@ class Opts(
     descrYes = "Normal output",
     descrNo = "Verbose output",
     short = 'V')
+
+  val interactive = toggle("interactive",
+    prefix = "no-",
+    default = Some(false),
+    descrYes = "Interactive (stop after each info)",
+    descrNo = "Non-interactive",
+    short = 'I')
 
   val version = toggle("version",
     prefix = "no-",

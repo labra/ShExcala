@@ -6,8 +6,9 @@ import es.weso.rdf._
 import es.weso.shex.parser._
 import es.weso.shex.converter._
 import es.weso.shex.PREFIXES._
+
 import scala.util.parsing.input.Positional
-import scala.util.{ Try, Success, Failure }
+import scala.util.{Failure, Success, Try}
 import es.weso.monads._
 import org.slf4j._
 import es.weso.utils.IO._
@@ -18,6 +19,9 @@ import argonaut._
 import Argonaut._
 import es.weso.rbe._
 import java.net.URI
+
+import es.weso.utils.Debugging
+
 import io._
 import org.slf4s._
 
@@ -30,7 +34,7 @@ import org.slf4s._
 case class Schema(
     pm: PrefixMap,
     shexSchema: ShExSchema) 
-      extends Positional with Logging {
+      extends Positional with Debugging {
 
  def matchNodesLabels( 
       decls: Seq[(RDFNode,Label)], 

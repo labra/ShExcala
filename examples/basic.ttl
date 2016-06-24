@@ -1,3 +1,5 @@
 prefix : <http://example.org/>
 
 :x :p 1 .
+
+:bad :p 2 .

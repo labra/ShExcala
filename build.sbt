@@ -34,6 +34,7 @@ libraryDependencies ++= Seq(
   , "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4"
   , "commons-configuration" % "commons-configuration" % "1.7"
   , "org.rogach" %% "scallop" % "1.0.0"
+  , "com.github.scopt" %% "scopt" % "3.5.0"
   , "com.typesafe" % "config" % "1.0.1"
   , "io.argonaut" %% "argonaut" % "6.1"
   , "org.scalatest" %%% "scalatest" % "3.0.0-M15" 

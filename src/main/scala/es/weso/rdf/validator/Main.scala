@@ -15,9 +15,9 @@ import es.weso.shex.{ Label, PrefixMaps, Schema, ShEx, ShExMatcher }
 import es.weso.utils.FileUtils
 import es.weso.utils.IO.getContents
 import es.weso.utils.PerformanceUtils.{ getTimeFrom, getTimeNow, showRuntimeMemory, showTime }
-import es.weso.utils.Verbosity
+import es.weso.utils.Debugging2
 
-object Main extends App with Verbosity {
+object Main extends App with Debugging2 {
 
   override def main(args: Array[String]): Unit = {
 
@@ -35,8 +35,9 @@ object Main extends App with Verbosity {
       showVersion()
     }
 
-    val isVerbose = opts.verbose()
-    setVerbosity(isVerbose)
+    setVerbose(opts.verbose())
+    setInteractive(opts.interactive())
+    debug("Interactive " + opts.interactive())
 
     val cut = opts.cut()
 
@@ -57,20 +58,16 @@ object Main extends App with Verbosity {
     }
 
     val now = getTimeNow()
-    verbose("Instant = " + now)
 
     if (opts.schema.isDefined) {
-      verbose("Schema defined ")
-
-      val micros = getTimeFrom(now)
-      val runtime = Runtime.getRuntime()
       if (maybe_rdf.isDefined) {
         val rdf = maybe_rdf.get
         validateSchema(rdf, opts)
       } else {
         convertSchema(opts)
       }
-
+      val micros = getTimeFrom(now)
+      val runtime = Runtime.getRuntime()
       if (opts.time()) { showTime(micros) }
       if (opts.memory()) { showRuntimeMemory(runtime) }
 
@@ -78,7 +75,7 @@ object Main extends App with Verbosity {
       if (maybe_rdf.isDefined) {
         println("Validating only rdf...")
         val attempts = ShEx.validateRDF(maybe_rdf.get)
-        showAttempts(attempts, isVerbose, cut, PrefixMaps.commonShacl)
+        showAttempts(attempts, opts.verbose(), cut, PrefixMaps.commonShacl)
       }
 
     }
@@ -134,7 +131,7 @@ object Main extends App with Verbosity {
   }
 
   def convertSchema(opts: Opts): Unit = { // Try[(Result[Typing], PrefixMap)] = {
-    verbose("Converting schema")
+    debug("Converting schema")
     val result = Schema.fromFile(opts.schema(), opts.schema_format())
     result match {
       case Success((schema, pm)) => {
@@ -142,7 +139,7 @@ object Main extends App with Verbosity {
         val schemaOut = schema.serialize(schemaFormat)
 
         if (opts.showSchema()) {
-          verbose("Schema with format " + schemaFormat)
+          debug("Schema with format " + schemaFormat)
           println(schemaOut)
         }
         if (opts.outschema_file.isDefined) {
@@ -188,28 +185,35 @@ object Main extends App with Verbosity {
         if (opts.node.isSupplied)
           if (opts.shape_label.isSupplied) {
             val r = validator.match_node_label(IRI(opts.node()))(validator.labelStr(opts.shape_label()))
-            println(r.show(cut)(pm))
+            println(validator.showResult(r,cut,pm))
           } else {
             val r = validator.match_node_AllLabels(IRI(opts.node()))
-            println(r.show(cut)(pm))
+            println(validator.showResult(r,cut,pm))
           }
         else if (opts.shape_label.isSupplied) {
           val r = validator.matchAllNodes_Label(validator.labelStr(opts.shape_label()))
-          println(r.show(cut)(pm))
+          println(validator.showResult(r,cut,pm))
         } else {
-          opts.mode() match {
-            case "ALL_NODESLABELS" => {
+          Modes.lookup(opts.mode()) match {
+            case Some(Modes.allNodes_allLabels) => {
+              println("Validating all nodes - all labels")
               val r = validator.matchAllNodes_AllLabels
-              println(r.show(cut)(pm))
+              println(validator.showResult(r,cut,pm))
             }
-            case "DECLARED" => {
-              println("Validating...")
+            case Some(Modes.declared) => {
+              println("Validating scope declarations")
               val r = validator.validate
-              println(r.show(cut)(pm))
+              println(validator.showResult(r,cut,pm))
               // println(ValidationAttempt.showAttempts(attempts, opts.verbose(), cut, pm))
             }
-            case str => {
-              throw MainException(s"Unsupported mode: $str")
+            case Some(Modes.allNodes_start) => {
+              println("Not implemented yet validation with start")
+            }
+            case Some(m) => {
+              println(s"Unknown mode $m")
+            }
+            case None => {
+              throw MainException(s"Unsupported mode: ${opts.mode()}")
             }
           }
         }
@@ -217,12 +221,6 @@ object Main extends App with Verbosity {
     }
 
   }
-
-  def printResult(result: ValidationResult[RDFNode, Label, Throwable], cut: Int, pm: PrefixMap): Unit = {
-    println(result.show(cut)(pm))
-  }
-
-
 
 }
 
