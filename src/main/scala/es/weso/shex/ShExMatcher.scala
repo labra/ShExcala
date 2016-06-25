@@ -11,11 +11,12 @@ import es.weso.rdf.validator._
 import es.weso.shex.PREFIXES._
 import es.weso.typing._
 import es.weso.utils.Logging
+import es.weso.utils.Debugging
 
 case class ShExMatcher(
     schema: Schema, 
     rdf: RDFReader
-   ) extends RDFValidator {
+   ) extends RDFValidator with Debugging {
   
   override def id = "ShEx3" 
   type Schema = es.weso.shex.Schema
@@ -43,8 +44,10 @@ case class ShExMatcher(
   }
 
   def match_node_label(node:RDFNode)(label:Label): Result_ = {
+    info(s"Matching $node with $label")
     val result = schema.matchNode_Label(node, label, rdf)
     val typing = result.map(r => r.map(_._1))
+    info(s"Result: $typing")
     ShExResult(typing)
   }
 
@@ -58,6 +61,9 @@ case class ShExMatcher(
     val decls = Try(rdf.triplesWithPredicate(sh_scopeNode).map(triple2NodeLabel).map(_.get).toSeq)
     decls match {
       case Success(nodesLabels) => {
+        if (nodesLabels.isEmpty) {
+          warn("No scopeNode declarations found")
+        }
         val result = schema.matchNodesLabels(nodesLabels, rdf)
         val typing = result.map(r => r.map(_._1))
         ShExResult(typing)
