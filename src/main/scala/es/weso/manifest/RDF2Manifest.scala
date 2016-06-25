@@ -12,7 +12,7 @@ import es.weso.rdf.PrefixMap
 import es.weso.utils.IO._
 import es.weso.rdf.parser.RDFParser
 import es.weso.utils.TryUtils._
-import es.weso.utils.Logging
+import es.weso.utils.Debugging
 import es.weso.rdf.jena.RDFAsJenaModel
 import java.io.File
 
@@ -21,14 +21,14 @@ case class RDF2ManifestException(msg:String)
  extends Exception(msg)
 
 trait RDF2Manifest 
-  extends Logging 
+  extends Debugging 
   with RDFParser {
   
   def rdf2Manifest(
      rdf: RDFReader, 
      derefIncludes: Boolean
      ): Try[Seq[Manifest]] = {
-    log.info("RDF2Manifest")
+    debugStep("RDF2Manifest")
     val candidates = subjectsWithType(mf_Manifest,rdf).toSeq
     val maybeManifests = candidates.map {
       case node => manifest(derefIncludes)(node,rdf)

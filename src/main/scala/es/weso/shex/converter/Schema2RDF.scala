@@ -11,9 +11,7 @@ import es.weso.rdf.jena._
 import es.weso.rdf.jena.RDFAsJenaModel
 import es.weso.shex.PREFIXES._
 import es.weso.rdf.triples.RDFTriple
-import es.weso.utils.{
-  Logging
-}
+import es.weso.utils.Debugging
 
 // TODO: These settings could be read from a properties file
 case object Settings {
@@ -25,7 +23,7 @@ case class Schema2RDFException(msg:String) extends Exception(msg)
 /**
  * Transforms a Schema to RDF
  */
-object Schema2RDF extends Logging {
+object Schema2RDF extends Debugging {
 
   /**
    * Transforms a ShEx schema to a RDF
@@ -107,7 +105,7 @@ object Schema2RDF extends Logging {
         cardinality2RDF(t.card,tripleNode,rdf)
         value2RDF(t.value,tripleNode,rdf)
         // TODO: Handle rest of properties...negated, inverse,...
-        log.info("TripleConstraint: Unhandled inverse, negated...yet")
+        debugStep("TripleConstraint: Unhandled inverse, negated...yet")
       }
       
       // TODO: Handle ids
@@ -165,7 +163,7 @@ object Schema2RDF extends Logging {
         }
       } */
       case _ => {
-        log.error(s"schema2RDF: Non supported conversion to RDF. Shape = $shape")
+        error(s"schema2RDF: Non supported conversion to RDF. Shape = $shape")
       }
     }
     rdf
@@ -217,7 +215,7 @@ object Schema2RDF extends Logging {
       rdf: RDFBuilder
       ): RDFBuilder = {
     // TODO
-    log.info(s"Partially implemented valueShape2RDF: Node = $node, valueShape = $valueShape")
+    debugStep(s"Partially implemented valueShape2RDF: Node = $node, valueShape = $valueShape")
     rdf
   } 
   
@@ -270,7 +268,7 @@ object Schema2RDF extends Logging {
        case LiteralKind(facets) => addTriple(rdf,(node,sh_nodeKind,sh_Literal)) // TODO: Take into account facets
        case NonLiteralKind(shapeConstr,facets) => addTriple(rdf,(node,sh_nodeKind,sh_NonLiteral))
        case _ => {
-         log.error(s"schema2RDF - nodeKind2RDF: Non supported, nodeKind = $nodeKind" )
+         error(s"schema2RDF - nodeKind2RDF: Non supported, nodeKind = $nodeKind" )
          rdf
        }
       }
@@ -299,7 +297,7 @@ object Schema2RDF extends Logging {
       facets: Seq[XSFacet],
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
-    log.info("Unimplemented facets2RDF...")
+    debugStep("Unimplemented facets2RDF...")
     rdf
   }
   
@@ -325,7 +323,7 @@ object Schema2RDF extends Logging {
       node: RDFNode,
       rdf: RDFBuilder): RDFBuilder = {
     // TODO
-    log.error("Unimplemented inclPropSet")
+    error("Unimplemented inclPropSet")
     rdf
   }
   
@@ -334,7 +332,7 @@ object Schema2RDF extends Logging {
         node: RDFNode, 
         rdf: RDFBuilder): RDFBuilder = {
     /// TODO
-    log.error("Unimplemented ExtensionConditions2RDF")
+    error("Unimplemented ExtensionConditions2RDF")
     rdf 
   }
 

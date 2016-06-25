@@ -44,9 +44,9 @@ case class Schema(
   } 
  
   def matchNode_Label(node: RDFNode, label: Label, rdf: RDFReader) = {
-    log.info(s"Trying to match $node with $label") 
+    debugStep(s"Trying to match $node with $label") 
     val seSchema = SEShEx.shex2SE(shexSchema)
-    log.info(s"SESchema: $seSchema") 
+    debugStep(s"SESchema: $seSchema") 
     seSchema.matchNode(node, label, RDFAsGraph(rdf))
   }
 

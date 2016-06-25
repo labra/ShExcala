@@ -42,8 +42,8 @@ libraryDependencies ++= Seq(
   , "ch.qos.logback" % "logback-classic" % "1.1.2"
   
   , "es.weso" % "srdf-jena_2.11" % "0.0.6" 
-  , "es.weso" % "rbe_2.11" % "0.0.3"
-  , "es.weso" % "weso_utils_2.11" % "0.0.6" 
+  , "es.weso" % "rbe_2.11" % "0.0.4"
+  , "es.weso" % "weso_utils_2.11" % "0.0.7" 
   , "es.weso" % "validating_2.11" % "0.0.12"
   , "es.weso" % "stateparser_2.11" % "0.1.3"   
 )

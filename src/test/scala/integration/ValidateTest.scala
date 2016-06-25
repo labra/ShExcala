@@ -6,10 +6,10 @@ import es.weso.rdf.jena.RDFAsJenaModel
 import util._
 import es.weso.rdf.nodes._
 import es.weso.shex.ShEx._
-import es.weso.utils.Logging
+import es.weso.utils.Debugging
 
 class ValidateTest 
- extends FunSpec with Matchers with ValidTester with Logging {
+ extends FunSpec with Matchers with ValidTester with Debugging {
   describe("Integration tests") {
     it("Should validate triple with any") {
       val strData =
@@ -352,7 +352,6 @@ class ValidateTest
            |<T4> { :d . }
            |""".stripMargin
 
-      println(s"Log level = $log")
       shouldBeValid(strSchema, strData,"http://a.example/z","S")
     } 
 

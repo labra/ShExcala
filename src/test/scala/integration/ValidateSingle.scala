@@ -8,18 +8,15 @@ import util._
 import es.weso.rdf.nodes._
 import es.weso.shex.ShEx._
 import es.weso.rdf.validator._
-import es.weso.utils.Logging
-import org.slf4j._
-import org.apache.log4j._
-
+import es.weso.utils.Debugging
 
 class ValidateSingle 
   extends FunSpec
   with Matchers 
   with ValidTester 
-  with Logging {
+  with Debugging {
   
-  BasicConfigurator.configure()
+  // BasicConfigurator.configure()
   
   describe("Single Test") {
      it("Should validate with an OR second") {
