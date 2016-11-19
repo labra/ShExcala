@@ -1,6 +1,10 @@
 # ShExcala - Shape Expressions in Scala
 
-This repository contains an RDF Shape Expressions validator implemented in Scala. 
+This repository contained a Shape Expressions validator implemented in Scala. 
+Notice that we have started a new project called [Shaclex](http://github.io/labra/shaclex) which is based on a more
+purely functional approach using Monads and also contains an implementation of SHACL. 
+
+We are not planning to continue maintaining this code.
 
 [![Build Status](https://travis-ci.org/labra/ShExcala.svg?branch=master)](https://travis-ci.org/labra/ShExcala)
 [![Stories in Ready](https://badge.waffle.io/labra/ShExcala.png?label=ready&title=Ready)](https://waffle.io/labra/ShExcala)
